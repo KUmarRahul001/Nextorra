@@ -1,18 +1,19 @@
 import React from "react";
 
 const internships = [
-  { title: "Web Development", gif: "/gifs/web-development.gif", applyLink: "https://example.com/apply/web-development" },
-  { title: "Android Development", gif: "/gifs/android-development.gif", applyLink: "https://example.com/apply/android-development" },
-  { title: "Data Science", gif: "/gifs/data-science.gif", applyLink: "https://example.com/apply/data-science" },
-  { title: "Java Programming", gif: "/gifs/java.gif", applyLink: "https://example.com/apply/java-programming" },
-  { title: "C++ Programming", gif: "/gifs/cpp.gif", applyLink: "https://example.com/apply/cpp-programming" },
-  { title: "Python Programming", gif: "/gifs/python.gif", applyLink: "https://example.com/apply/python-programming" },
-  { title: "UI/UX Design", gif: "/gifs/ui-ux.gif", applyLink: "https://example.com/apply/ui-ux-design" },
-  { title: "Artificial Intelligence", gif: "/gifs/ai.gif", applyLink: "https://example.com/apply/artificial-intelligence" },
-  { title: "Machine Learning", gif: "/gifs/ml.gif", applyLink: "https://example.com/apply/machine-learning" },
-  { title: "Flutter Developer", gif: "/gifs/flutter.gif", applyLink: "https://example.com/apply/flutter-developer" },
-  { title: "ReactJS Developer", gif: "/gifs/react.gif", applyLink: "https://example.com/apply/reactjs-developer" },
-  { title: "JavaScript Developer", gif: "/gifs/js.gif", applyLink: "https://example.com/apply/javascript-developer" },
+  { title: "Web Development", gif: "/gifs/web-development.gif", applyLink:"https://forms.gle/b5EV7pyzcN6T53rm6"},
+  { title: "Android Development", gif: "/gifs/android-development.gif", applyLink:"https://forms.gle/b5EV7pyzcN6T53rm6"},
+  { title: "Data Science", gif: "/gifs/data-science.gif", applyLink:"https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "Java Programming", gif: "/gifs/java.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "C++ Programming", gif: "/gifs/cpp.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "Python Programming", gif: "/gifs/python.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "UI/UX Design", gif: "/gifs/ui-ux.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6"},
+  { title: "Artificial Intelligence", gif: "/gifs/ai.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "Machine Learning", gif: "/gifs/ml.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "Flutter Developer", gif: "/gifs/flutter.gif", applyLink:"https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "ReactJS Developer", gif: "/gifs/react.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "JavaScript Developer", gif: "/gifs/js.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
+  { title: "Bussiness Analysis", gif: "/gifs/data-science.gif", applyLink:"https://forms.gle/b5EV7pyzcN6T53rm6"  }
 ];
 
 const Internship: React.FC = () => {
