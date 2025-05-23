@@ -12,6 +12,8 @@ import MissedCallService from './pages/services/MissedCallService';
 import GraphicDesign from './pages/services/GraphicDesign';
 import VoiceCallServices from './pages/services/VoiceCallServices';
 import AppDevelopment from './pages/services/AppDevelopment';
+import TermsAndConditions from './TermsAndConditions';
+import Internship from './pages/Internship'; // ✅ Corrected import path
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="services">
             <Route path="social-media-marketing" element={<SocialMediaMarketing />} />
             <Route path="lead-generation" element={<LeadGeneration />} />
@@ -31,6 +34,7 @@ function App() {
             <Route path="voice-call-services" element={<VoiceCallServices />} />
             <Route path="app-development" element={<AppDevelopment />} />
           </Route>
+          <Route path="internship" element={<Internship />} /> {/* ✅ Moved outside of /services and corrected path */}
         </Route>
       </Routes>
     </Router>

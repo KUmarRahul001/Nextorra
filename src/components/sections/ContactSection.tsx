@@ -119,8 +119,8 @@ const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Email Us</h4>
-                    <p className="text-gray-300">contact@nextorra.com</p>
-                    <p className="text-gray-300">support@nextorra.com</p>
+                    <p className="text-gray-300">contact.nextorra@protonmail.com</p>
+                    <p className="text-gray-300">contact.nextorra@protonmail.com</p>
                   </div>
                 </div>
                 
