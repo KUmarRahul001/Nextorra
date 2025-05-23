@@ -1,18 +1,18 @@
 import React from "react";
 
 const internships = [
-  { title: "Web Development", gif: "/gifs/web-development.gif" },
-  { title: "Android Development", gif: "/gifs/android-development.gif" },
-  { title: "Data Science", gif: "/gifs/data-science.gif" },
-  { title: "Java Programming", gif: "/gifs/java.gif" },
-  { title: "C++ Programming", gif: "/gifs/cpp.gif" },
-  { title: "Python Programming", gif: "/gifs/python.gif" },
-  { title: "UI/UX Design", gif: "/gifs/ui-ux.gif" },
-  { title: "Artificial Intelligence", gif: "/gifs/ai.gif" },
-  { title: "Machine Learning", gif: "/gifs/ml.gif" },
-  { title: "Flutter Developer", gif: "/gifs/flutter.gif" },
-  { title: "ReactJS Developer", gif: "/gifs/react.gif" },
-  { title: "JavaScript Developer", gif: "/gifs/js.gif" },
+  { title: "Web Development", gif: "/gifs/web-development.gif", applyLink: "https://example.com/apply/web-development" },
+  { title: "Android Development", gif: "/gifs/android-development.gif", applyLink: "https://example.com/apply/android-development" },
+  { title: "Data Science", gif: "/gifs/data-science.gif", applyLink: "https://example.com/apply/data-science" },
+  { title: "Java Programming", gif: "/gifs/java.gif", applyLink: "https://example.com/apply/java-programming" },
+  { title: "C++ Programming", gif: "/gifs/cpp.gif", applyLink: "https://example.com/apply/cpp-programming" },
+  { title: "Python Programming", gif: "/gifs/python.gif", applyLink: "https://example.com/apply/python-programming" },
+  { title: "UI/UX Design", gif: "/gifs/ui-ux.gif", applyLink: "https://example.com/apply/ui-ux-design" },
+  { title: "Artificial Intelligence", gif: "/gifs/ai.gif", applyLink: "https://example.com/apply/artificial-intelligence" },
+  { title: "Machine Learning", gif: "/gifs/ml.gif", applyLink: "https://example.com/apply/machine-learning" },
+  { title: "Flutter Developer", gif: "/gifs/flutter.gif", applyLink: "https://example.com/apply/flutter-developer" },
+  { title: "ReactJS Developer", gif: "/gifs/react.gif", applyLink: "https://example.com/apply/reactjs-developer" },
+  { title: "JavaScript Developer", gif: "/gifs/js.gif", applyLink: "https://example.com/apply/javascript-developer" },
 ];
 
 const Internship: React.FC = () => {
@@ -44,7 +44,10 @@ const Internship: React.FC = () => {
               <h3 className="text-xl font-semibold text-gray-800 mb-4">
                 {internship.title}
               </h3>
-              <button className="mt-auto w-full bg-blue-600 text-white py-2.5 px-6 rounded-xl hover:bg-blue-700 transition-colors duration-300 text-base font-semibold shadow-sm hover:shadow-md">
+              <button
+                onClick={() => window.open(internship.applyLink, "_blank")}
+                className="mt-auto w-full bg-blue-600 text-white py-2.5 px-6 rounded-xl hover:bg-blue-700 transition-colors duration-300 text-base font-semibold shadow-sm hover:shadow-md"
+              >
                 Apply Now
               </button>
             </div>

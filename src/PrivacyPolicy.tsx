@@ -2,50 +2,65 @@ import React from 'react';
 
 const PrivacyPolicy: React.FC = () => {
   return (
-    <main className="container mx-auto px-4 py-12 max-w-4xl">
-      <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
+    <main className="bg-gray-900 min-h-screen py-16 px-6 text-gray-300">
+      <div className="max-w-4xl mx-auto bg-gray-800 p-8 rounded-2xl shadow-lg">
+        <h1 className="text-4xl font-bold text-white mb-8 border-b border-gray-700 pb-4">
+          Privacy Policy
+        </h1>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Introduction</h2>
-        <p>
-          At Nextorra, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our services.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold text-white mb-3">Introduction</h2>
+          <p>
+            At <a href="/" className="text-accent font-semibold">Nextorra</a>, your privacy is our priority. This Privacy Policy outlines how we collect, use, and protect your data when you interact with our services.
+          </p>
+        </section>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Information We Collect</h2>
-        <p>
-          We may collect personal information such as your name, email address, contact details, and usage data when you interact with our website or services.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold text-white mb-3">Information We Collect</h2>
+          <p>
+            We may gather personal details like your name, email, phone number, and usage behavior when you engage with our website or products.
+          </p>
+        </section>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">How We Use Your Information</h2>
-        <p>
-          Your information is used to provide and improve our services, communicate with you, and ensure compliance with legal obligations.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold text-white mb-3">How We Use Your Information</h2>
+          <p>
+            Your information is used solely to enhance our services, provide support, send relevant communications, and meet regulatory obligations.
+          </p>
+        </section>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Data Security</h2>
-        <p>
-          We implement appropriate technical and organizational measures to protect your data from unauthorized access or disclosure.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold text-white mb-3">Data Security</h2>
+          <p>
+            We follow strict security practices and implement reliable technologies to protect your personal information against unauthorized access or misuse.
+          </p>
+        </section>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Your Rights</h2>
-        <p>
-          You have the right to access, update, or delete your personal information. To exercise these rights, please contact us at <a href="mailto:contact@nextorra.com" className="text-accent underline">contact@nextorra.com</a>.
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold text-white mb-3">Your Rights</h2>
+          <p>
+            You have the right to view, update, or delete your personal data. Contact us at{' '}
+            <a
+              href="mailto:contact@nextorra.com"
+              className="text-accent underline hover:text-white transition-colors"
+            >
+              contact@nextorra.com
+            </a>{' '}
+            to request any changes.
+          </p>
+        </section>
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-3">Changes to This Policy</h2>
-        <p>
-          We may update this Privacy Policy periodically. Changes will be posted on this page with an updated effective date.
+        <section>
+          <h2 className="text-2xl font-semibold text-white mb-3">Changes to This Policy</h2>
+          <p>
+            This policy may be updated from time to time. The latest version will always be available on this page with an effective date.
+          </p>
+        </section>
+
+        <p className="mt-10 text-sm text-gray-500">
+          Effective Date: May 24, 2025
         </p>
-      </section>
+      </div>
     </main>
   );
 };
