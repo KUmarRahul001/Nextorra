@@ -159,6 +159,14 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
           <button onClick={() => handleScrollLink('about')} className="text-white hover:text-accent py-2 border-b border-white/10 text-left" type="button">About</button>
 
+          <Link
+            to="/internship"
+            onClick={() => setIsOpen(false)}
+            className="text-white hover:text-accent py-2 border-b border-white/10 text-left"
+          >
+            Internship
+          </Link>
+
           <div>
             <button
               onClick={() => setServicesOpen(prev => !prev)}
