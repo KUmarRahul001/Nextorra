@@ -20,7 +20,7 @@ const WhatsAppButton: React.FC = () => {
             Chat with us on WhatsApp for quick support and inquiries!
           </p>
           <a
-            href="https://wa.me/918434237052?text=Hello%2C%20Nextorra"
+            href="https://wa.me/919204743660?text=Hello%2C%20Nextorra"
             target="_blank"
             rel="noopener noreferrer"
           >

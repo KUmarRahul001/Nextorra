@@ -34,7 +34,7 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    document.title = 'Nextorra - Digital Marketing Agency';
+    document.title = 'Nextorra - Software Company Landing Page';
   }, []);
 
   return (
@@ -46,7 +46,6 @@ const Home: React.FC = () => {
       <PricingSection />
       <PortfolioSection />
       <ClientsSection />
-      <ContactSection />
     </div>
   );
 };

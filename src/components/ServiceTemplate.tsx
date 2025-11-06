@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Star } from 'lucide-react';
 import Breadcrumb from './Breadcrumb';
@@ -30,11 +31,13 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
   pricing,
   image,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
         <Breadcrumb />
-        
+
         {/* Hero Section */}
         <motion.section 
           initial={{ opacity: 0 }}
@@ -77,15 +80,16 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
                 transition={{ delay: 0.5 }}
                 className="flex flex-wrap gap-4"
               >
-                <a 
-                  href="#contact" 
+                <button
+                  type="button"
+                  onClick={() => navigate("/get-started")}
                   className="btn bg-primary hover:bg-primary-dark text-white transition-all duration-300 flex items-center gap-2 group"
                 >
                   Get Started
                   <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                </a>
+                </button>
                 <a 
-                  href="#pricing" 
+                  href="#pricing"
                   className="btn border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
                 >
                   View Pricing
@@ -225,8 +229,9 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
                     ))}
                   </ul>
                   
-                  <a 
-                    href="#contact" 
+                  <button
+                    type="button"
+                    onClick={() => navigate("/get-started")}
                     className={`w-full py-3 px-6 rounded-lg text-center transition-all duration-300 flex items-center justify-center gap-2 group/btn ${
                       index === 1
                         ? 'bg-primary text-white hover:bg-primary-dark'
@@ -235,7 +240,7 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
                   >
                     Get Started
                     <ArrowRight className="h-4 w-4 transform group-hover/btn:translate-x-1 transition-transform" />
-                  </a>
+                  </button>
                 </motion.div>
               ))}
             </div>

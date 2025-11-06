@@ -14,7 +14,7 @@ const services = [
   'App Development'
 ];
 
-const ContactSection: React.FC = () => {
+const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,7 +33,9 @@ const ContactSection: React.FC = () => {
     message: ''
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -85,67 +87,68 @@ const ContactSection: React.FC = () => {
   };
 
   return (
-    <section className="section bg-gradient-to-b from-gray-900 to-primary-dark text-white" id="contact">
-      <div className="container">
-        <div className="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+    <section className="min-h-screen w-full bg-gradient-to-b from-gray-900 to-gray-950 text-white py-16 px-4" id="contact">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Let's Grow Together</h2>
           <p className="text-gray-300">Have a project or idea? Let's connect and make it real.</p>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-          {/* Contact Info - 2 columns */}
-          <div className="lg:col-span-2 animate-on-scroll">
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+          {/* Left Column - Contact Info */}
+          <div className="lg:col-span-2">
+            <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-white/10">
               <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
-
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="bg-white/20 p-3 rounded-full">
+                  <div className="bg-white/20 p-3 rounded-full flex-shrink-0">
                     <MapPin className="h-6 w-6" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="font-medium mb-1">Our Location</h4>
-                    <p className="text-gray-300">Remote Service - Based in Jamshedpur, Jharkhand</p>
-                    <p className="text-gray-400 italic text-sm">(We operate remotely)</p>
+                    <p className="text-gray-300 text-sm md:text-base">Remote Service - Based in Jamshedpur, Jharkhand</p>
+                    <p className="text-gray-400 italic text-xs md:text-sm">(We operate remotely)</p>
                   </div>
                 </div>
+                
                 <div className="flex items-start gap-4">
-                  <div className="bg-white/20 p-3 rounded-full">
+                  <div className="bg-white/20 p-3 rounded-full flex-shrink-0">
                     <Mail className="h-6 w-6" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="font-medium mb-1">Email Us</h4>
-                    <p className="text-gray-300">contact.nextorra@protonmail.com</p>
+                    <p className="text-gray-300 text-sm md:text-base break-all">contact.nextorra@protonmail.com</p>
                   </div>
                 </div>
+                
                 <div className="flex items-start gap-4">
-                  <div className="bg-white/20 p-3 rounded-full">
+                  <div className="bg-white/20 p-3 rounded-full flex-shrink-0">
                     <Phone className="h-6 w-6" />
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Call Us</h4>
-                    <p className="text-gray-300">+91 8434237052</p>
-                    <p className="text-gray-300">+91 8434237049</p>
+                    <p className="text-gray-300 text-sm md:text-base">+91 8434237052</p>
+                    <p className="text-gray-300 text-sm md:text-base">+91 8434237049</p>
                   </div>
                 </div>
               </div>
-
-              <div className="mt-8">
+              
+              <div className="mt-8 pt-8 border-t border-white/10">
                 <h4 className="font-medium mb-4">Follow Us</h4>
                 <div className="flex gap-4">
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors"><Linkedin className="h-5 w-5" /></a>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors"><Instagram className="h-5 w-5" /></a>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors"><Facebook className="h-5 w-5" /></a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors duration-200"><Linkedin className="h-5 w-5" /></a>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors duration-200"><Instagram className="h-5 w-5" /></a>
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors duration-200"><Facebook className="h-5 w-5" /></a>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Contact Form - 3 columns */}
-          <div className="lg:col-span-3 animate-on-scroll">
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
+          
+          {/* Right Column - Contact Form */}
+          <div className="lg:col-span-3">
+            <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-white/10">
               <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
-              <form onSubmit={handleSubmit} noValidate>
+              <form onSubmit={handleSubmit} noValidate className="w-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <input
                     type="text"
@@ -154,7 +157,7 @@ const ContactSection: React.FC = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                   <input
                     type="email"
@@ -163,9 +166,10 @@ const ContactSection: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                 </div>
+                
                 <div className="mt-4">
                   <input
                     type="tel"
@@ -173,24 +177,26 @@ const ContactSection: React.FC = () => {
                     placeholder="Phone Number"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   />
                 </div>
+                
                 <div className="mt-4">
                   <select
                     name="service"
                     value={formData.service}
                     onChange={handleChange}
-                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition appearance-none cursor-pointer"
                   >
-                    <option value="">Select Service</option>
+                    <option value="" className="bg-gray-900 text-white">Select Service</option>
                     {services.map((service) => (
-                      <option key={service} value={service}>
+                      <option key={service} value={service} className="bg-gray-900 text-white">
                         {service}
                       </option>
                     ))}
                   </select>
                 </div>
+                
                 <div className="mt-4">
                   <textarea
                     name="message"
@@ -199,20 +205,22 @@ const ContactSection: React.FC = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none"
                   />
                 </div>
+                
                 <button
                   type="submit"
-                  className="mt-6 w-full flex items-center justify-center gap-3 bg-primary px-5 py-3 rounded font-semibold text-white hover:bg-primary-dark transition"
+                  className="mt-6 w-full flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded font-semibold text-white transition duration-200"
                 >
                   Send Message
                   <Send className="h-5 w-5" />
                 </button>
+                
                 {formStatus.submitted && (
                   <p
-                    className={`mt-4 text-center ${
-                      formStatus.error ? 'text-red-500' : 'text-green-400'
+                    className={`mt-4 text-center text-sm md:text-base ${
+                      formStatus.error ? 'text-red-400' : 'text-green-400'
                     }`}
                   >
                     {formStatus.message}
@@ -227,4 +235,4 @@ const ContactSection: React.FC = () => {
   );
 };
 
-export default ContactSection;
+export default ContactPage;

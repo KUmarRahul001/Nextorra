@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  GlobeAltIcon,
   EnvelopeIcon,
   PhoneIcon,
   MapPinIcon,
@@ -15,15 +14,23 @@ const Footer: React.FC = () => {
   const navigate = useNavigate();
 
   const smoothScrollTo = (id: string) => {
+    // If already on home page, scroll directly
     if (location.pathname === '/') {
       const element = document.getElementById(id);
-      element?.scrollIntoView({ behavior: 'smooth' });
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
     } else {
+      // Navigate to home first, then scroll
       navigate('/');
       setTimeout(() => {
         const element = document.getElementById(id);
-        element?.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 500);
     }
   };
 
@@ -42,128 +49,162 @@ const Footer: React.FC = () => {
         }}
         aria-hidden="true"
       />
-      <div className="container mx-auto px-4 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-12">
 
           {/* Company Info */}
           <div className="lg:col-span-4">
             <button
-              onClick={() => smoothScrollTo("hero")}
+              onClick={() => navigate('/')}
               className="flex items-center gap-4 mb-6 group"
             >
-              <div className="relative h-[100px] w-[100px] rounded-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-lg animate-pulse" />
+              <div className="relative h-[80px] w-[80px] md:h-[100px] md:w-[100px] rounded-lg flex-shrink-0">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg animate-pulse" />
                 <div className="absolute inset-1 bg-white rounded-lg flex items-center justify-center overflow-hidden">
                   <img
                     src={logo}
                     alt="Nextorra Logo"
-                    className="h-[92px] w-[92px] object-contain select-none"
+                    className="h-full w-full object-contain select-none"
                     draggable={false}
                     loading="lazy"
                   />
                 </div>
               </div>
-              <span className="text-4xl font-bold bg-gradient-to-r from-white via-indigo-500 to-cyan-400 bg-clip-text text-transparent select-none">
+              <span className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white via-indigo-500 to-cyan-400 bg-clip-text text-transparent select-none">
                 Nextorra
               </span>
             </button>
 
-            <p className="text-gray-300 mb-8 max-w-md">
+            <p className="text-gray-300 mb-8 max-w-md text-sm md:text-base">
               Empowering businesses with innovative digital solutions that drive growth and deliver measurable results in an ever-evolving digital landscape.
             </p>
 
             <div className="space-y-4 mb-8">
-              <a href="mailto:contact.nextorra@protonmail.com" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group">
-                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10">
+              <a 
+                href="mailto:contact.nextorra@protonmail.com" 
+                className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+              >
+                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 flex-shrink-0">
                   <EnvelopeIcon className="h-5 w-5" />
                 </div>
-                <span>contact.nextorra@protonmail.com</span>
+                <span className="text-sm md:text-base break-all">contact.nextorra@protonmail.com</span>
               </a>
 
-              <a href="tel:+918434237052" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group">
-                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10">
+              <a 
+                href="tel:+918434237052" 
+                className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group"
+              >
+                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 flex-shrink-0">
                   <PhoneIcon className="h-5 w-5" />
                 </div>
-                <span>+91 8434237052</span>
+                <span className="text-sm md:text-base">+91 8434237052</span>
               </a>
 
               <div className="flex items-center gap-3 text-gray-300 group">
-                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10">
+                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 flex-shrink-0">
                   <MapPinIcon className="h-5 w-5" />
                 </div>
-                <span>Jharkhand, India</span>
+                <span className="text-sm md:text-base">Jharkhand, India</span>
               </div>
             </div>
 
-            <div className="flex gap-4">
-              {[
-                {
-                  href: "https://linkedin.com",
-                  label: "linkedin",
-                  iconPath: "M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm13.5 11.27h-3v-5.5c0-1.31-.03-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9v5.6h-3v-10h2.88v1.37h.04c.4-.76 1.38-1.56 2.85-1.56 3.05 0 3.61 2.01 3.61 4.63v5.56z",
-                },
-                {
-                  href: "https://instagram.com",
-                  label: "instagram",
-                  iconPath: "M12 2.2c3.2 0 3.584.012 4.85.07...",
-                },
-                {
-                  href: "https://facebook.com",
-                  label: "facebook",
-                  iconPath: "M18 0h-3c-3.3 0-6 2.7-6 6v3H6v4h3v10h5V13h4l1-4h-5V6...",
-                },
-              ].map((item, i) => (
-                <a
-                  key={i}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all duration-300 hover:scale-110"
-                  aria-label={`Visit our ${item.label}`}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d={item.iconPath} />
-                  </svg>
-                </a>
-              ))}
+            {/* Social Media Links */}
+            <div className="flex gap-3">
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-white/5 hover:bg-blue-600 text-gray-300 hover:text-white transition-all duration-300 hover:scale-110"
+                aria-label="Visit our LinkedIn"
+                title="LinkedIn"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
+                </svg>
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-white/5 hover:bg-pink-600 text-gray-300 hover:text-white transition-all duration-300 hover:scale-110"
+                aria-label="Visit our Instagram"
+                title="Instagram"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0m5.521 17.921h-11.042v-5.891h11.042v5.891zm-5.521-6.947c-1.6 0-2.905-1.305-2.905-2.905 0-1.6 1.305-2.905 2.905-2.905 1.6 0 2.905 1.305 2.905 2.905 0 1.6-1.305 2.905-2.905 2.905z" />
+                </svg>
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-white/5 hover:bg-blue-700 text-gray-300 hover:text-white transition-all duration-300 hover:scale-110"
+                aria-label="Visit our Facebook"
+                title="Facebook"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+              </a>
             </div>
           </div>
 
           {/* Quick Links */}
           <nav className="lg:col-span-2" aria-label="Quick Links">
-            <h3 className="text-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-500 to-cyan-400">Quick Links</h3>
+            <h3 className="text-base md:text-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-500 to-cyan-400">
+              Quick Links
+            </h3>
             <ul className="space-y-3">
               {[
                 { name: "Home", id: "hero" },
                 { name: "About", id: "about" },
-                { name: "Pricing", id: "pricing" },
+                { name: "Services", id: "services" },
                 { name: "Portfolio", id: "portfolio" },
-                { name: "Contact", id: "contact" },
-                { name: "Terms & Conditions", path: '/terms-and-conditions' },
-                { name: "Privacy Policy", path: '/privacy-policy' }, // 🔐 Added this line
+                { name: "Contact", path: '/get-started' },
               ].map((link, index) => (
                 <li key={index}>
                   <button
                     onClick={() => {
                       if (link.path) {
                         navigate(link.path);
-                      } else if (typeof link.id === 'string') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      } else if (link.id) {
                         smoothScrollTo(link.id);
                       }
                     }}
-                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group w-full text-left"
+                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group w-full text-left text-sm md:text-base"
                   >
-                    <ArrowRightIcon className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                    <ArrowRightIcon className="h-4 w-4 transform group-hover:translate-x-1 transition-transform flex-shrink-0" />
                     {link.name}
                   </button>
                 </li>
               ))}
+              <li>
+                <a
+                  href="/terms-and-conditions"
+                  className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group text-sm md:text-base"
+                >
+                  <ArrowRightIcon className="h-4 w-4 flex-shrink-0" />
+                  Terms & Conditions
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/privacy-policy"
+                  className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group text-sm md:text-base"
+                >
+                  <ArrowRightIcon className="h-4 w-4 flex-shrink-0" />
+                  Privacy Policy
+                </a>
+              </li>
             </ul>
           </nav>
 
           {/* Services */}
           <nav className="lg:col-span-3" aria-label="Services">
-            <h3 className="text-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-500 to-cyan-400">Services</h3>
+            <h3 className="text-base md:text-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-500 to-cyan-400">
+              Services
+            </h3>
             <ul className="space-y-3">
               {[
                 { name: "Social Media Marketing", path: "/services/social-media-marketing" },
@@ -171,14 +212,17 @@ const Footer: React.FC = () => {
                 { name: "Website Design", path: "/services/website-design" },
                 { name: "App Development", path: "/services/app-development" },
                 { name: "Email Marketing", path: "/services/email-marketing" },
-                { name: "Graphic Design", path: "/services/graphic-design" },
+                { name: "SMS Marketing", path: "/services/sms-marketing" },
               ].map((service, index) => (
                 <li key={index}>
                   <button
-                    onClick={() => navigate(service.path)}
-                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group w-full text-left"
+                    onClick={() => {
+                      navigate(service.path);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group w-full text-left text-sm md:text-base"
                   >
-                    <ArrowRightIcon className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                    <ArrowRightIcon className="h-4 w-4 transform group-hover:translate-x-1 transition-transform flex-shrink-0" />
                     {service.name}
                   </button>
                 </li>
@@ -188,10 +232,10 @@ const Footer: React.FC = () => {
 
           {/* Newsletter */}
           <section className="lg:col-span-3" aria-labelledby="newsletter-heading">
-            <h3 id="newsletter-heading" className="text-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-500 to-cyan-400">
+            <h3 id="newsletter-heading" className="text-base md:text-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-500 to-cyan-400">
               Newsletter
             </h3>
-            <p className="text-gray-300 mb-6">Subscribe to our newsletter for the latest updates and insights.</p>
+            <p className="text-gray-300 mb-6 text-sm md:text-base">Subscribe to our newsletter for the latest updates and insights.</p>
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
               <label htmlFor="newsletter-email" className="sr-only">Email address</label>
               <div className="relative">
@@ -200,11 +244,11 @@ const Footer: React.FC = () => {
                   id="newsletter-email"
                   placeholder="Enter your email"
                   required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm md:text-base"
                 />
                 <button
                   type="submit"
-                  className="absolute top-1/2 right-1 -translate-y-1/2 bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-md transition-colors"
+                  className="absolute top-1/2 right-1 -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white px-3 md:px-4 py-2 rounded-md transition-colors text-sm"
                 >
                   Subscribe
                 </button>
@@ -214,7 +258,7 @@ const Footer: React.FC = () => {
           </section>
         </div>
 
-        <div className="mt-16 border-t border-white/10 pt-8 text-center text-sm text-gray-400">
+        <div className="mt-16 border-t border-white/10 pt-8 text-center text-xs md:text-sm text-gray-400">
           &copy; {currentYear} Nextorra. All rights reserved.
         </div>
       </div>
