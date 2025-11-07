@@ -2,8 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0">
-
-  <!-- Homepage - Highest Priority -->
+  <!--  Homepage - Highest Priority -->
   <url>
     <loc>https://nextorra.netlify.app/</loc>
     <lastmod>2025-11-08T00:00:00Z</lastmod>
