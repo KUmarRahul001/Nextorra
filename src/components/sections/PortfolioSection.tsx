@@ -7,6 +7,7 @@ import TechStartupImage from "../assets/Tech_Startup_Branding.png";
 import FitnessTrackerImage from "../assets/Fitness_tracking.png";
 import ResturantImage from "../assets/resturant.png";
 import CataLogProImage from "../assets/catalogPro.png";
+import { useNavigate } from 'react-router-dom';
 const categories = ['All', 'Web Design', 'Marketing', 'Graphics', 'Apps'];
 
 const portfolioItems = [
@@ -66,6 +67,7 @@ const cn = (...classes: string[]) => classes.filter(Boolean).join(' ');
 const PortfolioSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const filteredItems = useMemo(() => {
     if (activeCategory === 'All') return portfolioItems;
@@ -187,7 +189,6 @@ const PortfolioSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -195,13 +196,12 @@ const PortfolioSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mt-16"
         >
-          <a
-            href="#contact"
+          <button onClick={() => navigate('/get-started')}
             className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors duration-300 shadow-lg shadow-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          >
+          type='button'>
             Start Your Project
             <ExternalLink className="h-5 w-5" aria-hidden="true" />
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>

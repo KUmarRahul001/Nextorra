@@ -3,10 +3,13 @@ import { ArrowRight, Sparkles, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Typed from 'typed.js';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { useNavigate } from 'react-router-dom';
+import SEO from '../SEO';
 
 const HeroSection: React.FC = () => {
   const el = useRef<HTMLSpanElement>(null);
   const typed = useRef<Typed | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (el.current) {
@@ -28,6 +31,15 @@ const HeroSection: React.FC = () => {
   }, []);
 
   return (
+    <>
+    <SEO
+        title="Nextorra - Digital Marketing & Business Growth"
+        description="Empowering businesses with innovative digital solutions that drive real results and sustainable growth."
+        keywords="digital marketing, business growth, web design, app development, branding, Nextorra"
+        url="https://nextorra.netlify.app/"
+        type="website"
+      />
+      
     <section className="relative min-h-screen flex items-center bg-gradient-to-br from-gray-900 via-primary to-accent overflow-hidden">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yIDEtMy42NjcgMy01IDEuMzMzLTIuMzMzIDEtNC42NjctMS02LTItMS4zMzMtMy42NjctMS0yIDEgMS42NjcgMiAyLjMzMyA0LjMzMyAyIDcgMCAyLjY2Ny0uNjY3IDQtMiA0LTEuMzMzIDAtMi0xLTItMyAwLTIgMS00IDMtNiAyLTIgMS00LjY2Ny0zLTgtNC0zLjMzMy02LjY2Ny01LTgtNS0xLjMzMyAwLTIuMzMzLjY2Ny0zIDIiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-10"></div>
 
@@ -76,19 +88,18 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.8 }}
               className="flex flex-col sm:flex-row gap-4 mb-12"
             >
-              <a
-                href="#contact"
+              <button onClick={() => navigate('/get-started')}
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary rounded-full font-medium hover:bg-opacity-90 transition-all duration-300 group shadow-xl shadow-white/10"
               >
                 Start Your Journey
                 <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a
-                href="#services"
+              </button>
+              <button
+                onClick={() => navigate('/services')}
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/20 text-white rounded-full font-medium hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
               >
                 Explore Services
-              </a>
+              </button>
             </motion.div>
 
             <motion.div
@@ -146,6 +157,7 @@ const HeroSection: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
