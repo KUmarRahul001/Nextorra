@@ -21,6 +21,7 @@ import AppDevelopment from './pages/services/AppDevelopment';
 
 import Internship from './pages/Internship';
 import ContactPage from './pages/ContactPage';
+import ServicesOverview from './pages/ServicesOverview';
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
 
           {/* Internship Page */}
           <Route path="internship" element={<Internship />} />
+
+          {/* Services Overview Page */}
+          <Route path="services" element={<ServicesOverview />} />
 
           {/* Service Detail Pages */}
           <Route path="services/social-media-marketing" element={<SocialMediaMarketing />} />
