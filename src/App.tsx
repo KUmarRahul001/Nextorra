@@ -47,10 +47,24 @@ function App() {
           <Route path="services/graphic-design" element={<GraphicDesign />} />
           <Route path="services/voice-call-services" element={<VoiceCallServices />} />
           <Route path="services/app-development" element={<AppDevelopment />} />
+          
+          {/* Alternate paths with /pages prefix for backward compatibility */}
+          <Route path="pages/services/social-media-marketing" element={<SocialMediaMarketing />} />
+          <Route path="pages/services/lead-generation" element={<LeadGeneration />} />
+          <Route path="pages/services/sms-marketing" element={<SMSMarketing />} />
+          <Route path="pages/services/website-design" element={<WebsiteDesign />} />
+          <Route path="pages/services/full-stack-web-app" element={<WebAppDevelopment />} />
+          <Route path="pages/services/email-marketing" element={<EmailMarketing />} />
+          <Route path="pages/services/missed-call-service" element={<MissedCallService />} />
+          <Route path="pages/services/graphic-design" element={<GraphicDesign />} />
+          <Route path="pages/services/voice-call-services" element={<VoiceCallServices />} />
+          <Route path="pages/services/app-development" element={<AppDevelopment />} />
 
           {/* Legal Pages */}
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="pages/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="pages/privacy-policy" element={<PrivacyPolicy />} />
         </Route>
       </Routes>
     </Router>
