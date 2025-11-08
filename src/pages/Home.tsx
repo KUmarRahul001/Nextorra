@@ -7,6 +7,7 @@ import ServicesSection from '../components/sections/ServicesSection';
 import PricingSection from '../components/sections/PricingSection';
 import PortfolioSection from '../components/sections/PortfolioSection';
 import ClientsSection from '../components/sections/ClientsSection';
+import { Helmet } from 'react-helmet-async';
 
 const Home: React.FC = () => {
   useEffect(() => {
@@ -28,12 +29,19 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <SEO
-        title="Nextorra - Digital Marketing & Web Development"
-        description="Grow your business with Nextorra’s digital marketing, software development, branding, and web design solutions."
-        url="https://nextorra.netlify.app/"
-      />
+     <>
+      <Helmet>
+        <title>Nextorra – Affordable & Scalable Digital Solutions</title>
+        <meta
+          name="description"
+          content="Nextorra provides AI-driven marketing, web development, and business automation solutions to help startups scale efficiently."
+        />
+        <meta
+          name="keywords"
+          content="Nextorra, AI solutions, web development, digital marketing, automation tools"
+        />
+        <link rel="canonical" href="https://nextorra.netlify.app/" />
+      </Helmet>
       <div>
         <HeroSection />
         <WhyChooseUs />
