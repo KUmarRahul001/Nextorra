@@ -27,8 +27,8 @@ dist-ssr
 
 # Supabase project folder
 supabase/
-xml 
-*.xml
+ 
+*.
 # Helmet cache
 .helmet/
 # Temporary files
