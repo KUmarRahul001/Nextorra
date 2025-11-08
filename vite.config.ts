@@ -1,16 +1,19 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import sitemap from 'vite-plugin-sitemap';
+import { robots } from 'vite-plugin-robots';
 
 export default defineConfig({
   plugins: [
     react(),
+
+    // ✅ Auto-generate Sitemap
     sitemap({
       hostname: 'https://nextorra.netlify.app',
       changefreq: 'monthly',
       priority: 0.8,
       dynamicRoutes: [
-        '/',                         // homepage
+        '/',
         '/get-started',
         '/internship',
         '/services',
@@ -27,8 +30,17 @@ export default defineConfig({
         '/privacy-policy',
         '/terms-and-conditions'
       ],
-    })
+    }),
+
+    // ✅ Auto-generate Robots.txt
+    robots({
+      // this plugin copies a pre-built robots file from the specified directory
+      robotsDir: 'public',
+      outputRobotsFileName: 'robots.txt',
+      enableDebug: true,
+    }),
   ],
+
   build: {
     outDir: 'dist',
   },
