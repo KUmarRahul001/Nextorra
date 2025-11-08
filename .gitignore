@@ -27,3 +27,36 @@ dist-ssr
 
 # Supabase project folder
 supabase/
+xml 
+*.xml
+# Helmet cache
+.helmet/
+# Temporary files
+tmp/
+temp/
+# Mac system files
+.DS_Store
+Thumbs.db
+# Log files
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+# Build directories
+dist
+dist-ssr
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.env
+# Supabase project folder
+supabase/
