@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import {
   ShareIcon,
   UserPlusIcon,
@@ -81,8 +82,22 @@ const services = [
 const ServicesSection: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+
   return (
-    <section className="section bg-gradient-to-b from-gray-900 to-primary-dark relative" id="services">
+    <> <Helmet>
+        <title>Our Services – Nextorra</title>
+        <meta
+          name="description"
+          content="Explore Nextorra's wide range of services including AI-driven marketing, web development, and automation tools."
+        />
+        <meta
+          name="keywords"
+          content="Nextorra services, AI development, automation, web design, digital marketing"
+        />
+        <link rel="canonical" href="https://nextorra.netlify.app/services" />
+      </Helmet>
+
+     <section className="section bg-gradient-to-b from-gray-900 to-primary-dark relative" id="services">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,64,175,0.1)_0%,transparent_100%)] opacity-50"></div>
       
       <div className="container relative">
@@ -156,7 +171,8 @@ const ServicesSection: React.FC = () => {
         </div>
       </div>
     </section>
-  );
+  </>
+);
 };
 
 export default ServicesSection;
