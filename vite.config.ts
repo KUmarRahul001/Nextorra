@@ -1,17 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import sitemap from 'vite-plugin-sitemap';
-import { robots } from 'vite-plugin-robots';
+import robots from 'vite-plugin-robots-txt';
+import { createHtmlPlugin } from 'vite-plugin-html'; // ✅ new plugin
 
 export default defineConfig({
   plugins: [
     react(),
 
-    // ✅ Auto-generate Sitemap
+    // ✅ Sitemap Generator
     sitemap({
       hostname: 'https://nextorra.netlify.app',
-      changefreq: 'monthly',
-      priority: 0.8,
       dynamicRoutes: [
         '/',
         '/get-started',
@@ -28,16 +27,38 @@ export default defineConfig({
         '/services/voice-call-services',
         '/services/app-development',
         '/privacy-policy',
-        '/terms-and-conditions'
+        '/terms-and-conditions',
       ],
     }),
 
-    // ✅ Auto-generate Robots.txt
+    // ✅ Robots.txt Generator
     robots({
-      // this plugin copies a pre-built robots file from the specified directory
-      robotsDir: 'public',
-      outputRobotsFileName: 'robots.txt',
-      enableDebug: true,
+      policies: [
+        { userAgent: '*', allow: ['/'] },
+        { userAgent: '*', disallow: ['/admin', '/api', '/private'] },
+      ],
+      sitemaps: ['https://nextorra.netlify.app/sitemap.xml'],
+    }),
+
+    // ✅ Auto Inject Meta Tags
+    createHtmlPlugin({
+      minify: true,
+      inject: {
+        data: {
+          title: 'Nextorra – Affordable & Scalable Digital Solutions',
+          description:
+            'Nextorra provides AI-driven marketing, web development, and business automation solutions to help startups scale efficiently.',
+          keywords:
+            'Nextorra, digital marketing, web development, AI automation, business growth, affordable marketing, India startup agency',
+          ogTitle: 'Nextorra – Digital Marketing & Automation',
+          ogDescription:
+            'Empowering startups with AI-driven marketing, web, and automation services.',
+          ogUrl: 'https://nextorra.netlify.app',
+          ogImage: 'https://nextorra.netlify.app/og-image.png',
+          twitterCard: 'summary_large_image',
+          twitterCreator: '@NextorraOfficial',
+        },
+      },
     }),
   ],
 
