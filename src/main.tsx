@@ -1,14 +1,13 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import './index.css';
 
-const rootElement = document.getElementById('root');
-createRoot(rootElement!).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
     <HelmetProvider>
       <App />
     </HelmetProvider>
-  </StrictMode>
+  </React.StrictMode>
 );

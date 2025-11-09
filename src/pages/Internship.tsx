@@ -1,5 +1,5 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO"; // ✅ import your reusable SEO component
 
 const internships = [
   { title: "Web Development", gif: "/gifs/web-development.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
@@ -20,50 +20,16 @@ const internships = [
 const Internship: React.FC = () => {
   return (
     <>
-      {/* ✅ SEO Meta Tags */}
-      <Helmet>
-        <title>Internship Program – Nextorra</title>
-        <meta
-          name="description"
-          content="Join Nextorra’s internship program to gain real-world experience in web development, data science, AI, machine learning, Android, and more. Build your tech career with hands-on projects."
-        />
-        <meta
-          name="keywords"
-          content="Nextorra internship, web development internship, AI internship, machine learning internship, Android development, Flutter internship, data science, programming internship"
-        />
-        <link rel="canonical" href="https://nextorra.netlify.app/internship" />
-
-        {/* ✅ Open Graph (Social Media Preview) */}
-        <meta property="og:title" content="Internship Program – Nextorra" />
-        <meta
-          property="og:description"
-          content="Nextorra offers internship opportunities in web development, AI, and more — perfect for students and tech enthusiasts to gain real experience."
-        />
-        <meta
-          property="og:url"
-          content="https://nextorra.netlify.app/internship"
-        />
-        <meta
-          property="og:image"
-          content="https://nextorra.netlify.app/assets/og-image.jpg"
-        />
-        <meta property="og:type" content="website" />
-
-        {/* ✅ Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="Internship Program – Nextorra"
-        />
-        <meta
-          name="twitter:description"
-          content="Gain hands-on experience in Web, AI, ML, and App Development with Nextorra’s internship program."
-        />
-        <meta
-          name="twitter:image"
-          content="https://nextorra.netlify.app/assets/og-image.jpg"
-        />
-      </Helmet>
+      {/* ✅ SEO Section using reusable SEO component */}
+      <SEO
+        title="Internship Program – Nextorra"
+        description="Join Nextorra’s internship program to gain real-world experience in web development, data science, AI, machine learning, Android, and more. Build your tech career with hands-on projects."
+        keywords="Nextorra internship, web development internship, AI internship, machine learning internship, Android development, Flutter internship, data science, programming internship"
+        url="https://nextorra.netlify.app/internship"
+        canonical="https://nextorra.netlify.app/internship"
+        image="https://nextorra.netlify.app/assets/og-image.jpg"
+        type="website"
+      />
 
       {/* ✅ Page Content */}
       <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">

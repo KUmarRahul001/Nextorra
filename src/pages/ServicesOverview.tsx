@@ -12,7 +12,7 @@ import {
   PhoneCall,
   Smartphone,
 } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO'; // ✅ Reusable SEO component
 
 interface Service {
   title: string;
@@ -156,21 +156,41 @@ const ServicesOverview: React.FC = () => {
     },
   ];
 
+  // ✅ Structured Data (Service Schema)
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Digital Marketing & Web Development Services",
+    provider: {
+      "@type": "Organization",
+      name: "Nextorra",
+      url: "https://nextorra.netlify.app",
+      logo: "https://nextorra.netlify.app/logo.png",
+    },
+    areaServed: "IN",
+    serviceType: services.map((s) => s.title),
+    description:
+      "Nextorra provides professional digital services — including marketing, web and app development, automation, and design for startups and businesses.",
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "INR",
+      price: "Custom",
+      availability: "https://schema.org/InStock",
+      url: "https://nextorra.netlify.app/services",
+    },
+  };
+
   return (
     <>
-      {/* ✅ SEO Optimization */}
-      <Helmet>
-        <title>Our Services – Nextorra</title>
-        <meta
-          name="description"
-          content="Explore Nextorra’s range of digital services, including social media marketing, web design, and automation."
-        />
-        <meta
-          name="keywords"
-          content="Nextorra services, digital marketing, automation, web design, social media"
-        />
-        <link rel="canonical" href="https://nextorra.netlify.app/services" />
-      </Helmet>
+      {/* ✅ SEO + Schema Integration */}
+      <SEO
+        title="Our Services – Nextorra"
+        description="Explore Nextorra’s range of digital services including web design, AI automation, app development, and branding solutions for startups."
+        keywords="Nextorra services, digital marketing, AI automation, app development, branding, India tech agency"
+        url="https://nextorra.netlify.app/services"
+        canonical="https://nextorra.netlify.app/services"
+        schema={serviceSchema}
+      />
 
       {/* ✅ Page Content */}
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -179,8 +199,7 @@ const ServicesOverview: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Services</h1>
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
-              Comprehensive digital solutions to grow your business and reach
-              your goals
+              Comprehensive digital solutions to grow your business and reach your goals.
             </p>
           </div>
         </section>
@@ -203,9 +222,7 @@ const ServicesOverview: React.FC = () => {
                     {service.title}
                   </h3>
 
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {service.description}
-                  </p>
+                  <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
 
                   <ul className="space-y-2 mb-6">
                     {service.features.map((feature, idx) => (
@@ -248,7 +265,7 @@ const ServicesOverview: React.FC = () => {
               Ready to Get Started?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              Let's discuss how our services can help your business grow
+              Let's discuss how our services can help your business grow.
             </p>
             <Link
               to="/get-started"
