@@ -31,15 +31,14 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const pageUrl = `https://nextorra.netlify.app${location.pathname}`;
 
-  // ✅ Service Structured Data (Schema.org)
+  // ✅ Schema: Service
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
     name: title,
-    description: description,
+    description,
     serviceType: title,
     provider: {
       "@type": "Organization",
@@ -58,7 +57,7 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
     },
   };
 
-  // ✅ Breadcrumb Schema for Rich Results
+  // ✅ Schema: Breadcrumb
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -92,36 +91,26 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content={`${title.toLowerCase()}, ${title} service, digital marketing, Nextorra, business solutions`}
+          content={`${title.toLowerCase()}, ${title} service, Nextorra, digital marketing, automation, business solutions`}
         />
         <link rel="canonical" href={pageUrl} />
 
-        {/* ✅ Open Graph Tags */}
+        {/* ✅ Open Graph */}
         <meta property="og:title" content={`${title} – Nextorra`} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={pageUrl} />
-        <meta
-          property="og:image"
-          content="https://nextorra.netlify.app/assets/og-image.png"
-        />
+        <meta property="og:image" content="https://nextorra.netlify.app/assets/og-image.png" />
         <meta property="og:type" content="website" />
 
         {/* ✅ Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} – Nextorra`} />
         <meta name="twitter:description" content={description} />
-        <meta
-          name="twitter:image"
-          content="https://nextorra.netlify.app/assets/og-image.png"
-        />
+        <meta name="twitter:image" content="https://nextorra.netlify.app/assets/og-image.png" />
 
-        {/* ✅ Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify(serviceSchema)}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
-        </script>
+        {/* ✅ JSON-LD Schema */}
+        <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
 
       <div className="container mx-auto px-4">
@@ -204,7 +193,7 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
           </div>
         </motion.section>
 
-        {/* Benefits */}
+        {/* ✅ Benefits Section */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -214,9 +203,7 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
         >
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Key Benefits</h2>
-            <p className="text-gray-600">
-              Why choose our {title.toLowerCase()} service
-            </p>
+            <p className="text-gray-600">Why choose our {title.toLowerCase()} service</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -240,7 +227,115 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
           </div>
         </motion.section>
 
-        {/* Features + Pricing sections remain unchanged */}
+        {/* ✅ Features Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="py-16 bg-gradient-to-b from-gray-50 to-white rounded-2xl"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Features</h2>
+            <p className="text-gray-600">Everything you get with our service</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="p-2 rounded-full bg-primary/10 text-primary">
+                    <Check className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {feature.title}
+                  </h3>
+                </div>
+                <p className="text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ✅ Pricing Section */}
+        {pricing.packages && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            id="pricing"
+            className="py-16"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">Pricing Plans</h2>
+              <p className="text-gray-600">
+                Choose the perfect plan for your needs
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {pricing.packages.map((pkg, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`p-8 rounded-xl border transition-all duration-300 relative group ${
+                    index === 1
+                      ? "border-primary shadow-lg scale-105"
+                      : "border-gray-100 hover:border-primary/20"
+                  }`}
+                >
+                  {index === 1 && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-accent text-white text-sm font-medium px-4 py-1 rounded-full">
+                      Most Popular
+                    </div>
+                  )}
+
+                  <h3 className="text-xl font-bold mb-2">{pkg.name}</h3>
+                  <p className="text-3xl font-bold text-primary mb-6">
+                    {pkg.price}
+                  </p>
+
+                  <ul className="space-y-4 mb-8">
+                    {pkg.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <div className="p-1 rounded-full bg-primary/10 text-primary flex-shrink-0 mt-1">
+                          <Check className="h-4 w-4" />
+                        </div>
+                        <span className="text-gray-600">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    type="button"
+                    onClick={() => navigate("/get-started")}
+                    className={`w-full py-3 px-6 rounded-lg text-center transition-all duration-300 flex items-center justify-center gap-2 group/btn ${
+                      index === 1
+                        ? "bg-primary text-white hover:bg-primary-dark"
+                        : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
+                    }`}
+                  >
+                    Get Started
+                    <ArrowRight className="h-4 w-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
+        )}
       </div>
     </div>
   );
