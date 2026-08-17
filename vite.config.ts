@@ -2,7 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import sitemap from 'vite-plugin-sitemap';
 import robots from 'vite-plugin-robots-txt';
-import { createHtmlPlugin } from 'vite-plugin-html'; // ✅ new plugin
+import { createHtmlPlugin } from 'vite-plugin-html';
+import { resolve } from 'path';
+import { copyFileSync } from 'fs';
+
+const SITE_URL = 'https://nextorra.pages.dev';
 
 export default defineConfig({
   plugins: [
@@ -10,7 +14,7 @@ export default defineConfig({
 
     // ✅ Sitemap Generator
     sitemap({
-      hostname: 'https://nextorra.netlify.app',
+      hostname: SITE_URL,
       dynamicRoutes: [
         '/',
         '/get-started',
@@ -43,7 +47,7 @@ export default defineConfig({
         { userAgent: '*', allow: ['/'] },
         { userAgent: '*', disallow: ['/admin', '/api', '/private'] },
       ],
-      sitemaps: ['https://nextorra.netlify.app/sitemap.xml'],
+      sitemaps: [`${SITE_URL}/sitemap.xml`],
     }),
 
     // ✅ Auto Inject Meta Tags
@@ -59,13 +63,26 @@ export default defineConfig({
           ogTitle: 'Nextorra – Software Development & Technology Engineering',
           ogDescription:
             'Software engineering company building web applications, mobile apps, ERP systems, and custom software.',
-          ogUrl: 'https://nextorra.netlify.app',
-          ogImage: 'https://nextorra.netlify.app/og-image.png',
+          ogUrl: SITE_URL,
+          ogImage: `${SITE_URL}/og-image.png`,
           twitterCard: 'summary_large_image',
           twitterCreator: '@NextorraOfficial',
         },
       },
     }),
+
+    // ✅ Cloudflare Pages SPA fallback — copy index.html → 404.html
+    {
+      name: 'cloudflare-spa-fallback',
+      closeBundle() {
+        const distDir = resolve(__dirname, 'dist');
+        copyFileSync(
+          resolve(distDir, 'index.html'),
+          resolve(distDir, '404.html')
+        );
+        console.log('✅ Copied index.html → 404.html (Cloudflare SPA fallback)');
+      },
+    },
   ],
 
   build: {
