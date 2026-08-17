@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import config from "../config";
 
 interface SEOProps {
   title?: string;
@@ -9,36 +10,31 @@ interface SEOProps {
   image?: string;
   type?: string;
   canonical?: string;
-  schema?: object; // ✅ new prop for dynamic JSON-LD
+  schema?: object; // ✅ dynamic JSON-LD
 }
 
-const SEO: React.FC<SEOProps> = ({
-  title = "Nextorra – Affordable & Scalable Digital Solutions",
-  description = "Nextorra provides AI-driven marketing, web development, and business automation solutions to help startups scale efficiently.",
-  keywords = "Nextorra, digital marketing, AI automation, web development, branding, business automation, India marketing agency",
-  url = "https://nextorra.netlify.app",
-  image = "https://nextorra.netlify.app/og-image.png",
+function SEOComponent({
+  title = `${config.siteName} – Software Development & Technology Engineering`,
+  description = `${config.siteName} builds custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern businesses.`,
+  keywords = `${config.siteName}, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration, software company`,
+  url = config.siteUrl,
+  image = `${config.siteUrl}/og-image.png`,
   type = "website",
-  canonical = "https://nextorra.netlify.app",
+  canonical = config.siteUrl,
   schema,
-}) => {
+}: SEOProps) {
   // ✅ Base Organization Schema
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Nextorra",
-    url: "https://nextorra.netlify.app",
-    logo: "https://nextorra.netlify.app/logo.png",
+    name: config.siteName,
+    url: config.siteUrl,
+    logo: `${config.siteUrl}/logo.png`,
     description:
-      "Nextorra is a digital marketing and software development company offering web, AI, and automation services globally.",
-    sameAs: [
-      "https://www.linkedin.com/company/nextorra",
-      "https://www.instagram.com/nextorra",
-      "https://www.facebook.com/nextorra",
-    ],
+      `${config.siteName} is a software development and technology engineering company offering web apps, mobile apps, ERP systems, and custom software globally.`,
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+91-8434237052",
+      telephone: config.contact.phone1,
       contactType: "customer support",
       areaServed: "IN",
       availableLanguage: "English",
@@ -49,11 +45,11 @@ const SEO: React.FC<SEOProps> = ({
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Nextorra",
-    url: "https://nextorra.netlify.app",
+    name: config.siteName,
+    url: config.siteUrl,
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://nextorra.netlify.app/?s={search_term_string}",
+      target: `${config.siteUrl}/?s={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
@@ -87,6 +83,6 @@ const SEO: React.FC<SEOProps> = ({
       )}
     </Helmet>
   );
-};
+}
 
-export default SEO;
+export default SEOComponent;

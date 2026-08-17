@@ -2,19 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import logo from './assets/logo.png';
-
-const services = [
-  { name: 'Social Media Marketing', path: '/services/social-media-marketing' },
-  { name: 'Lead Generation', path: '/services/lead-generation' },
-  { name: 'SMS Marketing & SMPP', path: '/services/sms-marketing' },
-  { name: 'Website Design', path: '/services/website-design' },
-  { name: 'Full Stack Web App', path: '/services/full-stack-web-app' },
-  { name: 'Email Marketing', path: '/services/email-marketing' },
-  { name: 'Missed Call Service & IVR', path: '/services/missed-call-service' },
-  { name: 'Graphic Design', path: '/services/graphic-design' },
-  { name: 'Voice Call Services', path: '/services/voice-call-services' },
-  { name: 'App Development', path: '/services/app-development' },
-];
+import { tier1Services, tier2Services } from '../data/services';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -135,16 +123,43 @@ const Navbar: React.FC = () => {
               <div
                 ref={servicesDropdownRef}
                 id="services-menu"
-                className={`absolute top-full left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 ${
+                className={`absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 ${
                   servicesOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
                 }`}
                 role="menu"
               >
-                {services.map(({ name, path }, index) => (
+                {/* Software & Engineering — Tier 1 */}
+                <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Software &amp; Engineering
+                  </p>
+                </div>
+                {tier1Services.map(({ name, route }) => (
                   <Link
-                    key={index}
-                    to={path}
-                    className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors border-b border-gray-50 last:border-b-0 text-sm"
+                    key={route}
+                    to={route}
+                    className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors border-b border-gray-50 last:border-b-0 text-sm"
+                    onClick={() => {
+                      setServicesOpen(false);
+                      setIsOpen(false);
+                    }}
+                    role="menuitem"
+                  >
+                    {name}
+                  </Link>
+                ))}
+
+                {/* Marketing & Business Support — Tier 2 */}
+                <div className="px-4 py-2 bg-gray-50 border-b border-gray-100 border-t border-gray-200 mt-1">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Marketing &amp; Business Support
+                  </p>
+                </div>
+                {tier2Services.map(({ name, route }) => (
+                  <Link
+                    key={route}
+                    to={route}
+                    className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors border-b border-gray-50 last:border-b-0 text-sm"
                     onClick={() => {
                       setServicesOpen(false);
                       setIsOpen(false);
@@ -169,14 +184,14 @@ const Navbar: React.FC = () => {
               className="nav-link px-3 py-2" 
               type="button"
             >
-              Portfolio
+              Work
             </button>
             <button 
-              onClick={() => handleScrollLink('clients')} 
+              onClick={() => handleScrollLink('why-choose')} 
               className="nav-link px-3 py-2" 
               type="button"
             >
-              Clients
+              Why Us
             </button>
           </div>
 
@@ -191,10 +206,10 @@ const Navbar: React.FC = () => {
             </Link>
             <button
               onClick={() => navigate('/get-started')}
-              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-sm hover:shadow-md transition-all duration-200"
               type="button"
             >
-              Book Free Strategy Call
+              Start a Project
             </button>
           </div>
 
@@ -258,15 +273,38 @@ const Navbar: React.FC = () => {
               className={`transition-all duration-300 overflow-hidden ${servicesOpen ? 'max-h-screen' : 'max-h-0'}`} 
               role="menu"
             >
-              {services.map(({ name, path }, index) => (
+              {/* Software & Engineering — Tier 1 */}
+              <p className="pl-8 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                Software &amp; Engineering
+              </p>
+              {tier1Services.map(({ name, route }) => (
                 <Link
-                  key={index}
-                  to={path}
+                  key={route}
+                  to={route}
                   onClick={() => {
                     setIsOpen(false);
                     setServicesOpen(false);
                   }}
-                  className="block py-2 pl-8 pr-4 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors text-sm"
+                  className="block py-2 pl-10 pr-4 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors text-sm"
+                  role="menuitem"
+                >
+                  {name}
+                </Link>
+              ))}
+
+              {/* Marketing & Business Support — Tier 2 */}
+              <p className="pl-8 pt-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider border-t border-gray-100 mt-1">
+                Marketing &amp; Business Support
+              </p>
+              {tier2Services.map(({ name, route }) => (
+                <Link
+                  key={route}
+                  to={route}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setServicesOpen(false);
+                  }}
+                  className="block py-2 pl-10 pr-4 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors text-sm"
                   role="menuitem"
                 >
                   {name}
@@ -288,15 +326,15 @@ const Navbar: React.FC = () => {
             className="text-gray-700 hover:text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors text-left" 
             type="button"
           >
-            Portfolio
+            Work
           </button>
 
           <button 
-            onClick={() => handleScrollLink('clients')} 
+            onClick={() => handleScrollLink('why-choose')} 
             className="text-gray-700 hover:text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors text-left" 
             type="button"
           >
-            Clients
+            Why Us
           </button>
 
           <Link
@@ -312,10 +350,10 @@ const Navbar: React.FC = () => {
               navigate('/get-started');
               setIsOpen(false);
             }}
-            className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white text-center py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg mt-2"
+            className="bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-lg font-semibold transition-all duration-200 shadow-sm mt-2"
             type="button"
           >
-            Book Free Strategy Call
+            Start a Project
           </button>
         </div>
       </div>

@@ -1,62 +1,56 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
 
-node_modules
-dist
-dist-ssr
+# Testing
+coverage/
+
+# Production & Build outputs
+dist/
+dist-ssr/
+build/
 *.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Environment files (CRITICAL: Do not commit secrets)
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+!*.env.example
 
-
-# Supabase project folder
-supabase/
- 
-*.
-# Helmet cache
-.helmet/
-# Temporary files
-tmp/
-temp/
-# Mac system files
-.DS_Store
-Thumbs.db
-# Log files
-logs
+# Logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-# Build directories
-dist
-dist-ssr
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.env
-# Supabase project folder
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary directories
+tmp/
+temp/
+.helmet/
 supabase/

@@ -1,77 +1,22 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Sparkles } from 'lucide-react';
-import projectImage from '../assets/image.png';
-import CamepineImage from "../assets/campeing_.png";
-import TechStartupImage from "../assets/Tech_Startup_Branding.png";
-import FitnessTrackerImage from "../assets/Fitness_tracking.png";
-import ResturantImage from "../assets/resturant.png";
-import CataLogProImage from "../assets/catalogPro.png";
 import { useNavigate } from 'react-router-dom';
-const categories = ['All', 'Web Design', 'Marketing', 'Graphics', 'Apps'];
+import { projects, projectCategories } from '../../data/projects';
 
-const portfolioItems = [
-  {
-    id: 1,
-    title: 'E-commerce Redesign',
-    category: 'Web Design',
-    image: projectImage,
-    description: 'Complete redesign with 40% conversion rate improvement',
-    tags: ['UI/UX', 'React', 'Node.js'],
-  },
-  {
-    id: 2,
-    title: 'Fashion Brand Campaign',
-    category: 'Marketing',
-    image: CamepineImage,
-    description: '300% ROI on social media ad spend',
-    tags: ['Social Media', 'Content Strategy', 'Analytics'],
-  },
-  {
-    id: 3,
-    title: 'Tech Startup Branding',
-    category: 'Graphics',
-    image: TechStartupImage,
-    description: 'Complete brand identity and marketing materials',
-    tags: ['Branding', 'Logo Design', 'Guidelines'],
-  },
-  {
-    id: 4,
-    title: 'Fitness Tracking App',
-    category: 'Apps',
-    image:FitnessTrackerImage,
-    description: '50,000+ downloads in first month',
-    tags: ['React Native', 'Firebase', 'UX Design'],
-  },
-  {
-    id: 5,
-    title: 'Restaurant Website',
-    category: 'Web Design',
-    image:ResturantImage,
-    description: 'Responsive design with online ordering system',
-    tags: ['Next.js', 'Tailwind CSS', 'Stripe'],
-  },
-  {
-    id: 6,
-    title: 'Product Catalog Design',
-    category: 'Graphics',
-    image:CataLogProImage,
-    description: 'Print and digital catalog design',
-    tags: ['Adobe CC', 'Print Design', 'Digital'],
-  },
-];
+const ALL_LABEL = 'All';
 
 // Utility to conditionally join classes
 const cn = (...classes: string[]) => classes.filter(Boolean).join(' ');
 
 const PortfolioSection: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>(ALL_LABEL);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const filteredItems = useMemo(() => {
-    if (activeCategory === 'All') return portfolioItems;
-    return portfolioItems.filter((item) => item.category === activeCategory);
+    if (activeCategory === ALL_LABEL) return projects;
+    return projects.filter((item) => item.category === activeCategory);
   }, [activeCategory]);
 
   const handleCategoryChange = useCallback((category: string) => {
@@ -105,7 +50,7 @@ const PortfolioSection: React.FC = () => {
 
         {/* Filter Tabs */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category, index) => (
+          {[ALL_LABEL, ...projectCategories].map((category, index) => (
             <motion.button
               key={category}
               type="button"
@@ -144,11 +89,17 @@ const PortfolioSection: React.FC = () => {
                 {/* Image Container */}
                 <div className="relative aspect-[16/12] overflow-hidden">
                   <img
-                    src={item.image}
-                    alt={`Screenshot of project: ${item.title}`}
+                    src={item.images[0] as unknown as string}
+                    alt={`${item.isDemo ? 'Demo: ' : ''}${item.title}`}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
+                  {/* Demo badge */}
+                  {item.isDemo && (
+                    <span className="absolute top-3 left-3 bg-amber-500/90 text-white text-xs font-semibold px-2.5 py-1 rounded-full z-10">
+                      Demo
+                    </span>
+                  )}
                   {/* Overlay */}
                   <div
                     className={cn(

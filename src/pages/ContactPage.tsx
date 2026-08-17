@@ -4,24 +4,10 @@ import {
   MapPin,
   Mail,
   Phone,
-  Linkedin,
-  Facebook,
-  Instagram,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-
-const services = [
-  "Social Media Marketing",
-  "Lead Generation",
-  "SMS Marketing & SMPP",
-  "Website Design",
-  "Full Stack Web App",
-  "Email Marketing",
-  "Missed Call Service & IVR",
-  "Graphic Design",
-  "Voice Call Services",
-  "App Development",
-];
+import { tier1Services, tier2Services } from "../data/services";
+import config from "../config";
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +50,7 @@ const ContactPage: React.FC = () => {
     }
 
     try {
-      const response = await fetch("https://formspree.io/f/mqaqoapn", {
+      const response = await fetch(config.forms.contactApi, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +75,7 @@ const ContactPage: React.FC = () => {
       } else {
         throw new Error("Failed to send message.");
       }
-    } catch (error) {
+    } catch {
       setFormStatus({
         submitted: true,
         error: true,
@@ -102,43 +88,43 @@ const ContactPage: React.FC = () => {
     <>
       {/* ✅ SEO Optimization */}
       <Helmet>
-        <title>Contact Us – Nextorra</title>
+        <title>Start a Project / Contact – Nextorra</title>
         <meta
           name="description"
-          content="Get in touch with Nextorra for web development, AI, marketing, or app design services. Contact us via email, phone, or our online form to discuss your project."
+          content="Discuss your software, web application, mobile app, ERP, or SaaS project with Nextorra. Submit an enquiry to schedule a technical discovery call."
         />
         <meta
           name="keywords"
-          content="Nextorra contact, contact Nextorra, web development, AI company, digital marketing agency, app design services, email Nextorra, call Nextorra"
+          content="Nextorra contact, hire software developers, custom web app, mobile app development, custom ERP software, SaaS development, API integration enquiry"
         />
-        <link rel="canonical" href="https://nextorra.netlify.app/contact" />
+        <link rel="canonical" href="https://nextorra.netlify.app/get-started" />
 
         {/* ✅ Open Graph (Social Preview) */}
-        <meta property="og:title" content="Contact Us – Nextorra" />
+        <meta property="og:title" content="Start a Project / Contact – Nextorra" />
         <meta
           property="og:description"
-          content="Connect with Nextorra to explore AI-driven marketing, app design, and web development solutions tailored to your business."
+          content="Discuss your software, web application, mobile app, or enterprise system project with Nextorra."
         />
         <meta
           property="og:url"
-          content="https://nextorra.netlify.app/contact"
+          content="https://nextorra.netlify.app/get-started"
         />
         <meta
           property="og:image"
-          content="https://nextorra.netlify.app/assets/og-image.jpg"
+          content="https://nextorra.netlify.app/assets/og-image.png"
         />
         <meta property="og:type" content="website" />
 
         {/* ✅ Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact Us – Nextorra" />
+        <meta name="twitter:title" content="Start a Project / Contact – Nextorra" />
         <meta
           name="twitter:description"
-          content="Reach out to Nextorra’s team for digital services, app development, and AI-based business solutions."
+          content="Discuss your software, web application, mobile app, or enterprise system project with Nextorra."
         />
         <meta
           name="twitter:image"
-          content="https://nextorra.netlify.app/assets/og-image.jpg"
+          content="https://nextorra.netlify.app/assets/og-image.png"
         />
       </Helmet>
 
@@ -149,91 +135,71 @@ const ContactPage: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto w-full">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Let's Grow Together
-            </h2>
-            <p className="text-gray-300">
-              Have a project or idea? Let's connect and make it real.
+            <span className="inline-block px-3.5 py-1.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+              Project Enquiry
+            </span>
+            <h1 className="text-3xl md:text-5xl font-extrabold mb-4">
+              Start a Project Conversation
+            </h1>
+            <p className="text-gray-300 text-base md:text-lg">
+              Tell us about the software you want to build or the business workflow you need to automate. We will review your requirements and schedule a technical discovery call.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12">
             {/* Left Column - Contact Info */}
             <div className="lg:col-span-2">
               <div className="bg-white/10 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-white/10">
-                <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
+                <h3 className="text-2xl font-bold mb-6">Direct Enquiries</h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="bg-white/20 p-3 rounded-full flex-shrink-0">
-                      <MapPin className="h-6 w-6" />
+                      <MapPin className="h-6 w-6 text-blue-400" />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="font-medium mb-1">Our Location</h4>
+                      <h4 className="font-medium mb-1">Location</h4>
                       <p className="text-gray-300 text-sm md:text-base">
-                        Remote Service - Based in Jamshedpur, Jharkhand
+                        {config.contact.location}
                       </p>
                       <p className="text-gray-400 italic text-xs md:text-sm">
-                        (We operate remotely)
+                        (Remote engineering delivery worldwide)
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <div className="bg-white/20 p-3 rounded-full flex-shrink-0">
-                      <Mail className="h-6 w-6" />
+                      <Mail className="h-6 w-6 text-blue-400" />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="font-medium mb-1">Email Us</h4>
+                      <h4 className="font-medium mb-1">Email</h4>
                       <p className="text-gray-300 text-sm md:text-base break-all">
-                        contact.nextorra@protonmail.com
+                        {config.contact.email}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <div className="bg-white/20 p-3 rounded-full flex-shrink-0">
-                      <Phone className="h-6 w-6" />
+                      <Phone className="h-6 w-6 text-blue-400" />
                     </div>
                     <div>
-                      <h4 className="font-medium mb-1">Call Us</h4>
+                      <h4 className="font-medium mb-1">Phone / WhatsApp</h4>
                       <p className="text-gray-300 text-sm md:text-base">
-                        +91 8434237052
+                        {config.contact.phone1}
                       </p>
                       <p className="text-gray-300 text-sm md:text-base">
-                        +91 8434237049
+                        {config.contact.phone2}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-white/10">
-                  <h4 className="font-medium mb-4">Follow Us</h4>
-                  <div className="flex gap-4">
-                    <a
-                      href="https://linkedin.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors duration-200"
-                    >
-                      <Linkedin className="h-5 w-5" />
-                    </a>
-                    <a
-                      href="https://instagram.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors duration-200"
-                    >
-                      <Instagram className="h-5 w-5" />
-                    </a>
-                    <a
-                      href="https://facebook.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors duration-200"
-                    >
-                      <Facebook className="h-5 w-5" />
-                    </a>
-                  </div>
+                <div className="mt-8 pt-6 border-t border-white/10 text-xs text-gray-400 leading-relaxed">
+                  <p className="font-semibold text-gray-300 mb-1">What happens next?</p>
+                  <p>1. We review your project requirements within 24-48 hours.</p>
+                  <p>2. We arrange an initial technical scoping call.</p>
+                  <p>3. We provide a milestone-based architecture proposal and quote.</p>
                 </div>
               </div>
             </div>
@@ -285,15 +251,28 @@ const ContactPage: React.FC = () => {
                       <option value="" className="bg-gray-900 text-white">
                         Select Service
                       </option>
-                      {services.map((service) => (
-                        <option
-                          key={service}
-                          value={service}
-                          className="bg-gray-900 text-white"
-                        >
-                          {service}
-                        </option>
-                      ))}
+                      <optgroup label="── Software & Engineering" className="bg-gray-900 text-gray-400">
+                        {tier1Services.map((service) => (
+                          <option
+                            key={service.slug}
+                            value={service.name}
+                            className="bg-gray-900 text-white"
+                          >
+                            {service.name}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label="── Marketing & Business Support" className="bg-gray-900 text-gray-400">
+                        {tier2Services.map((service) => (
+                          <option
+                            key={service.slug}
+                            value={service.name}
+                            className="bg-gray-900 text-white"
+                          >
+                            {service.name}
+                          </option>
+                        ))}
+                      </optgroup>
                     </select>
                   </div>
 

@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
-import { Send, MapPin, Mail, Phone, Linkedin, Facebook, Instagram } from 'lucide-react';
-
-const services = [
-  'Social Media Marketing',
-  'Lead Generation',
-  'SMS Marketing & SMPP',
-  'Website Design',
-  'Full Stack Web App',
-  'Email Marketing',
-  'Missed Call Service & IVR',
-  'Graphic Design',
-  'Voice Call Services',
-  'App Development'
-];
+import { Send, MapPin, Mail, Phone } from 'lucide-react';
+import { tier1Services, tier2Services } from '../../data/services';
+import config from '../../config';
 
 const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -51,7 +40,7 @@ const ContactSection: React.FC = () => {
     }
 
     try {
-      const response = await fetch('https://formspree.io/f/mqaqoapn', {
+      const response = await fetch(config.forms.contactApi, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -75,7 +64,7 @@ const ContactSection: React.FC = () => {
       } else {
         throw new Error('Failed to send message.');
       }
-    } catch (error) {
+    } catch {
       setFormStatus({
         submitted: true,
         error: true,
@@ -105,7 +94,7 @@ const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Our Location</h4>
-                    <p className="text-gray-300">Remote Service - Based in Jamshedpur, Jharkhand</p>
+                    <p className="text-gray-300">{config.contact.location}</p>
                     <p className="text-gray-400 italic text-sm">(We operate remotely)</p>
                   </div>
                 </div>
@@ -115,7 +104,7 @@ const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Email Us</h4>
-                    <p className="text-gray-300">contact.nextorra@protonmail.com</p>
+                    <p className="text-gray-300">{config.contact.email}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -124,18 +113,9 @@ const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Call Us</h4>
-                    <p className="text-gray-300">+91 8434237052</p>
-                    <p className="text-gray-300">+91 8434237049</p>
+                    <p className="text-gray-300">{config.contact.phone1}</p>
+                    <p className="text-gray-300">{config.contact.phone2}</p>
                   </div>
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <h4 className="font-medium mb-4">Follow Us</h4>
-                <div className="flex gap-4">
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors"><Linkedin className="h-5 w-5" /></a>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors"><Instagram className="h-5 w-5" /></a>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="bg-white/20 p-2.5 rounded-full hover:bg-white/30 transition-colors"><Facebook className="h-5 w-5" /></a>
                 </div>
               </div>
             </div>
@@ -184,11 +164,20 @@ const ContactSection: React.FC = () => {
                     className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     <option value="">Select Service</option>
-                    {services.map((service) => (
-                      <option key={service} value={service}>
-                        {service}
-                      </option>
-                    ))}
+                    <optgroup label="── Software & Engineering">
+                      {tier1Services.map((service) => (
+                        <option key={service.slug} value={service.name}>
+                          {service.name}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="── Marketing & Business Support">
+                      {tier2Services.map((service) => (
+                        <option key={service.slug} value={service.name}>
+                          {service.name}
+                        </option>
+                      ))}
+                    </optgroup>
                   </select>
                 </div>
                 <div className="mt-4">

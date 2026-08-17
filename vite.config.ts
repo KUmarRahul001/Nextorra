@@ -16,16 +16,22 @@ export default defineConfig({
         '/get-started',
         '/internship',
         '/services',
+        // ── Tier 1: Software & Engineering (canonical routes) ──
+        '/services/web-development',
+        '/services/full-stack-web-apps',
+        '/services/app-development',
+        '/services/custom-software-api-integration',
+        '/services/erp-enterprise-applications',
+        '/services/saas-products',
+        '/services/desktop-applications',
+        // ── Tier 2: Marketing & Business Support ──
         '/services/social-media-marketing',
         '/services/lead-generation',
         '/services/sms-marketing',
-        '/services/website-design',
-        '/services/full-stack-web-app',
         '/services/email-marketing',
         '/services/missed-call-service',
         '/services/graphic-design',
         '/services/voice-call-services',
-        '/services/app-development',
         '/privacy-policy',
         '/terms-and-conditions',
       ],
@@ -45,14 +51,14 @@ export default defineConfig({
       minify: true,
       inject: {
         data: {
-          title: 'Nextorra – Affordable & Scalable Digital Solutions',
+          title: 'Nextorra – Software Development & Technology Engineering',
           description:
-            'Nextorra provides AI-driven marketing, web development, and business automation solutions to help startups scale efficiently.',
+            'Nextorra builds custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern businesses.',
           keywords:
-            'Nextorra, digital marketing, web development, AI automation, business growth, affordable marketing, India startup agency',
-          ogTitle: 'Nextorra – Digital Marketing & Automation',
+            'Nextorra, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration',
+          ogTitle: 'Nextorra – Software Development & Technology Engineering',
           ogDescription:
-            'Empowering startups with AI-driven marketing, web, and automation services.',
+            'Software engineering company building web applications, mobile apps, ERP systems, and custom software.',
           ogUrl: 'https://nextorra.netlify.app',
           ogImage: 'https://nextorra.netlify.app/og-image.png',
           twitterCard: 'summary_large_image',
@@ -64,5 +70,13 @@ export default defineConfig({
 
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three'],
+          vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+        },
+      },
+    },
   },
 });
