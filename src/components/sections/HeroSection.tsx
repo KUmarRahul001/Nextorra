@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { ArrowRight, Terminal, Layers, Cpu, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, Terminal, Layers, Cpu, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Typed from 'typed.js';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
-import Scene3D from '../3d/Scene3D';
+import ArchitectureVisual from './ArchitectureVisual';
 
 const HeroSection: React.FC = () => {
   const el = useRef<HTMLSpanElement>(null);
@@ -130,29 +130,14 @@ const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: Interactive 3D Canvas Visual with Live Status */}
+            {/* Right Column: Modern Interactive System Architecture & Telemetry Visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="lg:col-span-6 xl:col-span-5 relative"
             >
-              <div className="relative rounded-2xl border border-slate-800 bg-slate-900/60 shadow-2xl backdrop-blur-xl overflow-hidden p-3">
-                {/* 3D Hardware Canvas */}
-                <Scene3D className="rounded-xl overflow-hidden bg-slate-950/40" />
-
-                {/* Floating Architectural Badge */}
-                <div className="absolute bottom-6 left-6 right-6 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl p-3.5 flex items-center justify-between text-xs font-mono">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-slate-300 font-sans font-medium">Interactive 3D Engine</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-cyan-400 font-sans font-semibold">
-                    <Sparkles className="h-3.5 w-3.5" />
-                    <span>Real-Time WebGL</span>
-                  </div>
-                </div>
-              </div>
+              <ArchitectureVisual />
             </motion.div>
           </div>
         </div>
