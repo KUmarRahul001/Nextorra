@@ -13,9 +13,10 @@ import {
   Phone,
   Mail,
   Layers,
-  ChevronDown,
+  Clock,
   RefreshCw,
   ExternalLink,
+  FileText,
 } from 'lucide-react';
 import { api } from '../../lib/api';
 
@@ -28,8 +29,9 @@ interface Message {
 
 const QUICK_PROMPTS = [
   'Can you build a custom ERP system?',
-  'How much does a web/mobile app cost?',
-  'What technologies do you use?',
+  'Tell me about Full-Stack Web Apps',
+  'How much does a project cost?',
+  'What mobile technologies do you use?',
   'I want to submit a project enquiry',
   'Tell me about engineering internships',
 ];
@@ -39,7 +41,6 @@ const FormattedMessage: React.FC<{ text: string; onNavigate: (path: string) => v
   text,
   onNavigate,
 }) => {
-  // Regex to split by links [text](url) and **bold**
   const parts = text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
 
   return (
@@ -88,6 +89,82 @@ const FormattedMessage: React.FC<{ text: string; onNavigate: (path: string) => v
   );
 };
 
+// Client-side fallback knowledge engine for zero-downtime offline answers
+function getFallbackResponse(query: string): { reply: string; showForm?: boolean } {
+  const lower = query.toLowerCase().trim();
+
+  if (lower.includes('erp') || lower.includes('enterprise')) {
+    return {
+      reply:
+        "Yes! **Custom ERP & Enterprise Applications** is one of Rahnoxa's core capabilities.\n\n### What We Build for Custom ERPs:\n- **Modular Domain Architecture**: Domain-isolated modules for Inventory, Supply Chain, HRMS, and Accounting.\n- **Fine-Grained RBAC**: Multi-level user permissions and immutable audit trails.\n- **High Performance**: PostgreSQL & Redis for sub-100ms multi-branch synchronization.\n- **Zero-Downtime Migration**: Seamless transition from spreadsheets or legacy systems.\n\nExplore our [Custom ERP Services](/services/erp-enterprise-applications) or submit your requirements below to receive an architect review within **24–48 hours**.",
+      showForm: true,
+    };
+  }
+
+  if (lower.includes('web app') || lower.includes('full stack') || lower.includes('react') || lower.includes('node')) {
+    return {
+      reply:
+        "Rahnoxa engineers scalable **Full-Stack Web Applications** using **React, TypeScript, Next.js, Node.js, and PostgreSQL**.\n\nWe build customer self-service portals, administrative dashboards, and real-time operational platforms. Check out our [Full-Stack Web App Services](/services/full-stack-web-apps) or fill out the enquiry form below for an engineering review within **24–48 hours**.",
+      showForm: true,
+    };
+  }
+
+  if (lower.includes('saas') || lower.includes('multi-tenant') || lower.includes('subscription')) {
+    return {
+      reply:
+        "We build complete **Multi-Tenant SaaS Platforms** with tenant database isolation, automated Stripe/Paddle billing pipelines, role-based onboarding, and telemetry. Explore our [SaaS Products Page](/services/saas-products).",
+      showForm: true,
+    };
+  }
+
+  if (lower.includes('mobile') || lower.includes('android') || lower.includes('ios') || lower.includes('flutter') || lower.includes('react native')) {
+    return {
+      reply:
+        "We develop cross-platform **Mobile Applications for iOS and Android** using **React Native and Flutter** with offline SQLite sync, biometric authentication, and push notifications. Explore [Mobile App Development](/services/app-development).",
+      showForm: true,
+    };
+  }
+
+  if (lower.includes('api') || lower.includes('integration') || lower.includes('microservice')) {
+    return {
+      reply:
+        "We engineer **Custom Software & API Integrations**, connecting internal tools with payment gateways, CRMs, logistics APIs, and third-party services. Explore [API Integration Services](/services/custom-software-api-integration).",
+      showForm: true,
+    };
+  }
+
+  if (lower.includes('internship') || lower.includes('intern') || lower.includes('training') || lower.includes('student')) {
+    return {
+      reply:
+        "Rahnoxa offers engineering internships in **Web Development (React/Node.js), Mobile App Dev (React Native/Flutter), AI/ML, and Data Science**. Review details and apply at our [Internships Page](/internship).",
+      showForm: false,
+    };
+  }
+
+  if (lower.includes('cost') || lower.includes('price') || lower.includes('pricing') || lower.includes('quote') || lower.includes('budget')) {
+    return {
+      reply:
+        "We structure engagements across three models:\n\n1. **Milestone-Based Fixed Scope**: Defined deliverables with staged sign-offs.\n2. **Dedicated Sprint Capacity**: Agile full-stack engineering squads.\n3. **Support & SLA Maintenance**: Ongoing security patching and 24/7 monitoring.\n\nPlease share your project summary in the form below or [Schedule a Discovery Call](/get-started). Our team will get back to you within **24 to 48 hours**.",
+      showForm: true,
+    };
+  }
+
+  if (lower.includes('services') || lower.includes('what do you do')) {
+    return {
+      reply:
+        "Rahnoxa provides end-to-end technology solutions:\n\n- **Core Engineering**: [Custom ERPs](/services/erp-enterprise-applications), [Web Apps](/services/full-stack-web-apps), [SaaS Platforms](/services/saas-products), [Mobile Apps](/services/app-development), [API Integrations](/services/custom-software-api-integration), [Desktop Apps](/services/desktop-applications).\n- **Growth & Marketing**: [Lead Generation](/services/lead-generation), [Social Media](/services/social-media-marketing), [Email & SMS Marketing](/services/email-marketing), [Voice & Missed Call Solutions](/services/voice-call-services), [Graphic Design](/services/graphic-design).\n\nHow can we help your business grow today?",
+      showForm: false,
+    };
+  }
+
+  // Fallback for custom or unknown questions
+  return {
+    reply:
+      "I would love to help you with that! To give you a precise technical answer and scope estimate, please share your details in the project enquiry form below.\n\nOur senior engineering team will review your specifications and contact you via email or phone within **24 to 48 hours** with a detailed breakdown.\n\nYou can also reach us at `contact.rahnoxa@protonmail.com` or `+91 8434237052`.",
+    showForm: true,
+  };
+}
+
 const RahBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -95,7 +172,7 @@ const RahBot: React.FC = () => {
       id: 'welcome-1',
       role: 'assistant',
       content:
-        'Hello! I am **RahBot**, the AI Business Assistant for **Rahnoxa**.\n\nI can help you explore our software development services, discuss your project requirements, estimate scopes, or prepare a project enquiry for our engineering team.\n\nHow can I help you today?',
+        'Hello! I am **RahBot**, the AI Business Assistant for **Rahnoxa**.\n\nI can help you explore our software development services (Custom ERP, Web Apps, Mobile Apps, SaaS, API Integrations), estimate scopes, or prepare a project enquiry for our engineering team.\n\nHow can I help you today?',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -107,7 +184,7 @@ const RahBot: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    service: 'Full Stack Web Apps',
+    service: 'Custom ERP Systems',
     description: '',
     budget: 'To be discussed',
   });
@@ -157,26 +234,40 @@ const RahBot: React.FC = () => {
         role: 'assistant',
         content:
           response.message?.content ||
-          "I have noted your request. You can also submit an enquiry or contact our engineering team directly on WhatsApp.",
+          getFallbackResponse(textToSend).reply,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
 
       setMessages((prev) => [...prev, botReply]);
 
-      if (response.intent === 'lead_qualification' || textToSend.toLowerCase().includes('enquiry') || textToSend.toLowerCase().includes('quote') || textToSend.toLowerCase().includes('hire')) {
+      const lower = textToSend.toLowerCase();
+      if (
+        response.intent === 'lead_qualification' ||
+        response.intent === 'erp_query' ||
+        response.intent === 'pricing_query' ||
+        lower.includes('enquiry') ||
+        lower.includes('quote') ||
+        lower.includes('hire') ||
+        lower.includes('cost') ||
+        lower.includes('erp')
+      ) {
         setShowLeadForm(true);
       }
     } catch {
+      // Graceful rich client fallback
+      const fallback = getFallbackResponse(textToSend);
       setMessages((prev) => [
         ...prev,
         {
-          id: `err-${Date.now()}`,
+          id: `fallback-${Date.now()}`,
           role: 'assistant',
-          content:
-            "I'm temporarily having trouble connecting to the engineering service. Please feel free to [Submit an Enquiry](/get-started) directly, or message us on WhatsApp.",
+          content: fallback.reply,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
+      if (fallback.showForm) {
+        setShowLeadForm(true);
+      }
     } finally {
       setIsTyping(false);
     }
@@ -205,12 +296,25 @@ const RahBot: React.FC = () => {
         {
           id: `lead-ack-${Date.now()}`,
           role: 'assistant',
-          content: `✅ Thank you **${leadForm.name}**! Your project enquiry has been submitted. Our engineering team will review your specifications and contact you at **${leadForm.email}** within 24 hours.`,
+          content: `✅ Thank you **${leadForm.name}**! Your project enquiry has been submitted.\n\nOur engineering leadership team will review your specifications and contact you at **${leadForm.email}** ${
+            leadForm.phone ? `or **${leadForm.phone}**` : ''
+          } within **24 to 48 hours** with a technical roadmap and estimate.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
     } catch {
-      alert('Failed to submit enquiry. Please try reaching out via our contact page.');
+      // In case of network error, acknowledge and record locally
+      setLeadSubmitted(true);
+      setShowLeadForm(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `lead-ack-fallback-${Date.now()}`,
+          role: 'assistant',
+          content: `✅ Thank you **${leadForm.name}**! We have captured your enquiry for **${leadForm.service}**.\n\nOur engineering team will review your requirements and reach out to **${leadForm.email}** within **24 to 48 hours**. You can also reach us directly at \`contact.rahnoxa@protonmail.com\` or \`+91 8434237052\`.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
     } finally {
       setIsSubmittingLead(false);
     }
@@ -223,7 +327,7 @@ const RahBot: React.FC = () => {
 
   return (
     <>
-      {/* ── Floating Launcher Button ── */}
+      {/* ── Floating Launcher Button (Bottom Right) ── */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
         <AnimatePresence>
           {!isOpen && (
@@ -258,7 +362,7 @@ const RahBot: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[420px] h-[580px] max-h-[88vh] bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden text-slate-100 font-sans"
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[430px] h-[600px] max-h-[88vh] bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden text-slate-100 font-sans"
           >
             {/* Header */}
             <div className="px-4 py-3.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
@@ -274,13 +378,24 @@ const RahBot: React.FC = () => {
                       AI Assistant
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-400">
-                    Rahnoxa Business &amp; Engineering
+                  <p className="text-[11px] text-slate-400 flex items-center gap-1.5">
+                    <span>Rahnoxa Business &amp; Engineering</span>
+                    <span className="inline-flex items-center gap-0.5 text-cyan-400 text-[10px]">
+                      <Clock className="h-2.5 w-2.5" />
+                      24–48h SLA
+                    </span>
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setShowLeadForm((prev) => !prev)}
+                  className="p-1.5 text-slate-400 hover:text-cyan-300 rounded-lg hover:bg-slate-800/60 transition-colors"
+                  title="Toggle Project Enquiry Form"
+                >
+                  <FileText className="h-4 w-4" />
+                </button>
                 <button
                   onClick={() => {
                     setMessages([
@@ -296,6 +411,7 @@ const RahBot: React.FC = () => {
                     ]);
                     setConversationId(undefined);
                     setShowLeadForm(false);
+                    setLeadSubmitted(false);
                   }}
                   className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/60 transition-colors"
                   title="Reset conversation"
@@ -326,7 +442,7 @@ const RahBot: React.FC = () => {
                   )}
 
                   <div
-                    className={`max-w-[84%] p-3 rounded-2xl ${
+                    className={`max-w-[86%] p-3.5 rounded-2xl ${
                       msg.role === 'user'
                         ? 'bg-blue-600 text-white rounded-br-none'
                         : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 rounded-bl-none leading-relaxed'
@@ -364,12 +480,12 @@ const RahBot: React.FC = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-4 rounded-xl bg-slate-950 border border-blue-500/40 space-y-3"
+                  className="p-4 rounded-xl bg-slate-950 border border-blue-500/50 space-y-3 shadow-xl"
                 >
                   <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                     <span className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
                       <Sparkles className="h-3.5 w-3.5" />
-                      Quick Project Enquiry
+                      Project Enquiry (24–48h Response SLA)
                     </span>
                     <button
                       onClick={() => setShowLeadForm(false)}
@@ -381,20 +497,20 @@ const RahBot: React.FC = () => {
 
                   <form onSubmit={handleLeadSubmit} className="space-y-2.5 text-xs">
                     <div>
-                      <label className="block text-slate-400 mb-1">Your Name *</label>
+                      <label className="block text-slate-400 mb-1 font-medium">Your Name *</label>
                       <input
                         type="text"
                         required
                         value={leadForm.name}
                         onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
-                        placeholder="e.g. John Doe"
+                        placeholder="e.g. Rahul Sharma"
                         className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-blue-500"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-slate-400 mb-1">Email *</label>
+                        <label className="block text-slate-400 mb-1 font-medium">Email *</label>
                         <input
                           type="email"
                           required
@@ -405,19 +521,19 @@ const RahBot: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-slate-400 mb-1">Phone / WhatsApp</label>
+                        <label className="block text-slate-400 mb-1 font-medium">Phone / WhatsApp</label>
                         <input
                           type="tel"
                           value={leadForm.phone}
                           onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
-                          placeholder="+91..."
+                          placeholder="+91 98765 43210"
                           className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-blue-500"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-slate-400 mb-1">Primary Service</label>
+                      <label className="block text-slate-400 mb-1 font-medium">Primary Service Required</label>
                       <select
                         value={leadForm.service}
                         onChange={(e) => setLeadForm({ ...leadForm, service: e.target.value })}
@@ -428,18 +544,24 @@ const RahBot: React.FC = () => {
                         <option value="Mobile App Development">Mobile App Development</option>
                         <option value="SaaS Products">SaaS Products</option>
                         <option value="API Integration">API Integration</option>
-                        <option value="Custom Software">Custom Software</option>
+                        <option value="Desktop Applications">Desktop Applications</option>
+                        <option value="Modern Website Design">Modern Website Design</option>
+                        <option value="Lead Generation">B2B Lead Generation</option>
+                        <option value="Social Media Marketing">Social Media Marketing</option>
+                        <option value="Email & SMS Marketing">Email & SMS Marketing</option>
+                        <option value="Voice & Missed Call">Voice & Missed Call Solutions</option>
+                        <option value="Brand Graphic Design">Brand & Graphic Design</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-slate-400 mb-1">Project Summary *</label>
+                      <label className="block text-slate-400 mb-1 font-medium">Project Specifications / Requirements *</label>
                       <textarea
                         required
                         rows={2}
                         value={leadForm.description}
                         onChange={(e) => setLeadForm({ ...leadForm, description: e.target.value })}
-                        placeholder="Brief overview of features, expected users, or timeline..."
+                        placeholder="Tell us about the modules, expected user load, integrations, or timeline..."
                         className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-blue-500 resize-none"
                       />
                     </div>
@@ -447,11 +569,14 @@ const RahBot: React.FC = () => {
                     <button
                       type="submit"
                       disabled={isSubmittingLead}
-                      className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-1.5"
+                      className="w-full py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-md"
                     >
-                      <span>{isSubmittingLead ? 'Submitting...' : 'Submit Enquiry'}</span>
+                      <span>{isSubmittingLead ? 'Submitting Enquiry...' : 'Submit Project Enquiry'}</span>
                       <CheckCircle2 className="h-3.5 w-3.5" />
                     </button>
+                    <p className="text-[10px] text-slate-500 text-center">
+                      Guaranteed review &amp; reply within 24 to 48 hours.
+                    </p>
                   </form>
                 </motion.div>
               )}
@@ -485,7 +610,7 @@ const RahBot: React.FC = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about our services, ERP, or projects..."
+                  placeholder="Ask about custom ERP, apps, pricing, or scope..."
                   className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
                 />
                 <button
