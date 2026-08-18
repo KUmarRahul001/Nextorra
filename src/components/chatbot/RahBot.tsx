@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  MessageSquare,
   X,
   Send,
   Sparkles,
@@ -10,9 +9,6 @@ import {
   User,
   ArrowRight,
   CheckCircle2,
-  Phone,
-  Mail,
-  Layers,
   Clock,
   RefreshCw,
   ExternalLink,
@@ -25,6 +21,7 @@ interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: string;
+  showEnquiryButton?: boolean;
 }
 
 const QUICK_PROMPTS = [
@@ -90,78 +87,102 @@ const FormattedMessage: React.FC<{ text: string; onNavigate: (path: string) => v
 };
 
 // Client-side fallback knowledge engine for zero-downtime offline answers
-function getFallbackResponse(query: string): { reply: string; showForm?: boolean } {
+function getFallbackResponse(query: string): { reply: string; isEnquiryIntent?: boolean } {
   const lower = query.toLowerCase().trim();
 
+  // 1. Explicit Enquiry / Hire
+  if (
+    lower.includes('submit enquiry') ||
+    lower.includes('submit a project enquiry') ||
+    lower.includes('i want to hire') ||
+    lower.includes('fill form') ||
+    lower.includes('book discovery') ||
+    lower.includes('contact sales')
+  ) {
+    return {
+      reply:
+        "I've opened our **Project Enquiry Form** below. Please enter your project details and requirements. Our senior engineering leadership will review your specifications and contact you within **24 to 48 hours** with an estimate and architecture roadmap.",
+      isEnquiryIntent: true,
+    };
+  }
+
+  // 2. Custom ERP
   if (lower.includes('erp') || lower.includes('enterprise')) {
     return {
       reply:
-        "Yes! **Custom ERP & Enterprise Applications** is one of Rahnoxa's core capabilities.\n\n### What We Build for Custom ERPs:\n- **Modular Domain Architecture**: Domain-isolated modules for Inventory, Supply Chain, HRMS, and Accounting.\n- **Fine-Grained RBAC**: Multi-level user permissions and immutable audit trails.\n- **High Performance**: PostgreSQL & Redis for sub-100ms multi-branch synchronization.\n- **Zero-Downtime Migration**: Seamless transition from spreadsheets or legacy systems.\n\nExplore our [Custom ERP Services](/services/erp-enterprise-applications) or submit your requirements below to receive an architect review within **24–48 hours**.",
-      showForm: true,
+        "Yes! **Custom ERP & Enterprise Applications** is one of Rahnoxa's core capabilities.\n\n### What We Build for Custom ERPs:\n- **Modular Domain Architecture**: Domain-isolated modules for Inventory, Supply Chain, HRMS, and Accounting.\n- **Fine-Grained RBAC**: Multi-level user permissions and immutable audit trails.\n- **High Performance**: PostgreSQL & Redis for sub-100ms multi-branch synchronization.\n- **Zero-Downtime Migration**: Seamless transition from spreadsheets or legacy systems.\n\nExplore our [Custom ERP Services](/services/erp-enterprise-applications) or click the button below to submit your project requirements for an architect review within **24–48 hours**.",
+      isEnquiryIntent: false,
     };
   }
 
-  if (lower.includes('web app') || lower.includes('full stack') || lower.includes('react') || lower.includes('node')) {
+  // 3. Web Apps
+  if (lower.includes('web app') || lower.includes('full stack') || (lower.includes('react') && !lower.includes('react native')) || lower.includes('node')) {
     return {
       reply:
-        "Rahnoxa engineers scalable **Full-Stack Web Applications** using **React, TypeScript, Next.js, Node.js, and PostgreSQL**.\n\nWe build customer self-service portals, administrative dashboards, and real-time operational platforms. Check out our [Full-Stack Web App Services](/services/full-stack-web-apps) or fill out the enquiry form below for an engineering review within **24–48 hours**.",
-      showForm: true,
+        "Rahnoxa engineers scalable **Full-Stack Web Applications** using **React, TypeScript, Next.js, Node.js, and PostgreSQL**.\n\n### Web Capabilities:\n- Enterprise customer portals, self-service tools, and admin dashboards.\n- Real-time collaboration engines and analytics pipelines.\n- High-throughput backend APIs built for 100k+ MAU.\n\nExplore our [Full-Stack Web App Services](/services/full-stack-web-apps) or submit your project requirements below for a review within **24–48 hours**.",
+      isEnquiryIntent: false,
     };
   }
 
+  // 4. SaaS Products
   if (lower.includes('saas') || lower.includes('multi-tenant') || lower.includes('subscription')) {
     return {
       reply:
-        "We build complete **Multi-Tenant SaaS Platforms** with tenant database isolation, automated Stripe/Paddle billing pipelines, role-based onboarding, and telemetry. Explore our [SaaS Products Page](/services/saas-products).",
-      showForm: true,
+        "We build complete **Multi-Tenant SaaS Platforms** with tenant database isolation, automated Stripe/Paddle billing pipelines, role-based onboarding, and telemetry.\n\nExplore our [SaaS Products Page](/services/saas-products) or submit your specifications below.",
+      isEnquiryIntent: false,
     };
   }
 
+  // 5. Mobile Apps
   if (lower.includes('mobile') || lower.includes('android') || lower.includes('ios') || lower.includes('flutter') || lower.includes('react native')) {
     return {
       reply:
-        "We develop cross-platform **Mobile Applications for iOS and Android** using **React Native and Flutter** with offline SQLite sync, biometric authentication, and push notifications. Explore [Mobile App Development](/services/app-development).",
-      showForm: true,
+        "We develop cross-platform **Mobile Applications for iOS and Android** using **React Native and Flutter** with offline SQLite sync, biometric authentication, and push notifications.\n\nExplore our [Mobile App Development Services](/services/app-development) or share your feature list for a technical estimate!",
+      isEnquiryIntent: false,
     };
   }
 
+  // 6. API Integrations
   if (lower.includes('api') || lower.includes('integration') || lower.includes('microservice')) {
     return {
       reply:
         "We engineer **Custom Software & API Integrations**, connecting internal tools with payment gateways, CRMs, logistics APIs, and third-party services. Explore [API Integration Services](/services/custom-software-api-integration).",
-      showForm: true,
+      isEnquiryIntent: false,
     };
   }
 
+  // 7. Internships
   if (lower.includes('internship') || lower.includes('intern') || lower.includes('training') || lower.includes('student')) {
     return {
       reply:
         "Rahnoxa offers engineering internships in **Web Development (React/Node.js), Mobile App Dev (React Native/Flutter), AI/ML, and Data Science**. Review details and apply at our [Internships Page](/internship).",
-      showForm: false,
+      isEnquiryIntent: false,
     };
   }
 
+  // 8. Pricing & Costs
   if (lower.includes('cost') || lower.includes('price') || lower.includes('pricing') || lower.includes('quote') || lower.includes('budget')) {
     return {
       reply:
-        "We structure engagements across three models:\n\n1. **Milestone-Based Fixed Scope**: Defined deliverables with staged sign-offs.\n2. **Dedicated Sprint Capacity**: Agile full-stack engineering squads.\n3. **Support & SLA Maintenance**: Ongoing security patching and 24/7 monitoring.\n\nPlease share your project summary in the form below or [Schedule a Discovery Call](/get-started). Our team will get back to you within **24 to 48 hours**.",
-      showForm: true,
+        "We structure engagements across three models:\n\n1. **Milestone-Based Fixed Scope**: Defined deliverables with staged sign-offs.\n2. **Dedicated Sprint Capacity**: Agile full-stack engineering squads on monthly velocity.\n3. **Support & SLA Maintenance**: Ongoing security patching and 24/7 monitoring.\n\n### Sample Starting Rates:\n- **Websites**: ₹15,000 to ₹125,000\n- **Web Apps**: ₹50,000 to ₹500,000+\n- **Mobile Apps**: ₹75,000 to ₹500,000+\n- **Custom ERP / SaaS**: Milestone-based quote\n\nClick **Submit Project Enquiry** below to receive an architect review within **24 to 48 hours**.",
+      isEnquiryIntent: false,
     };
   }
 
-  if (lower.includes('services') || lower.includes('what do you do')) {
+  // 9. All Services
+  if (lower.includes('services') || lower.includes('what do you do') || lower.includes('what can you build')) {
     return {
       reply:
         "Rahnoxa provides end-to-end technology solutions:\n\n- **Core Engineering**: [Custom ERPs](/services/erp-enterprise-applications), [Web Apps](/services/full-stack-web-apps), [SaaS Platforms](/services/saas-products), [Mobile Apps](/services/app-development), [API Integrations](/services/custom-software-api-integration), [Desktop Apps](/services/desktop-applications).\n- **Growth & Marketing**: [Lead Generation](/services/lead-generation), [Social Media](/services/social-media-marketing), [Email & SMS Marketing](/services/email-marketing), [Voice & Missed Call Solutions](/services/voice-call-services), [Graphic Design](/services/graphic-design).\n\nHow can we help your business grow today?",
-      showForm: false,
+      isEnquiryIntent: false,
     };
   }
 
-  // Fallback for custom or unknown questions
+  // 10. Fallback for custom or unknown questions
   return {
     reply:
-      "I would love to help you with that! To give you a precise technical answer and scope estimate, please share your details in the project enquiry form below.\n\nOur senior engineering team will review your specifications and contact you via email or phone within **24 to 48 hours** with a detailed breakdown.\n\nYou can also reach us at `contact.rahnoxa@protonmail.com` or `+91 8434237052`.",
-    showForm: true,
+      "I would love to help you with that! Because every system architecture and custom workflow has unique technical requirements, you can submit your specifications through our enquiry form.\n\nOur senior engineering team will review your details and contact you via email or phone within **24 to 48 hours** with a detailed breakdown.\n\nYou can also reach us at `contact.rahnoxa@protonmail.com` or `+91 8434237052`.",
+    isEnquiryIntent: false,
   };
 }
 
@@ -174,6 +195,7 @@ const RahBot: React.FC = () => {
       content:
         'Hello! I am **RahBot**, the AI Business Assistant for **Rahnoxa**.\n\nI can help you explore our software development services (Custom ERP, Web Apps, Mobile Apps, SaaS, API Integrations), estimate scopes, or prepare a project enquiry for our engineering team.\n\nHow can I help you today?',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      showEnquiryButton: true,
     },
   ]);
   const [input, setInput] = useState('');
@@ -208,6 +230,37 @@ const RahBot: React.FC = () => {
     const textToSend = userText || input;
     if (!textToSend.trim()) return;
 
+    const lower = textToSend.toLowerCase().trim();
+
+    // If user explicitly asks to submit an enquiry via button/prompt
+    if (
+      lower === 'i want to submit a project enquiry' ||
+      lower === 'submit enquiry' ||
+      lower === 'submit a project enquiry' ||
+      lower === 'open enquiry form'
+    ) {
+      const userMsg: Message = {
+        id: `usr-${Date.now()}`,
+        role: 'user',
+        content: textToSend.trim(),
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [
+        ...prev,
+        userMsg,
+        {
+          id: `bot-${Date.now()}`,
+          role: 'assistant',
+          content:
+            "I have opened our **Project Enquiry Form** below. Please enter your specifications and our senior engineering leadership team will review and reply within **24 to 48 hours**.",
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
+      setInput('');
+      setShowLeadForm(true);
+      return;
+    }
+
     const userMessage: Message = {
       id: `usr-${Date.now()}`,
       role: 'user',
@@ -236,21 +289,13 @@ const RahBot: React.FC = () => {
           response.message?.content ||
           getFallbackResponse(textToSend).reply,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        showEnquiryButton: true,
       };
 
       setMessages((prev) => [...prev, botReply]);
 
-      const lower = textToSend.toLowerCase();
-      if (
-        response.intent === 'lead_qualification' ||
-        response.intent === 'erp_query' ||
-        response.intent === 'pricing_query' ||
-        lower.includes('enquiry') ||
-        lower.includes('quote') ||
-        lower.includes('hire') ||
-        lower.includes('cost') ||
-        lower.includes('erp')
-      ) {
+      // Only auto-open form if intent is explicit lead_qualification
+      if (response.intent === 'lead_qualification') {
         setShowLeadForm(true);
       }
     } catch {
@@ -263,9 +308,10 @@ const RahBot: React.FC = () => {
           role: 'assistant',
           content: fallback.reply,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          showEnquiryButton: true,
         },
       ]);
-      if (fallback.showForm) {
+      if (fallback.isEnquiryIntent) {
         setShowLeadForm(true);
       }
     } finally {
@@ -296,14 +342,13 @@ const RahBot: React.FC = () => {
         {
           id: `lead-ack-${Date.now()}`,
           role: 'assistant',
-          content: `✅ Thank you **${leadForm.name}**! Your project enquiry has been submitted.\n\nOur engineering leadership team will review your specifications and contact you at **${leadForm.email}** ${
+          content: `✅ Thank you **${leadForm.name}**! Your project enquiry for **${leadForm.service}** has been submitted.\n\nOur engineering leadership team will review your specifications and contact you at **${leadForm.email}** ${
             leadForm.phone ? `or **${leadForm.phone}**` : ''
           } within **24 to 48 hours** with a technical roadmap and estimate.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
     } catch {
-      // In case of network error, acknowledge and record locally
       setLeadSubmitted(true);
       setShowLeadForm(false);
       setMessages((prev) => [
@@ -362,7 +407,7 @@ const RahBot: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[430px] h-[600px] max-h-[88vh] bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden text-slate-100 font-sans"
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[440px] h-[620px] max-h-[90vh] bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden text-slate-100 font-sans"
           >
             {/* Header */}
             <div className="px-4 py-3.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
@@ -379,7 +424,7 @@ const RahBot: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-400 flex items-center gap-1.5">
-                    <span>Rahnoxa Business &amp; Engineering</span>
+                    <span>Rahnoxa Engineering</span>
                     <span className="inline-flex items-center gap-0.5 text-cyan-400 text-[10px]">
                       <Clock className="h-2.5 w-2.5" />
                       24–48h SLA
@@ -391,8 +436,12 @@ const RahBot: React.FC = () => {
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setShowLeadForm((prev) => !prev)}
-                  className="p-1.5 text-slate-400 hover:text-cyan-300 rounded-lg hover:bg-slate-800/60 transition-colors"
-                  title="Toggle Project Enquiry Form"
+                  className={`p-1.5 rounded-lg transition-colors ${
+                    showLeadForm
+                      ? 'bg-blue-600/30 text-cyan-300 border border-blue-500/40'
+                      : 'text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60'
+                  }`}
+                  title={showLeadForm ? 'Close Enquiry Form' : 'Open Project Enquiry Form'}
                 >
                   <FileText className="h-4 w-4" />
                 </button>
@@ -407,6 +456,7 @@ const RahBot: React.FC = () => {
                           hour: '2-digit',
                           minute: '2-digit',
                         }),
+                        showEnquiryButton: true,
                       },
                     ]);
                     setConversationId(undefined);
@@ -442,15 +492,30 @@ const RahBot: React.FC = () => {
                   )}
 
                   <div
-                    className={`max-w-[86%] p-3.5 rounded-2xl ${
+                    className={`max-w-[88%] p-3.5 rounded-2xl ${
                       msg.role === 'user'
-                        ? 'bg-blue-600 text-white rounded-br-none'
-                        : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 rounded-bl-none leading-relaxed'
+                        ? 'bg-blue-600 text-white rounded-br-none shadow-md'
+                        : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 rounded-bl-none leading-relaxed shadow-sm'
                     }`}
                   >
                     <div className="whitespace-pre-line text-xs sm:text-[13px] leading-relaxed">
                       <FormattedMessage text={msg.content} onNavigate={handleNavigate} />
                     </div>
+
+                    {/* Optional 1-click Project Enquiry Trigger below answer */}
+                    {msg.role === 'assistant' && msg.showEnquiryButton && !showLeadForm && (
+                      <div className="mt-2.5 pt-2 border-t border-slate-700/50 flex items-center justify-between gap-2">
+                        <span className="text-[10px] text-slate-400">Need a custom quote?</span>
+                        <button
+                          onClick={() => setShowLeadForm(true)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] font-semibold rounded-md shadow-sm transition-all"
+                        >
+                          <span>Submit Enquiry</span>
+                          <ArrowRight className="h-3 w-3" />
+                        </button>
+                      </div>
+                    )}
+
                     <div className="text-[10px] text-right mt-1 opacity-60">
                       {msg.timestamp}
                     </div>
@@ -478,9 +543,10 @@ const RahBot: React.FC = () => {
               {/* In-Chat Requirement / Lead Submission Form */}
               {showLeadForm && !leadSubmitted && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="p-4 rounded-xl bg-slate-950 border border-blue-500/50 space-y-3 shadow-xl"
+                  initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.97 }}
+                  className="p-4 rounded-xl bg-slate-950 border border-blue-500/50 space-y-3 shadow-2xl"
                 >
                   <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                     <span className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
@@ -489,9 +555,9 @@ const RahBot: React.FC = () => {
                     </span>
                     <button
                       onClick={() => setShowLeadForm(false)}
-                      className="text-slate-400 hover:text-white text-xs"
+                      className="text-slate-400 hover:text-white text-xs px-2 py-0.5 rounded hover:bg-slate-800 transition-colors"
                     >
-                      Cancel
+                      Close ✕
                     </button>
                   </div>
 
