@@ -1,27 +1,53 @@
-# Dependencies
+# =============================================================================
+# Rahnoxa Platform .gitignore (Frontend + Backend + Supabase PostgreSQL)
+# =============================================================================
+
+# ── Dependencies ──
 node_modules/
+*/node_modules/
+frontend/node_modules/
+backend/node_modules/
 .pnp
 .pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
 
-# Testing
-coverage/
-
-# Production & Build outputs
+# ── Build & Production Outputs ──
 dist/
 dist-ssr/
+frontend/dist/
+backend/dist/
 build/
 *.local
+out/
 
-# Environment files (CRITICAL: Do not commit secrets)
+# ── Secrets & Environment Variables (CRITICAL) ──
+# Never commit credentials, Supabase keys, JWT secrets, or DB passwords
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
 *.env
-!*.env.example
+frontend/.env
+frontend/.env.*
+backend/.env
+backend/.env.*
 
-# Logs
+# Always preserve template configuration files
+!*.env.example
+!frontend/.env.example
+!backend/.env.example
+
+# ── Supabase Local Development & Temporary Data ──
+.supabase/
+supabase/.temp/
+supabase/.branches/
+supabase/.env.temp
+
+# ── Cloudflare & Wrangler Temp Files ──
+.wrangler/
+.mf/
+
+# ── Logs & Debugging ──
 logs/
 *.log
 npm-debug.log*
@@ -30,17 +56,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Editor directories and files
+# ── IDE & Editor Configuration ──
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.swo
+*.swp
 
-# OS generated files
+# ── Operating System Files ──
 .DS_Store
 .DS_Store?
 ._*
@@ -48,9 +77,13 @@ lerna-debug.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
+[Dd]esktop.ini
 
-# Temporary directories
+# ── Temporary & Cache Directories ──
 tmp/
 temp/
-.helmet/
-supabase/
+.temp/
+.tmp/
+.cache/
+.eslintcache
+.parcel-cache
