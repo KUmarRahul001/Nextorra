@@ -1,6 +1,21 @@
 /**
  * Rahnoxa Centralized API Client & Service Gateway
+ * Authoritative interface connecting Frontend (React) to Remote Backend (Render Express /v1 Gateway)
  */
+
+const getBaseUrl = (): string => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim().length > 0) {
+    const trimmed = envUrl.trim().replace(/\/+$/, '');
+    return trimmed.endsWith('/v1') ? trimmed : `${trimmed}/v1`;
+  }
+  
+  // Strict remote-only requirement: Never silently default to localhost in production
+  if (import.meta.env.PROD) {
+    console.error('❌ [FATAL] VITE_API_URL is missing in production. Configure VITE_API_URL in Cloudflare Pages.');
+  }
+  return '/v1';
+};
 
 const getAuthToken = (): string | null => {
   return localStorage.getItem('rahnoxa_admin_token');
@@ -29,7 +44,11 @@ export const setStoredUser = (user: any): void => {
   localStorage.setItem('rahnoxa_admin_user', JSON.stringify(user));
 };
 
-async function apiFetch(endpoint: string, options: RequestInit = {}) {
+async function apiFetch(path: string, options: RequestInit = {}) {
+  const baseUrl = getBaseUrl();
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const url = `${baseUrl}${normalizedPath}`;
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),
@@ -41,19 +60,19 @@ async function apiFetch(endpoint: string, options: RequestInit = {}) {
   }
 
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(url, {
       ...options,
       headers,
     });
 
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      throw new Error(data.error || `HTTP error ${response.status}`);
+      const errMsg = data?.error?.message || data?.error || `HTTP error ${response.status}`;
+      throw new Error(errMsg);
     }
     return data;
   } catch (err: any) {
-    // If backend function is unreachable, provide graceful fallback for frontend stability
-    console.warn(`API call to ${endpoint} returned:`, err.message);
+    console.error(`[API Error] Request failed for ${url}:`, err.message);
     throw err;
   }
 }
@@ -61,7 +80,7 @@ async function apiFetch(endpoint: string, options: RequestInit = {}) {
 export const api = {
   // ── Auth ──
   async login(credentials: { username: string; password: string }) {
-    const res = await apiFetch('/api/auth/login', {
+    const res = await apiFetch('/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
@@ -73,12 +92,25 @@ export const api = {
   },
 
   async verifyAuth() {
-    return apiFetch('/api/auth/verify');
+    return apiFetch('/auth/verify');
+  },
+
+  async me() {
+    return apiFetch('/auth/me');
+  },
+
+  async logout() {
+    clearAuthToken();
+    try {
+      await apiFetch('/auth/logout', { method: 'POST' });
+    } catch {
+      // ignore
+    }
   },
 
   // ── Dashboard Stats ──
   async getDashboardStats() {
-    return apiFetch('/api/dashboard/stats');
+    return apiFetch('/dashboard/stats');
   },
 
   // ── Projects ──
@@ -86,25 +118,29 @@ export const api = {
     const params = new URLSearchParams();
     if (status) params.set('status', status);
     if (featured !== undefined) params.set('featured', String(featured));
-    return apiFetch(`/api/projects?${params.toString()}`);
+    return apiFetch(`/projects?${params.toString()}`);
+  },
+
+  async getProject(slug: string) {
+    return apiFetch(`/projects/${slug}`);
   },
 
   async createProject(data: any) {
-    return apiFetch('/api/projects', {
+    return apiFetch('/projects', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
 
   async updateProject(id: string, data: any) {
-    return apiFetch(`/api/projects/${id}`, {
+    return apiFetch(`/projects/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
   async deleteProject(id: string) {
-    return apiFetch(`/api/projects/${id}`, {
+    return apiFetch(`/projects/${id}`, {
       method: 'DELETE',
     });
   },
@@ -115,29 +151,29 @@ export const api = {
     if (options.category && options.category !== 'All') params.set('category', options.category);
     if (options.all) params.set('all', 'true');
     if (options.status) params.set('status', options.status);
-    return apiFetch(`/api/blog?${params.toString()}`);
+    return apiFetch(`/blog?${params.toString()}`);
   },
 
   async getBlogPost(slug: string) {
-    return apiFetch(`/api/blog/${slug}`);
+    return apiFetch(`/blog/${slug}`);
   },
 
   async createBlogPost(data: any) {
-    return apiFetch('/api/blog', {
+    return apiFetch('/blog', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
 
   async updateBlogPost(slug: string, data: any) {
-    return apiFetch(`/api/blog/${slug}`, {
+    return apiFetch(`/blog/${slug}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
   async deleteBlogPost(slug: string) {
-    return apiFetch(`/api/blog/${slug}`, {
+    return apiFetch(`/blog/${slug}`, {
       method: 'DELETE',
     });
   },
@@ -146,18 +182,18 @@ export const api = {
   async getLeads(status?: string) {
     const params = new URLSearchParams();
     if (status) params.set('status', status);
-    return apiFetch(`/api/leads?${params.toString()}`);
+    return apiFetch(`/leads?${params.toString()}`);
   },
 
   async submitLead(data: any) {
-    return apiFetch('/api/leads', {
+    return apiFetch('/leads', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
 
   async updateLead(id: string, status: string, notes?: string) {
-    return apiFetch(`/api/leads/${id}`, {
+    return apiFetch(`/leads/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ status, notes }),
     });
@@ -165,7 +201,7 @@ export const api = {
 
   // ── Chat (RahBot) ──
   async sendChatMessage(message: string, conversation_id?: string, session_id?: string) {
-    return apiFetch('/api/chat', {
+    return apiFetch('/chat', {
       method: 'POST',
       body: JSON.stringify({ message, conversation_id, session_id }),
     });
@@ -175,43 +211,43 @@ export const api = {
   async getKnowledge(category?: string) {
     const params = new URLSearchParams();
     if (category) params.set('category', category);
-    return apiFetch(`/api/knowledge?${params.toString()}`);
+    return apiFetch(`/knowledge?${params.toString()}`);
   },
 
   async createKnowledge(data: any) {
-    return apiFetch('/api/knowledge', {
+    return apiFetch('/knowledge', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
 
-  async updateKnowledge(data: any) {
-    return apiFetch('/api/knowledge', {
+  async updateKnowledge(id: string, data: any) {
+    return apiFetch('/knowledge/${id}', {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
   async deleteKnowledge(id: string) {
-    return apiFetch(`/api/knowledge?id=${id}`, {
+    return apiFetch(`/knowledge/${id}`, {
       method: 'DELETE',
     });
   },
 
   // ── Automation ──
   async getAutomation() {
-    return apiFetch('/api/automation');
+    return apiFetch('/automation');
   },
 
   async updateAutomation(data: any) {
-    return apiFetch('/api/automation', {
+    return apiFetch('/automation', {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
   async runAutomation() {
-    return apiFetch('/api/automation/run', {
+    return apiFetch('/automation/run', {
       method: 'POST',
       body: JSON.stringify({}),
     });
@@ -219,11 +255,11 @@ export const api = {
 
   // ── Settings ──
   async getSettings() {
-    return apiFetch('/api/settings');
+    return apiFetch('/settings');
   },
 
   async updateSettings(data: any) {
-    return apiFetch('/api/settings', {
+    return apiFetch('/settings', {
       method: 'PUT',
       body: JSON.stringify(data),
     });

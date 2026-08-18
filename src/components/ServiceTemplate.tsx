@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Star, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Star, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import Breadcrumb from "./Breadcrumb";
 import config from "../config";
