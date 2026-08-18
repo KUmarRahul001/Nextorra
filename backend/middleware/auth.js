@@ -1,10 +1,22 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
 
+const getSecret = (overrideSecret) => {
+  const s = overrideSecret || config.jwtSecret;
+  if (!s || s.length < 16) {
+    if (config.nodeEnv === 'production') {
+      throw new Error('JWT_SECRET must be configured with at least 16 characters in production.');
+    }
+    return 'rahnoxa_test_jwt_secret_key_32bytes';
+  }
+  return s;
+};
+
 /**
  * Generate a signed JWT token
  */
-export function generateToken(payload) {
+export function generateToken(payload, customSecret) {
+  const secret = getSecret(customSecret);
   return jwt.sign(
     {
       id: payload.id,
@@ -12,7 +24,7 @@ export function generateToken(payload) {
       email: payload.email,
       role: payload.role || 'admin',
     },
-    config.jwtSecret,
+    secret,
     { expiresIn: '7d' }
   );
 }
@@ -34,7 +46,8 @@ export function requireAuth(req, res, next) {
 
   const token = authHeader.substring(7);
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const secret = getSecret();
+    const decoded = jwt.verify(token, secret);
     req.user = decoded;
     next();
   } catch (err) {

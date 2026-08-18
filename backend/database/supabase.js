@@ -2,14 +2,30 @@ import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import { config } from '../config/env.js';
 
-let supabase = null;
+// Supabase client instance (Remote PostgreSQL is the single source of truth)
+export let supabase = null;
+
 if (config.supabaseUrl && config.supabaseServiceKey) {
   try {
-    supabase = createClient(config.supabaseUrl, config.supabaseServiceKey);
-    console.log('✅ Connected to Supabase PostgreSQL');
+    supabase = createClient(config.supabaseUrl, config.supabaseServiceKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
   } catch (err) {
-    console.warn('⚠️ Supabase connection warning, utilizing local resilience store:', err.message);
+    console.error('❌ Failed to initialize Supabase client:', err.message);
   }
+}
+
+/**
+ * Ensure Supabase client is initialized; throw controlled error if unconfigured.
+ */
+function getClient() {
+  if (!supabase) {
+    throw new Error('DATABASE_UNAVAILABLE: Remote Supabase PostgreSQL instance is not configured or reachable.');
+  }
+  return supabase;
 }
 
 /**
@@ -38,305 +54,86 @@ export function sanitize(text) {
     .replace(/javascript:[^"']*/gi, '');
 }
 
-// In-Memory Storage & Local Dev Fallback Engine
-const memoryStore = {
-  initialized: false,
-  admins: [],
-  projects: [],
-  blog_posts: [],
-  leads: [],
-  conversations: [],
-  messages: [],
-  knowledge_items: [],
-  automation_jobs: [],
-  automation_runs: [],
-  settings: {},
-};
-
-function initMemoryStore() {
-  if (memoryStore.initialized) return;
-
-  const defaultAdminPassword = config.initialAdminPassword || 'admin@rahnoxa2025';
-  const defaultAdminHash = hashPassword(defaultAdminPassword);
-
-  memoryStore.admins = [
-    {
-      id: 'admin-root',
-      username: 'admin',
-      email: config.initialAdminEmail || 'contact.rahnoxa@protonmail.com',
-      password_hash: defaultAdminHash,
-      role: 'superadmin',
-      created_at: new Date().toISOString(),
-      last_login: null,
-    },
-  ];
-
-  memoryStore.projects = [
-    {
-      id: 'ecommerce-ui-demo',
-      title: 'E-commerce Platform UI',
-      slug: 'ecommerce-platform-ui',
-      short_description: 'A high-performance responsive e-commerce interface with product catalog, cart, and streamlined checkout.',
-      full_description: 'Engineered with modular React architecture, full responsive layout, multi-tier state management, and optimized asset delivery.',
-      category: 'Web App',
-      services: ['full-stack-web-apps', 'web-development'],
-      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js'],
-      images: ['/assets/image.png'],
-      thumbnail: '/assets/image.png',
-      demo_url: 'https://rahnoxa.pages.dev',
-      github_url: 'https://github.com/KUmarRahul001/Nextorra',
-      featured: 1,
-      status: 'PUBLISHED',
-      seo_title: 'E-Commerce Web Platform Architecture – Rahnoxa',
-      seo_description: 'Custom enterprise e-commerce platform engineering by Rahnoxa.',
-      created_at: new Date(Date.now() - 30 * 86400000).toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'fitness-app-demo',
-      title: 'Fitness Tracking Mobile App',
-      slug: 'fitness-tracking-app',
-      short_description: 'Native & hybrid mobile application architecture for cross-platform activity metrics and health tracking.',
-      full_description: 'Engineered with real-time biometric synchronization, background task scheduling, and smooth touch-first interfaces.',
-      category: 'Mobile App',
-      services: ['app-development'],
-      technologies: ['React Native', 'TypeScript', 'Tailwind', 'Firebase'],
-      images: ['/assets/Fitness_tracking.png'],
-      thumbnail: '/assets/Fitness_tracking.png',
-      demo_url: 'https://rahnoxa.pages.dev',
-      featured: 1,
-      status: 'PUBLISHED',
-      seo_title: 'Mobile Fitness Application Engineering – Rahnoxa',
-      seo_description: 'Cross-platform mobile application development for enterprise health systems.',
-      created_at: new Date(Date.now() - 25 * 86400000).toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'startup-branding-demo',
-      title: 'Tech Startup Design System',
-      slug: 'tech-startup-branding',
-      short_description: 'Complete design system, technical brand identity, and scalable UI component library for tech startups.',
-      full_description: 'Comprehensive token system, WCAG 2.1 AA accessible color systems, and modern component guidelines.',
-      category: 'Design',
-      services: ['web-development', 'graphic-design'],
-      technologies: ['Figma', 'Design Tokens', 'Tailwind CSS'],
-      images: ['/assets/Tech_Startup_Branding.png'],
-      thumbnail: '/assets/Tech_Startup_Branding.png',
-      featured: 1,
-      status: 'PUBLISHED',
-      seo_title: 'Design System & Brand Identity – Rahnoxa',
-      seo_description: 'Scalable brand identity and UI design engineering.',
-      created_at: new Date(Date.now() - 20 * 86400000).toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-  ];
-
-  memoryStore.blog_posts = [
-    {
-      id: 'post-1',
-      title: 'Architecting Scalable Custom ERP Systems: A Practical Engineering Guide',
-      slug: 'architecting-scalable-custom-erp-systems',
-      excerpt: 'Why modern enterprises outgrow off-the-shelf software and how custom modular ERP architectures streamline operational workflows.',
-      content: `## The Modern ERP Landscape\n\nOff-the-shelf ERP platforms frequently force growing organizations to reshape their core business operations around rigid, generic software constraints. Custom ERP engineering solves this fundamental friction by aligning software modules directly with authentic operational workflows.\n\n### Core Pillars of a Resilient Modular Monolith\n\n1. **Domain-Driven Module Boundaries**: Encapsulate inventory, billing, HR, and customer records with strict internal API contracts.\n2. **Role-Based Access Control (RBAC)**: Secure data schemas ensuring granular permission enforcement.\n3. **Event-Driven Audit Logging**: Immutably record operational state changes for complete compliance and observability.\n\n### Seamless API Integrations\n\nConnecting legacy databases with modern cloud APIs requires resilient queueing and idempotent webhooks. At Rahnoxa, we engineer custom ERP platforms tailored to real-world throughput requirements.\n\nExplore our [Custom ERP Services](/services/erp-enterprise-applications) or [Start a Project](/get-started) to discuss your organization's technical needs.`,
-      featured_image: '/assets/image.png',
-      category: 'ERP & Enterprise',
-      tags: ['ERP', 'Software Architecture', 'Enterprise Engineering', 'API Integration'],
-      author: 'Rahnoxa Engineering',
-      reading_time: '6 min read',
-      status: 'PUBLISHED',
-      is_ai_generated: 1,
-      ai_topic: 'Custom ERP Architecture',
-      ai_keyword: 'custom erp software engineering',
-      ai_seo_score: 94,
-      seo_title: 'Architecting Scalable Custom ERP Systems – Rahnoxa',
-      seo_description: 'A comprehensive guide to building modular, secure, and maintainable custom ERP applications.',
-      canonical_url: 'https://rahnoxa.pages.dev/blog/architecting-scalable-custom-erp-systems',
-      og_image: '/assets/image.png',
-      published_at: new Date(Date.now() - 2 * 86400000).toISOString(),
-      created_at: new Date(Date.now() - 2 * 86400000).toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'post-2',
-      title: 'Building Real-Time SaaS Applications with React, Node.js & Cloud Edge',
-      slug: 'building-real-time-saas-applications',
-      excerpt: 'Key architectural decisions for low-latency multi-tenant SaaS products, state replication, and edge routing.',
-      content: `## The Evolution of Edge-Native SaaS\n\nModern web applications demand sub-100ms global latency and seamless real-time state synchronization. Leveraging cloud edge workers alongside robust transactional databases provides the foundation for scalable SaaS systems.\n\n### Key Considerations for SaaS Builders\n\n- **Multi-Tenant Tenant Isolation**: Enforce tenant ID partition keys at the ORM/Query layer.\n- **Optimistic UI Updates**: Render client-side state transitions instantly while maintaining robust server rollback handling.\n- **Automated Continuous Delivery**: Deploy zero-downtime micro-updates with automated rollback triggers.\n\nReady to engineer your next SaaS product? Check out our [SaaS Engineering Solutions](/services/saas-products).`,
-      featured_image: '/assets/Tech_Startup_Branding.png',
-      category: 'SaaS & Cloud',
-      tags: ['SaaS', 'React', 'Node.js', 'Edge Architecture'],
-      author: 'Rahnoxa Engineering',
-      reading_time: '5 min read',
-      status: 'PUBLISHED',
-      is_ai_generated: 1,
-      ai_topic: 'SaaS Product Engineering',
-      ai_keyword: 'saas development services',
-      ai_seo_score: 92,
-      seo_title: 'Building Real-Time SaaS Applications – Rahnoxa',
-      seo_description: 'Learn how to build resilient, multi-tenant SaaS products with modern frontend and cloud backends.',
-      canonical_url: 'https://rahnoxa.pages.dev/blog/building-real-time-saas-applications',
-      og_image: '/assets/Tech_Startup_Branding.png',
-      published_at: new Date(Date.now() - 5 * 86400000).toISOString(),
-      created_at: new Date(Date.now() - 5 * 86400000).toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-  ];
-
-  memoryStore.knowledge_items = [
-    {
-      id: 'know-company',
-      category: 'company',
-      title: 'About Rahnoxa',
-      content: 'Rahnoxa is a specialized software engineering and technology solutions company. We build custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern businesses globally.',
-      tags: 'company, overview, about, rahnoxa',
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'know-erp',
-      category: 'services',
-      title: 'ERP & Enterprise Software Development',
-      content: 'Rahnoxa designs custom ERP platforms including inventory management, multi-role RBAC, billing, HR modules, reporting, and operational automation.',
-      tags: 'erp, enterprise, business software, custom',
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'know-web',
-      category: 'services',
-      title: 'Web & SaaS Development',
-      content: 'We engineer full-stack web applications, multi-tenant SaaS platforms, customer portals, and internal tools using React, TypeScript, Node.js, and modern cloud databases.',
-      tags: 'web, saas, react, typescript, portals',
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'know-mobile',
-      category: 'services',
-      title: 'Mobile App Development',
-      content: 'Cross-platform iOS and Android mobile app development with React Native, Flutter, and native integrations.',
-      tags: 'mobile, ios, android, react native, flutter',
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'know-pricing',
-      category: 'pricing',
-      title: 'Pricing & Engagement Models',
-      content: 'Rahnoxa offers Milestone-Based Fixed Scope projects, Dedicated Sprint Capacity, and Ongoing Maintenance & Support agreements. Custom software pricing is determined by requirements complexity, integrations, and deployment scale.',
-      tags: 'pricing, cost, quote, estimate, contract',
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'know-contact',
-      category: 'contact',
-      title: 'Contact & Discovery',
-      content: 'Email: contact.rahnoxa@protonmail.com | Phones: +91 8434237052 / +91 8434237049 | Location: Jharkhand, India (Delivering globally). Visitors can book a technical discovery call via /get-started or chat with RahBot.',
-      tags: 'contact, email, phone, location, discovery',
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: 'know-internships',
-      category: 'faq',
-      title: 'Internship Programs',
-      content: 'Rahnoxa offers engineering internships in Web Development, Mobile Dev, AI/ML, Python, React, and Data Science. Applications are accepted at /internship.',
-      tags: 'internship, career, training, student, jobs',
-      updated_at: new Date().toISOString(),
-    },
-  ];
-
-  memoryStore.automation_jobs = [
-    {
-      id: 'job-daily-seo',
-      name: 'Daily 18:00 IST SEO Blog Generator',
-      schedule: '30 12 * * *', // 12:30 UTC = 18:00 IST
-      enabled: 1,
-      auto_publish: 0,
-      last_run: new Date(Date.now() - 18 * 3600000).toISOString(),
-      next_run: new Date(Date.now() + 6 * 3600000).toISOString(),
-      status: 'IDLE',
-    },
-  ];
-
-  memoryStore.automation_runs = [
-    {
-      id: 'run-init-1',
-      job_id: 'job-daily-seo',
-      started_at: new Date(Date.now() - 18 * 3600000).toISOString(),
-      completed_at: new Date(Date.now() - 18 * 3600000 + 45000).toISOString(),
-      status: 'SUCCESS',
-      topic: 'Custom ERP Systems & Modular Monoliths',
-      keyword: 'custom erp software engineering',
-      output_title: 'Architecting Scalable Custom ERP Systems: A Practical Engineering Guide',
-      output_post_id: 'post-1',
-      error: null,
-      created_at: new Date(Date.now() - 18 * 3600000).toISOString(),
-    },
-  ];
-
-  memoryStore.settings = {
-    site_name: 'Rahnoxa',
-    site_url: config.siteUrl,
-    contact_email: 'contact.rahnoxa@protonmail.com',
-    auto_publish_blogs: String(config.autoPublishBlogs),
-  };
-
-  memoryStore.initialized = true;
-}
-
 export const db = {
+  async checkHealth() {
+    if (!supabase) return { status: 'unconfigured', error: 'Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY' };
+    try {
+      const { error } = await supabase.from('site_settings').select('id').limit(1);
+      if (error && error.code !== 'PGRST116') {
+        // Test fallback query on projects
+        const { error: pErr } = await supabase.from('projects').select('id').limit(1);
+        if (pErr) throw pErr;
+      }
+      return { status: 'ok', database: 'supabase_postgresql' };
+    } catch (err) {
+      return { status: 'error', error: err.message };
+    }
+  },
+
   // ── Admins ──
   async findAdminByUsername(username) {
-    initMemoryStore();
-    if (supabase) {
-      const { data } = await supabase
-        .from('admins')
-        .select('*')
-        .or(`username.eq.${username},email.eq.${username}`)
-        .single();
-      return data || null;
+    const client = getClient();
+    const { data, error } = await client
+      .from('admins')
+      .select('*')
+      .or(`username.eq.${username},email.eq.${username}`)
+      .maybeSingle();
+
+    if (error) {
+      console.error('[Database Error] findAdminByUsername:', error.message);
+      throw new Error(`Database error: ${error.message}`);
     }
-    return memoryStore.admins.find((a) => a.username === username || a.email === username) || null;
+    return data;
   },
 
   async updateAdminLogin(id) {
-    initMemoryStore();
+    const client = getClient();
     const now = new Date().toISOString();
-    if (supabase) {
-      await supabase.from('admins').update({ last_login: now }).eq('id', id);
-    }
-    const admin = memoryStore.admins.find((a) => a.id === id);
-    if (admin) admin.last_login = now;
+    const { error } = await client.from('admins').update({ last_login: now }).eq('id', id);
+    if (error) console.error('[Database Error] updateAdminLogin:', error.message);
+  },
+
+  async createAdmin(data) {
+    const client = getClient();
+    const id = data.id || `admin-${Date.now()}`;
+    const now = new Date().toISOString();
+    const adminRecord = {
+      id,
+      username: data.username.trim(),
+      email: data.email.trim(),
+      password_hash: data.password_hash,
+      role: data.role || 'admin',
+      created_at: now,
+    };
+    const { data: created, error } = await client.from('admins').insert(adminRecord).select().single();
+    if (error) throw new Error(`Database error creating admin: ${error.message}`);
+    return created;
   },
 
   // ── Projects ──
   async getProjects(options = {}) {
-    initMemoryStore();
+    const client = getClient();
     const { status, featured, limit } = options;
 
-    if (supabase) {
-      let query = supabase.from('projects').select('*').order('created_at', { ascending: false });
-      if (status) query = query.eq('status', status);
-      if (featured !== undefined) query = query.eq('featured', featured ? 1 : 0);
-      if (limit) query = query.limit(limit);
-      const { data } = await query;
-      return data || [];
-    }
+    let query = client.from('projects').select('*').order('created_at', { ascending: false });
+    if (status) query = query.eq('status', status);
+    if (featured !== undefined) query = query.eq('featured', featured ? 1 : 0);
+    if (limit) query = query.limit(limit);
 
-    let list = [...memoryStore.projects];
-    if (status) list = list.filter((p) => p.status === status);
-    if (featured !== undefined) list = list.filter((p) => Boolean(p.featured) === Boolean(featured));
-    if (limit) list = list.slice(0, limit);
-    return list;
+    const { data, error } = await query;
+    if (error) throw new Error(`Database error fetching projects: ${error.message}`);
+    return data || [];
   },
 
   async getProjectBySlug(slug) {
-    initMemoryStore();
-    if (supabase) {
-      const { data } = await supabase.from('projects').select('*').eq('slug', slug).single();
-      return data || null;
-    }
-    return memoryStore.projects.find((p) => p.slug === slug) || null;
+    const client = getClient();
+    const { data, error } = await client.from('projects').select('*').eq('slug', slug).maybeSingle();
+    if (error) throw new Error(`Database error fetching project: ${error.message}`);
+    return data;
   },
 
   async createProject(data) {
-    initMemoryStore();
+    const client = getClient();
     const id = data.id || `proj-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
     const sanitized = {
@@ -352,76 +149,52 @@ export const db = {
       updated_at: now,
     };
 
-    if (supabase) {
-      const { data: created } = await supabase.from('projects').insert(sanitized).select().single();
-      return created || sanitized;
-    }
-
-    memoryStore.projects.unshift(sanitized);
-    return sanitized;
+    const { data: created, error } = await client.from('projects').insert(sanitized).select().single();
+    if (error) throw new Error(`Database error creating project: ${error.message}`);
+    return created;
   },
 
   async updateProject(id, data) {
-    initMemoryStore();
+    const client = getClient();
     const now = new Date().toISOString();
-    const index = memoryStore.projects.findIndex((p) => p.id === id);
-    if (index === -1) return null;
+    const updateData = { ...data, updated_at: now };
 
-    const merged = { ...memoryStore.projects[index], ...data, updated_at: now };
-    memoryStore.projects[index] = merged;
-
-    if (supabase) {
-      const { data: updated } = await supabase.from('projects').update(merged).eq('id', id).select().single();
-      return updated || merged;
-    }
-
-    return merged;
+    const { data: updated, error } = await client.from('projects').update(updateData).eq('id', id).select().single();
+    if (error) throw new Error(`Database error updating project: ${error.message}`);
+    return updated;
   },
 
   async deleteProject(id) {
-    initMemoryStore();
-    if (supabase) {
-      await supabase.from('projects').delete().eq('id', id);
-    }
-    const idx = memoryStore.projects.findIndex((p) => p.id === id);
-    if (idx === -1) return false;
-    memoryStore.projects.splice(idx, 1);
+    const client = getClient();
+    const { error } = await client.from('projects').delete().eq('id', id);
+    if (error) throw new Error(`Database error deleting project: ${error.message}`);
     return true;
   },
 
   // ── Blog Posts ──
   async getBlogPosts(options = {}) {
-    initMemoryStore();
+    const client = getClient();
     const { status, category, limit } = options;
 
-    if (supabase) {
-      let query = supabase.from('blog_posts').select('*').order('created_at', { ascending: false });
-      if (status) query = query.eq('status', status);
-      if (category && category !== 'All') query = query.eq('category', category);
-      if (limit) query = query.limit(limit);
-      const { data } = await query;
-      return data || [];
-    }
+    let query = client.from('blog_posts').select('*').order('created_at', { ascending: false });
+    if (status) query = query.eq('status', status);
+    if (category && category !== 'All') query = query.eq('category', category);
+    if (limit) query = query.limit(limit);
 
-    let list = [...memoryStore.blog_posts];
-    if (status) list = list.filter((b) => b.status === status);
-    if (category && category !== 'All') list = list.filter((b) => b.category === category);
-    list.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    if (limit) list = list.slice(0, limit);
-    return list;
+    const { data, error } = await query;
+    if (error) throw new Error(`Database error fetching blog posts: ${error.message}`);
+    return data || [];
   },
 
   async getBlogPostBySlug(slug) {
-    initMemoryStore();
-    if (supabase) {
-      const { data } = await supabase.from('blog_posts').select('*').eq('slug', slug).single();
-      return data || null;
-    }
-    return memoryStore.blog_posts.find((b) => b.slug === slug) || null;
+    const client = getClient();
+    const { data, error } = await client.from('blog_posts').select('*').eq('slug', slug).maybeSingle();
+    if (error) throw new Error(`Database error fetching article: ${error.message}`);
+    return data;
   },
 
   async createBlogPost(data) {
-    initMemoryStore();
+    const client = getClient();
     const id = data.id || `post-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
     const newPost = {
@@ -429,76 +202,57 @@ export const db = {
       id,
       title: sanitize(data.title),
       excerpt: sanitize(data.excerpt),
-      tags: Array.isArray(data.tags) ? data.tags : ['Software', 'Architecture'],
+      tags: Array.isArray(data.tags) ? data.tags : ['Software Engineering'],
       status: data.status || 'DRAFT',
       published_at: data.status === 'PUBLISHED' ? now : null,
       created_at: now,
       updated_at: now,
     };
 
-    if (supabase) {
-      const { data: created } = await supabase.from('blog_posts').insert(newPost).select().single();
-      return created || newPost;
-    }
-
-    memoryStore.blog_posts.unshift(newPost);
-    return newPost;
+    const { data: created, error } = await client.from('blog_posts').insert(newPost).select().single();
+    if (error) throw new Error(`Database error creating article: ${error.message}`);
+    return created;
   },
 
   async updateBlogPost(slugOrId, data) {
-    initMemoryStore();
+    const client = getClient();
     const now = new Date().toISOString();
-    const index = memoryStore.blog_posts.findIndex((b) => b.id === slugOrId || b.slug === slugOrId);
-    if (index === -1) return null;
-
-    const merged = { ...memoryStore.blog_posts[index], ...data, updated_at: now };
-    if (data.status === 'PUBLISHED' && !merged.published_at) {
-      merged.published_at = now;
-    }
-    memoryStore.blog_posts[index] = merged;
-
-    if (supabase) {
-      const { data: updated } = await supabase
-        .from('blog_posts')
-        .update(merged)
-        .or(`id.eq.${slugOrId},slug.eq.${slugOrId}`)
-        .select()
-        .single();
-      return updated || merged;
+    const updateData = { ...data, updated_at: now };
+    if (data.status === 'PUBLISHED' && !updateData.published_at) {
+      updateData.published_at = now;
     }
 
-    return merged;
+    const { data: updated, error } = await client
+      .from('blog_posts')
+      .update(updateData)
+      .or(`id.eq.${slugOrId},slug.eq.${slugOrId}`)
+      .select()
+      .single();
+
+    if (error) throw new Error(`Database error updating article: ${error.message}`);
+    return updated;
   },
 
   async deleteBlogPost(slugOrId) {
-    initMemoryStore();
-    if (supabase) {
-      await supabase.from('blog_posts').delete().or(`id.eq.${slugOrId},slug.eq.${slugOrId}`);
-    }
-    const idx = memoryStore.blog_posts.findIndex((b) => b.id === slugOrId || b.slug === slugOrId);
-    if (idx === -1) return false;
-    memoryStore.blog_posts.splice(idx, 1);
+    const client = getClient();
+    const { error } = await client.from('blog_posts').delete().or(`id.eq.${slugOrId},slug.eq.${slugOrId}`);
+    if (error) throw new Error(`Database error deleting article: ${error.message}`);
     return true;
   },
 
   // ── Leads ──
   async getLeads(options = {}) {
-    initMemoryStore();
-    if (supabase) {
-      let query = supabase.from('leads').select('*').order('created_at', { ascending: false });
-      if (options.status) query = query.eq('status', options.status);
-      const { data } = await query;
-      return data || [];
-    }
+    const client = getClient();
+    let query = client.from('leads').select('*').order('created_at', { ascending: false });
+    if (options.status) query = query.eq('status', options.status);
 
-    let list = [...memoryStore.leads];
-    if (options.status) list = list.filter((l) => l.status === options.status);
-    list.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    return list;
+    const { data, error } = await query;
+    if (error) throw new Error(`Database error fetching leads: ${error.message}`);
+    return data || [];
   },
 
   async createLead(data) {
-    initMemoryStore();
+    const client = getClient();
     const id = data.id || `lead-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
     const newLead = {
@@ -514,34 +268,24 @@ export const db = {
       updated_at: now,
     };
 
-    if (supabase) {
-      const { data: created } = await supabase.from('leads').insert(newLead).select().single();
-      return created || newLead;
-    }
-
-    memoryStore.leads.unshift(newLead);
-    return newLead;
+    const { data: created, error } = await client.from('leads').insert(newLead).select().single();
+    if (error) throw new Error(`Database error recording lead: ${error.message}`);
+    return created;
   },
 
   async updateLead(id, data) {
-    initMemoryStore();
+    const client = getClient();
     const now = new Date().toISOString();
-    const lead = memoryStore.leads.find((l) => l.id === id);
-    if (!lead) return null;
+    const updateData = { ...data, updated_at: now };
 
-    Object.assign(lead, data, { updated_at: now });
-
-    if (supabase) {
-      const { data: updated } = await supabase.from('leads').update(data).eq('id', id).select().single();
-      return updated || lead;
-    }
-
-    return lead;
+    const { data: updated, error } = await client.from('leads').update(updateData).eq('id', id).select().single();
+    if (error) throw new Error(`Database error updating lead: ${error.message}`);
+    return updated;
   },
 
   // ── Conversations & Messages ──
   async createConversation(sessionId, visitorId) {
-    initMemoryStore();
+    const client = getClient();
     const id = `conv-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
     const conv = {
@@ -553,15 +297,13 @@ export const db = {
       updated_at: now,
     };
 
-    if (supabase) {
-      await supabase.from('conversations').insert(conv);
-    }
-    memoryStore.conversations.unshift(conv);
-    return conv;
+    const { data, error } = await client.from('conversations').insert(conv).select().single();
+    if (error) throw new Error(`Database error creating conversation: ${error.message}`);
+    return data || conv;
   },
 
   async addMessage(conversationId, role, content, metadata = {}) {
-    initMemoryStore();
+    const client = getClient();
     const id = `msg-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
     const msg = {
@@ -573,115 +315,86 @@ export const db = {
       created_at: now,
     };
 
-    if (supabase) {
-      await supabase.from('messages').insert(msg);
-    }
-    memoryStore.messages.push(msg);
-    return msg;
+    const { data, error } = await client.from('messages').insert(msg).select().single();
+    if (error) throw new Error(`Database error saving message: ${error.message}`);
+    return data || msg;
   },
 
   async getMessages(conversationId) {
-    initMemoryStore();
-    if (supabase) {
-      const { data } = await supabase
-        .from('messages')
-        .select('*')
-        .eq('conversation_id', conversationId)
-        .order('created_at', { ascending: true });
-      return data || [];
-    }
-    return memoryStore.messages.filter((m) => m.conversation_id === conversationId);
+    const client = getClient();
+    const { data, error } = await client
+      .from('messages')
+      .select('*')
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true });
+
+    if (error) throw new Error(`Database error fetching messages: ${error.message}`);
+    return data || [];
   },
 
   // ── Knowledge Base ──
   async getKnowledgeItems(category) {
-    initMemoryStore();
-    if (supabase) {
-      let query = supabase.from('knowledge_items').select('*');
-      if (category) query = query.eq('category', category);
-      const { data } = await query;
-      return data || [];
-    }
-    if (category) return memoryStore.knowledge_items.filter((k) => k.category === category);
-    return [...memoryStore.knowledge_items];
+    const client = getClient();
+    let query = client.from('knowledge_items').select('*');
+    if (category) query = query.eq('category', category);
+
+    const { data, error } = await query;
+    if (error) throw new Error(`Database error fetching knowledge items: ${error.message}`);
+    return data || [];
   },
 
   async createKnowledgeItem(data) {
-    initMemoryStore();
+    const client = getClient();
     const id = data.id || `know-${Date.now()}`;
     const now = new Date().toISOString();
     const item = { ...data, id, updated_at: now };
 
-    if (supabase) {
-      const { data: created } = await supabase.from('knowledge_items').insert(item).select().single();
-      return created || item;
-    }
-
-    memoryStore.knowledge_items.unshift(item);
-    return item;
+    const { data: created, error } = await client.from('knowledge_items').insert(item).select().single();
+    if (error) throw new Error(`Database error creating knowledge item: ${error.message}`);
+    return created;
   },
 
   async updateKnowledgeItem(id, data) {
-    initMemoryStore();
+    const client = getClient();
     const now = new Date().toISOString();
-    const index = memoryStore.knowledge_items.findIndex((k) => k.id === id);
-    if (index === -1) return null;
+    const updateData = { ...data, updated_at: now };
 
-    const merged = { ...memoryStore.knowledge_items[index], ...data, updated_at: now };
-    memoryStore.knowledge_items[index] = merged;
-
-    if (supabase) {
-      const { data: updated } = await supabase.from('knowledge_items').update(merged).eq('id', id).select().single();
-      return updated || merged;
-    }
-
-    return merged;
+    const { data: updated, error } = await client.from('knowledge_items').update(updateData).eq('id', id).select().single();
+    if (error) throw new Error(`Database error updating knowledge item: ${error.message}`);
+    return updated;
   },
 
   async deleteKnowledgeItem(id) {
-    initMemoryStore();
-    if (supabase) {
-      await supabase.from('knowledge_items').delete().eq('id', id);
-    }
-    const idx = memoryStore.knowledge_items.findIndex((k) => k.id === id);
-    if (idx === -1) return false;
-    memoryStore.knowledge_items.splice(idx, 1);
+    const client = getClient();
+    const { error } = await client.from('knowledge_items').delete().eq('id', id);
+    if (error) throw new Error(`Database error deleting knowledge item: ${error.message}`);
     return true;
   },
 
   // ── Automation ──
   async getAutomationJobs() {
-    initMemoryStore();
-    if (supabase) {
-      const { data } = await supabase.from('automation_jobs').select('*');
-      return data || [];
-    }
-    return [...memoryStore.automation_jobs];
+    const client = getClient();
+    const { data, error } = await client.from('automation_jobs').select('*');
+    if (error) throw new Error(`Database error fetching automation jobs: ${error.message}`);
+    return data || [];
   },
 
   async updateAutomationJob(id, data) {
-    initMemoryStore();
-    const now = new Date().toISOString();
-    const job = memoryStore.automation_jobs.find((j) => j.id === id);
-    if (job) Object.assign(job, data);
-
-    if (supabase) {
-      await supabase.from('automation_jobs').update(data).eq('id', id);
-    }
-    return job;
+    const client = getClient();
+    const { data: updated, error } = await client.from('automation_jobs').update(data).eq('id', id).select().single();
+    if (error) throw new Error(`Database error updating automation job: ${error.message}`);
+    return updated;
   },
 
   async getAutomationRuns(limit = 20) {
-    initMemoryStore();
-    if (supabase) {
-      const { data } = await supabase.from('automation_runs').select('*').order('started_at', { ascending: false }).limit(limit);
-      return data || [];
-    }
-    return [...memoryStore.automation_runs].slice(0, limit);
+    const client = getClient();
+    const { data, error } = await client.from('automation_runs').select('*').order('started_at', { ascending: false }).limit(limit);
+    if (error) throw new Error(`Database error fetching automation runs: ${error.message}`);
+    return data || [];
   },
 
   async recordAutomationRun(runData) {
-    initMemoryStore();
+    const client = getClient();
     const id = `run-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
     const run = {
@@ -698,51 +411,67 @@ export const db = {
       created_at: now,
     };
 
-    if (supabase) {
-      await supabase.from('automation_runs').insert(run);
-    }
-    memoryStore.automation_runs.unshift(run);
-    return run;
+    const { data, error } = await client.from('automation_runs').insert(run).select().single();
+    if (error) throw new Error(`Database error recording automation run: ${error.message}`);
+    return data || run;
   },
 
   // ── Dashboard Stats ──
   async getDashboardStats() {
-    initMemoryStore();
-    const totalProjects = memoryStore.projects.length;
-    const publishedProjects = memoryStore.projects.filter((p) => p.status === 'PUBLISHED').length;
-    const totalBlogs = memoryStore.blog_posts.length;
-    const draftBlogs = memoryStore.blog_posts.filter((b) => b.status === 'DRAFT').length;
-    const publishedBlogs = memoryStore.blog_posts.filter((b) => b.status === 'PUBLISHED').length;
-    const totalLeads = memoryStore.leads.length;
-    const newLeads = memoryStore.leads.filter((l) => l.status === 'NEW').length;
-    const totalConversations = memoryStore.conversations.length;
-    const totalAutomationRuns = memoryStore.automation_runs.length;
+    const client = getClient();
+    const [pRes, bRes, lRes, cRes, aRes] = await Promise.all([
+      client.from('projects').select('id, status', { count: 'exact' }),
+      client.from('blog_posts').select('id, status', { count: 'exact' }),
+      client.from('leads').select('id, status', { count: 'exact' }),
+      client.from('conversations').select('id', { count: 'exact' }),
+      client.from('automation_runs').select('*').order('started_at', { ascending: false }).limit(1),
+    ]);
+
+    const projects = pRes.data || [];
+    const blogs = bRes.data || [];
+    const leads = lRes.data || [];
 
     return {
-      projects: { total: totalProjects, published: publishedProjects },
-      blogs: { total: totalBlogs, draft: draftBlogs, published: publishedBlogs },
-      leads: { total: totalLeads, new: newLeads },
-      chat: { conversations: totalConversations },
-      automation: { runs: totalAutomationRuns, lastRun: memoryStore.automation_runs[0] || null },
+      projects: {
+        total: projects.length,
+        published: projects.filter((p) => p.status === 'PUBLISHED').length,
+      },
+      blogs: {
+        total: blogs.length,
+        draft: blogs.filter((b) => b.status === 'DRAFT').length,
+        published: blogs.filter((b) => b.status === 'PUBLISHED').length,
+      },
+      leads: {
+        total: leads.length,
+        new: leads.filter((l) => l.status === 'NEW').length,
+      },
+      chat: {
+        conversations: cRes.data ? cRes.data.length : 0,
+      },
+      automation: {
+        lastRun: aRes.data && aRes.data.length > 0 ? aRes.data[0] : null,
+      },
     };
   },
 
   // ── Settings ──
   async getSettings() {
-    initMemoryStore();
-    return {
-      site_name: 'Rahnoxa',
-      site_url: config.siteUrl,
-      contact_email: 'contact.rahnoxa@protonmail.com',
-      auto_publish: config.autoPublishBlogs,
-      ai_provider: config.ai.provider,
-      ai_model: config.ai.model,
-    };
+    const client = getClient();
+    const { data } = await client.from('site_settings').select('*').maybeSingle();
+    return (
+      data || {
+        site_name: 'Rahnoxa',
+        site_url: config.siteUrl,
+        contact_email: 'contact.rahnoxa@protonmail.com',
+        auto_publish_blogs: config.autoPublishBlogs,
+      }
+    );
   },
 
   async updateSettings(newSettings) {
-    initMemoryStore();
-    Object.assign(memoryStore.settings, newSettings);
-    return memoryStore.settings;
+    const client = getClient();
+    const { data, error } = await client.from('site_settings').upsert({ id: 'global', ...newSettings }).select().single();
+    if (error) throw new Error(`Database error updating settings: ${error.message}`);
+    return data;
   },
 };

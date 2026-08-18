@@ -6,7 +6,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { resolve } from 'path';
 import { copyFileSync } from 'fs';
 
-const SITE_URL = 'https://rahnoxa.pages.dev';
+const SITE_URL = 'https://rahnoxa.com';
 
 export default defineConfig({
   plugins: [
@@ -91,16 +91,6 @@ export default defineConfig({
       },
     },
   ],
-
-  server: {
-    port: 5173,
-    proxy: {
-      '/v1': {
-        target: 'http://localhost:4000',
-        changeOrigin: true,
-      },
-    },
-  },
 
   build: {
     outDir: 'dist',

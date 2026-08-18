@@ -1,6 +1,6 @@
 /**
  * Rahnoxa Centralized API Client & Service Gateway
- * Authoritative interface connecting Frontend (React) to Backend (Node.js + Express /v1 Gateway)
+ * Authoritative interface connecting Frontend (React) to Remote Backend (Render Express /v1 Gateway)
  */
 
 const getBaseUrl = (): string => {
@@ -8,6 +8,11 @@ const getBaseUrl = (): string => {
   if (envUrl && typeof envUrl === 'string' && envUrl.trim().length > 0) {
     const trimmed = envUrl.trim().replace(/\/+$/, '');
     return trimmed.endsWith('/v1') ? trimmed : `${trimmed}/v1`;
+  }
+  
+  // Strict remote-only requirement: Never silently default to localhost in production
+  if (import.meta.env.PROD) {
+    console.error('❌ [FATAL] VITE_API_URL is missing in production. Configure VITE_API_URL in Cloudflare Pages.');
   }
   return '/v1';
 };
@@ -67,7 +72,7 @@ async function apiFetch(path: string, options: RequestInit = {}) {
     }
     return data;
   } catch (err: any) {
-    console.warn(`[API] Fetch error for ${url}:`, err.message);
+    console.error(`[API Error] Request failed for ${url}:`, err.message);
     throw err;
   }
 }
@@ -217,7 +222,7 @@ export const api = {
   },
 
   async updateKnowledge(id: string, data: any) {
-    return apiFetch(`/knowledge/${id}`, {
+    return apiFetch('/knowledge/${id}', {
       method: 'PUT',
       body: JSON.stringify(data),
     });
