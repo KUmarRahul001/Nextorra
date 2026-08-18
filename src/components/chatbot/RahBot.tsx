@@ -15,14 +15,10 @@ import {
   FileText,
 } from 'lucide-react';
 import { api } from '../../lib/api';
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-  timestamp: string;
-  showEnquiryButton?: boolean;
-}
+import { ChatMessage, ConversationContext, LeadFormData } from './types';
+import { resolveService } from './serviceResolver';
+import { buildBotDecision } from './responseBuilder';
+import { createInitialContext, updateConversationContext } from './conversationState';
 
 const QUICK_PROMPTS = [
   'Can you build a custom ERP system?',
@@ -33,7 +29,7 @@ const QUICK_PROMPTS = [
   'Tell me about engineering internships',
 ];
 
-// Helper to render Markdown bold and links
+// Helper to render Markdown bold and links safely
 const FormattedMessage: React.FC<{ text: string; onNavigate: (path: string) => void }> = ({
   text,
   onNavigate,
@@ -86,123 +82,24 @@ const FormattedMessage: React.FC<{ text: string; onNavigate: (path: string) => v
   );
 };
 
-// Client-side fallback knowledge engine for zero-downtime offline answers
-function getFallbackResponse(query: string): { reply: string; isEnquiryIntent?: boolean } {
-  const lower = query.toLowerCase().trim();
-
-  // 1. Explicit Enquiry / Hire
-  if (
-    lower.includes('submit enquiry') ||
-    lower.includes('submit a project enquiry') ||
-    lower.includes('i want to hire') ||
-    lower.includes('fill form') ||
-    lower.includes('book discovery') ||
-    lower.includes('contact sales')
-  ) {
-    return {
-      reply:
-        "I've opened our **Project Enquiry Form** below. Please enter your project details and requirements. Our senior engineering leadership will review your specifications and contact you within **24 to 48 hours** with an estimate and architecture roadmap.",
-      isEnquiryIntent: true,
-    };
-  }
-
-  // 2. Custom ERP
-  if (lower.includes('erp') || lower.includes('enterprise')) {
-    return {
-      reply:
-        "Yes! **Custom ERP & Enterprise Applications** is one of Rahnoxa's core capabilities.\n\n### What We Build for Custom ERPs:\n- **Modular Domain Architecture**: Domain-isolated modules for Inventory, Supply Chain, HRMS, and Accounting.\n- **Fine-Grained RBAC**: Multi-level user permissions and immutable audit trails.\n- **High Performance**: PostgreSQL & Redis for sub-100ms multi-branch synchronization.\n- **Zero-Downtime Migration**: Seamless transition from spreadsheets or legacy systems.\n\nExplore our [Custom ERP Services](/services/erp-enterprise-applications) or click the button below to submit your project requirements for an architect review within **24–48 hours**.",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 3. Web Apps
-  if (lower.includes('web app') || lower.includes('full stack') || (lower.includes('react') && !lower.includes('react native')) || lower.includes('node')) {
-    return {
-      reply:
-        "Rahnoxa engineers scalable **Full-Stack Web Applications** using **React, TypeScript, Next.js, Node.js, and PostgreSQL**.\n\n### Web Capabilities:\n- Enterprise customer portals, self-service tools, and admin dashboards.\n- Real-time collaboration engines and analytics pipelines.\n- High-throughput backend APIs built for 100k+ MAU.\n\nExplore our [Full-Stack Web App Services](/services/full-stack-web-apps) or submit your project requirements below for a review within **24–48 hours**.",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 4. SaaS Products
-  if (lower.includes('saas') || lower.includes('multi-tenant') || lower.includes('subscription')) {
-    return {
-      reply:
-        "We build complete **Multi-Tenant SaaS Platforms** with tenant database isolation, automated Stripe/Paddle billing pipelines, role-based onboarding, and telemetry.\n\nExplore our [SaaS Products Page](/services/saas-products) or submit your specifications below.",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 5. Mobile Apps
-  if (lower.includes('mobile') || lower.includes('android') || lower.includes('ios') || lower.includes('flutter') || lower.includes('react native')) {
-    return {
-      reply:
-        "We develop cross-platform **Mobile Applications for iOS and Android** using **React Native and Flutter** with offline SQLite sync, biometric authentication, and push notifications.\n\nExplore our [Mobile App Development Services](/services/app-development) or share your feature list for a technical estimate!",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 6. API Integrations
-  if (lower.includes('api') || lower.includes('integration') || lower.includes('microservice')) {
-    return {
-      reply:
-        "We engineer **Custom Software & API Integrations**, connecting internal tools with payment gateways, CRMs, logistics APIs, and third-party services. Explore [API Integration Services](/services/custom-software-api-integration).",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 7. Internships
-  if (lower.includes('internship') || lower.includes('intern') || lower.includes('training') || lower.includes('student')) {
-    return {
-      reply:
-        "Rahnoxa offers engineering internships in **Web Development (React/Node.js), Mobile App Dev (React Native/Flutter), AI/ML, and Data Science**. Review details and apply at our [Internships Page](/internship).",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 8. Pricing & Costs
-  if (lower.includes('cost') || lower.includes('price') || lower.includes('pricing') || lower.includes('quote') || lower.includes('budget')) {
-    return {
-      reply:
-        "We structure engagements across three models:\n\n1. **Milestone-Based Fixed Scope**: Defined deliverables with staged sign-offs.\n2. **Dedicated Sprint Capacity**: Agile full-stack engineering squads on monthly velocity.\n3. **Support & SLA Maintenance**: Ongoing security patching and 24/7 monitoring.\n\n### Sample Starting Rates:\n- **Websites**: ₹15,000 to ₹125,000\n- **Web Apps**: ₹50,000 to ₹500,000+\n- **Mobile Apps**: ₹75,000 to ₹500,000+\n- **Custom ERP / SaaS**: Milestone-based quote\n\nClick **Submit Project Enquiry** below to receive an architect review within **24 to 48 hours**.",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 9. All Services
-  if (lower.includes('services') || lower.includes('what do you do') || lower.includes('what can you build')) {
-    return {
-      reply:
-        "Rahnoxa provides end-to-end technology solutions:\n\n- **Core Engineering**: [Custom ERPs](/services/erp-enterprise-applications), [Web Apps](/services/full-stack-web-apps), [SaaS Platforms](/services/saas-products), [Mobile Apps](/services/app-development), [API Integrations](/services/custom-software-api-integration), [Desktop Apps](/services/desktop-applications).\n- **Growth & Marketing**: [Lead Generation](/services/lead-generation), [Social Media](/services/social-media-marketing), [Email & SMS Marketing](/services/email-marketing), [Voice & Missed Call Solutions](/services/voice-call-services), [Graphic Design](/services/graphic-design).\n\nHow can we help your business grow today?",
-      isEnquiryIntent: false,
-    };
-  }
-
-  // 10. Fallback for custom or unknown questions
-  return {
-    reply:
-      "I would love to help you with that! Because every system architecture and custom workflow has unique technical requirements, you can submit your specifications through our enquiry form.\n\nOur senior engineering team will review your details and contact you via email or phone within **24 to 48 hours** with a detailed breakdown.\n\nYou can also reach us at `contact.rahnoxa@protonmail.com` or `+91 8434237052`.",
-    isEnquiryIntent: false,
-  };
-}
-
 const RahBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome-1',
       role: 'assistant',
       content:
         'Hello! I am **RahBot**, the AI Business Assistant for **Rahnoxa**.\n\nI can help you explore our software development services (Custom ERP, Web Apps, Mobile Apps, SaaS, API Integrations), estimate scopes, or prepare a project enquiry for our engineering team.\n\nHow can I help you today?',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      showEnquiryButton: true,
+      ctaType: 'submit_enquiry',
+      ctaLabel: 'Submit Project Enquiry',
     },
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [conversationId, setConversationId] = useState<string | undefined>();
+  const [context, setContext] = useState<ConversationContext>(createInitialContext());
   const [showLeadForm, setShowLeadForm] = useState(false);
-  const [leadForm, setLeadForm] = useState({
+  const [leadForm, setLeadForm] = useState<LeadFormData>({
     name: '',
     email: '',
     phone: '',
@@ -228,40 +125,9 @@ const RahBot: React.FC = () => {
 
   const handleSend = async (userText?: string) => {
     const textToSend = userText || input;
-    if (!textToSend.trim()) return;
+    if (!textToSend.trim() || isTyping) return;
 
-    const lower = textToSend.toLowerCase().trim();
-
-    // If user explicitly asks to submit an enquiry via button/prompt
-    if (
-      lower === 'i want to submit a project enquiry' ||
-      lower === 'submit enquiry' ||
-      lower === 'submit a project enquiry' ||
-      lower === 'open enquiry form'
-    ) {
-      const userMsg: Message = {
-        id: `usr-${Date.now()}`,
-        role: 'user',
-        content: textToSend.trim(),
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
-      setMessages((prev) => [
-        ...prev,
-        userMsg,
-        {
-          id: `bot-${Date.now()}`,
-          role: 'assistant',
-          content:
-            "I have opened our **Project Enquiry Form** below. Please enter your specifications and our senior engineering leadership team will review and reply within **24 to 48 hours**.",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        },
-      ]);
-      setInput('');
-      setShowLeadForm(true);
-      return;
-    }
-
-    const userMessage: Message = {
+    const userMessage: ChatMessage = {
       id: `usr-${Date.now()}`,
       role: 'user',
       content: textToSend.trim(),
@@ -272,46 +138,70 @@ const RahBot: React.FC = () => {
     setInput('');
     setIsTyping(true);
 
+    // 1. Resolve Service & Detect Intent through local architecture
+    const resolvedService = resolveService(textToSend, context);
+    const decision = buildBotDecision(textToSend, resolvedService, context);
+
+    // 2. Update Conversational Memory
+    setContext((prev) =>
+      updateConversationContext(
+        prev,
+        textToSend,
+        decision.intent,
+        resolvedService.service?.id,
+        resolvedService.service?.name
+      )
+    );
+
+    // 3. Pre-set default service in enquiry form if identified
+    if (resolvedService.service) {
+      setLeadForm((prev) => ({
+        ...prev,
+        service: resolvedService.service?.name || prev.service,
+      }));
+    }
+
     try {
+      // Try backend AI service for contextual enhancements if online
       const response = await api.sendMessage({
         message: textToSend.trim(),
-        conversation_id: conversationId,
+        conversation_id: context.conversationId,
       });
 
-      if (response.conversation_id && !conversationId) {
-        setConversationId(response.conversation_id);
+      if (response.conversation_id && !context.conversationId) {
+        setContext((prev) => ({ ...prev, conversationId: response.conversation_id }));
       }
 
-      const botReply: Message = {
+      const botReply: ChatMessage = {
         id: response.message?.id || `bot-${Date.now()}`,
         role: 'assistant',
-        content:
-          response.message?.content ||
-          getFallbackResponse(textToSend).reply,
+        content: response.message?.content || decision.reply,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        showEnquiryButton: true,
+        ctaType: decision.ctaType,
+        ctaLabel: decision.ctaLabel,
+        targetRoute: decision.targetRoute,
       };
 
       setMessages((prev) => [...prev, botReply]);
 
-      // Only auto-open form if intent is explicit lead_qualification
-      if (response.intent === 'lead_qualification') {
+      if (decision.shouldOpenForm) {
         setShowLeadForm(true);
       }
     } catch {
-      // Graceful rich client fallback
-      const fallback = getFallbackResponse(textToSend);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `fallback-${Date.now()}`,
-          role: 'assistant',
-          content: fallback.reply,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          showEnquiryButton: true,
-        },
-      ]);
-      if (fallback.isEnquiryIntent) {
+      // Robust client-side fallback using deterministic decision engine
+      const botReply: ChatMessage = {
+        id: `fallback-${Date.now()}`,
+        role: 'assistant',
+        content: decision.reply,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        ctaType: decision.ctaType,
+        ctaLabel: decision.ctaLabel,
+        targetRoute: decision.targetRoute,
+      };
+
+      setMessages((prev) => [...prev, botReply]);
+
+      if (decision.shouldOpenForm) {
         setShowLeadForm(true);
       }
     } finally {
@@ -321,6 +211,7 @@ const RahBot: React.FC = () => {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingLead) return;
     setIsSubmittingLead(true);
 
     try {
@@ -331,7 +222,7 @@ const RahBot: React.FC = () => {
         service: leadForm.service,
         project_description: leadForm.description,
         source: 'rahbot_chat',
-        conversation_id: conversationId,
+        conversation_id: context.conversationId,
       });
 
       setLeadSubmitted(true);
@@ -342,13 +233,14 @@ const RahBot: React.FC = () => {
         {
           id: `lead-ack-${Date.now()}`,
           role: 'assistant',
-          content: `✅ Thank you **${leadForm.name}**! Your project enquiry for **${leadForm.service}** has been submitted.\n\nOur engineering leadership team will review your specifications and contact you at **${leadForm.email}** ${
+          content: `✅ Thank you **${leadForm.name}**! Your project enquiry for **${leadForm.service}** has been recorded.\n\nOur engineering leadership team will review your specifications and contact you at **${leadForm.email}** ${
             leadForm.phone ? `or **${leadForm.phone}**` : ''
-          } within **24 to 48 hours** with a technical roadmap and estimate.`,
+          } within **24 to 48 hours** with an architectural blueprint and estimate.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
     } catch {
+      // Local fallback on network error
       setLeadSubmitted(true);
       setShowLeadForm(false);
       setMessages((prev) => [
@@ -368,6 +260,14 @@ const RahBot: React.FC = () => {
   const handleNavigate = (path: string) => {
     setIsOpen(false);
     navigate(path);
+  };
+
+  const handleCTAClick = (msg: ChatMessage) => {
+    if (msg.ctaType === 'submit_enquiry' || msg.ctaType === 'consultation') {
+      setShowLeadForm(true);
+    } else if (msg.targetRoute) {
+      handleNavigate(msg.targetRoute);
+    }
   };
 
   return (
@@ -456,10 +356,11 @@ const RahBot: React.FC = () => {
                           hour: '2-digit',
                           minute: '2-digit',
                         }),
-                        showEnquiryButton: true,
+                        ctaType: 'submit_enquiry',
+                        ctaLabel: 'Submit Project Enquiry',
                       },
                     ]);
-                    setConversationId(undefined);
+                    setContext(createInitialContext());
                     setShowLeadForm(false);
                     setLeadSubmitted(false);
                   }}
@@ -502,15 +403,17 @@ const RahBot: React.FC = () => {
                       <FormattedMessage text={msg.content} onNavigate={handleNavigate} />
                     </div>
 
-                    {/* Optional 1-click Project Enquiry Trigger below answer */}
-                    {msg.role === 'assistant' && msg.showEnquiryButton && !showLeadForm && (
+                    {/* Contextual CTA Action Button */}
+                    {msg.role === 'assistant' && msg.ctaType && msg.ctaType !== 'none' && !showLeadForm && (
                       <div className="mt-2.5 pt-2 border-t border-slate-700/50 flex items-center justify-between gap-2">
-                        <span className="text-[10px] text-slate-400">Need a custom quote?</span>
+                        <span className="text-[10px] text-slate-400">
+                          {msg.ctaType === 'submit_enquiry' ? 'Ready to discuss scope?' : 'Learn more:'}
+                        </span>
                         <button
-                          onClick={() => setShowLeadForm(true)}
+                          onClick={() => handleCTAClick(msg)}
                           className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] font-semibold rounded-md shadow-sm transition-all"
                         >
-                          <span>Submit Enquiry</span>
+                          <span>{msg.ctaLabel || 'View Details'}</span>
                           <ArrowRight className="h-3 w-3" />
                         </button>
                       </div>
@@ -605,18 +508,20 @@ const RahBot: React.FC = () => {
                         onChange={(e) => setLeadForm({ ...leadForm, service: e.target.value })}
                         className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-blue-500"
                       >
-                        <option value="Custom ERP Systems">Custom ERP Systems</option>
+                        <option value="ERP & Enterprise Applications">Custom ERP & Enterprise Applications</option>
                         <option value="Full Stack Web Apps">Full Stack Web Apps</option>
                         <option value="Mobile App Development">Mobile App Development</option>
                         <option value="SaaS Products">SaaS Products</option>
-                        <option value="API Integration">API Integration</option>
+                        <option value="Custom Software & API Integration">Custom Software & API Integration</option>
                         <option value="Desktop Applications">Desktop Applications</option>
-                        <option value="Modern Website Design">Modern Website Design</option>
-                        <option value="Lead Generation">B2B Lead Generation</option>
+                        <option value="Modern Website Design & Engineering">Modern Website Design & Engineering</option>
+                        <option value="B2B Lead Generation">B2B Lead Generation</option>
                         <option value="Social Media Marketing">Social Media Marketing</option>
-                        <option value="Email & SMS Marketing">Email & SMS Marketing</option>
-                        <option value="Voice & Missed Call">Voice & Missed Call Solutions</option>
-                        <option value="Brand Graphic Design">Brand & Graphic Design</option>
+                        <option value="Email Marketing & Lifecycle Automation">Email Marketing & Lifecycle Automation</option>
+                        <option value="SMS Marketing & Transactional Alerts">SMS Marketing & Transactional Alerts</option>
+                        <option value="Voice Call & IVR Solutions">Voice Call & IVR Solutions</option>
+                        <option value="Missed Call Alert Service">Missed Call Alert Service</option>
+                        <option value="Brand & Graphic Design">Brand & Graphic Design</option>
                       </select>
                     </div>
 
