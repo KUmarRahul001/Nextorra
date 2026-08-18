@@ -3,6 +3,8 @@
  * High-performance deterministic & semantic intent engine covering all 14 Rahnoxa services.
  */
 
+import { RAHNOXA_SERVICES_KNOWLEDGE } from '../knowledge/servicesKnowledge.js';
+
 export class RahnoxaLocalProvider {
   constructor() {
     this.name = 'rahnoxa_local';
@@ -11,7 +13,7 @@ export class RahnoxaLocalProvider {
   async chat({ message, contextKnowledge, systemPrompt }) {
     const lower = message.toLowerCase().trim();
 
-    // 1. Human Contact / Direct Reach
+    // 1. Direct Contact / Leadership reach
     if (
       lower.includes('speak to human') ||
       lower.includes('talk to a person') ||
@@ -24,7 +26,7 @@ export class RahnoxaLocalProvider {
     ) {
       return {
         reply:
-          "You can reach the Rahnoxa engineering leadership team directly via:\n\n- **Email**: `contact.rahnoxa@protonmail.com`\n- **Phone / WhatsApp**: `+91 8434237052` / `+91 8434237049`\n- **Location**: Jharkhand, India (Remote Engineering Worldwide)\n- **Turnaround SLA**: We respond to all technical enquiries within **24 to 48 hours**.\n\nYou can also submit your project requirements directly through our in-chat enquiry form or [Start a Project](/get-started).",
+          "You can reach the Rahnoxa engineering leadership team directly via:\n\n- **Email**: `contact.rahnoxa@protonmail.com`\n- **Phone / WhatsApp**: `+91 8434237052` / `+91 8434237049`\n- **Location**: Jharkhand, India (Remote Engineering Worldwide)\n- **Turnaround SLA**: We respond to all technical enquiries within **24 to 48 hours**.\n\nYou can also submit your project requirements directly through our in-chat enquiry form or [Start a Project Online](/get-started).",
         intent: 'human_handoff',
       };
     }
@@ -40,9 +42,16 @@ export class RahnoxaLocalProvider {
       lower.includes('supply chain') ||
       lower.includes('billing system')
     ) {
+      const erp = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-erp');
       return {
         reply:
-          "Yes! **Custom ERP & Enterprise Systems** is one of Rahnoxa's core specializations.\n\n### What We Build for Custom ERPs:\n- **Modular Domain Architecture**: Isolated modules for Inventory, Purchasing, Sales, HRMS, and Accounting.\n- **Fine-Grained RBAC**: Multi-role permission management and detailed audit logging.\n- **Real-Time Data Pipelines**: Sub-100ms multi-branch synchronization with PostgreSQL & Redis.\n- **Legacy Migration**: Zero-downtime data transition from spreadsheets or outdated legacy systems.\n\nWould you like to explore our [Custom ERP Services](/services/erp-enterprise-applications) or submit your workflow requirements below? Our engineering team will review your scope and get back to you within **24–48 hours**.",
+          `Yes! **${erp.name}** is one of Rahnoxa's core capabilities.\n\n` +
+          `### What We Build for Custom ERPs:\n` +
+          erp.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${erp.technologies.join(', ')}\n\n` +
+          `### Key Benefits:\n` +
+          erp.benefits.slice(0, 3).map((b) => `- ${b}`).join('\n') +
+          `\n\nExplore our [Custom ERP Services](${erp.route}) or submit your workflow requirements in the enquiry form below. Our engineering team will review your specifications and contact you within **24 to 48 hours**.`,
         intent: 'erp_query',
       };
     }
@@ -54,12 +63,18 @@ export class RahnoxaLocalProvider {
       lower.includes('portal') ||
       lower.includes('dashboard') ||
       lower.includes('full stack') ||
-      lower.includes('react') ||
+      (lower.includes('react') && !lower.includes('react native')) ||
       lower.includes('node')
     ) {
+      const web = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-web-apps');
       return {
         reply:
-          "Rahnoxa builds high-performance **Full-Stack Web Applications** tailored to your business scale.\n\n### Key Web Capabilities:\n- Modern frontend architectures using **React, Next.js, and TypeScript**.\n- High-throughput backend microservices on **Node.js, Express, and Go**.\n- Secure database persistence with **PostgreSQL and Supabase**.\n- Enterprise customer portals, admin dashboards, and collaboration tools.\n\nExplore our [Full-Stack Web App Services](/services/full-stack-web-apps) or fill out the enquiry form below for an engineering review within **24–48 hours**.",
+          `Rahnoxa engineers scalable **${web.name}** tailored to your business scale.\n\n` +
+          `### Key Web Capabilities:\n` +
+          web.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${web.technologies.join(', ')}\n\n` +
+          `### Packages & Pricing:\n- ${web.pricing}\n\n` +
+          `Explore our [Full-Stack Web App Services](${web.route}) or fill out the enquiry form below for an engineering review within **24 to 48 hours**.`,
         intent: 'web_app_query',
       };
     }
@@ -71,9 +86,14 @@ export class RahnoxaLocalProvider {
       lower.includes('software as a service') ||
       lower.includes('subscription')
     ) {
+      const saas = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-saas');
       return {
         reply:
-          "We engineer scalable **Multi-Tenant SaaS Products** designed for security, rapid user onboarding, and automated growth.\n\n### Our SaaS Engineering Stack:\n- Multi-tenant tenant data isolation.\n- Automated recurring billing & subscription webhooks (Stripe / Paddle).\n- User role onboarding, auth, and usage telemetry.\n- Cloud-native autoscaling infrastructure.\n\nRead more at our [SaaS Engineering Page](/services/saas-products) or submit your concept for an architectural review within **24–48 hours**.",
+          `We engineer complete **${saas.name}** built for tenant isolation, recurring billing, and scalable growth.\n\n` +
+          `### Our SaaS Engineering Capabilities:\n` +
+          saas.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${saas.technologies.join(', ')}\n\n` +
+          `Explore our [SaaS Engineering Services](${saas.route}) or submit your project requirements below. Our architects will reply within **24 to 48 hours**.`,
         intent: 'saas_query',
       };
     }
@@ -87,76 +107,144 @@ export class RahnoxaLocalProvider {
       lower.includes('middleware') ||
       lower.includes('payment gateway')
     ) {
+      const api = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-custom-api');
       return {
         reply:
-          "We design and build **Custom Software & API Integrations** that connect your internal tools with external ecosystems.\n\n### Integration Capabilities:\n- RESTful and GraphQL API design & documentation.\n- Payment gateways (Stripe, Razorpay, PayPal).\n- CRM, ERP, Logistics, and Accounting third-party sync.\n- High-reliability webhook listeners and ETL pipelines.\n\nExplore our [API Integration Services](/services/custom-software-api-integration) or tell us which systems you need to connect!",
+          `We build **${api.name}** that connect your internal tools into a single source of truth.\n\n` +
+          `### Integration Capabilities:\n` +
+          api.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${api.technologies.join(', ')}\n\n` +
+          `Explore our [API Integration Services](${api.route}) or tell us which systems you need to connect! Our team reviews all scopes within **24 to 48 hours**.`,
         intent: 'api_query',
       };
     }
 
-    // 6. Mobile App Engineering
+    // 6. Mobile App Development
     if (
       lower.includes('mobile app') ||
       lower.includes('android') ||
       lower.includes('ios') ||
       lower.includes('flutter') ||
       lower.includes('react native') ||
-      lower.includes('iphone app')
+      lower.includes('mobile')
     ) {
+      const mobile = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-mobile');
       return {
         reply:
-          "We develop native-performance **Mobile Applications for iOS and Android** using **React Native and Flutter**.\n\n### Mobile Features:\n- Offline-first caching with local SQLite databases.\n- Biometric authentication (FaceID, Fingerprint).\n- Push notification pipelines and real-time synchronization.\n- Full App Store & Google Play Store release management.\n\nCheck out our [Mobile Development Services](/services/app-development) or share your feature list for a technical estimate!",
+          `We develop high-performance **${mobile.name}** for iOS and Android using React Native and Flutter.\n\n` +
+          `### Mobile Features:\n` +
+          mobile.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Key Benefits:\n` +
+          mobile.benefits.slice(0, 3).map((b) => `- ${b}`).join('\n') +
+          `\n\n### Pricing:\n- ${mobile.pricing}\n\n` +
+          `Check out our [Mobile Development Services](${mobile.route}) or share your target features in the form below for a review within **24 to 48 hours**.`,
         intent: 'mobile_query',
       };
     }
 
-    // 7. Desktop Applications
+    // 7. Native Desktop Applications
     if (
       lower.includes('desktop') ||
       lower.includes('electron') ||
       lower.includes('tauri') ||
       lower.includes('windows app') ||
-      lower.includes('mac app')
+      lower.includes('mac app') ||
+      lower.includes('linux app')
     ) {
+      const desktop = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-desktop');
       return {
         reply:
-          "Rahnoxa builds cross-platform **Native Desktop Software** for Windows, macOS, and Linux using Electron, Tauri, and native toolchains.\n\nIdeal for offline data processing, local hardware peripherals, and specialized enterprise tooling. Learn more at [Desktop Applications](/services/desktop-applications).",
+          `Rahnoxa builds cross-platform **${desktop.name}** for Windows, macOS, and Linux using Electron, Tauri, and native toolchains.\n\n` +
+          `### Desktop Capabilities:\n` +
+          desktop.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\nIdeal for offline data processing, local hardware peripherals, and specialized enterprise tooling. Learn more at [Desktop Applications](${desktop.route}).`,
         intent: 'desktop_query',
       };
     }
 
-    // 8. Website Design & Development
+    // 8. Modern Website Design & Development
     if (
       lower.includes('website') ||
       lower.includes('landing page') ||
-      lower.includes('redesign') ||
-      lower.includes('web design')
+      lower.includes('web design') ||
+      lower.includes('redesign')
     ) {
+      const webDesign = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-web-design');
       return {
         reply:
-          "We design and code **Modern, High-Speed Websites** that combine editorial typography, smooth animations, and top-tier SEO performance.\n\nBuilt with modern tools like Vite, React, Tailwind CSS, and Framer Motion for sub-second load times. Explore our [Website Design Services](/services/web-development).",
+          `We design and code **${webDesign.name}** combining editorial typography, smooth animations, and top-tier SEO.\n\n` +
+          `### Key Highlights:\n` +
+          webDesign.benefits.slice(0, 3).map((b) => `- ${b}`).join('\n') +
+          `\n\n### Packages:\n- ${webDesign.pricing}\n\n` +
+          `Explore our [Website Design Services](${webDesign.route}) or submit your project details below!`,
         intent: 'website_query',
       };
     }
 
-    // 9. Marketing & Growth Services (Tier 2)
-    if (
-      lower.includes('marketing') ||
-      lower.includes('lead generation') ||
-      lower.includes('sms') ||
-      lower.includes('voice call') ||
-      lower.includes('missed call') ||
-      lower.includes('graphic design') ||
-      lower.includes('branding')
-    ) {
+    // 9. Lead Generation
+    if (lower.includes('lead gen') || lower.includes('lead generation') || lower.includes('prospect')) {
+      const leadGen = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-lead-gen');
       return {
         reply:
-          "Alongside software engineering, Rahnoxa provides comprehensive **Business Growth & Marketing Support Services**:\n\n- **B2B Lead Generation & Outreach** ([Learn More](/services/lead-generation))\n- **Social Media Marketing & Brand Presence** ([Learn More](/services/social-media-marketing))\n- **Email Marketing & Automated Drip Funnels** ([Learn More](/services/email-marketing))\n- **SMS Marketing & OTP Alert Services** ([Learn More](/services/sms-marketing))\n- **Cloud Voice & IVR Routing Solutions** ([Learn More](/services/voice-call-services))\n- **Missed Call Verification Services** ([Learn More](/services/missed-call-service))\n- **Brand & UI/UX Graphic Design** ([Learn More](/services/graphic-design))\n\nWhich growth service can we assist you with?",
-        intent: 'marketing_query',
+          `Rahnoxa provides **${leadGen.name}** to fill your pipeline with high-intent decision makers.\n\n` +
+          `### Capabilities:\n` +
+          leadGen.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Packages:\n- ${leadGen.pricing}\n\n` +
+          `Learn more at our [Lead Generation Page](${leadGen.route}) or fill out the enquiry form below for a campaign consult within **24 to 48 hours**.`,
+        intent: 'lead_gen_query',
       };
     }
 
-    // 10. Internships & Careers
+    // 10. SMS Marketing, Voice & Telephony
+    if (
+      lower.includes('sms') ||
+      lower.includes('voice call') ||
+      lower.includes('missed call') ||
+      lower.includes('ivr') ||
+      lower.includes('telephony')
+    ) {
+      return {
+        reply:
+          "Rahnoxa provides comprehensive direct customer communication channels:\n\n- **SMS Marketing & SMPP**: Bulk SMS, OTP alerts, and DLT compliance. ([Learn More](/services/sms-marketing))\n- **Voice Call & IVR Solutions**: Automated voice broadcasts and cloud IVR routing. ([Learn More](/services/voice-call-services))\n- **Missed Call Alert Service**: Zero-cost lead capture with instant callback. ([Learn More](/services/missed-call-service))\n\nWhich telephony channel would you like to set up?",
+        intent: 'telephony_query',
+      };
+    }
+
+    // 11. Graphic Design & Brand Identity
+    if (
+      lower.includes('graphic design') ||
+      lower.includes('logo') ||
+      lower.includes('branding') ||
+      lower.includes('figma') ||
+      lower.includes('ui/ux')
+    ) {
+      const design = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-design');
+      return {
+        reply:
+          `We deliver **${design.name}** for tech products, marketing collateral, and brand systems.\n\n` +
+          `### Offerings:\n` +
+          design.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Packages:\n- ${design.pricing}\n\n` +
+          `Explore our [Graphic Design Services](${design.route}) or share your branding requirements!`,
+        intent: 'design_query',
+      };
+    }
+
+    // 12. Email Marketing
+    if (lower.includes('email marketing') || lower.includes('newsletter') || lower.includes('drip sequence')) {
+      const email = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-email');
+      return {
+        reply:
+          `Rahnoxa offers **${email.name}** to nurture leads and automate customer onboarding.\n\n` +
+          `### Key Features:\n` +
+          email.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Packages:\n- ${email.pricing}\n\n` +
+          `Learn more at our [Email Marketing Page](${email.route}).`,
+        intent: 'email_query',
+      };
+    }
+
+    // 13. Internships & Careers
     if (
       lower.includes('internship') ||
       lower.includes('intern') ||
@@ -165,14 +253,18 @@ export class RahnoxaLocalProvider {
       lower.includes('apply') ||
       lower.includes('career')
     ) {
+      const intern = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'program-internship');
       return {
         reply:
-          "Rahnoxa offers engineering internship programs in:\n\n- **Full-Stack Web Development** (React, Node.js, TypeScript)\n- **Mobile App Engineering** (React Native, Flutter)\n- **AI & Machine Learning** (Python, NLP, LLM Engineering)\n- **Data Science & Analytics**\n\nInterns collaborate on real production codebases under senior engineering mentorship. You can review details and apply at our [Internships Page](/internship).",
+          `Rahnoxa offers hands-on **${intern.name}** across Web Dev, Mobile Apps, AI/Machine Learning, and Data Science.\n\n` +
+          `### Highlights:\n` +
+          intern.benefits.map((b) => `- ${b}`).join('\n') +
+          `\n\nInterns work on real client modules under senior engineering mentorship. You can review details and apply at our [Internships Page](${intern.route}).`,
         intent: 'internship_query',
       };
     }
 
-    // 11. Pricing, Cost & Engagement Models
+    // 14. Pricing, Estimates & Engagement Models
     if (
       lower.includes('cost') ||
       lower.includes('price') ||
@@ -184,27 +276,12 @@ export class RahnoxaLocalProvider {
     ) {
       return {
         reply:
-          "We offer three flexible engagement models tailored to your project scope:\n\n1. **Milestone-Based Fixed Scope**: Best for defined web apps, MVPs, and ERP modules with agreed timelines.\n2. **Dedicated Sprint Capacity**: Full-stack engineering squads on agile monthly sprints.\n3. **Support & SLA Maintenance**: Ongoing security patching, server monitoring, and feature iteration.\n\nTo get an accurate estimate, please fill out the project enquiry form below or [Schedule a Discovery Call](/get-started). Our architects will reply within **24–48 hours**.",
+          "We offer three structured engagement models tailored to your project scope:\n\n1. **Milestone-Based Fixed Scope**: Best for defined web apps, MVPs, and ERP modules with agreed timelines.\n2. **Dedicated Sprint Capacity**: Full-stack engineering squads on agile monthly sprints.\n3. **Support & SLA Maintenance**: Ongoing security patching, server monitoring, and continuous iterations.\n\n### Sample Service Starting Rates:\n- **Modern Websites**: ₹15,000 to ₹125,000\n- **Full-Stack Web Apps**: ₹50,000 to ₹500,000+\n- **Mobile Apps (iOS/Android)**: ₹75,000 to ₹500,000+\n- **Custom ERP & SaaS**: Milestone-based custom quote\n\nPlease share your project summary in the form below or [Schedule a Discovery Call](/get-started). Our engineering team will review your scope and get back to you within **24 to 48 hours**.",
         intent: 'pricing_query',
       };
     }
 
-    // 12. Portfolio / Case Studies
-    if (
-      lower.includes('project') ||
-      lower.includes('portfolio') ||
-      lower.includes('work') ||
-      lower.includes('case study') ||
-      lower.includes('clients')
-    ) {
-      return {
-        reply:
-          "Our engineering portfolio highlights:\n\n- **Custom ERP & Logistics Dashboards**: Real-time warehouse and inventory pipelines.\n- **SaaS Subscription Platform**: Multi-tenant authorization and telemetry.\n- **Cross-Platform Mobile Apps**: Offline-first biometric mobile experiences.\n\nYou can explore live showcases directly on our homepage or submit a project enquiry below!",
-        intent: 'portfolio_query',
-      };
-    }
-
-    // 13. All Services Overview
+    // 15. All Services Overview
     if (
       lower.includes('services') ||
       lower.includes('what do you do') ||
@@ -213,12 +290,12 @@ export class RahnoxaLocalProvider {
     ) {
       return {
         reply:
-          "Rahnoxa is a specialized technology engineering company. Here is our complete service spectrum:\n\n### **Core Software Engineering**\n- [Custom ERP & Enterprise Applications](/services/erp-enterprise-applications)\n- [Full-Stack Web Applications](/services/full-stack-web-apps)\n- [Multi-Tenant SaaS Products](/services/saas-products)\n- [Mobile App Development](/services/app-development)\n- [Custom Software & API Integration](/services/custom-software-api-integration)\n- [Desktop Applications](/services/desktop-applications)\n- [Modern Website Design](/services/web-development)\n\n### **Business Growth & Marketing**\n- [Lead Generation](/services/lead-generation) | [Social Media](/services/social-media-marketing)\n- [Email & SMS Marketing](/services/email-marketing) | [Voice & Missed Call](/services/voice-call-services)\n- [Brand & UI/UX Graphic Design](/services/graphic-design)\n\nFeel free to ask specific questions about any service or fill out the enquiry form to get an architect review within **24–48 hours**!",
+          "Rahnoxa is a specialized technology engineering company. Here is our complete service spectrum:\n\n### **Core Software Engineering (Tier 1)**\n- [Custom ERP & Enterprise Applications](/services/erp-enterprise-applications)\n- [Full-Stack Web Applications](/services/full-stack-web-apps)\n- [Multi-Tenant SaaS Products](/services/saas-products)\n- [Mobile App Development](/services/app-development)\n- [Custom Software & API Integration](/services/custom-software-api-integration)\n- [Desktop Applications](/services/desktop-applications)\n- [Modern Website Design](/services/web-development)\n\n### **Business Growth & Marketing (Tier 2)**\n- [Lead Generation](/services/lead-generation) | [Social Media Marketing](/services/social-media-marketing)\n- [Email Marketing](/services/email-marketing) | [SMS Marketing](/services/sms-marketing)\n- [Voice Call Services](/services/voice-call-services) | [Missed Call Service](/services/missed-call-service)\n- [Brand & Graphic Design](/services/graphic-design)\n\nFeel free to ask specific questions about any service or fill out the enquiry form below to get an architect review within **24 to 48 hours**!",
         intent: 'services_overview',
       };
     }
 
-    // 14. Fallback for Custom or Unknown Questions -> Prompt for details + Form + 24-48 hr guarantee
+    // 16. Fallback for Custom or Unknown Questions -> Prompt for details + Form + 24-48 hr guarantee
     return {
       reply:
         "I'd love to help you with that! Because every system architecture and custom workflow has unique technical requirements, please share your details in the project enquiry form below.\n\nOur senior engineering team will review your specifications and contact you via email/phone within **24 to 48 hours** with a detailed technical breakdown and estimate.\n\nYou can also [Start a Project Online](/get-started) or reach us at `contact.rahnoxa@protonmail.com`.",
