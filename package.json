@@ -3,11 +3,15 @@
   "private": true,
   "version": "2.4.0",
   "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
-    "build": "npm --prefix frontend run build",
+    "build": "npm --prefix frontend install && npm --prefix frontend run build && mkdir -p dist && cp -r frontend/dist/* dist/",
     "build:frontend": "npm --prefix frontend run build",
     "test:backend": "npm --prefix backend test",
     "lint": "npm --prefix frontend run lint"
