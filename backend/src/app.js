@@ -34,6 +34,33 @@ app.use(morgan(config.nodeEnv === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// ─── Root Index Endpoint ──────────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    service: 'Rahnoxa Backend API Gateway',
+    version: '2.4.0',
+    environment: config.nodeEnv,
+    status: 'ONLINE',
+    endpoints: {
+      health: '/health',
+      database_health: '/health/database',
+      ai_health: '/health/ai',
+      v1_gateway: '/v1',
+      auth: '/v1/auth/login',
+      projects: '/v1/projects',
+      blog: '/v1/blog',
+      leads: '/v1/leads',
+      chat: '/v1/chat',
+      knowledge: '/v1/knowledge',
+      automation: '/v1/automation',
+      settings: '/v1/settings',
+    },
+    documentation: 'https://rahnoxa.com/docs',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // ─── Health Check Endpoints ───────────────────────────────────────────────────
 app.get('/health', (req, res) => {
   res.status(200).json({
