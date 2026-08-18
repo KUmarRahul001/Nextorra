@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Home } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import config from "../config";
 
@@ -51,14 +51,15 @@ const Breadcrumb: React.FC = () => {
         </script>
       </Helmet>
 
-      <nav className="py-4">
-        <ol className="flex items-center space-x-2">
+      <nav className="py-4 mb-2" aria-label="Breadcrumb">
+        <ol className="flex items-center space-x-2 text-xs sm:text-sm">
           <li>
             <Link
               to="/"
-              className="text-primary hover:text-primary-dark transition-colors"
+              className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5"
             >
-              Home
+              <Home className="h-3.5 w-3.5" />
+              <span>Home</span>
             </Link>
           </li>
           {pathnames.map((name, index) => {
@@ -71,14 +72,14 @@ const Breadcrumb: React.FC = () => {
 
             return (
               <React.Fragment key={name}>
-                <ChevronRight className="h-4 w-4 text-gray-400" />
+                <ChevronRight className="h-3.5 w-3.5 text-slate-600 flex-shrink-0" />
                 <li>
                   {isLast ? (
-                    <span className="text-gray-600">{formattedName}</span>
+                    <span className="text-blue-400 font-medium">{formattedName}</span>
                   ) : (
                     <Link
                       to={routeTo}
-                      className="text-primary hover:text-primary-dark transition-colors"
+                      className="text-slate-400 hover:text-white transition-colors"
                     >
                       {formattedName}
                     </Link>
