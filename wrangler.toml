@@ -1,0 +1,29 @@
+name = "rahnoxa"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "dist"
+
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "rahnoxa-db"
+database_id = "<SET_IN_CLOUDFLARE_PAGES_OR_D1>"
+migrations_dir = "migrations"
+
+# Daily 18:00 IST (12:30 UTC) Cron Trigger
+[triggers]
+crons = ["30 12 * * *"]
+
+# Environment Variables (Non-sensitive defaults)
+[vars]
+SITE_NAME = "Rahnoxa"
+SITE_URL = "https://rahnoxa.pages.dev"
+CONTACT_EMAIL = "contact.rahnoxa@protonmail.com"
+AUTO_PUBLISH_BLOGS = "false"
+AI_PROVIDER = "cloudflare_workers_ai"
+AI_MODEL = "@cf/meta/llama-3-8b-instruct"
+
+# Secrets (Must be set via Cloudflare Dashboard or `npx wrangler secret put <KEY>`):
+# - JWT_SECRET
+# - INITIAL_ADMIN_EMAIL
+# - INITIAL_ADMIN_PASSWORD
+# - AI_API_KEY (if using external Gemini / OpenAI)

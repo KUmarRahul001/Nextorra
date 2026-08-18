@@ -17,6 +17,9 @@ export default defineConfig({
       hostname: SITE_URL,
       dynamicRoutes: [
         '/',
+        '/blog',
+        '/blog/architecting-scalable-custom-erp-systems',
+        '/blog/building-real-time-saas-applications',
         '/get-started',
         '/internship',
         '/services',

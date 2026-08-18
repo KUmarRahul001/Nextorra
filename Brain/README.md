@@ -1,34 +1,29 @@
-# RAHNOXA — Core Engineering Documentation
+# Rahnoxa — Master Architecture & Operational Knowledge Base (`Brain/`)
 
-Welcome to the permanent engineering knowledge base for **Rahnoxa** (`https://rahnoxa.pages.dev`).
-
-This documentation repository records the architecture, system design, security models, data contracts, and operational guidelines for the entire Rahnoxa platform.
+Welcome to the technical knowledge base for **Rahnoxa** (Software Development & Technology Engineering).
 
 ---
 
-## 📂 Documentation Directory
-
-| Document | Purpose |
-|---|---|
-| [`architecture.md`](./architecture.md) | High-level system architecture, component breakdown, and runtime flow |
-| [`decisions.md`](./decisions.md) | Architectural Decision Records (ADRs) explaining technical choices & trade-offs |
-| [`database.md`](./database.md) | Database schemas, table definitions, relationships, and edge migrations |
-| [`chatbot.md`](./chatbot.md) | **RahBot** AI Business Assistant architecture, qualification engine, and safety |
-| [`admin.md`](./admin.md) | `/admin` platform specifications, authentication, permissions, and dashboards |
-| [`blog-system.md`](./blog-system.md) | Public blog architecture, admin editor, taxonomy, and rendering |
-| [`automation.md`](./automation.md) | Daily 6:00 PM IST SEO blog generator, topic engine, and review workflow |
-| [`security.md`](./security.md) | Threat modeling, authorization, prompt-injection defense, and rate-limiting |
-| [`seo.md`](./seo.md) | Structured data, Open Graph, dynamic sitemaps, robots.txt, and canonical URLs |
-| [`environment.md`](./environment.md) | Environment variables reference, secrets isolation, and provider config |
-| [`deployment.md`](./deployment.md) | Cloudflare Pages, Functions routing, build hooks, and production checklist |
-| [`troubleshooting.md`](./troubleshooting.md) | Common errors, edge function debugging, and recovery procedures |
-| [`changelog.md`](./changelog.md) | Chronological log of major system changes and milestones |
+## 1. Core Architecture & System Design
+- [Architecture Overview](file:///home/rahul-kumar/Desktop/Nextorra/Brain/architecture.md) — Four-tier platform topology, components, and edge routing.
+- [Database Schema & Migrations](file:///home/rahul-kumar/Desktop/Nextorra/Brain/database.md) — Cloudflare D1 entity models, indexing, and migration lifecycle.
+- [Security Architecture](file:///home/rahul-kumar/Desktop/Nextorra/Brain/security.md) — JWT auth, password hashing, prompt injection defense, and rate limiting.
+- [Architecture Decisions (ADR)](file:///home/rahul-kumar/Desktop/Nextorra/Brain/decisions.md) — Fundamental engineering decisions.
 
 ---
 
-## 🌟 Platform Pillars
+## 2. Platform Modules
+- [RahBot AI Business Assistant](file:///home/rahul-kumar/Desktop/Nextorra/Brain/chatbot.md) — Conversational agent, lead extraction, and intent classification.
+- [Admin Management Platform](file:///home/rahul-kumar/Desktop/Nextorra/Brain/admin.md) — `/admin` portal, project CRUD, blog editor, leads pipeline.
+- [Public Blog & Insights Engine](file:///home/rahul-kumar/Desktop/Nextorra/Brain/blog-system.md) — Markdown articles, taxonomy, and JSON-LD schema.
+- [Daily 18:00 IST SEO Automation](file:///home/rahul-kumar/Desktop/Nextorra/Brain/automation.md) — Autonomous topic selection, scheduling, and draft review.
 
-1. **Public Website**: Ultra-fast, SEO-optimized, accessible digital engineering agency showcase.
-2. **AI Business Assistant (`RahBot`)**: 24/7 intelligent visitor assistant for service discovery, pricing guidance, and structured lead qualification.
-3. **Admin Platform (`/admin`)**: Secure, centralized management suite for projects, blogs, leads, chatbot knowledge, and automation control.
-4. **Autonomous Automation Layer**: Daily SEO content generation at 18:00 IST with safety-first human-in-the-loop review.
+---
+
+## 3. Operations & Deployment
+- [Setup & Installation Guide](file:///home/rahul-kumar/Desktop/Nextorra/Brain/SETUP.md) — Fresh machine deployment guide.
+- [Production Readiness Checklist](file:///home/rahul-kumar/Desktop/Nextorra/Brain/PRODUCTION_CHECKLIST.md) — Pre-launch verification checklist.
+- [Verification & Test Matrix](file:///home/rahul-kumar/Desktop/Nextorra/Brain/VERIFICATION_REPORT.md) — Detailed test results and evidence.
+- [Cloudflare Deployment Guide](file:///home/rahul-kumar/Desktop/Nextorra/Brain/deployment.md) — Pages, Functions, D1 bindings, and cron triggers.
+- [Troubleshooting & Runbooks](file:///home/rahul-kumar/Desktop/Nextorra/Brain/troubleshooting.md) — Common error resolution.
+- [Platform Changelog](file:///home/rahul-kumar/Desktop/Nextorra/Brain/changelog.md) — Release notes and historical changes.

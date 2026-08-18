@@ -105,7 +105,7 @@ const AdminLogin: React.FC = () => {
             </form>
 
             <div className="mt-6 pt-6 border-t border-slate-800/80 text-center text-xs text-slate-500">
-              Default credentials: <span className="text-slate-400 font-mono">admin / admin@rahnoxa2025</span>
+              Administrator accounts are provisioned via environment configuration.
             </div>
           </div>
         </div>

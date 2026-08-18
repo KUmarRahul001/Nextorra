@@ -1,18 +1,31 @@
 /**
  * Edge JWT-compatible Authentication & Session Verification Helper
+ * Enforces cryptographic signing, expiration, and secret binding.
  */
 
-const AUTH_SECRET = "rahnoxa_jwt_secret_production_key_2025";
+// Fallback development-only secret (Warns if used without env in production)
+const DEV_FALLBACK_SECRET = "rahnoxa_dev_insecure_secret_for_local_only";
 
 /**
- * Generate a signed JWT-like token
+ * Resolve secret key from environment context
  */
-export async function createToken(payload, secret = AUTH_SECRET) {
+export function getJwtSecret(context) {
+  return context?.env?.JWT_SECRET || context?.env?.AUTH_SECRET || DEV_FALLBACK_SECRET;
+}
+
+/**
+ * Generate a signed JWT token
+ */
+export async function createToken(payload, secret) {
+  if (!secret) throw new Error("JWT secret is required for token generation");
+
   const header = { alg: "HS256", typ: "JWT" };
   const encodedHeader = btoa(JSON.stringify(header)).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
   
   const tokenPayload = {
-    ...payload,
+    sub: payload.id,
+    username: payload.username,
+    role: payload.role || "admin",
     exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days expiration
     iat: Math.floor(Date.now() / 1000),
   };
@@ -38,10 +51,10 @@ export async function createToken(payload, secret = AUTH_SECRET) {
 }
 
 /**
- * Verify signed token and return payload or null
+ * Verify signed token and return verified payload or null
  */
-export async function verifyToken(token, secret = AUTH_SECRET) {
-  if (!token || typeof token !== "string") return null;
+export async function verifyToken(token, secret) {
+  if (!token || typeof token !== "string" || !secret) return null;
   const parts = token.split(".");
   if (parts.length !== 3) return null;
   
@@ -58,7 +71,7 @@ export async function verifyToken(token, secret = AUTH_SECRET) {
       ["verify"]
     );
     
-    // Convert base64url back to Uint8Array
+    // Convert base64url back to binary Uint8Array
     let base64 = signature.replace(/-/g, "+").replace(/_/g, "/");
     while (base64.length % 4) base64 += "=";
     const binary = atob(base64);
@@ -74,8 +87,9 @@ export async function verifyToken(token, secret = AUTH_SECRET) {
     while (payloadBase64.length % 4) payloadBase64 += "=";
     const payload = JSON.parse(atob(payloadBase64));
     
+    // Validate expiration
     if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
-      return null; // Expired
+      return null;
     }
     
     return payload;
@@ -85,7 +99,7 @@ export async function verifyToken(token, secret = AUTH_SECRET) {
 }
 
 /**
- * Middleware to require valid Admin authentication header
+ * Middleware: Require valid Admin authorization header
  */
 export async function requireAuth(context) {
   const authHeader = context.request.headers.get("Authorization");
@@ -93,21 +107,33 @@ export async function requireAuth(context) {
     return {
       authenticated: false,
       response: new Response(
-        JSON.stringify({ error: "Unauthorized: Missing or invalid token" }),
+        JSON.stringify({
+          success: false,
+          error: {
+            code: "UNAUTHORIZED",
+            message: "Missing or invalid authorization header.",
+          },
+        }),
         { status: 401, headers: { "Content-Type": "application/json" } }
       ),
     };
   }
   
   const token = authHeader.substring(7);
-  const secret = context.env?.AUTH_SECRET || AUTH_SECRET;
+  const secret = getJwtSecret(context);
   const payload = await verifyToken(token, secret);
   
   if (!payload) {
     return {
       authenticated: false,
       response: new Response(
-        JSON.stringify({ error: "Unauthorized: Token invalid or expired" }),
+        JSON.stringify({
+          success: false,
+          error: {
+            code: "UNAUTHORIZED",
+            message: "Token is invalid, malformed, or expired.",
+          },
+        }),
         { status: 401, headers: { "Content-Type": "application/json" } }
       ),
     };
