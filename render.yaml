@@ -1,0 +1,58 @@
+# Render Blueprint Deployment Configuration for Rahnoxa Platform
+
+services:
+  # ── Rahnoxa Backend API Gateway (Node.js + Express) ──
+  - type: web
+    name: rahnoxa-backend
+    env: node
+    plan: starter
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SITE_URL
+        value: https://rahnoxa.com
+      - key: CORS_ORIGINS
+        value: https://rahnoxa.com,https://www.rahnoxa.com,https://rahnoxa.pages.dev
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: INITIAL_ADMIN_EMAIL
+        value: contact.rahnoxa@protonmail.com
+      - key: INITIAL_ADMIN_PASSWORD
+        sync: false
+      - key: AI_PROVIDER
+        value: rahnoxa_local
+      - key: AUTO_PUBLISH_BLOGS
+        value: "false"
+
+  # ── Rahnoxa Daily 18:00 IST SEO Cron Worker (Render Cron Job: 12:30 UTC = 18:00 IST) ──
+  - type: cron
+    name: rahnoxa-daily-seo-cron
+    env: node
+    plan: starter
+    region: oregon
+    rootDir: backend
+    schedule: "30 12 * * *"
+    buildCommand: npm install
+    startCommand: node -e "import('./jobs/seoScheduler.js').then(m => m.executeDailySEOAutomation().then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); }))"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: AI_PROVIDER
+        value: rahnoxa_local
+      - key: AUTO_PUBLISH_BLOGS
+        value: "false"
