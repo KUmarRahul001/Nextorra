@@ -208,10 +208,10 @@ const HeroSection: React.FC = () => {
   return (
     <>
       <SEO
-        title="Nextorra – Software Development & Technology Engineering"
-        description="Nextorra builds custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern businesses."
-        keywords="software development, enterprise software, web applications, mobile apps, SaaS development, custom ERP, API integrations, Nextorra"
-        url="https://nextorra.pages.dev/"
+        title="Rahnoxa – Software Development & Technology Engineering"
+        description="Rahnoxa builds custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern businesses."
+        keywords="software development, enterprise software, web applications, mobile apps, SaaS development, custom ERP, API integrations, Rahnoxa"
+        url="https://rahnoxa.pages.dev/"
         type="website"
       />
 

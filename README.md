@@ -1,15 +1,17 @@
-# 🌐 Nextorra Website
+# 🌐 Rahnoxa Website
 
-Nextorra is a sleek, responsive website designed to showcase tech-driven services and solutions. Built with a modern frontend stack, it offers fast performance, clean design, and easy scalability.
+Rahnoxa is a modern, responsive website designed to showcase tech-driven services and solutions. Built with a modern frontend stack, it offers fast performance, clean design, and easy scalability.
 
 ## 🖥️ Live URL
 
-👉 [Visit Project](https://nextorra.netlify.app) 
+👉 [Visit Project](https://rahnoxa.pages.dev) 
+
 ## 🛠️ Tech Stack
 
-- ⚛️ React / Next.js
+- ⚛️ React + TypeScript + Vite
 - 🎨 Tailwind CSS
-- 🔐 Firebase Auth / Backend (Optional if used)
+- 🎬 Framer Motion
+- ☁️ Cloudflare Pages
 
 ## 📁 Getting Started
 
@@ -18,5 +20,8 @@ Follow the steps below to run the project locally:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/KUmarRahul001/nextorra.git
-cd nextorra
+git clone https://github.com/KUmarRahul001/Nextorra.git
+cd Nextorra
+npm install
+npm run dev
+```

@@ -11,7 +11,7 @@ const PrivacyPolicy: React.FC = () => {
         <section className="mb-10">
           <h2 className="text-2xl font-semibold text-white mb-3">Introduction</h2>
           <p>
-            At <a href="/" className="text-accent font-semibold">Nextorra</a>, your privacy is our priority. This Privacy Policy outlines how we collect, use, and protect your data when you interact with our services.
+            At <a href="/" className="text-accent font-semibold">Rahnoxa</a>, your privacy is our priority. This Privacy Policy outlines how we collect, use, and protect your data when you interact with our services.
           </p>
         </section>
 
@@ -41,10 +41,10 @@ const PrivacyPolicy: React.FC = () => {
           <p>
             You have the right to view, update, or delete your personal data. Contact us at{' '}
             <a
-              href="mailto:contact@nextorra.com"
+              href="mailto:contact.rahnoxa@protonmail.com"
               className="text-accent underline hover:text-white transition-colors"
             >
-              contact@nextorra.com
+              contact.rahnoxa@protonmail.com
             </a>{' '}
             to request any changes.
           </p>

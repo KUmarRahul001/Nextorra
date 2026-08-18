@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import config from '../config';
 import HeroSection from '../components/sections/HeroSection';
 import BusinessSolutions from '../components/sections/BusinessSolutions';
 import ServicesSection from '../components/sections/ServicesSection';
@@ -36,16 +37,16 @@ const Home: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Nextorra – Software Development &amp; Technology Engineering</title>
+        <title>{`${config.siteName} – Software Development & Technology Engineering`}</title>
         <meta
           name="description"
-          content="Nextorra is a software engineering company building custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations."
+          content={`${config.siteName} is a software engineering company building custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations.`}
         />
         <meta
           name="keywords"
-          content="Nextorra, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration"
+          content={`${config.siteName}, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration`}
         />
-        <link rel="canonical" href="https://nextorra.netlify.app/" />
+        <link rel="canonical" href={`${config.siteUrl}/`} />
       </Helmet>
 
       <div>
@@ -64,13 +65,13 @@ const Home: React.FC = () => {
         {/* 5. Technology Stack */}
         <TechStackSection />
 
-        {/* 6. Why Nextorra / Principles */}
+        {/* 6. Why Rahnoxa / Principles */}
         <WhyChooseUs />
 
         {/* 7. Structured Delivery Process */}
         <DeliveryProcess />
 
-        {/* 8. About Nextorra (Truthful capability positioning) */}
+        {/* 8. About Rahnoxa (Truthful capability positioning) */}
         <AboutSection />
 
         {/* 9. Engagement Models & Pricing */}

@@ -1,5 +1,6 @@
 import React from "react";
-import SEO from "../components/SEO"; // ✅ import your reusable SEO component
+import SEO from "../components/SEO";
+import config from "../config";
 
 const internships = [
   { title: "Web Development", gif: "/gifs/web-development.gif", applyLink: "https://forms.gle/b5EV7pyzcN6T53rm6" },
@@ -22,12 +23,12 @@ const Internship: React.FC = () => {
     <>
       {/* ✅ SEO Section using reusable SEO component */}
       <SEO
-        title="Internship Program – Nextorra"
-        description="Join Nextorra’s internship program to gain real-world experience in web development, data science, AI, machine learning, Android, and more. Build your tech career with hands-on projects."
-        keywords="Nextorra internship, web development internship, AI internship, machine learning internship, Android development, Flutter internship, data science, programming internship"
-        url="https://nextorra.netlify.app/internship"
-        canonical="https://nextorra.netlify.app/internship"
-        image="https://nextorra.netlify.app/assets/og-image.jpg"
+        title={`Internship Program – ${config.siteName}`}
+        description={`Join ${config.siteName}’s internship program to gain real-world experience in web development, data science, AI, machine learning, Android, and more. Build your tech career with hands-on projects.`}
+        keywords={`${config.siteName} internship, web development internship, AI internship, machine learning internship, Android development, Flutter internship, data science, programming internship`}
+        url={`${config.siteUrl}/internship`}
+        canonical={`${config.siteUrl}/internship`}
+        image={`${config.siteUrl}/assets/og-image.jpg`}
         type="website"
       />
 

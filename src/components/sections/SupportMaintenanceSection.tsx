@@ -49,7 +49,7 @@ const SupportMaintenanceSection: React.FC = () => {
                 We Maintain and Support What We Build
               </h2>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-                Software is never finished on launch day. Nextorra provides reliable maintenance agreements and technical support so your applications stay secure, fast, and compatible with evolving operating environments.
+                Software is never finished on launch day. Rahnoxa provides reliable maintenance agreements and technical support so your applications stay secure, fast, and compatible with evolving operating environments.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -84,7 +84,7 @@ const SupportMaintenanceSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="lg:col-span-5 bg-slate-950/60 border border-slate-800 rounded-xl p-6 font-mono text-xs text-slate-300"
             >
-              <div className="text-slate-500 mb-3">// Nextorra SLA &amp; Maintenance Policy</div>
+              <div className="text-slate-500 mb-3">// Rahnoxa SLA &amp; Maintenance Policy</div>
               <div className="space-y-2">
                 <div className="flex justify-between py-1.5 border-b border-slate-800/80">
                   <span className="text-slate-400">Response Window:</span>

@@ -6,15 +6,15 @@ const testimonials = [
   {
     id: 1,
     name: 'Rahul Kumar',
-    position: 'Founder, Nextorra',
-    quote: 'We are a small team focused on delivering honest and effective marketing solutions. Every project helps us learn and improve.',
+    position: 'Founder, Rahnoxa',
+    quote: 'We are a focused engineering team delivering robust and scalable software architectures. Every project pushes our technical standards forward.',
     stars: 5
   },
   {
     id: 2,
     name: 'Anita Sharma',
     position: 'Freelance Consultant',
-    quote: 'Nextorra’s transparent approach gave me confidence as a small business owner starting online.',
+    quote: 'Rahnoxa’s transparent approach gave me confidence as a small business owner starting online.',
     stars: 5
   },
   {

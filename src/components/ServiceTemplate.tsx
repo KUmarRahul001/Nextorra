@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, Star } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import Breadcrumb from "./Breadcrumb";
+import config from "../config";
 
 interface ServiceTemplateProps {
   title: string;
@@ -31,7 +32,7 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const pageUrl = `https://nextorra.netlify.app${location.pathname}`;
+  const pageUrl = `${config.siteUrl}${location.pathname}`;
 
   // ✅ Schema: Service
   const serviceSchema = {
@@ -42,9 +43,9 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
     serviceType: title,
     provider: {
       "@type": "Organization",
-      name: "Nextorra",
-      url: "https://nextorra.netlify.app",
-      logo: "https://nextorra.netlify.app/logo.png",
+      name: config.siteName,
+      url: config.siteUrl,
+      logo: `${config.siteUrl}/logo.png`,
     },
     areaServed: "IN",
     offers: {
@@ -53,7 +54,7 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
       priceCurrency: "INR",
       price: pricing.startingAt,
       availability: "https://schema.org/InStock",
-      category: "Digital Marketing & Web Services",
+      category: "Software Development & Technology Engineering",
     },
   };
 
@@ -66,13 +67,13 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://nextorra.netlify.app/",
+        item: `${config.siteUrl}/`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Services",
-        item: "https://nextorra.netlify.app/services",
+        item: `${config.siteUrl}/services`,
       },
       {
         "@type": "ListItem",
@@ -87,26 +88,26 @@ const ServiceTemplate: React.FC<ServiceTemplateProps> = ({
     <div className="min-h-screen pt-20 bg-gradient-to-b from-gray-50 to-white">
       {/* ✅ SEO Meta Tags */}
       <Helmet>
-        <title>{`${title} – Nextorra`}</title>
+        <title>{`${title} – ${config.siteName}`}</title>
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content={`${title.toLowerCase()}, ${title} service, Nextorra, digital marketing, automation, business solutions`}
+          content={`${title.toLowerCase()}, ${title} service, ${config.siteName}, custom software, web development, enterprise engineering, tech solutions`}
         />
         <link rel="canonical" href={pageUrl} />
 
         {/* ✅ Open Graph */}
-        <meta property="og:title" content={`${title} – Nextorra`} />
+        <meta property="og:title" content={`${title} – ${config.siteName}`} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={pageUrl} />
-        <meta property="og:image" content="https://nextorra.netlify.app/assets/og-image.png" />
+        <meta property="og:image" content={`${config.siteUrl}/assets/og-image.png`} />
         <meta property="og:type" content="website" />
 
         {/* ✅ Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${title} – Nextorra`} />
+        <meta name="twitter:title" content={`${title} – ${config.siteName}`} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content="https://nextorra.netlify.app/assets/og-image.png" />
+        <meta name="twitter:image" content={`${config.siteUrl}/assets/og-image.png`} />
 
         {/* ✅ JSON-LD Schema */}
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>

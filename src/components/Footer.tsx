@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
               className="flex items-center gap-3 mb-4 text-left"
             >
               <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-lg">
-                N
+                R
               </div>
               <span className="text-2xl font-bold tracking-tight text-white">
                 {config.siteName}
@@ -98,7 +98,7 @@ const Footer: React.FC = () => {
                 { name: "About", id: "about" },
                 { name: "Services Overview", path: "/services" },
                 { name: "Work & Demonstrations", id: "portfolio" },
-                { name: "Why Nextorra", id: "why-choose" },
+                { name: "Why Rahnoxa", id: "why-choose" },
                 { name: "Internships", path: "/internship" },
                 { name: "Start a Project", path: "/get-started" },
               ].map((link, index) => (
@@ -149,7 +149,7 @@ const Footer: React.FC = () => {
         {/* Bottom Legal & Copyright Bar */}
         <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <div>
-            &copy; {currentYear} Nextorra. All rights reserved. Software Development &amp; Technology Engineering.
+            &copy; {currentYear} Rahnoxa. All rights reserved. Software Development &amp; Technology Engineering.
           </div>
           <div className="flex gap-6">
             <button

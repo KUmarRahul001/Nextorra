@@ -1,10 +1,10 @@
 /**
- * SINGLE SOURCE OF TRUTH — Nextorra Services
+ * SINGLE SOURCE OF TRUTH — Rahnoxa Services
  *
  * All service navigation, listings, contact selectors, and route generation
  * must consume this file. Do NOT maintain separate services[] arrays elsewhere.
  *
- * Tier 1 (primary):   Software & Engineering services — Nextorra's core offering
+ * Tier 1 (primary):   Software & Engineering services — Rahnoxa's core offering
  * Tier 2 (secondary): Marketing & Business Support — add-on services
  */
 

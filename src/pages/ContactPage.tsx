@@ -88,43 +88,43 @@ const ContactPage: React.FC = () => {
     <>
       {/* ✅ SEO Optimization */}
       <Helmet>
-        <title>Start a Project / Contact – Nextorra</title>
+        <title>{`Start a Project / Contact – ${config.siteName}`}</title>
         <meta
           name="description"
-          content="Discuss your software, web application, mobile app, ERP, or SaaS project with Nextorra. Submit an enquiry to schedule a technical discovery call."
+          content={`Discuss your software, web application, mobile app, ERP, or SaaS project with ${config.siteName}. Submit an enquiry to schedule a technical discovery call.`}
         />
         <meta
           name="keywords"
-          content="Nextorra contact, hire software developers, custom web app, mobile app development, custom ERP software, SaaS development, API integration enquiry"
+          content={`${config.siteName} contact, hire software developers, custom web app, mobile app development, custom ERP software, SaaS development, API integration enquiry`}
         />
-        <link rel="canonical" href="https://nextorra.netlify.app/get-started" />
+        <link rel="canonical" href={`${config.siteUrl}/get-started`} />
 
         {/* ✅ Open Graph (Social Preview) */}
-        <meta property="og:title" content="Start a Project / Contact – Nextorra" />
+        <meta property="og:title" content={`Start a Project / Contact – ${config.siteName}`} />
         <meta
           property="og:description"
-          content="Discuss your software, web application, mobile app, or enterprise system project with Nextorra."
+          content={`Discuss your software, web application, mobile app, or enterprise system project with ${config.siteName}.`}
         />
         <meta
           property="og:url"
-          content="https://nextorra.netlify.app/get-started"
+          content={`${config.siteUrl}/get-started`}
         />
         <meta
           property="og:image"
-          content="https://nextorra.netlify.app/assets/og-image.png"
+          content={`${config.siteUrl}/assets/og-image.png`}
         />
         <meta property="og:type" content="website" />
 
         {/* ✅ Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Start a Project / Contact – Nextorra" />
+        <meta name="twitter:title" content={`Start a Project / Contact – ${config.siteName}`} />
         <meta
           name="twitter:description"
-          content="Discuss your software, web application, mobile app, or enterprise system project with Nextorra."
+          content={`Discuss your software, web application, mobile app, or enterprise system project with ${config.siteName}.`}
         />
         <meta
           name="twitter:image"
-          content="https://nextorra.netlify.app/assets/og-image.png"
+          content={`${config.siteUrl}/assets/og-image.png`}
         />
       </Helmet>
 

@@ -50,7 +50,7 @@ const WhyChooseUs: React.FC = () => {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <span className="inline-block px-3.5 py-1.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
-            Why Nextorra
+            Why Rahnoxa
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
             Engineering Principles You Can Rely On

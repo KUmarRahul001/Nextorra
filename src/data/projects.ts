@@ -1,5 +1,5 @@
 /**
- * Portfolio / Projects data — Nextorra
+ * Portfolio / Projects data — Rahnoxa
  *
  * These are demonstration items used to showcase capabilities while real
  * client projects are being built. They are intentionally marked as demo

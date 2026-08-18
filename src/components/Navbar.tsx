@@ -88,7 +88,7 @@ const Navbar: React.FC = () => {
               </div>
             </div>
             <span className="hidden sm:block text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 via-accent to-cyan-500 bg-clip-text text-transparent">
-              Nextorra
+              Rahnoxa
             </span>
           </Link>
 

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { tier1Services, tier2Services, type Service } from '../data/services';
+import config from '../config';
 
 /** Map service slug → icon element */
 const serviceIcons: Record<string, React.ReactNode> = {
@@ -71,31 +72,31 @@ const ServicesOverview: React.FC = () => {
     name: 'Software Engineering & Business Services',
     provider: {
       '@type': 'Organization',
-      name: 'Nextorra',
-      url: 'https://nextorra.netlify.app',
-      logo: 'https://nextorra.netlify.app/logo.png',
+      name: config.siteName,
+      url: config.siteUrl,
+      logo: `${config.siteUrl}/logo.png`,
     },
     areaServed: ['IN', 'GB', 'CA', 'AT', 'AU'],
     serviceType: [...tier1Services, ...tier2Services].map((s) => s.name),
     description:
-      'Nextorra provides software engineering services — web apps, mobile apps, ERP systems, SaaS platforms, custom software — alongside marketing support services.',
+      `${config.siteName} provides software engineering services — web apps, mobile apps, ERP systems, SaaS platforms, custom software — alongside marketing support services.`,
     offers: {
       '@type': 'Offer',
       priceCurrency: 'INR',
       price: 'Custom',
       availability: 'https://schema.org/InStock',
-      url: 'https://nextorra.netlify.app/services',
+      url: `${config.siteUrl}/services`,
     },
   };
 
   return (
     <>
       <SEO
-        title="Services – Nextorra"
-        description="Web development, mobile apps, ERP, SaaS platforms, custom software, and marketing support services from Nextorra."
-        keywords="Nextorra services, web development, mobile apps, ERP, SaaS, custom software, API integration, app development"
-        url="https://nextorra.netlify.app/services"
-        canonical="https://nextorra.netlify.app/services"
+        title={`Services – ${config.siteName}`}
+        description={`Web development, mobile apps, ERP, SaaS platforms, custom software, and marketing support services from ${config.siteName}.`}
+        keywords={`${config.siteName} services, web development, mobile apps, ERP, SaaS, custom software, API integration, app development`}
+        url={`${config.siteUrl}/services`}
+        canonical={`${config.siteUrl}/services`}
         schema={serviceSchema}
       />
 

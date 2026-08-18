@@ -6,7 +6,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { resolve } from 'path';
 import { copyFileSync } from 'fs';
 
-const SITE_URL = 'https://nextorra.pages.dev';
+const SITE_URL = 'https://rahnoxa.pages.dev';
 
 export default defineConfig({
   plugins: [
@@ -55,18 +55,18 @@ export default defineConfig({
       minify: true,
       inject: {
         data: {
-          title: 'Nextorra – Software Development & Technology Engineering',
+          title: 'Rahnoxa – Software Development & Technology Engineering',
           description:
-            'Nextorra builds custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern businesses.',
+            'Rahnoxa builds custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern businesses.',
           keywords:
-            'Nextorra, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration',
-          ogTitle: 'Nextorra – Software Development & Technology Engineering',
+            'Rahnoxa, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration',
+          ogTitle: 'Rahnoxa – Software Development & Technology Engineering',
           ogDescription:
             'Software engineering company building web applications, mobile apps, ERP systems, and custom software.',
           ogUrl: SITE_URL,
           ogImage: `${SITE_URL}/og-image.png`,
           twitterCard: 'summary_large_image',
-          twitterCreator: '@NextorraOfficial',
+          twitterCreator: '@RahnoxaOfficial',
         },
       },
     }),

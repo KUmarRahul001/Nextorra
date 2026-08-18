@@ -17,7 +17,7 @@ const AboutSection: React.FC = () => {
             className="lg:col-span-6"
           >
             <span className="inline-block px-3.5 py-1.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
-              About Nextorra
+              About Rahnoxa
             </span>
 
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">
@@ -25,7 +25,7 @@ const AboutSection: React.FC = () => {
             </h2>
 
             <p className="text-slate-300 text-base leading-relaxed mb-6">
-              Nextorra is a software development and technology solutions company. We specialize in designing, building, and deploying digital applications — including web platforms, mobile apps, enterprise ERP modules, SaaS products, and custom API integrations.
+              Rahnoxa is a software development and technology solutions company. We specialize in designing, building, and deploying digital applications — including web platforms, mobile apps, enterprise ERP modules, SaaS products, and custom API integrations.
             </p>
 
             <p className="text-slate-400 text-sm leading-relaxed mb-8">

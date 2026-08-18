@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import config from "../config";
 
 const Breadcrumb: React.FC = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const Breadcrumb: React.FC = () => {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://nextorra.netlify.app/",
+      item: `${config.siteUrl}/`,
     },
     ...pathnames.map((name, index) => {
       const route = `/${pathnames.slice(0, index + 1).join("/")}`;
@@ -26,7 +27,7 @@ const Breadcrumb: React.FC = () => {
         "@type": "ListItem",
         position: index + 2,
         name: formattedName,
-        item: `https://nextorra.netlify.app${route}`,
+        item: `${config.siteUrl}${route}`,
       };
     }),
   ];

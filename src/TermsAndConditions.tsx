@@ -10,14 +10,14 @@ const TermsAndConditions: React.FC = () => {
       <section className="mb-10 animate-slide-up">
         <h2 className="text-2xl font-semibold text-primary mb-4">1. Agreement to Terms</h2>
         <p className="text-gray mb-4">
-          By accessing and using Nextorra's services, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not access our services.
+          By accessing and using Rahnoxa's services, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not access our services.
         </p>
       </section>
 
       <section className="mb-10 animate-slide-up">
         <h2 className="text-2xl font-semibold text-primary mb-4">2. Services</h2>
         <p className="text-gray mb-4">
-          Nextorra provides digital marketing and development services including but not limited to social media marketing, web development, app development, and digital advertising.
+          Rahnoxa provides digital marketing and software development services including but not limited to web platforms, custom applications, mobile apps, ERP systems, and API integrations.
         </p>
         <ul className="list-disc list-inside text-gray space-y-2 pl-5">
           <li>All services are provided "as is" without warranty of any kind</li>
@@ -41,7 +41,7 @@ const TermsAndConditions: React.FC = () => {
       <section className="mb-10 animate-slide-up">
         <h2 className="text-2xl font-semibold text-primary mb-4">4. Intellectual Property</h2>
         <p className="text-gray mb-4">
-          All materials, including designs, code, and content created by Nextorra remain our intellectual property until full payment is received and ownership transfer is explicitly stated in writing.
+          All materials, including designs, code, and content created by Rahnoxa remain our intellectual property until full payment is received and ownership transfer is explicitly stated in writing.
         </p>
       </section>
 
@@ -61,7 +61,7 @@ const TermsAndConditions: React.FC = () => {
       <section className="mb-10 animate-slide-up">
         <h2 className="text-2xl font-semibold text-primary mb-4">6. Limitation of Liability</h2>
         <p className="text-gray mb-4">
-          Nextorra shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of our services.
+          Rahnoxa shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of our services.
         </p>
       </section>
 

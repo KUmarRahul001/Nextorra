@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { tier1Services, tier2Services, type Service } from '../../data/services';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 /** Map service slug → lucide-react icon element */
 const serviceIcons: Record<string, React.ReactNode> = {
@@ -101,12 +102,12 @@ const ServicesSection: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Our Services – Nextorra</title>
+        <title>{`Our Services – ${config.siteName}`}</title>
         <meta
           name="description"
-          content="Nextorra builds web apps, mobile apps, ERP systems, SaaS platforms, and custom software — plus marketing support services."
+          content={`${config.siteName} builds web apps, mobile apps, ERP systems, SaaS platforms, and custom software — plus marketing support services.`}
         />
-        <link rel="canonical" href="https://nextorra.netlify.app/services" />
+        <link rel="canonical" href={`${config.siteUrl}/services`} />
       </Helmet>
 
       <section className="section bg-gradient-to-b from-gray-900 to-primary-dark relative" id="services">
