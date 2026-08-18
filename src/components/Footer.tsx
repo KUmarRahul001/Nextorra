@@ -97,6 +97,7 @@ const Footer: React.FC = () => {
                 { name: "Home", id: "hero" },
                 { name: "About", id: "about" },
                 { name: "Services Overview", path: "/services" },
+                { name: "Engineering Blog", path: "/blog" },
                 { name: "Work & Demonstrations", id: "portfolio" },
                 { name: "Why Rahnoxa", id: "why-choose" },
                 { name: "Internships", path: "/internship" },

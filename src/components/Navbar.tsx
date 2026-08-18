@@ -186,6 +186,16 @@ const Navbar: React.FC = () => {
             >
               Work
             </button>
+            <Link 
+              to="/blog" 
+              className="nav-link px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+              onClick={() => {
+                setIsOpen(false);
+                setServicesOpen(false);
+              }}
+            >
+              Blog
+            </Link>
             <button 
               onClick={() => handleScrollLink('why-choose')} 
               className="nav-link px-3 py-2" 
@@ -246,6 +256,14 @@ const Navbar: React.FC = () => {
             About
           </button>
           
+          <Link
+            to="/blog"
+            className="text-gray-700 hover:text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Blog &amp; Insights
+          </Link>
+
           <Link
             to="/internship"
             onClick={() => setIsOpen(false)}

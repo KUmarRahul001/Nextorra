@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
+import RahBot from '../components/chatbot/RahBot';
 
 const Layout: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const Layout: React.FC = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <RahBot />
     </div>
   );
 };
