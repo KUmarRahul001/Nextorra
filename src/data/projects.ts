@@ -35,13 +35,6 @@ export interface Project {
 // These are illustrative capability demonstrations, not client projects.
 // ---------------------------------------------------------------------------
 
-import projectImage from '../components/assets/image.png';
-import CamepineImage from '../components/assets/campeing_.png';
-import TechStartupImage from '../components/assets/Tech_Startup_Branding.png';
-import FitnessTrackerImage from '../components/assets/Fitness_tracking.png';
-import ResturantImage from '../components/assets/resturant.png';
-import CataLogProImage from '../components/assets/catalogPro.png';
-
 export const projects: Project[] = [
   {
     id: 'ecommerce-ui-demo',
@@ -50,7 +43,7 @@ export const projects: Project[] = [
     tags: ['UI/UX', 'React', 'Node.js'],
     description: 'A demonstration of a responsive e-commerce interface with product listing and checkout flows.',
     isDemo: true,
-    images: [projectImage],
+    images: ['https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80'],
     featured: true,
   },
   {
@@ -60,7 +53,7 @@ export const projects: Project[] = [
     tags: ['Social Media', 'Content Strategy', 'Analytics'],
     description: 'Sample social media campaign creative and strategy for a fashion retail brand.',
     isDemo: true,
-    images: [CamepineImage],
+    images: ['https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80'],
     featured: false,
   },
   {
@@ -70,7 +63,7 @@ export const projects: Project[] = [
     tags: ['Branding', 'Logo Design', 'Style Guide'],
     description: 'Demonstration of a complete brand identity package for a technology startup.',
     isDemo: true,
-    images: [TechStartupImage],
+    images: ['https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80'],
     featured: true,
   },
   {
@@ -80,7 +73,7 @@ export const projects: Project[] = [
     tags: ['React Native', 'Firebase', 'UX Design'],
     description: 'A mobile app UI demonstration for activity and fitness tracking across Android and iOS.',
     isDemo: true,
-    images: [FitnessTrackerImage],
+    images: ['https://images.unsplash.com/photo-1510519138161-58444cbfdb7d?auto=format&fit=crop&w=1200&q=80'],
     featured: true,
   },
   {
@@ -90,7 +83,7 @@ export const projects: Project[] = [
     tags: ['Next.js', 'Tailwind CSS', 'Responsive Design'],
     description: 'Responsive website concept for a restaurant, including menu and reservation flow.',
     isDemo: true,
-    images: [ResturantImage],
+    images: ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'],
     featured: false,
   },
   {
@@ -100,7 +93,7 @@ export const projects: Project[] = [
     tags: ['Print Design', 'Digital', 'Brand Identity'],
     description: 'Demonstration of print and digital product catalogue design and layout.',
     isDemo: true,
-    images: [CataLogProImage],
+    images: ['https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80'],
     featured: false,
   },
 ];

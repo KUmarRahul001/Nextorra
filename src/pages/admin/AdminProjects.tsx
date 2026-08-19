@@ -9,12 +9,16 @@ import {
   Eye,
   X,
   Sparkles,
+  Upload,
+  Image as ImageIcon,
+  Loader2,
 } from 'lucide-react';
 import { api } from '../../lib/api';
 
 const AdminProjects: React.FC = () => {
   const [projects, setProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<any | null>(null);
 
@@ -399,14 +403,65 @@ const AdminProjects: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Thumbnail / Gallery Image Asset URL</label>
-                <input
-                  type="text"
-                  value={formData.thumbnail}
-                  onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
-                  placeholder="/src/components/assets/image.png"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
-                />
+                <label className="block text-slate-300 font-medium mb-1">
+                  Project Image / Cloudinary Asset
+                </label>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <label className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-950 border border-dashed border-slate-700 hover:border-blue-500 rounded-xl text-slate-300 text-xs font-semibold transition-colors">
+                      {isUploading ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
+                          <span>Uploading to Cloudinary CDN...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="h-4 w-4 text-cyan-400" />
+                          <span>Upload Image from Device</span>
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={isUploading}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          setIsUploading(true);
+                          try {
+                            const res = await api.uploadImage(file, 'rahnoxa/projects');
+                            if (res.url) {
+                              setFormData({ ...formData, thumbnail: res.url });
+                            }
+                          } catch (err: any) {
+                            alert(err.message || 'Image upload to Cloudinary failed');
+                          } finally {
+                            setIsUploading(false);
+                          }
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+
+                    {formData.thumbnail && (
+                      <div className="w-12 h-10 rounded-lg overflow-hidden bg-slate-950 border border-slate-700 flex-shrink-0">
+                        <img
+                          src={formData.thumbnail}
+                          alt="Thumbnail preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <input
+                    type="url"
+                    value={formData.thumbnail}
+                    onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
+                    placeholder="https://res.cloudinary.com/... or CDN URL"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 text-xs"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center gap-2 pt-1">

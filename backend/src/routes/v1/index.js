@@ -8,6 +8,7 @@ import chatRoutes from './chat.routes.js';
 import knowledgeRoutes from './knowledge.routes.js';
 import automationRoutes from './automation.routes.js';
 import settingsRoutes from './settings.routes.js';
+import uploadRoutes from './upload.routes.js';
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use('/chat', chatRoutes);
 router.use('/knowledge', knowledgeRoutes);
 router.use('/automation', automationRoutes);
 router.use('/settings', settingsRoutes);
+router.use('/upload', uploadRoutes);
 
 export default router;

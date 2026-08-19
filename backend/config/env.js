@@ -49,6 +49,14 @@ export const config = {
   supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '',
   supabaseJwksUrl: process.env.SUPABASE_JWKS_URL || '',
   databaseUrl: process.env.DATABASE_URL || '',
+
+  // Cloudinary CDN & Asset Storage
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
+    apiKey: process.env.CLOUDINARY_API_KEY || '',
+    apiSecret: process.env.CLOUDINARY_API_SECRET || '',
+    url: process.env.CLOUDINARY_URL || '',
+  },
   
   // Initial Admin Provisioning
   initialAdminEmail: process.env.INITIAL_ADMIN_EMAIL || 'contact.rahnoxa@protonmail.com',

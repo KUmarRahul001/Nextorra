@@ -253,6 +253,32 @@ export const api = {
     });
   },
 
+  // ── Media & Image CDN (Cloudinary) ──
+  async uploadImage(file: File | Blob, folder = 'rahnoxa/showcases') {
+    const baseUrl = getBaseUrl();
+    const token = getAuthToken();
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('folder', folder);
+
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const res = await fetch(`${baseUrl}/upload/image`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error?.message || 'Failed to upload image to CDN');
+    }
+    return data;
+  },
+
   // ── Settings ──
   async getSettings() {
     return apiFetch('/settings');
@@ -265,3 +291,4 @@ export const api = {
     });
   },
 };
+
