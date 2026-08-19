@@ -25,14 +25,14 @@ export function buildBotDecision(
     case 'greeting':
       reply =
         'Hello! I am **RahBot**, the AI Business Assistant for **Rahnoxa**.\n\n' +
-        'I can help you explore our software development services (Custom ERP, Full-Stack Web, Mobile Apps, SaaS, API Integrations), estimate project scopes, or prepare an engineering review.\n\n' +
+        'I can help you explore our software engineering services (Custom ERP, Full-Stack Web, Mobile Apps, SaaS, API Integrations), view transparent Indian pricing starting from ₹1,499–₹4,999, or prepare an emergency rescue request.\n\n' +
         'How can I help you today?';
       break;
 
     // ── 2. Thanks ───────────────────────────────────────────────────────────────
     case 'thanks':
       reply =
-        "You're very welcome! If you have any further questions about our tech stack, service packages, or need a technical review for your project, feel free to ask anytime.";
+        "You're very welcome! If you have any further questions about our tech stack, pricing tiers, or need an engineering review for your project, feel free to ask anytime.";
       break;
 
     // ── 3. Goodbye ──────────────────────────────────────────────────────────────
@@ -44,38 +44,43 @@ export function buildBotDecision(
     // ── 4. Service Discovery (Broad Catalog) ────────────────────────────────────
     case 'service_discovery':
       reply =
-        'Rahnoxa is a specialized technology engineering company. Here is our complete service spectrum:\n\n' +
+        'Rahnoxa provides transparent, affordable software engineering & digital services across India:\n\n' +
         '### **Core Software Engineering (Tier 1)**\n' +
-        '- [Custom ERP & Enterprise Applications](/services/erp-enterprise-applications)\n' +
-        '- [Full-Stack Web Applications](/services/full-stack-web-apps)\n' +
-        '- [Multi-Tenant SaaS Products](/services/saas-products)\n' +
-        '- [Mobile App Development](/services/app-development)\n' +
-        '- [Custom Software & API Integration](/services/custom-software-api-integration)\n' +
-        '- [Desktop Applications](/services/desktop-applications)\n' +
-        '- [Modern Website Design](/services/web-development)\n\n' +
+        '- [Modern Website Design](/services/web-development) — *Starts at ₹4,999*\n' +
+        '- [Full-Stack Web Applications](/services/full-stack-web-apps) — *Starts at ₹39,999*\n' +
+        '- [Mobile App Development](/services/app-development) — *Starts at ₹44,999*\n' +
+        '- [Custom Software & API Integration](/services/custom-software-api-integration) — *Starts at ₹1,999*\n' +
+        '- [Custom ERP Systems](/services/erp-enterprise-applications) — *Starts at ₹75,000*\n' +
+        '- [Multi-Tenant SaaS Products](/services/saas-products) — *Starts at ₹64,999*\n' +
+        '- [Desktop Applications](/services/desktop-applications) — *Starts at ₹34,999*\n\n' +
         '### **Business Growth & Marketing (Tier 2)**\n' +
-        '- [B2B Lead Generation](/services/lead-generation) | [Social Media Marketing](/services/social-media-marketing)\n' +
-        '- [Email Marketing](/services/email-marketing) | [SMS Marketing & SMPP](/services/sms-marketing)\n' +
-        '- [Voice Call Services](/services/voice-call-services) | [Missed Call Service](/services/missed-call-service)\n' +
-        '- [Brand & Graphic Design](/services/graphic-design)\n\n' +
-        'Feel free to ask for specific details about any service or its technology stack!';
+        '- [B2B Lead Generation & GBP](/services/lead-generation) — *Starts at ₹2,499*\n' +
+        '- [Social Media Marketing & Creatives](/services/social-media-marketing) — *Starts at ₹2,499*\n' +
+        '- [Brand & Graphic Design](/services/graphic-design) — *Starts at ₹2,499*\n' +
+        '- [Email Deliverability & Marketing](/services/email-marketing) — *Starts at ₹1,999*\n' +
+        '- [SMS & Transactional OTPs](/services/sms-marketing) — *Starts at ₹1,999*\n\n' +
+        '### **Emergency Rescue Tiers 🚨**\n' +
+        '- **Website Crash Fix**: *₹2,999 (4–8h SLA)* | **DNS/SSL Fix**: *₹1,499 (2–4h SLA)*\n' +
+        '- **Spam Email / SPF Fix**: *₹1,999 (2–4h SLA)* | **24h Express Launch**: *₹7,499*\n\n' +
+        'Which service or package would you like to explore?';
       break;
 
     // ── 5. Service Information ──────────────────────────────────────────────────
     case 'service_information':
       if (service) {
         reply =
-          `Yes! **${service.name}** is one of Rahnoxa's core engineering capabilities.\n\n` +
+          `Yes! **${service.name}** is one of Rahnoxa's core capabilities.\n\n` +
           `### Overview:\n${service.summary}\n\n` +
+          `### Pricing & Turnaround:\n` +
+          `- **Pricing**: ${service.pricing}\n` +
+          `- **Delivery**: Discovery & quote SLA within **24 to 48 hours**.\n\n` +
           `### Core Capabilities:\n` +
           service.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
           `\n\n### Tech Stack:\n- ${service.technologies.join(', ')}\n\n` +
-          `### Key Benefits:\n` +
-          service.benefits.slice(0, 3).map((b) => `- ${b}`).join('\n') +
-          `\n\nExplore our [${service.name} Services](${service.route}) for in-depth architecture details.`;
+          `Explore our [${service.name} Service Page](${service.route}) for complete package specifications.`;
       } else {
         reply =
-          'We engineer custom software systems across ERP, Web, Mobile, and Cloud platforms. Which specific domain would you like to explore?';
+          'We engineer custom software systems across ERP, Web, Mobile, and Cloud platforms with transparent pricing starting at ₹4,999. Which specific domain would you like to explore?';
       }
       break;
 
@@ -114,22 +119,22 @@ export function buildBotDecision(
     case 'package_information':
       if (service) {
         reply =
-          `### Pricing & Engagement for ${service.name}:\n` +
-          `- **Model**: ${service.pricing}\n` +
-          `- **Review SLA**: ${service.sla}\n\n` +
-          `You can review complete tier specifications at [${service.name}](${service.route}).`;
+          `### Official Transparent Pricing for ${service.name}:\n` +
+          `- **Pricing Structure**: ${service.pricing}\n` +
+          `- **Review & Discovery SLA**: ${service.sla}\n` +
+          `- **Tax Policy**: Excludes 18% GST where applicable.\n` +
+          `- **Asset Ownership**: 100% Client Ownership of domain, code, and tokens.\n\n` +
+          `You can view package inclusions and choose a plan at [${service.name}](${service.route}).`;
       } else {
         reply =
-          'We offer structured engagement models tailored to your project scope:\n\n' +
-          '1. **Milestone-Based Fixed Scope**: Defined deliverables with staged sign-offs.\n' +
-          '2. **Dedicated Sprint Capacity**: Agile full-stack engineering squads.\n' +
-          '3. **Support & SLA Maintenance**: Ongoing security patching and 24/7 monitoring.\n\n' +
-          '### Sample Starting Rates:\n' +
-          '- **Modern Websites**: ₹15,000 to ₹125,000\n' +
-          '- **Full-Stack Web Apps**: ₹50,000 to ₹500,000+\n' +
-          '- **Mobile Apps (iOS/Android)**: ₹75,000 to ₹500,000+\n' +
-          '- **Custom ERP & SaaS**: Milestone-based custom quote\n\n' +
-          'Which service would you like a detailed price estimate for?';
+          '### Rahnoxa Commercial Pricing Overview (INR):\n\n' +
+          '1. **Modern Websites**: ₹4,999 (Starter) · **₹11,999 (Growth - Recommended)** · ₹18,999 (Pro)\n' +
+          '2. **Full-Stack Web Apps**: ₹39,999 (MVP) · **₹69,999 (Growth)** · ₹1,19,999 (Pro)\n' +
+          '3. **Mobile Apps (iOS + Android)**: ₹44,999 (Android) · **₹79,999 (Cross-Platform)**\n' +
+          '4. **Custom API / Automations**: ₹1,999 (Gateway) · **₹5,999 (Bridge)**\n' +
+          '5. **Monthly Maintenance Retainers**: ₹1,499/mo (Care) · **₹3,999/mo (Growth)**\n' +
+          '6. **Emergency Rescue**: Crash Fix (₹2,999) · DNS/SSL Fix (₹1,499) · 24h Launch (₹7,499)\n\n' +
+          'Which service would you like detailed package inclusions for?';
       }
       break;
 
@@ -139,7 +144,7 @@ export function buildBotDecision(
       if (lower.includes('erp') && lower.includes('saas')) {
         reply =
           '### Custom ERP vs. SaaS Product:\n\n' +
-          '- **Custom ERP**: Built exclusively for your internal business operations (Inventory, HRMS, multi-branch operations, custom workflows). You own 100% of the IP, schema, and internal rules.\n' +
+          '- **Custom ERP**: Built exclusively for your internal business operations (Inventory, HRMS, multi-branch operations, custom workflows). You own 100% of the IP, schema, and internal rules with zero per-user fees.\n' +
           '- **SaaS Product**: Built for multiple external subscribing customers with tenant database isolation, self-serve sign-ups, and recurring billing pipelines.\n\n' +
           'At Rahnoxa, we engineer both [Custom ERPs](/services/erp-enterprise-applications) and [SaaS Products](/services/saas-products).';
       } else if (lower.includes('react') && lower.includes('flutter')) {
@@ -151,8 +156,8 @@ export function buildBotDecision(
       } else if (lower.includes('website') && lower.includes('web app')) {
         reply =
           '### Modern Website vs. Full-Stack Web Application:\n\n' +
-          '- **Modern Website**: Fast, editorial marketing pages optimized for SEO, brand authority, and lead capture.\n' +
-          '- **Web Application**: Interactive software containing user authentication, complex databases, real-time dashboards, and business logic.\n\n' +
+          '- **Modern Website (Starts ₹4,999)**: Fast, editorial marketing pages optimized for SEO, brand authority, and lead capture.\n' +
+          '- **Web Application (Starts ₹39,999)**: Interactive software containing user authentication, complex databases, real-time dashboards, and business logic.\n\n' +
           'Explore our [Website Design](/services/web-development) or [Full-Stack Web Apps](/services/full-stack-web-apps).';
       } else {
         reply =
@@ -189,7 +194,7 @@ export function buildBotDecision(
 
     // ── 13. Internship ──────────────────────────────────────────────────────────
     case 'internship':
-      const intern = SERVICES_KNOWLEDGE_BASE.find((s) => s.id === 'program-internship');
+      const intern = SERVICES_KNOWLEDGE_BASE.find((s) => s.id === 'talent-internships');
       reply =
         `Rahnoxa offers hands-on **${intern?.name || 'Engineering Internships'}** for aspiring developers.\n\n` +
         `### Tracks Available:\n` +
@@ -198,52 +203,20 @@ export function buildBotDecision(
         `- **AI & Machine Learning**: Python, LLM prompts, LangChain, Data Science\n\n` +
         `### Key Benefits:\n` +
         (intern?.benefits || []).map((b) => `- ${b}`).join('\n') +
-        `\n\nReview curriculum and submit your application at our [Internships Page](/internship).`;
+        `\n\nTo apply, visit our [Engineering Internship Track](/internship).`;
       break;
 
-    // ── 14. Navigation ──────────────────────────────────────────────────────────
-    case 'navigation':
-      if (service) {
-        reply = `You can explore [${service.name}](${service.route}) for comprehensive specifications, live features, and package tiers.`;
-      } else {
-        reply = 'You can browse our full catalog at [All Services](/services) or learn more [About Rahnoxa](/about).';
-      }
-      break;
-
-    // ── 15. Ambiguous Follow-ups ────────────────────────────────────────────────
-    case 'ambiguous':
-      reply =
-        'Which service are you asking about — ERP, Web Applications, Mobile Apps, SaaS, or another service?';
-      break;
-
-    // ── 16. Help ────────────────────────────────────────────────────────────────
-    case 'help':
-      reply =
-        'I am **RahBot**, ready to assist you with:\n\n' +
-        '1. **Service Specifications**: Ask about ERPs, Web Apps, Mobile Apps, SaaS, APIs, etc.\n' +
-        '2. **Tech Stacks**: Inquire about React, Node.js, Flutter, Go, PostgreSQL, etc.\n' +
-        '3. **Pricing & Scopes**: Get ballpark tier pricing and delivery SLAs.\n' +
-        '4. **Project Enquiries**: Prepare a project specification for our engineering squad.\n' +
-        '5. **Engineering Internships**: Learn about student tracks and merit applications.\n\n' +
-        'What would you like to explore?';
-      break;
-
-    // ── 17. Unknown / Fallback ──────────────────────────────────────────────────
+    // ── 14. Fallback ────────────────────────────────────────────────────────────
     default:
       reply =
-        "I don't have that specific detail in my configured service information.\n\n" +
-        "I can help you with our available software services, technology stacks, pricing, or project scoping. Feel free to ask or [Contact our Engineering Team](/contact).";
+        "I'm here to help you explore Rahnoxa's software development services, transparent pricing starting at ₹1,499–₹4,999, or submit a technical project enquiry.\n\n" +
+        'Could you tell me a little more about what your company is looking to build?';
       break;
   }
 
   return {
-    intent,
-    resolvedService,
     reply,
-    ctaType: cta.type,
-    ctaLabel: cta.label,
-    ctaAction: cta.action,
-    targetRoute: cta.targetRoute,
+    cta,
     shouldOpenForm,
   };
 }

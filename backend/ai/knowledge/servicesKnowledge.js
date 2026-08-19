@@ -1,6 +1,6 @@
 /**
- * Comprehensive Knowledge Base for RahBot
- * Extracted directly from Rahnoxa's authentic service pages, technical specifications, and delivery models.
+ * Authoritative Central Service Knowledge Base for RahBot & Backend AI Gateway
+ * Synchronized with canonical commercial pricing matrix (PRICE_MATRIX.md & src/data/services.ts).
  */
 
 export const RAHNOXA_SERVICES_KNOWLEDGE = [
@@ -13,15 +13,15 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Software & Engineering',
     route: '/services/erp-enterprise-applications',
     summary:
-      'Enterprise resource planning modules and internal operational platforms designed to support complex business workflows at scale.',
+      'Enterprise resource planning modules and internal operational platforms designed to support complex business workflows, inventory, HRMS, and multi-branch operations at scale.',
     technologies: ['React', 'TypeScript', 'Node.js', 'Go', 'PostgreSQL', 'Redis', 'Docker'],
     benefits: [
-      'Centralized data across departments (Inventory, Accounts, HR, Logistics)',
-      'Drastically reduced manual process overhead with automated workflows',
-      'Granular Role-Based Access Control (RBAC) and immutable audit logging',
-      'High-concurrency architecture built for growing teams with sub-100ms sync',
-      'Seamless API integration with existing legacy tools and third-party CRMs',
-      'Role-specific dashboards and automated executive reporting',
+      'Centralized operational database eliminating fragmented spreadsheets and manual registers',
+      'Granular Role-Based Access Control (RBAC) with tamper-evident audit logs',
+      'Sub-100ms multi-branch synchronization on PostgreSQL and Redis architecture',
+      'Modular architecture: deploy Inventory first, then expand to HRMS, Accounts, and CRM',
+      '100% Client Ownership of code and database schemas with zero recurring per-user seat fees',
+      'Custom dashboards and automated executive reporting',
     ],
     features: [
       'Workflow Automation: Automate approvals, invoice generations, notifications, and status tracking.',
@@ -31,7 +31,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Third-Party Integrations: Connect ERP with banking APIs, accounting software, and CRMs.',
       'Flexible Deployment: Cloud-hosted, on-premise, or hybrid deployment models.',
     ],
-    pricing: 'Custom milestone-based pricing tailored to modules and user throughput.',
+    pricing: 'Starting at ₹75,000 for Starter (Single Module), ₹1,50,000 for Growth (3 Modules - Recommended), and ₹2,75,000+ for Pro Enterprise Suite.',
     sla: 'Architectural discovery & project estimate delivered within 24 to 48 hours.',
   },
 
@@ -44,14 +44,14 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Software & Engineering',
     route: '/services/full-stack-web-apps',
     summary:
-      'End-to-end web application development — customer self-service portals, administrative dashboards, client collaboration suites, and high-concurrency platforms.',
+      'End-to-end web application development — customer self-service portals, administrative dashboards, client collaboration suites, and high-concurrency business platforms.',
     technologies: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Supabase', 'REST / GraphQL'],
     benefits: [
-      'High-performance, scalable web architecture built for 100k+ monthly active users',
-      'Enterprise-grade security, session management, and encrypted data handling',
-      'Real-time capabilities using WebSockets and Supabase Realtime',
-      'Responsive, accessible cross-device experience across desktop, tablet, and mobile',
-      'Full CI/CD automated deployment with zero-downtime releases',
+      'Tailored business logic built specifically around your actual operational workflows',
+      'High-performance React & Node.js architecture engineered for 100k+ active users',
+      'Secure authentication, session management, and encrypted data isolation',
+      'Real-time data synchronization using WebSockets and Supabase Realtime',
+      'Exportable analytics, automated PDF report generation, and audit logging',
     ],
     features: [
       'Frontend Development: Modern, responsive user interfaces with Tailwind CSS and Framer Motion.',
@@ -59,7 +59,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Database Architecture: Efficient normalized schemas with PostgreSQL and Redis caching.',
       'API Engineering: Clean RESTful and GraphQL endpoints with automated OpenAPI documentation.',
     ],
-    pricing: 'Starting at ₹50,000 for Starter, ₹150,000 for Professional, and ₹500,000+ for Enterprise tiers.',
+    pricing: 'Starting at ₹39,999 for Starter MVP (2 Weeks), ₹69,999 for Growth Platform (3–4 Weeks - Recommended), and ₹1,19,999 for Pro Custom Architecture.',
     sla: 'Full requirement scoping and technical blueprint delivered within 24 to 48 hours.',
   },
 
@@ -72,22 +72,22 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Software & Engineering',
     route: '/services/saas-products',
     summary:
-      'Multi-user, subscription-based cloud software platforms built with multi-tenant data isolation, automated billing pipelines, and scalable cloud infrastructure.',
-    technologies: ['Next.js', 'React', 'Node.js', 'PostgreSQL', 'Redis', 'Stripe', 'Paddle', 'Supabase'],
+      'Multi-user, subscription-based cloud software platforms built with multi-tenant data isolation, automated billing pipelines, team seat management, and scalable cloud infrastructure.',
+    technologies: ['Next.js', 'React', 'Node.js', 'PostgreSQL', 'Redis', 'Stripe', 'Razorpay', 'Supabase'],
     benefits: [
-      'Multi-tenant architecture from day one with strict tenant isolation',
-      'Automated user onboarding, self-serve sign-ups, and subscription tier upgrades',
-      'Autoscaling cloud infrastructure designed for high concurrency',
-      'Comprehensive admin monitoring panels for usage metrics and customer support',
-      'API-first design allowing mobile clients and third-party extensions',
+      'Multi-tenant database isolation ensuring absolute tenant data security and privacy',
+      'Self-serve automated onboarding, email verification, and passwordless authentication',
+      'Webhook-driven recurring subscription billing supporting Stripe, Razorpay, and Paddle',
+      'Comprehensive admin monitoring panels tracking active sessions, MRR, and error telemetry',
+      'API-first architecture ready for mobile apps, browser extensions, and integrations',
     ],
     features: [
       'Multi-Tenant Data Architecture: Logical/physical database isolation per customer organization.',
       'Auth & User Management: Multi-role authentication, team invites, and passwordless login.',
-      'Billing & Subscriptions: Webhook-driven Stripe and Paddle recurring payments, coupons, and invoicing.',
+      'Billing & Subscriptions: Webhook-driven recurring payments, coupons, and automated invoicing.',
       'Admin Telemetry: Live operational dashboards tracking MRR, churn, active sessions, and errors.',
     ],
-    pricing: 'Custom milestone-based packages based on MVP scope and tenant scalability requirements.',
+    pricing: 'Starting at ₹64,999 for Starter SaaS MVP (3–4 Weeks), ₹1,24,999 for Growth SaaS (5–6 Weeks - Recommended), and ₹2,19,999+ for Scale Architecture.',
     sla: 'SaaS architectural review provided within 24 to 48 hours.',
   },
 
@@ -100,14 +100,14 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Software & Engineering',
     route: '/services/custom-software-api-integration',
     summary:
-      'Bespoke business software, workflow automation, and custom API pipelines that unify disparate business tools into a single source of truth.',
-    technologies: ['Node.js', 'Python', 'Go', 'REST', 'GraphQL', 'Webhooks', 'gRPC', 'PostgreSQL'],
+      'Bespoke business software, workflow automation, and custom API pipelines connecting payment gateways, WhatsApp, CRMs, ERPs, and accounting databases.',
+    technologies: ['Node.js', 'Python', 'Go', 'REST', 'GraphQL', 'Webhooks', 'n8n', 'PostgreSQL'],
     benefits: [
       'Software built strictly around your authentic operational workflows',
       'Eliminates manual double-entry between accounting, CRM, and inventory systems',
       'Single source of truth with automated conflict resolution across connected tools',
       'Event-driven webhook listeners for instantaneous cross-platform synchronization',
-      'Modern API wrappers extending legacy systems without risky full replacements',
+      'Self-hosted n8n workflows that eliminate expensive Zapier subscription fees',
     ],
     features: [
       'Bespoke Business Software: Tailored tools for unique operational needs that commercial SaaS cannot fulfill.',
@@ -115,7 +115,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Data Pipelines & ETL: Reliable data transformation pipelines moving millions of records automatically.',
       'Legacy System Modernization: REST/GraphQL API wrappers for on-premise and legacy databases.',
     ],
-    pricing: 'Custom milestone pricing based on integration endpoints and data volume.',
+    pricing: 'Starting at ₹1,999 for Single API/Gateway Setup, ₹5,999 for Standard Automation Bridge (Recommended), and ₹11,999 for Pro Multi-System Sync. Emergency crash fix at ₹2,999.',
     sla: 'Technical API review and scoping response within 24 to 48 hours.',
   },
 
@@ -143,7 +143,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Backend & Cloud Sync: Low-latency API synchronization with offline queuing.',
       'Analytics & Crash Reporting: Integrated telemetry for crash diagnostics and user journeys.',
     ],
-    pricing: 'Starting at ₹75,000 for Basic, ₹200,000 for Professional, and ₹500,000+ for Enterprise mobile platforms.',
+    pricing: 'Starting at ₹44,999 for Starter Android App (3 Weeks), ₹79,999 for Cross-Platform iOS+Android (4–5 Weeks - Recommended), and ₹1,39,999 for Pro Marketplace Apps.',
     sla: 'Mobile architecture scoping and wireframe consult within 24 to 48 hours.',
   },
 
@@ -170,7 +170,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Hardware Peripheral Interfacing: Serial, USB, POS thermal printers, and barcode readers.',
       'Silent Auto-Updater: Background binary delta updates without manual reinstallation.',
     ],
-    pricing: 'Custom pricing based on platform targets and peripheral hardware requirements.',
+    pricing: 'Starting at ₹34,999 for Starter Utility (2 Weeks), ₹59,999 for Growth POS & Hardware (3–4 Weeks - Recommended), and ₹99,999 for Pro High-Performance Tools.',
     sla: 'Technical desktop feasibility review within 24 to 48 hours.',
   },
 
@@ -197,88 +197,37 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Automated SEO: OpenGraph social previews, dynamic meta tags, and structured JSON-LD data.',
       'Lead Capture Integration: Instant form routing to email, CRM, and WhatsApp alerts.',
     ],
-    pricing: 'Packages: Basic (₹15,000 for 5 pages), Professional (₹45,000 for 10 pages + Blog), Enterprise (₹125,000 for custom web systems).',
-    sla: 'Design concept & quote delivered within 24 to 48 hours.',
+    pricing: 'Starting at ₹4,999 for Starter Landing Page (2–3 Days), ₹11,999 for Growth Business Site (4–7 Days - Recommended), and ₹18,999 for Pro Corporate Portal (7–12 Days). Express 24h available from ₹7,499.',
+    sla: 'Website concept outline and quote provided within 24 to 48 hours.',
   },
 
-  // ─── 8. B2B Lead Generation & Outreach ───────────────────────────────────────
+  // ─── 8. B2B Lead Generation ──────────────────────────────────────────────────
   {
     id: 'service-lead-gen',
     slug: 'lead-generation',
-    name: 'B2B Lead Generation',
+    name: 'B2B Lead Generation & Local Dominance',
     tier: 'secondary',
     category: 'Marketing & Business Support',
     route: '/services/lead-generation',
     summary:
-      'Data-driven prospect discovery, multi-channel outreach campaigns, and conversion landing pages to fill your sales pipeline with qualified B2B leads.',
-    technologies: ['CRM Integration', 'Outreach Automation', 'Lead Scoring', 'Analytics Pipelines'],
+      'Data-driven outreach, Google Business Profile local dominance, and automated lead capture funnels connecting prospects directly with your sales team.',
+    technologies: ['Google Business Profile', 'Meta Ads', 'WhatsApp Automation', 'CRM Integrations'],
     benefits: [
-      'Qualified B2B leads that match your exact ideal customer profile (ICP)',
-      'Lower cost per customer acquisition through automated multi-channel sequences',
-      'Real-time lead scoring prioritizing high-intent decision makers',
-      'Direct synchronization into HubSpot, Zoho, Salesforce, or custom CRMs',
+      'Qualified prospects delivered directly into your sales pipeline without cold outreach friction',
+      'Google Maps 3-Pack local ranking optimization for local search queries',
+      'Multi-channel capture combining landing pages, Google Business Profiles, and WhatsApp bots',
+      'Transparent attribution: track exactly which leads convert into paying customers',
     ],
     features: [
-      'Landing Page Optimization: High-converting landing pages designed to capture and qualify leads.',
-      'Multi-Channel Campaigns: Synchronized campaigns across search, LinkedIn, and cold email.',
-      'Lead Scoring & Qualification: Intelligent scoring filters out spam and flags hot prospects.',
-      'Analytics & Reporting: Real-time dashboards on conversion rates and ROI per lead channel.',
+      'Google Business Profile Optimization: High-ranking local presence and automated review capture.',
+      'Landing Page Funnels: Conversion-optimized lead capture forms with instant WhatsApp routing.',
+      'Outreach Pipelines: Compliant B2B email and LinkedIn lead discovery sequences.',
     ],
-    pricing: 'Starter (₹8,000/mo), Growth (₹24,000/mo with CRM sync), Enterprise (₹75,000/mo with dedicated manager).',
-    sla: 'Lead generation strategy proposal within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for GBP Setup & Verification, ₹4,499 for Local Map Domination & Funnel (Recommended), and ₹3,499/mo for Ongoing Local Dominance Retainer.',
+    sla: 'Lead generation strategy blueprint delivered within 24 to 48 hours.',
   },
 
-  // ─── 9. Social Media Marketing ───────────────────────────────────────────────
-  {
-    id: 'service-social-media',
-    slug: 'social-media-marketing',
-    name: 'Social Media Marketing',
-    tier: 'secondary',
-    category: 'Marketing & Business Support',
-    route: '/services/social-media-marketing',
-    summary:
-      'Strategic brand positioning, technical thought leadership content, and audience engagement campaigns across LinkedIn, Twitter/X, Instagram, and Facebook.',
-    technologies: ['Content Creation', 'Paid Ad Platforms', 'Audience Analytics', 'Brand Strategy'],
-    benefits: [
-      'Establishes authentic technical authority and brand recognition in your industry',
-      'Targeted paid advertising maximizing reach and qualified inbound inquiries',
-      'Consistent, high-quality creative assets and editorial copywriting',
-    ],
-    features: [
-      'Content Calendar & Creation: Custom graphic assets, carousel infographics, and technical posts.',
-      'Paid Campaign Management: Retargeting ads and conversion-optimized sponsored campaigns.',
-      'Community Management: Active response handling and follower relationship building.',
-    ],
-    pricing: 'Starting at ₹12,000/mo for Starter, ₹35,000/mo for Growth, and ₹80,000/mo for Enterprise campaigns.',
-    sla: 'Social media audit and proposal within 24 to 48 hours.',
-  },
-
-  // ─── 10. Email Marketing & Automation ────────────────────────────────────────
-  {
-    id: 'service-email',
-    slug: 'email-marketing',
-    name: 'Email Marketing & Lifecycle Automation',
-    tier: 'secondary',
-    category: 'Marketing & Business Support',
-    route: '/services/email-marketing',
-    summary:
-      'Automated email sequences, customer onboarding drip funnels, transactional deliverability tuning, and newsletter campaigns that convert.',
-    technologies: ['SendGrid', 'Postmark', 'Mailchimp', 'Brevo', 'SMTP Optimization'],
-    benefits: [
-      'High inbox deliverability with automated SPF, DKIM, and DMARC configuration',
-      'Automated customer lifecycle workflows nurturing sign-ups into paid subscribers',
-      'Audience segmentation ensuring tailored messaging based on user behavior',
-    ],
-    features: [
-      'Drip Sequence Automation: Welcome series, re-engagement funnels, and upgrade prompts.',
-      'HTML Template Design: Dark/light responsive email layouts tested across all email clients.',
-      'Deliverability Monitoring: Bounce rate suppression, spam trap prevention, and reputation protection.',
-    ],
-    pricing: 'Custom packages starting at ₹6,000/mo based on subscriber list size and sequence volume.',
-    sla: 'Campaign audit and workflow plan delivered within 24 to 48 hours.',
-  },
-
-  // ─── 11. SMS Marketing & Direct SMPP ─────────────────────────────────────────
+  // ─── 9. SMS Marketing & SMPP ─────────────────────────────────────────────────
   {
     id: 'service-sms',
     slug: 'sms-marketing',
@@ -287,48 +236,24 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Marketing & Business Support',
     route: '/services/sms-marketing',
     summary:
-      'High-throughput bulk promotional SMS, automated transactional alerts, and direct SMPP integration with 98% open rates.',
-    technologies: ['SMPP Protocol', 'Telecom Gateways', 'OTP Verification', 'DLT Compliance'],
+      'High-throughput bulk promotional SMS, automated transactional OTP gateways, DLT registration assistance, and SMPP server connections with 98%+ open rates.',
+    technologies: ['SMPP Protocol', 'DLT Portal', 'REST SMS APIs', 'Fast2SMS', 'Msg91'],
     benefits: [
-      'Immediate customer reach with 98% open rates within 3 minutes of dispatch',
-      'Sub-second transactional OTP and order status alerts',
-      'Full telecom regulatory compliance (DLT registration & template approval in India)',
+      'Instant 98% open rates with sub-3 second message delivery across all Indian telecom networks',
+      'Full regulatory compliance support for TRAI DLT registration and template approval',
+      'Direct API integration with your existing CRM, website forms, and billing systems',
+      'Detailed real-time delivery logs, click tracking, and automated failure retries',
     ],
     features: [
-      'High-Speed Dispatch: Capable of sending 100,000+ messages per hour with real-time delivery reports.',
-      'API & Webhook Triggering: Trigger SMS alerts directly from your website or ERP backend.',
-      'Two-Way Messaging: Inbound SMS keyword routing and automated reply triggers.',
+      'Transactional OTP Gateway: High-priority SMS routes for logins, receipts, and order updates.',
+      'Promotional SMS Broadcasts: Scheduled bulk marketing campaigns to verified customer lists.',
+      'DLT Registration Support: End-to-end guidance for entity and header/template approvals.',
     ],
-    pricing: 'Tiered volume-based pricing per SMS (Promotional & Transactional routes).',
-    sla: 'SMS gateway integration setup within 24 to 48 hours.',
+    pricing: 'Starting at ₹1,999 for SMS API Gateway Setup, ₹3,499 for DLT Registration & Automation Suite (Recommended), and ₹6,999 for Pro Custom Messaging Engines. SMS credits billed at wholesale rates (~₹0.15/SMS).',
+    sla: 'SMS campaign setup and API configuration in 24 to 48 hours.',
   },
 
-  // ─── 12. Voice Call & Cloud IVR Solutions ────────────────────────────────────
-  {
-    id: 'service-voice',
-    slug: 'voice-call-services',
-    name: 'Voice Call & IVR Solutions',
-    tier: 'secondary',
-    category: 'Marketing & Business Support',
-    route: '/services/voice-call-services',
-    summary:
-      'Automated outbound voice broadcasting, cloud IVR call routing, and interactive telephony workflows for customer announcements and surveys.',
-    technologies: ['Cloud Telephony', 'IVR Flow Builder', 'Text-to-Speech', 'Call Analytics'],
-    benefits: [
-      'Engage mass audiences simultaneously with pre-recorded or dynamic voice announcements',
-      'Multi-level IVR menus routing callers to appropriate department squads automatically',
-      'Detailed call logs, duration analytics, and DTMF keypress capture',
-    ],
-    features: [
-      'Voice Broadcasting: Mass dispatch of transactional alerts, event reminders, or payment notices.',
-      'Interactive IVR: Keypress menus (e.g. "Press 1 for Sales, Press 2 for Support") with CRM sync.',
-      'Call Recording & Analytics: Audio recording archives and operator quality audits.',
-    ],
-    pricing: 'Volume-based call pulse rates with dedicated cloud virtual numbers.',
-    sla: 'Telephony flow setup and number provisioning within 24 to 48 hours.',
-  },
-
-  // ─── 13. Missed Call Alert Services ──────────────────────────────────────────
+  // ─── 10. Missed Call Service & IVR ───────────────────────────────────────────
   {
     id: 'service-missed-call',
     slug: 'missed-call-service',
@@ -337,23 +262,102 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Marketing & Business Support',
     route: '/services/missed-call-service',
     summary:
-      'Zero-cost customer verification, lead registration via missed call triggers, and instant automated SMS / WhatsApp callback workflows.',
-    technologies: ['Virtual Toll-Free Numbers', 'Webhook Triggers', 'Automated SMS Auto-Reply'],
+      'Zero-cost customer lead capture for Indian callers — customers give a missed call to receive automated SMS receipts, WhatsApp catalogs, or callback registrations.',
+    technologies: ['Virtual Number PBX', 'Telephony Webhooks', 'WhatsApp Cloud API', 'Google Sheets'],
     benefits: [
-      'Zero call charges for customers — they simply dial and the system disconnects automatically',
-      'Instant lead capture with 100% accurate caller ID logging',
-      'Automates instant SMS / WhatsApp response with product links or coupons',
+      'Zero call charges for your callers, maximizing campaign response rates in India',
+      'Instant automated response sent back via WhatsApp or SMS in real-time',
+      'Real-time caller number capture to Google Sheets, CRM, or sales dashboard',
+      'High conversion rate for local advertising, newspaper ads, and outdoor banners',
     ],
     features: [
-      'Toll-Free & Virtual Numbers: Dedicated 10-digit numbers for marketing campaigns.',
-      'Real-Time Webhook Forwarding: Instantly forward incoming missed calls to your CRM or backend.',
-      'Automated Multi-Channel Reply: Send SMS confirmation, download link, or trigger agent callback.',
+      'Virtual Number Setup: 10-digit mobile number or toll-free missed call configuration.',
+      'Instant Auto-Responder: Automatic SMS or WhatsApp brochure sent immediately upon disconnection.',
+      'CRM Synchronization: Live webhook pushing caller phone numbers into your database.',
     ],
-    pricing: 'Monthly plan starting at ₹3,500/mo including dedicated virtual number and unlimited incoming calls.',
-    sla: 'Number activation and webhook configuration within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for Starter Missed Call Capture, ₹4,499 for Growth WhatsApp Callback Suite (Recommended), and ₹7,999 for Pro Multi-Channel Analytics Suite.',
+    sla: 'Virtual number routing and response automation setup within 24 to 48 hours.',
   },
 
-  // ─── 14. Brand & UI/UX Graphic Design ────────────────────────────────────────
+  // ─── 11. Voice Call Services ─────────────────────────────────────────────────
+  {
+    id: 'service-voice',
+    slug: 'voice-call-services',
+    name: 'Voice Call & IVR Solutions',
+    tier: 'secondary',
+    category: 'Marketing & Business Support',
+    route: '/services/voice-call-services',
+    summary:
+      'Automated outbound voice broadcasting (OBD), custom Interactive Voice Response (IVR) phone menus, and virtual office reception systems that handle customer inquiries professionally.',
+    technologies: ['Cloud Telephony', 'IVR Flow Engines', 'SIP Trunking', 'TTS Synthesizers'],
+    benefits: [
+      'Professional virtual receptionist: "Press 1 for Sales, 2 for Support, 3 for Clinic Hours"',
+      'Automated voice reminders for upcoming appointments, pending fees, and event announcements',
+      'Smart call routing to staff mobile phones without exposing personal phone numbers',
+      'Call recording and analytics tracking staff response times and customer query volume',
+    ],
+    features: [
+      'Outbound Voice Broadcasting (OBD): Automated voice announcements to customer lists.',
+      'Multi-Level IVR Trees: Custom keypress navigation routing callers to appropriate departments.',
+      'Call Recording & Telemetry: Live call duration, recording storage, and missed-call triage.',
+    ],
+    pricing: 'Starting at ₹3,499 for Voice Broadcasting (OBD), ₹6,499 for Growth Virtual IVR Receptionist (Recommended), and ₹11,999 for Pro Cloud PBX Systems.',
+    sla: 'IVR flow design and telecom setup in 24 to 48 hours.',
+  },
+
+  // ─── 12. Social Media Marketing ──────────────────────────────────────────────
+  {
+    id: 'service-smm',
+    slug: 'social-media-marketing',
+    name: 'Social Media Marketing & Creatives',
+    tier: 'secondary',
+    category: 'Marketing & Business Support',
+    route: '/services/social-media-marketing',
+    summary:
+      'Brand-aligned social media creatives, structured posting calendars, and targeted Meta advertising campaigns designed to build credibility and drive engagement.',
+    technologies: ['Meta Ads Manager', 'Figma', 'Canva Pro', 'Instagram Graph API'],
+    benefits: [
+      'Original, bespoke graphic designs matching your exact brand identity',
+      'Consistent posting schedule that establishes authority and social proof',
+      'Conversion-focused ad creatives engineered to stop the scroll on Instagram and Facebook',
+      'Clear, transparent monthly reporting: see reach, engagement, and click-through metrics',
+    ],
+    features: [
+      'Custom Creative Packs: Engaging feed posts, carousel graphics, and story templates created in Figma.',
+      'Content Strategy & Copywriting: Captions, hashtags, and call-to-action hooks tailored to Indian audiences.',
+      'Paid Ad Management: Targeted Instagram and Facebook ad setup with pixel tracking and retargeting.',
+    ],
+    pricing: 'Starting at ₹2,499 for Starter Creative Pack (10 Posts), ₹5,999/mo for Growth Social Retainer (16 Posts/mo - Recommended), and ₹11,999/mo for Pro Brand Dominance Retainer.',
+    sla: 'Social media strategy review and initial creative batch within 24 to 48 hours.',
+  },
+
+  // ─── 13. Email Marketing ─────────────────────────────────────────────────────
+  {
+    id: 'service-email',
+    slug: 'email-marketing',
+    name: 'Email Marketing & Lifecycle Automation',
+    tier: 'secondary',
+    category: 'Marketing & Business Support',
+    route: '/services/email-marketing',
+    summary:
+      'Targeted email campaigns, automated customer onboarding sequences, newsletter templates, and DNS deliverability configuration ensuring emails land in the inbox, not spam.',
+    technologies: ['Brevo', 'Mailchimp', 'Amazon SES', 'SPF/DKIM/DMARC Protocols', 'HTML5 Email'],
+    benefits: [
+      'DNS deliverability setup (SPF, DKIM, DMARC) preventing emails from landing in spam',
+      'Automated customer welcome and abandoned cart sequences that generate passive revenue',
+      'Mobile-responsive HTML email templates compatible with Gmail, Outlook, and Apple Mail',
+      'Clear analytics tracking open rates, click-through rates, and unsubscribes',
+    ],
+    features: [
+      'DNS Deliverability Hardening: Configuration of SPF, DKIM, DMARC, and custom sending domain records.',
+      'Lifecycle Automation Workflows: Multi-step welcome series, lead nurture drips, and post-purchase sequences.',
+      'Responsive Template Design: Clean branded email templates tested across major email clients.',
+    ],
+    pricing: 'Starting at ₹1,999 for Deliverability & SPF/DKIM Rescue, ₹3,999 for Automation & Template Setup (Recommended), and ₹4,999/mo for Monthly Email Campaign Management.',
+    sla: 'Email template design and DNS audit within 24 to 48 hours.',
+  },
+
+  // ─── 14. Brand & Graphic Design ──────────────────────────────────────────────
   {
     id: 'service-design',
     slug: 'graphic-design',
@@ -362,46 +366,48 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Marketing & Business Support',
     route: '/services/graphic-design',
     summary:
-      'Visual brand identities, logo systems, Figma UI/UX interface design, design tokens, marketing collateral, and vector illustration libraries.',
-    technologies: ['Figma', 'Adobe Creative Suite', 'Design Tokens', 'Tailwind Design Systems'],
+      'Visual identity design, vector logos, business stationery, marketing brochures, pitch decks, and digital banners that communicate credibility and professionalism.',
+    technologies: ['Adobe Illustrator', 'Figma', 'Photoshop', 'Vector Graphics', 'PDF Standards'],
     benefits: [
-      'Cohesive visual language that establishes trust and market authority',
-      'Production-ready Figma component systems tailored for direct React/Tailwind implementation',
-      'High-resolution vector assets for print, web, mobile, and outdoor marketing',
+      'Original, vector-first logos ready for printing, signboards, websites, and trademarking',
+      'Comprehensive brand kit: typography pairings, color codes (HEX/RGB/CMYK), and usage rules',
+      'Print-ready high-resolution PDFs with bleed margins for error-free local printing',
+      'Investor-ready pitch presentations with crisp typography and data visualization',
+      '100% commercial copyright ownership with all master source files (AI, SVG, PDF, PNG)',
     ],
     features: [
-      'Logo & Brand Identity: Complete brand guides including color tokens, typography, and logo usage.',
-      'UI/UX Product Design: High-fidelity screen wireframes, clickable prototypes, and design systems.',
-      'Marketing Collateral: Brochures, pitch decks, business cards, banner ads, and social media kits.',
+      'Vector Logo Design: Original concept sketches, digital vectorization, and brand mark variants.',
+      'Business Stationery: Matching digital business cards, letterheads, and envelope mockups.',
+      'Investor Pitch Decks: 12–15 slide data-driven presentations in PowerPoint / Google Slides / PDF.',
+      'Marketing Collateral: Brochures, flyers, digital banners, roll-up standees, and catalog covers.',
     ],
-    pricing: 'Starter (₹10,000), Professional Brand Kit (₹30,000), Full Product UI/UX Design (₹75,000+).',
-    sla: 'Initial design moodboard and concepts delivered within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for Fast-Track Logo Starter (2 Days), ₹4,499 for Complete Brand Identity Suite (3–4 Days - Recommended), and ₹8,999 for Investor Pitch Deck & Corporate Kit.',
+    sla: 'Initial logo concepts and creative review within 24 to 48 hours.',
   },
 
-  // ─── 15. Engineering Internships (Talent Program) ─────────────────────────────
+  // ─── 15. Talent Track: Engineering Internships ───────────────────────────────
   {
-    id: 'program-internship',
+    id: 'talent-internships',
     slug: 'internship',
-    name: 'Engineering Internships',
+    name: 'Engineering Internships & Talent Track',
     tier: 'primary',
-    category: 'Company & Career',
+    category: 'Talent & Careers',
     route: '/internship',
     summary:
-      'Hands-on engineering tracks in Full-Stack Web, Mobile App Development, AI & Machine Learning, Python, and Data Science under senior engineering mentorship on real production codebases.',
-    technologies: ['React', 'Node.js', 'React Native', 'Flutter', 'Python', 'Machine Learning', 'PostgreSQL'],
+      'Hands-on software engineering and AI internships for students and aspiring developers in India. Work on real production codebases with senior mentors.',
+    technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Git', 'Cloud Architecture'],
     benefits: [
-      'Work on live production modules and shipping software rather than toy tutorials',
-      '1-on-1 code reviews and architectural mentorship from senior technical leads',
-      'Verified Certificate of Completion and Letter of Recommendation upon successful delivery',
-      'Direct pathway to full-time engineering squad placement at Rahnoxa',
+      'Direct contribution to production codebases and real business client projects',
+      '1-on-1 weekly code reviews and architectural mentorship from senior engineers',
+      'Verifiable completion certificate and Letter of Recommendation (LOR) upon milestone completion',
+      'Pre-placement offer (PPO) opportunities for exceptional engineering contributors',
     ],
     features: [
-      'Web Development Track: React, TypeScript, Next.js, Node.js, and Supabase.',
-      'Mobile Development Track: React Native and Flutter mobile applications.',
-      'AI & Machine Learning Track: Python, LLM prompts, LangChain, PyTorch, and Data Science.',
-      'Hands-on Capstone Projects: Deploy real cloud features and microservices.',
+      'Web Development Track: React, TypeScript, Tailwind CSS, and state management.',
+      'Backend & API Track: Node.js, Express, PostgreSQL, Supabase, and REST API design.',
+      'AI & Automation Track: RAG pipelines, LLM fine-tuning, deterministic assistants, and n8n.',
     ],
-    pricing: 'Free merit-based application. Review eligibility at /internship.',
-    sla: 'Application review and technical screening response within 24 to 48 hours.',
+    pricing: 'Merit-based selection and paid stipend for qualified production contributors. Free to apply.',
+    sla: 'Application review and technical assessment results within 48 to 72 hours.',
   },
 ];
