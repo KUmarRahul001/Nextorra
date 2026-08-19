@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
+import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers, FiChevronRight, FiChevronLeft, FiRotateCcw } from 'react-icons/fi';
 import { HiOutlineBolt } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
@@ -21,7 +21,7 @@ interface Capability {
   homeOffset: { x: number; y: number }; // Coordinate offset relative to center (0, 0)
 }
 
-// 4 distinct coordinate positions around exact center (0, 0)
+// 4 distinct coordinate positions in authoritative order (1 -> 2 -> 3 -> 4)
 const capabilities: Capability[] = [
   {
     id: 'ownership',
@@ -33,7 +33,7 @@ const capabilities: Capability[] = [
     route: '/services/web-development',
     badgeBg: 'bg-emerald-50 text-emerald-600 border-emerald-200',
     icon: <FiShield className="h-4 w-4 text-emerald-600" />,
-    homeOffset: { x: 0, y: -160 }, // Top
+    homeOffset: { x: 0, y: -160 }, // 01 Top
   },
   {
     id: 'typescript',
@@ -45,19 +45,7 @@ const capabilities: Capability[] = [
     route: '/services/full-stack-web-apps',
     badgeBg: 'bg-blue-50 text-blue-600 border-blue-200',
     icon: <FiCode className="h-4 w-4 text-blue-600" />,
-    homeOffset: { x: 165, y: 0 }, // Right
-  },
-  {
-    id: 'performance',
-    label: 'Optimized Systems',
-    title: 'Performance Focus',
-    description: 'High-throughput system architecture with fast CDN rendering and efficient query caching.',
-    details: ['Global CDN Edge', 'Optimized Assets', 'ACID Reliability'],
-    techTags: ['Vite', 'Cloudflare', 'Redis Cache'],
-    route: '/services/custom-software-api-integration',
-    badgeBg: 'bg-cyan-50 text-cyan-600 border-cyan-200',
-    icon: <HiOutlineBolt className="h-4 w-4 text-cyan-600" />,
-    homeOffset: { x: 0, y: 160 }, // Bottom
+    homeOffset: { x: 165, y: 0 }, // 02 Right
   },
   {
     id: 'erp',
@@ -69,7 +57,19 @@ const capabilities: Capability[] = [
     route: '/services/erp-enterprise-applications',
     badgeBg: 'bg-indigo-50 text-indigo-600 border-indigo-200',
     icon: <FiLayers className="h-4 w-4 text-indigo-600" />,
-    homeOffset: { x: -165, y: 0 }, // Left
+    homeOffset: { x: -165, y: 0 }, // 03 Left
+  },
+  {
+    id: 'performance',
+    label: 'Optimized Systems',
+    title: 'Performance Focus',
+    description: 'High-throughput system architecture with fast CDN rendering and efficient query caching.',
+    details: ['Global CDN Edge', 'Optimized Assets', 'ACID Reliability'],
+    techTags: ['Vite', 'Cloudflare', 'Redis Cache'],
+    route: '/services/custom-software-api-integration',
+    badgeBg: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    icon: <HiOutlineBolt className="h-4 w-4 text-cyan-600" />,
+    homeOffset: { x: 0, y: 160 }, // 04 Bottom
   },
 ];
 
@@ -85,7 +85,7 @@ const HeroSection: React.FC = () => {
     timerRef.current = [];
   };
 
-  // Close / collapse active capability back to home position
+  // Close / Final Reset back to IDLE
   const closeActive = () => {
     if (activeId === null) return;
     clearAllTimers();
@@ -97,11 +97,11 @@ const HeroSection: React.FC = () => {
     timerRef.current.push(t1);
   };
 
-  // Click outside to collapse
+  // Click outside to collapse back to IDLE
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        if (activeId !== null) {
+        if (activeId !== null && (phase === 'settled' || phase === 'expanded')) {
           closeActive();
         }
       }
@@ -115,31 +115,32 @@ const HeroSection: React.FC = () => {
       document.removeEventListener('touchstart', handleClickOutside);
       clearAllTimers();
     };
-  }, [activeId]);
+  }, [activeId, phase]);
 
   // Click handler on capability node
   const handleNodeClick = (targetId: CapabilityId) => {
+    if (phase === 'swapping') return;
     clearAllTimers();
 
-    // 1. If this capability is currently settled at center -> User clicks to manually expand details!
+    // 1. If this capability is currently settled at center -> Second click expands details!
     if (activeId === targetId && phase === 'settled') {
       setPhase('expanded');
       return;
     }
 
-    // 2. If it's already expanded and clicked -> Collapse back home
+    // 2. If it's already expanded and clicked -> Collapse back home to IDLE
     if (activeId === targetId && phase === 'expanded') {
       closeActive();
       return;
     }
 
-    // 3. If another capability is active -> Return previous home, then swap new one to center
+    // 3. If another capability is active -> Return previous home, then swap new one to center & SETTLE
     if (activeId !== null && activeId !== targetId) {
       setPhase('swapping');
       const t1 = setTimeout(() => {
         setActiveId(targetId);
         setPhase('swapping');
-        // Travel duration (550ms) -> Arrive and settle at center (waiting for user click to expand!)
+        // Travel duration (550ms) -> Arrive and settle in center (waiting for second click to expand!)
         const t2 = setTimeout(() => {
           setPhase('settled');
         }, 550);
@@ -149,58 +150,73 @@ const HeroSection: React.FC = () => {
       return;
     }
 
-    // 4. Fresh swap from idle: Node travels to center, RX travels to node's home
+    // 4. Fresh swap from idle: Node travels to center, RX travels to node's home -> SETTLED
     setActiveId(targetId);
     setPhase('swapping');
 
-    // After 550ms travel, settle in center as compact node with "Click to view details" indicator
     const t1 = setTimeout(() => {
       setPhase('settled');
     }, 550);
     timerRef.current.push(t1);
   };
 
+  // NEXT BUTTON / BACK TO OVERVIEW HANDLER
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (activeId === null) return;
+    if (activeId === null || phase === 'swapping') return;
+
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
-    const nextIdx = (currentIdx + 1) % capabilities.length;
-    
-    // Auto-advance directly to expanded state for next item in tour
+
+    // Requirement B: If on the 4th (final) capability, "Back to Overview" performs Final Reset to IDLE!
+    if (currentIdx === capabilities.length - 1) {
+      closeActive();
+      return;
+    }
+
+    // Next capability (1 -> 2, 2 -> 3, 3 -> 4) -> Swap to center and SETTLE (waiting for user click!)
+    const nextIdx = currentIdx + 1;
     clearAllTimers();
     setPhase('swapping');
     const t1 = setTimeout(() => {
       setActiveId(capabilities[nextIdx].id);
       setPhase('swapping');
       const t2 = setTimeout(() => {
-        setPhase('expanded');
+        setPhase('settled');
       }, 550);
       timerRef.current.push(t2);
-    }, 350);
+    }, 400);
     timerRef.current.push(t1);
   };
 
+  // PREV BUTTON HANDLER
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (activeId === null) return;
+    if (activeId === null || phase === 'swapping') return;
+
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
-    const prevIdx = (currentIdx - 1 + capabilities.length) % capabilities.length;
-    
+    if (currentIdx === 0) {
+      closeActive();
+      return;
+    }
+
+    const prevIdx = currentIdx - 1;
     clearAllTimers();
     setPhase('swapping');
     const t1 = setTimeout(() => {
       setActiveId(capabilities[prevIdx].id);
       setPhase('swapping');
       const t2 = setTimeout(() => {
-        setPhase('expanded');
+        setPhase('settled');
       }, 550);
       timerRef.current.push(t2);
-    }, 350);
+    }, 400);
     timerRef.current.push(t1);
   };
 
   // Find active capability object
   const activeCapability = capabilities.find(c => c.id === activeId);
+  const activeIdx = capabilities.findIndex(c => c.id === activeId);
+  const isFinalCapability = activeIdx === capabilities.length - 1;
 
   // Where does RX logo travel? When active, RX translates to the active capability's homeOffset
   const rxTargetPos = activeCapability ? activeCapability.homeOffset : { x: 0, y: 0 };
@@ -331,7 +347,7 @@ const HeroSection: React.FC = () => {
                     ease: [0.4, 0, 0.2, 1] 
                   }}
                   onClick={() => {
-                    if (activeId !== null) {
+                    if (activeId !== null && (phase === 'settled' || phase === 'expanded')) {
                       closeActive();
                     }
                   }}
@@ -347,7 +363,7 @@ const HeroSection: React.FC = () => {
                   />
                 </motion.div>
 
-                {/* ── 4 CAPABILITY NODES (Move to Center -> Settle -> User Clicks to Expand Details) ── */}
+                {/* ── 4 CAPABILITY NODES (Move to Center -> Settle -> Second Click Expands Details) ── */}
                 {capabilities.map((cap, idx) => {
                   const isActive = activeId === cap.id;
                   const isOther = activeId !== null && !isActive;
@@ -377,18 +393,22 @@ const HeroSection: React.FC = () => {
                         type="button"
                         onClick={() => handleNodeClick(cap.id)}
                         aria-expanded={isFullyExpanded}
-                        aria-label={`${cap.title} capability node`}
+                        aria-label={
+                          isSettledAtCenter 
+                            ? `Click to open ${cap.title} details` 
+                            : `${cap.title} capability node`
+                        }
                         disabled={phase === 'swapping'}
                         className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 ${
                           isFullyExpanded
-                            ? 'w-[290px] sm:w-[340px] p-5 shadow-2xl shadow-blue-500/15 border-blue-400'
+                            ? 'w-[290px] sm:w-[340px] p-5 shadow-2xl shadow-blue-500/15 border-blue-400 ring-1 ring-blue-400/20'
                             : isSettledAtCenter
-                            ? 'w-[200px] sm:w-[220px] px-4 py-3 shadow-lg border-blue-400 ring-2 ring-blue-400/20 cursor-pointer animate-pulse'
+                            ? 'w-[210px] sm:w-[230px] px-4 py-3 shadow-lg border-blue-500 ring-2 ring-blue-500/20 cursor-pointer animate-pulse'
                             : 'w-[175px] sm:w-[190px] px-3.5 py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm cursor-pointer'
                         }`}
                       >
                         {!isFullyExpanded ? (
-                          /* Compact State (During Travel & When Settled at Center) */
+                          /* Compact State (During Transit & While Settled at Center) */
                           <div className="flex items-center gap-2.5">
                             <span className={`p-1.5 rounded-lg border ${cap.badgeBg} flex-shrink-0`}>
                               {cap.icon}
@@ -397,13 +417,20 @@ const HeroSection: React.FC = () => {
                               <span className="text-xs font-bold text-slate-800 tracking-tight block truncate">
                                 {cap.label}
                               </span>
-                              <span className="text-[9.5px] font-mono font-medium text-blue-600 block mt-0.5">
-                                {isSettledAtCenter ? 'Click to open details ↵' : 'Click to swap'}
-                              </span>
+                              <div className="flex items-center justify-between mt-0.5">
+                                <span className={`text-[9.5px] font-mono font-semibold block ${isSettledAtCenter ? 'text-blue-600' : 'text-slate-400'}`}>
+                                  {isSettledAtCenter ? 'Click to open details ↵' : 'Click to explore'}
+                                </span>
+                                {isSettledAtCenter && (
+                                  <span className="text-[9px] font-mono text-slate-400 bg-slate-100 px-1 rounded ml-1">
+                                    0{idx + 1}/04
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
                         ) : (
-                          /* Expanded State (Triggered by User Click!) */
+                          /* Expanded State (Triggered strictly on second click of centered node!) */
                           <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -461,24 +488,34 @@ const HeroSection: React.FC = () => {
                                 <FiArrowRight className="h-3 w-3" />
                               </span>
 
-                              <div className="flex items-center gap-1">
-                                <button
-                                  type="button"
-                                  onClick={handlePrev}
-                                  aria-label="Previous capability"
-                                  className="text-[11px] font-mono font-bold text-slate-700 hover:text-blue-600 p-1.5 rounded bg-slate-100 hover:bg-blue-50 transition-colors inline-flex items-center"
-                                >
-                                  <FiChevronLeft className="h-3.5 w-3.5" />
-                                </button>
+                              <div className="flex items-center gap-1.5">
+                                {idx > 0 && (
+                                  <button
+                                    type="button"
+                                    onClick={handlePrev}
+                                    aria-label="Previous capability"
+                                    className="text-[11px] font-mono font-bold text-slate-700 hover:text-blue-600 p-1.5 rounded bg-slate-100 hover:bg-blue-50 transition-colors inline-flex items-center"
+                                  >
+                                    <FiChevronLeft className="h-3.5 w-3.5" />
+                                  </button>
+                                )}
 
                                 <button
                                   type="button"
                                   onClick={handleNext}
-                                  aria-label="Next capability"
-                                  className="text-[11px] font-mono font-bold text-slate-800 hover:text-blue-600 px-2.5 py-1 rounded bg-slate-100 hover:bg-blue-50 transition-colors inline-flex items-center gap-1"
+                                  aria-label={isFinalCapability ? 'Back to Overview' : 'Next capability'}
+                                  className={`text-[11px] font-mono font-bold px-2.5 py-1 rounded transition-colors inline-flex items-center gap-1 ${
+                                    isFinalCapability 
+                                      ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-xs' 
+                                      : 'bg-slate-100 text-slate-800 hover:text-blue-600 hover:bg-blue-50'
+                                  }`}
                                 >
-                                  <span>Next</span>
-                                  <FiChevronRight className="h-3.5 w-3.5" />
+                                  <span>{isFinalCapability ? 'Back to Overview' : 'Next'}</span>
+                                  {isFinalCapability ? (
+                                    <FiRotateCcw className="h-3 w-3" />
+                                  ) : (
+                                    <FiChevronRight className="h-3.5 w-3.5" />
+                                  )}
                                 </button>
                               </div>
                             </div>
