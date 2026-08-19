@@ -79,10 +79,10 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-12 sm:h-14">
-          {/* Logo with clean direct RX mark rendering */}
+          {/* Clean Horizontal Brand Lockup */}
           <Link 
             to="/" 
-            className="flex items-center gap-3 flex-shrink-0 group" 
+            className="flex flex-col items-start justify-center flex-shrink-0 group focus:outline-none" 
             aria-label="Homepage" 
             onClick={() => {
               setIsOpen(false);
@@ -90,19 +90,14 @@ const Navbar: React.FC = () => {
             }}
           >
             <img 
-              src="/brand/logo-symbol-transparent.png" 
+              src="/brand/logo-horizontal-clean.png" 
               alt="Rahnoxa Logo" 
-              className="h-9 w-auto object-contain transition-transform group-hover:scale-105" 
+              className="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-[1.02]" 
               loading="eager" 
             />
-            <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 leading-none">
-                RAHNOXA
-              </span>
-              <span className="text-[10px] text-blue-600 font-mono tracking-widest uppercase font-bold mt-0.5">
-                ENGINEERING
-              </span>
-            </div>
+            <span className="text-[9px] text-blue-600 font-mono tracking-[0.25em] uppercase font-extrabold pl-12 -mt-1 sm:-mt-1.5 hidden sm:block">
+              ENGINEERING
+            </span>
           </Link>
 
           {/* Desktop Menu (Desktop >= 1200px / xl, Tablet >= 800px / md) */}
