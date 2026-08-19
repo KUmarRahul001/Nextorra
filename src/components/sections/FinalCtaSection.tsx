@@ -7,24 +7,25 @@ const FinalCtaSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 text-white relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10 text-center max-w-3xl">
+    <section className="py-24 bg-white text-slate-900 relative overflow-hidden border-b border-slate-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="bg-slate-50 border border-slate-200 rounded-3xl p-8 sm:p-14 shadow-xs"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-white border border-white/20 text-xs font-semibold uppercase tracking-wider mb-6">
-            <Terminal className="h-4 w-4 text-cyan-300" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold uppercase tracking-wider mb-6 shadow-2xs">
+            <Terminal className="h-4 w-4 text-blue-600" />
             <span>Ready To Build?</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
             Let&apos;s Build Software That Solves Your Real Business Needs.
           </h2>
 
-          <p className="text-base sm:text-lg text-blue-100 mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 mb-8 leading-relaxed max-w-2xl mx-auto">
             Tell us what you want to build, the problems you need to solve, or the systems you need connected. We&apos;ll schedule a technical discovery call to review scope, timeline, and architecture.
           </p>
 
@@ -35,9 +36,9 @@ const FinalCtaSection: React.FC = () => {
                 navigate('/get-started');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-900 hover:bg-blue-50 rounded-lg font-bold text-base transition-all duration-200 shadow-xl shadow-blue-900/30 group"
+              className="btn btn-primary px-8 py-4 text-base font-bold shadow-md"
             >
-              Start a Project Enquiry
+              <span>Start a Project Enquiry</span>
               <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
             </button>
             <button
@@ -46,10 +47,10 @@ const FinalCtaSection: React.FC = () => {
                 navigate('/services');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="inline-flex items-center justify-center px-8 py-4 border border-white/30 hover:bg-white/10 text-white rounded-lg font-semibold text-base transition-all duration-200"
+              className="btn btn-outline px-8 py-4 text-base font-semibold"
             >
-              <MessageSquare className="h-5 w-5 mr-2" />
-              Explore All Services
+              <MessageSquare className="h-5 w-5 mr-2 text-blue-600" />
+              <span>Explore All Services</span>
             </button>
           </div>
         </motion.div>
