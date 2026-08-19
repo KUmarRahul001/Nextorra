@@ -1,5 +1,19 @@
 import React from 'react';
-import { ArrowRight, MoveUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { 
+  ArrowRight, 
+  Sparkles, 
+  ShieldCheck, 
+  Zap, 
+  Layers, 
+  Code2, 
+  Server, 
+  Database, 
+  Smartphone, 
+  MoveUpRight,
+  Workflow,
+  Cpu
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
@@ -9,43 +23,59 @@ const HeroSection: React.FC = () => {
   return (
     <>
       <SEO
-        title="Rahnoxa – Software Systems & Enterprise Engineering"
-        description="Rahnoxa designs, builds, and deploys mission-critical web applications, enterprise ERP platforms, APIs, and scalable infrastructure."
-        keywords="software engineering, custom ERP, enterprise web applications, API architecture, SaaS development, Rahnoxa"
+        title="Rahnoxa – Modern Software Systems & Cloud Engineering"
+        description="Rahnoxa designs, builds, and deploys high-performance web platforms, enterprise ERP applications, APIs, and scalable mobile systems."
+        keywords="software engineering, modern web apps, ERP development, cloud architecture, mobile apps, SaaS, Rahnoxa"
         url="https://rahnoxa.pages.dev/"
         type="website"
       />
 
-      <section className="relative bg-white text-slate-900 pt-32 pb-20 border-b border-slate-200 overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* Top Editorial Index & Meta Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-8 mb-10 border-b border-slate-200 text-xs font-mono text-slate-500">
-            <div className="flex items-center gap-3">
-              <span className="text-slate-900 font-bold tracking-wider">RAHNOXA</span>
-              <span className="text-slate-400">/</span>
-              <span>ENGINEERING &amp; SYSTEMS ARCHITECTURE</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <span className="hidden sm:inline-block text-slate-500">OPERATING SINCE 2024</span>
-              <span className="flex items-center gap-1.5 text-slate-700 font-medium">
-                <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                ACTIVE FOR COMMERCIAL SCOPING
-              </span>
-            </div>
-          </div>
+      <section className="relative min-h-[92vh] flex items-center bg-[#FAFCFF] text-slate-900 pt-32 pb-24 overflow-hidden gradient-mesh-light border-b border-slate-200/80">
+        {/* Animated Background Aura Lights */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-indigo-400/10 rounded-full blur-[120px] pointer-events-none" />
 
-          {/* Asymmetric Core Hero Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start mb-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Top Pill / Status Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-blue-200/80 shadow-sm mb-8 backdrop-blur-md"
+          >
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+            </span>
+            <span className="text-xs font-semibold text-slate-800">
+              Next-Gen Software &amp; Cloud Systems
+            </span>
+            <span className="text-[10px] font-mono uppercase bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-bold">
+              v2.4 Live
+            </span>
+          </motion.div>
+
+          {/* Main 2-Column Grid Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
             
-            {/* Primary Headline & Positioning (Span 7) */}
-            <div className="lg:col-span-7 space-y-8">
-              <h1 className="text-4xl sm:text-6xl lg:text-[4.2rem] font-bold text-slate-900 tracking-tight leading-[1.05]">
-                We build software systems that businesses actually run on.
+            {/* Left Column: Bold Typography & CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="lg:col-span-7 space-y-7"
+            >
+              <h1 className="text-4xl sm:text-6xl lg:text-[4.1rem] font-extrabold text-slate-900 tracking-tight leading-[1.08]">
+                We Engineer{' '}
+                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 bg-clip-text text-transparent">
+                  High-Impact Digital Systems
+                </span>{' '}
+                That Scale.
               </h1>
 
               <p className="text-slate-600 text-lg sm:text-xl font-normal leading-relaxed max-w-2xl">
-                Rahnoxa architects and builds custom full-stack web platforms, enterprise ERP systems, microservices, and mobile applications engineered for high reliability, clean data integrity, and strict operational uptime.
+                From multi-tenant enterprise ERPs and bespoke full-stack SaaS platforms to high-throughput REST APIs and cross-platform mobile apps — we build mission-critical technology engineered for operational velocity.
               </p>
 
               {/* Action Buttons */}
@@ -56,10 +86,10 @@ const HeroSection: React.FC = () => {
                     navigate('/get-started');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="btn btn-primary px-8 py-3.5 text-sm rounded-lg"
+                  className="btn btn-primary px-8 py-4 text-sm font-bold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all group"
                 >
-                  <span>Start a Project</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <span>Start Your Project</span>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
                   type="button"
@@ -67,123 +97,141 @@ const HeroSection: React.FC = () => {
                     navigate('/services');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="btn btn-outline px-8 py-3.5 text-sm rounded-lg"
+                  className="btn btn-outline px-8 py-4 text-sm font-semibold rounded-xl hover:-translate-y-0.5 transition-all"
                 >
                   <span>Explore Engineering Services</span>
                 </button>
               </div>
-            </div>
 
-            {/* Asymmetric Architectural Spec Column (Span 5) - Real Structured Technical Matrix */}
-            <div className="lg:col-span-5 border-l border-slate-200 pl-0 lg:pl-10 space-y-8">
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-widest text-blue-600 font-bold block mb-3">
-                  Core Engineering Scope
-                </span>
-                <p className="text-xs text-slate-600 leading-relaxed font-mono">
-                  Full lifecycle software development from architectural discovery, database entity-relationship modeling, and secure API gateways to production CI/CD deployments.
-                </p>
+              {/* Verified Trust Metrics */}
+              <div className="pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-4 max-w-lg text-left">
+                <div>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">99.9%</p>
+                  <p className="text-xs font-medium text-slate-500 mt-0.5">Uptime Architecture</p>
+                </div>
+                <div>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-blue-600">3–7 Days</p>
+                  <p className="text-xs font-medium text-slate-500 mt-0.5">Milestone Sprints</p>
+                </div>
+                <div>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-indigo-600">100%</p>
+                  <p className="text-xs font-medium text-slate-500 mt-0.5">TypeScript &amp; Tested</p>
+                </div>
               </div>
+            </motion.div>
 
-              {/* Domain Index Matrix */}
-              <div className="space-y-3 font-mono text-xs">
-                <div 
-                  onClick={() => navigate('/services/erp-enterprise-applications')}
-                  className="flex items-center justify-between p-3.5 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-slate-400 group-hover:text-blue-600 font-bold">01</span>
-                    <span className="text-slate-800 group-hover:text-blue-900 font-semibold">Enterprise ERP &amp; Operations</span>
+            {/* Right Column: Animated Interactive System Architecture Hub */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="lg:col-span-5 relative"
+            >
+              {/* Main Interactive Glassmorphism Architecture Canvas */}
+              <div className="relative p-6 sm:p-7 rounded-2xl glass-card-light shadow-xl border border-slate-200/80 space-y-4">
+                
+                {/* Header with live status */}
+                <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-rose-400" />
+                    <div className="w-3 h-3 rounded-full bg-amber-400" />
+                    <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                    <span className="text-xs font-mono font-bold text-slate-700 ml-2">
+                      Rahnoxa System Matrix
+                    </span>
                   </div>
-                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
+                    Live Cluster
+                  </span>
                 </div>
 
-                <div 
+                {/* Layer 1: Frontend & Edge Gateway */}
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
                   onClick={() => navigate('/services/full-stack-web-apps')}
-                  className="flex items-center justify-between p-3.5 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all cursor-pointer group"
+                  className="p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm hover:border-blue-400 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-slate-400 group-hover:text-blue-600 font-bold">02</span>
-                    <span className="text-slate-800 group-hover:text-blue-900 font-semibold">Full-Stack Web &amp; SaaS Platforms</span>
+                    <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <Code2 className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                        Edge Frontend &amp; SPA Layer
+                      </h4>
+                      <p className="text-[11px] text-slate-500 font-mono">React 18 · TypeScript · Sub-150ms</p>
+                    </div>
                   </div>
                   <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
-                </div>
+                </motion.div>
 
-                <div 
+                {/* Layer 2: Modular ERP & Microservices */}
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => navigate('/services/erp-enterprise-applications')}
+                  className="p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm hover:border-indigo-400 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                      <Workflow className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                        Modular ERP &amp; Business Logic
+                      </h4>
+                      <p className="text-[11px] text-slate-500 font-mono">Role-Based Multi-Tenant Architecture</p>
+                    </div>
+                  </div>
+                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                </motion.div>
+
+                {/* Layer 3: Scalable Cloud Persistence */}
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
                   onClick={() => navigate('/services/custom-software-api-integration')}
-                  className="flex items-center justify-between p-3.5 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all cursor-pointer group"
+                  className="p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-sm hover:border-emerald-400 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-slate-400 group-hover:text-blue-600 font-bold">03</span>
-                    <span className="text-slate-800 group-hover:text-blue-900 font-semibold">Custom APIs &amp; Microservices</span>
+                    <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                      <Database className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                        PostgreSQL Cluster &amp; Redis Cache
+                      </h4>
+                      <p className="text-[11px] text-slate-500 font-mono">ACID Transactions · Automated Backups</p>
+                    </div>
                   </div>
-                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
-                </div>
+                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                </motion.div>
 
-                <div 
-                  onClick={() => navigate('/services/app-development')}
-                  className="flex items-center justify-between p-3.5 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-slate-400 group-hover:text-blue-600 font-bold">04</span>
-                    <span className="text-slate-800 group-hover:text-blue-900 font-semibold">Cross-Platform Mobile Apps</span>
-                  </div>
-                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                {/* Footer specs */}
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                  <span>Engineered with Precision</span>
+                  <span className="text-blue-600 font-bold">Fixed Milestone Scope</span>
                 </div>
               </div>
-            </div>
 
-          </div>
+              {/* Floating Animated Accent Chips */}
+              <motion.div
+                animate={{ y: [-4, 6, -4] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute -top-3 -right-3 px-3.5 py-1.5 rounded-full bg-white shadow-lg border border-blue-100 flex items-center gap-1.5 z-20"
+              >
+                <Zap className="h-3.5 w-3.5 text-blue-600" />
+                <span className="text-xs font-bold text-slate-800">Ultra-Fast Performance</span>
+              </motion.div>
 
-          {/* Integrated Horizontal Engineering Baseline Banner */}
-          <div className="pt-8 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block">
-                DELIVERY PROTOCOL
-              </span>
-              <p className="text-sm font-semibold text-slate-900">
-                Milestone-Driven Sprints
-              </p>
-              <p className="text-xs text-slate-500">
-                Transparent weekly staging reviews
-              </p>
-            </div>
+              <motion.div
+                animate={{ y: [6, -4, 6] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+                className="absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white shadow-lg border border-indigo-100 flex items-center gap-1.5 z-20"
+              >
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                <span className="text-xs font-bold text-slate-800">Enterprise Security</span>
+              </motion.div>
+            </motion.div>
 
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block">
-                CODE INTEGRITY
-              </span>
-              <p className="text-sm font-semibold text-slate-900">
-                Strict TypeScript &amp; Tests
-              </p>
-              <p className="text-xs text-slate-500">
-                Type-safe APIs and zero debt
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block">
-                DATA ARCHITECTURE
-              </span>
-              <p className="text-sm font-semibold text-slate-900">
-                ACID Compliant Relational
-              </p>
-              <p className="text-xs text-slate-500">
-                PostgreSQL schemas &amp; Redis cache
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block">
-                DEPLOYMENT TARGET
-              </span>
-              <p className="text-sm font-semibold text-slate-900">
-                Sub-150ms Global Edge
-              </p>
-              <p className="text-xs text-slate-500">
-                TLS 1.3 automated CI/CD pipelines
-              </p>
-            </div>
           </div>
 
         </div>
