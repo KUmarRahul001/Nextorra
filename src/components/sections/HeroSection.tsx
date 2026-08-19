@@ -1,72 +1,88 @@
 import React, { useEffect, useRef } from 'react';
-import { ArrowRight, CheckCircle2, ShieldCheck, Zap, Layers, Sparkles, TrendingUp, Cpu, Server, Code } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ShieldCheck, Zap, Layers, Sparkles, ExternalLink, Globe, Smartphone, Database, Server } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Typed from 'typed.js';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
-/* ─── Premium Human-Crafted Live Production Telemetry Panel ─── */
-const ProductionSystemOverview: React.FC = () => {
+/* ─── Modern Live Project Showcase Deck (Real Deliverables) ─── */
+const LiveShowcaseDeck: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="relative w-full max-w-lg mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-7 shadow-2xl space-y-6">
-      {/* Top Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-        <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30">
-            <Cpu className="h-4 w-4" />
+    <div className="relative w-full max-w-lg mx-auto space-y-4">
+      {/* Top Main Interactive Project Card */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-5 hover:border-slate-700 transition-colors">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-mono text-blue-400 uppercase tracking-wider px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/20">
+            Featured Platform
+          </span>
+          <span className="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Live Deployment
+          </span>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-bold text-white tracking-tight">
+            Enterprise Cloud ERP &amp; Operations Suite
+          </h3>
+          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+            Multi-tenant inventory, automated billing, and role-based access control engine built on React 18, Node.js, and PostgreSQL.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800 text-center">
+          <div className="p-2 rounded-lg bg-slate-950/80 border border-slate-800/80">
+            <span className="text-[10px] text-slate-500 font-mono block">Architecture</span>
+            <span className="text-xs font-bold text-slate-200">Full-Stack</span>
+          </div>
+          <div className="p-2 rounded-lg bg-slate-950/80 border border-slate-800/80">
+            <span className="text-[10px] text-slate-500 font-mono block">SLA Delivery</span>
+            <span className="text-xs font-bold text-blue-400">7 Days</span>
+          </div>
+          <div className="p-2 rounded-lg bg-slate-950/80 border border-slate-800/80">
+            <span className="text-[10px] text-slate-500 font-mono block">Database</span>
+            <span className="text-xs font-bold text-emerald-400">PostgreSQL</span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => navigate('/projects/enterprise-cloud-erp-platform')}
+          className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-md shadow-blue-600/20"
+        >
+          <span>View Architecture &amp; Case Study</span>
+          <ArrowRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
+
+      {/* Secondary Quick-Access Stack Bar */}
+      <div className="grid grid-cols-2 gap-3">
+        <div
+          onClick={() => navigate('/services/app-development')}
+          className="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer flex items-center gap-3 group"
+        >
+          <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 group-hover:scale-105 transition-transform">
+            <Smartphone className="h-4 w-4" />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Enterprise Delivery Engine</h4>
-            <p className="text-[11px] text-slate-400 font-mono">System Integrity: 100%</p>
+            <h4 className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">Mobile Engineering</h4>
+            <p className="text-[10px] text-slate-400">React Native &amp; iOS/Android</p>
           </div>
         </div>
-        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Active Operations
-        </span>
-      </div>
 
-      {/* Key Real-World Operational Metrics */}
-      <div className="grid grid-cols-2 gap-3.5">
-        <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
-          <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider block">Average Delivery SLA</span>
-          <p className="text-xl font-bold text-white">3–7 Business Days</p>
-          <p className="text-[10px] text-blue-400">Milestone Sprint Deployments</p>
-        </div>
-
-        <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
-          <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider block">System Uptime Target</span>
-          <p className="text-xl font-bold text-emerald-400">99.9% Uptime</p>
-          <p className="text-[10px] text-slate-400">Automated Failover &amp; Backups</p>
-        </div>
-      </div>
-
-      {/* Capabilities Overview List */}
-      <div className="space-y-2.5 text-xs text-slate-300">
-        <div className="flex items-center justify-between p-3 rounded-lg bg-slate-950/60 border border-slate-800/60">
-          <div className="flex items-center gap-2.5">
-            <Server className="h-4 w-4 text-indigo-400" />
-            <span className="font-semibold text-white">Full-Stack Cloud &amp; ERP Architecture</span>
+        <div
+          onClick={() => navigate('/services/full-stack-web-apps')}
+          className="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer flex items-center gap-3 group"
+        >
+          <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 group-hover:scale-105 transition-transform">
+            <Globe className="h-4 w-4" />
           </div>
-          <span className="text-[10px] font-mono text-slate-400">Production Ready</span>
-        </div>
-
-        <div className="flex items-center justify-between p-3 rounded-lg bg-slate-950/60 border border-slate-800/60">
-          <div className="flex items-center gap-2.5">
-            <Code className="h-4 w-4 text-cyan-400" />
-            <span className="font-semibold text-white">Strict TypeScript &amp; Automated CI/CD</span>
+          <div>
+            <h4 className="text-xs font-bold text-white group-hover:text-indigo-300 transition-colors">Custom Web Apps</h4>
+            <p className="text-[10px] text-slate-400">Microservices &amp; REST APIs</p>
           </div>
-          <span className="text-[10px] font-mono text-slate-400">Zero Technical Debt</span>
         </div>
-      </div>
-
-      {/* Trust & Guarantee Footer */}
-      <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4 text-emerald-400" />
-          <span>Transparent Commercial Pricing</span>
-        </div>
-        <span className="font-mono text-slate-500">Fixed Milestone Scope</span>
       </div>
     </div>
   );
@@ -175,9 +191,9 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Clean Production System Overview */}
+            {/* Right Column: Live Project Showcase Deck */}
             <div className="lg:col-span-5 w-full">
-              <ProductionSystemOverview />
+              <LiveShowcaseDeck />
             </div>
 
           </div>
