@@ -75,14 +75,31 @@ const capabilities: Capability[] = [
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<CapabilityId | null>(null);
+  const [isMoved, setIsMoved] = useState<boolean>(false);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<NodeJS.Timeout[]>([]);
 
-  // Close / Final Reset back to IDLE
-  const closeActive = () => {
-    setActiveId(null);
+  const clearAllTimers = () => {
+    timerRef.current.forEach(t => clearTimeout(t));
+    timerRef.current = [];
   };
 
-  // Click outside to collapse back to IDLE
+  // Close / Reset back to IDLE with proper sequential collapse
+  const closeActive = () => {
+    clearAllTimers();
+    setShowDetails(false);
+    const t1 = setTimeout(() => {
+      setIsMoved(false);
+      const t2 = setTimeout(() => {
+        setActiveId(null);
+      }, 550);
+      timerRef.current.push(t2);
+    }, 200);
+    timerRef.current.push(t1);
+  };
+
+  // Click outside to collapse
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -98,46 +115,76 @@ const HeroSection: React.FC = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
+      clearAllTimers();
     };
   }, [activeId]);
 
-  // Direct Click handler on capability node
-  const handleNodeClick = (targetId: CapabilityId, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
+  // Transition to a target capability:
+  // Step 1: Physical translation as compact node (550ms)
+  // Step 2: Only after arrival, expand and reveal details (300ms)
+  const transitionTo = (targetId: CapabilityId) => {
+    clearAllTimers();
+    setShowDetails(false);
 
-    // If clicking the currently active expanded capability -> Collapse it
     if (activeId === targetId) {
       closeActive();
       return;
     }
 
-    // Direct swap and expand target capability!
+    if (activeId !== null) {
+      // Return previous to home first
+      setIsMoved(false);
+      const t1 = setTimeout(() => {
+        setActiveId(targetId);
+        setIsMoved(true);
+        const t2 = setTimeout(() => {
+          setShowDetails(true);
+        }, 550);
+        timerRef.current.push(t2);
+      }, 350);
+      timerRef.current.push(t1);
+      return;
+    }
+
+    // Fresh start from IDLE:
     setActiveId(targetId);
+    // Trigger movement on next tick
+    setTimeout(() => {
+      setIsMoved(true);
+    }, 20);
+
+    // After 550ms travel finishes -> Reveal details
+    const t1 = setTimeout(() => {
+      setShowDetails(true);
+    }, 570);
+    timerRef.current.push(t1);
   };
 
-  // NEXT BUTTON / BACK TO OVERVIEW HANDLER
+  const handleNodeClick = (targetId: CapabilityId, e: React.MouseEvent) => {
+    e.stopPropagation();
+    transitionTo(targetId);
+  };
+
+  // Next capability handler
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (activeId === null) return;
-
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
 
-    // If on the 4th (final) capability, "Back to Overview" performs Final Reset to IDLE!
+    // Final reset if on 4th capability
     if (currentIdx === capabilities.length - 1) {
       closeActive();
       return;
     }
 
-    // Move to next capability in sequence
     const nextIdx = currentIdx + 1;
-    setActiveId(capabilities[nextIdx].id);
+    transitionTo(capabilities[nextIdx].id);
   };
 
-  // PREV BUTTON HANDLER
+  // Prev capability handler
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (activeId === null) return;
-
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
     if (currentIdx === 0) {
       closeActive();
@@ -145,7 +192,7 @@ const HeroSection: React.FC = () => {
     }
 
     const prevIdx = currentIdx - 1;
-    setActiveId(capabilities[prevIdx].id);
+    transitionTo(capabilities[prevIdx].id);
   };
 
   // Find active capability object
@@ -153,8 +200,8 @@ const HeroSection: React.FC = () => {
   const activeIdx = capabilities.findIndex(c => c.id === activeId);
   const isFinalCapability = activeIdx === capabilities.length - 1;
 
-  // Where does RX logo travel? When active, RX translates to the active capability's homeOffset
-  const rxTargetPos = activeCapability ? activeCapability.homeOffset : { x: 0, y: 0 };
+  // RX target position: Only moves to active capability home position when isMoved is true!
+  const rxTargetPos = (activeCapability && isMoved) ? activeCapability.homeOffset : { x: 0, y: 0 };
 
   return (
     <>
@@ -270,16 +317,16 @@ const HeroSection: React.FC = () => {
                   <line x1="90" y1="250" x2="410" y2="250" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="2 3" />
                 </svg>
 
-                {/* ── CENTRAL RX BRAND MARK (Translates to Active Capability's Home Position) ── */}
+                {/* ── CENTRAL RX BRAND MARK (Visibly Translates to Active Capability's Home Position) ── */}
                 <motion.div
                   animate={{ 
                     x: rxTargetPos.x, 
                     y: rxTargetPos.y,
-                    scale: activeId !== null ? 0.85 : 1,
+                    scale: (activeId !== null && isMoved) ? 0.85 : 1,
                   }}
                   transition={{ 
-                    duration: 0.5, 
-                    ease: [0.25, 1, 0.5, 1] 
+                    duration: 0.55, 
+                    ease: [0.35, 0, 0.25, 1] 
                   }}
                   onClick={() => {
                     if (activeId !== null) {
@@ -298,13 +345,15 @@ const HeroSection: React.FC = () => {
                   />
                 </motion.div>
 
-                {/* ── 4 CAPABILITY NODES (Move to Center & Expand Details directly on Click!) ── */}
+                {/* ── 4 CAPABILITY NODES (Visibly Travel to Center, Then Expand) ── */}
                 {capabilities.map((cap, idx) => {
                   const isActive = activeId === cap.id;
                   const isOther = activeId !== null && !isActive;
+                  const isCentered = isActive && isMoved;
+                  const isFullyExpanded = isActive && showDetails;
 
                   // Target coordinates: Active node translates to (0, 0) [Exact Center], inactive stays at homeOffset
-                  const targetPosition = isActive ? { x: 0, y: 0 } : cap.homeOffset;
+                  const targetPosition = isCentered ? { x: 0, y: 0 } : cap.homeOffset;
 
                   return (
                     <motion.div
@@ -316,25 +365,32 @@ const HeroSection: React.FC = () => {
                         zIndex: isActive ? 40 : 20,
                       }}
                       transition={{
-                        x: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
-                        y: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+                        x: { duration: 0.55, ease: [0.35, 0, 0.25, 1] },
+                        y: { duration: 0.55, ease: [0.35, 0, 0.25, 1] },
                         opacity: { duration: 0.3 },
                       }}
                       className="absolute"
                     >
-                      <button
-                        type="button"
+                      {/* Using div as interactive card container to fix invalid DOM nesting */}
+                      <div
                         onClick={(e) => handleNodeClick(cap.id, e)}
-                        aria-expanded={isActive}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            handleNodeClick(cap.id, e as any);
+                          }
+                        }}
+                        aria-expanded={isFullyExpanded}
                         aria-label={`${cap.title} capability node`}
-                        className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 ${
-                          isActive
+                        className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 cursor-pointer ${
+                          isFullyExpanded
                             ? 'w-[290px] sm:w-[340px] p-5 shadow-2xl shadow-blue-500/15 border-blue-400 ring-1 ring-blue-400/20'
-                            : 'w-[175px] sm:w-[190px] px-3.5 py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm cursor-pointer'
+                            : 'w-[175px] sm:w-[190px] px-3.5 py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm'
                         }`}
                       >
-                        {!isActive ? (
-                          /* Compact State at Home Position */
+                        {!isFullyExpanded ? (
+                          /* Compact State (Stays compact during the entire movement phase!) */
                           <div className="flex items-center gap-2.5">
                             <span className={`p-1.5 rounded-lg border ${cap.badgeBg} flex-shrink-0`}>
                               {cap.icon}
@@ -349,11 +405,11 @@ const HeroSection: React.FC = () => {
                             </div>
                           </div>
                         ) : (
-                          /* Expanded Details State at EXACT CENTER */
+                          /* Expanded Details State (Reveals ONLY AFTER arrival at center!) */
                           <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.25, delay: 0.15 }}
+                            transition={{ duration: 0.25 }}
                             className="space-y-3.5"
                           >
                             {/* Header */}
@@ -440,7 +496,7 @@ const HeroSection: React.FC = () => {
                             </div>
                           </motion.div>
                         )}
-                      </button>
+                      </div>
                     </motion.div>
                   );
                 })}
