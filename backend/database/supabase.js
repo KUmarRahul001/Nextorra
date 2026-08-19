@@ -125,9 +125,13 @@ export const db = {
     return data || [];
   },
 
-  async getProjectBySlug(slug) {
+  async getProjectBySlug(slugOrId) {
     const client = getClient();
-    const { data, error } = await client.from('projects').select('*').eq('slug', slug).maybeSingle();
+    const { data, error } = await client
+      .from('projects')
+      .select('*')
+      .or(`slug.eq.${slugOrId},id.eq.${slugOrId}`)
+      .maybeSingle();
     if (error) throw new Error(`Database error fetching project: ${error.message}`);
     return data;
   },

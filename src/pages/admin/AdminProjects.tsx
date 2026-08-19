@@ -246,6 +246,15 @@ const AdminProjects: React.FC = () => {
                     </td>
 
                     <td className="py-4 px-4 text-right space-x-2">
+                      <a
+                        href={`/projects/${proj.slug || proj.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-cyan-600 transition-colors"
+                        title="View Public Showcase Page"
+                      >
+                        <Eye className="h-3.5 w-3.5" />
+                      </a>
                       <button
                         onClick={() => handleOpenEdit(proj)}
                         className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-blue-600 transition-colors"
