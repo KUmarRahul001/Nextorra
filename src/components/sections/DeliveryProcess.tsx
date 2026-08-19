@@ -49,8 +49,8 @@ const steps = [
 
 const DeliveryProcess: React.FC = () => {
   return (
-    <section className="py-20 bg-white text-slate-900 relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-24 bg-slate-950 text-white relative overflow-hidden border-t border-slate-800/80">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,39 +58,37 @@ const DeliveryProcess: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="inline-block px-3.5 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 border border-blue-200">
+          <span className="inline-block px-3.5 py-1.5 bg-blue-500/10 text-cyan-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
             How We Work
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-slate-900">
-            Structured Software Delivery Lifecycle
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
+            A Structured, Dependable Delivery Model
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg">
-            From initial requirements to post-launch maintenance, our structured process keeps projects on schedule and scope transparent.
+          <p className="text-slate-400 text-base sm:text-lg">
+            Every project follows a transparent roadmap with clear milestones, regular progress reviews, and rigorous testing.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {steps.map((step, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {steps.map((step, index) => (
             <motion.div
-              key={idx}
+              key={step.number}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-200 relative group"
+              transition={{ duration: 0.4, delay: index * 0.08 }}
+              className="bg-slate-900/90 rounded-2xl border border-slate-800 p-6 shadow-xl hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300 relative group"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="p-2.5 rounded-lg bg-white shadow-sm border border-slate-200">
+                <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 group-hover:border-blue-500/30 transition-colors">
                   {step.icon}
                 </div>
-                <span className="font-mono text-2xl font-black text-slate-300 group-hover:text-blue-500 transition-colors">
+                <span className="text-2xl font-black text-slate-700 group-hover:text-blue-500/40 transition-colors font-mono">
                   {step.number}
                 </span>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                {step.description}
-              </p>
+              <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{step.description}</p>
             </motion.div>
           ))}
         </div>

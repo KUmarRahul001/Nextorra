@@ -50,8 +50,8 @@ const techCategories = [
 
 const TechStackSection: React.FC = () => {
   return (
-    <section className="py-20 bg-slate-50 relative overflow-hidden border-y border-slate-200">
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-24 bg-slate-900/90 text-white relative overflow-hidden border-y border-slate-800/80">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -59,13 +59,13 @@ const TechStackSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="inline-block px-3.5 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="inline-block px-3.5 py-1.5 bg-blue-500/10 text-cyan-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
             Technical Stack
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
             Modern Technologies We Work With
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg">
+          <p className="text-slate-400 text-base sm:text-lg">
             We choose reliable, community-backed frameworks and tools suited to the longevity of your software.
           </p>
         </motion.div>
@@ -78,25 +78,25 @@ const TechStackSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200 flex flex-col justify-between"
+              className="bg-slate-950/80 rounded-2xl border border-slate-800 p-6 shadow-xl hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2.5 rounded-lg bg-slate-100 flex-shrink-0">
+                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex-shrink-0">
                     {cat.icon}
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900">{cat.category}</h3>
+                  <h3 className="text-lg font-bold text-white">{cat.category}</h3>
                 </div>
-                <p className="text-xs text-slate-500 mb-4 leading-relaxed">
+                <p className="text-xs text-slate-400 mb-4 leading-relaxed">
                   {cat.description}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-100">
+              <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-800/80">
                 {cat.items.map((tech, i) => (
                   <span
                     key={i}
-                    className="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 rounded text-xs font-medium"
+                    className="inline-block px-2.5 py-1 bg-slate-900 text-slate-300 border border-slate-800 rounded-lg text-xs font-medium"
                   >
                     {tech}
                   </span>

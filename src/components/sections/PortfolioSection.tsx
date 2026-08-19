@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Sparkles } from 'lucide-react';
+import { ExternalLink, Sparkles, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { projects, projectCategories } from '../../data/projects';
 
@@ -25,46 +25,49 @@ const PortfolioSection: React.FC = () => {
 
   return (
     <section
-      className="section bg-gradient-to-b from-gray-50 to-white relative overflow-hidden"
+      className="py-24 bg-slate-950 text-white relative overflow-hidden border-t border-slate-800/80"
       id="portfolio"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,64,175,0.05)_0%,transparent_100%)] pointer-events-none"></div>
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-600/10 blur-[130px] rounded-full pointer-events-none" />
 
-      <div className="container relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-12"
+          className="text-center max-w-3xl mx-auto mb-14"
         >
-          <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent rounded-full text-sm font-medium mb-4">
-            <Sparkles className="h-4 w-4 inline-block mr-2" aria-hidden="true" />
-            Featured Work
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-500/10 text-cyan-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+            Engineering Showcases
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Success Stories</h2>
-          <p className="text-gray-600 text-lg">
-            Discover how we&apos;ve helped businesses achieve their digital goals
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
+            Our Success Stories
+          </h2>
+          <p className="text-slate-400 text-base sm:text-lg">
+            Explore scalable platforms, custom systems, and high-performance digital products engineered by Rahnoxa.
           </p>
         </motion.div>
 
         {/* Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div className="flex flex-wrap justify-center gap-2.5 mb-14">
           {[ALL_LABEL, ...projectCategories].map((category, index) => (
             <motion.button
               key={category}
               type="button"
               aria-pressed={activeCategory === category}
               onClick={() => handleCategoryChange(category)}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
               className={cn(
-                'px-6 py-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+                'px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500',
                 activeCategory === category
-                  ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                  : 'bg-white/80 text-gray-700 hover:bg-white hover:shadow-md'
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 border border-blue-400/40'
+                  : 'bg-slate-900/90 text-slate-400 border border-slate-800 hover:text-white hover:border-slate-700 hover:bg-slate-800'
               )}
             >
               {category}
@@ -77,61 +80,50 @@ const PortfolioSection: React.FC = () => {
           {filteredItems.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative"
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className="group relative flex flex-col"
               onMouseEnter={() => setHoveredItem(item.id)}
               onMouseLeave={() => setHoveredItem(null)}
             >
-              <div className="relative overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-500 hover:shadow-xl">
+              <div className="relative overflow-hidden rounded-2xl bg-slate-900/90 border border-slate-800/80 shadow-2xl transition-all duration-500 hover:border-blue-500/40 hover:-translate-y-1.5 flex flex-col h-full">
                 {/* Image Container */}
-                <div className="relative aspect-[16/12] overflow-hidden">
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
                   <img
                     src={item.images[0] as unknown as string}
-                    alt={`${item.isDemo ? 'Demo: ' : ''}${item.title}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  {/* Demo badge */}
-                  {item.isDemo && (
-                    <span className="absolute top-3 left-3 bg-amber-500/90 text-white text-xs font-semibold px-2.5 py-1 rounded-full z-10">
-                      Demo
-                    </span>
-                  )}
-                  {/* Overlay */}
-                  <div
-                    className={cn(
-                      'absolute inset-0 bg-gradient-to-b from-transparent to-primary/90 transition-opacity duration-300 pointer-events-none',
-                      hoveredItem === item.id ? 'opacity-100 pointer-events-auto' : 'opacity-0'
-                    )}
-                    aria-hidden={hoveredItem !== item.id}
-                  >
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-transform duration-300">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                          {item.category}
+                  {/* Category Pill */}
+                  <span className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md text-cyan-300 border border-cyan-500/30 text-[11px] font-bold px-3 py-1 rounded-full z-10 shadow-lg">
+                    {item.category}
+                  </span>
+                </div>
+
+                {/* Content Block */}
+                <div className="p-6 flex flex-col justify-between flex-grow">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed mb-4">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-800/60">
+                      {item.tags.map((tag, i) => (
+                        <span
+                          key={i}
+                          className="text-[11px] font-medium bg-slate-800/80 text-slate-300 border border-slate-700/50 px-2 py-0.5 rounded-md"
+                        >
+                          {tag}
                         </span>
-                        <ExternalLink
-                          className="h-5 w-5"
-                          aria-label={`External link for ${item.title}`}
-                          role="img"
-                          tabIndex={-1}
-                        />
-                      </div>
-                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-white/90 text-sm mb-4">{item.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {item.tags.map((tag, i) => (
-                          <span
-                            key={i}
-                            className="text-xs bg-white/10 px-2 py-1 rounded"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -140,6 +132,7 @@ const PortfolioSection: React.FC = () => {
           ))}
         </div>
 
+        {/* CTA Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -147,11 +140,13 @@ const PortfolioSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mt-16"
         >
-          <button onClick={() => navigate('/get-started')}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors duration-300 shadow-lg shadow-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          type='button'>
-            Start Your Project
-            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+          <button
+            onClick={() => navigate('/get-started')}
+            className="inline-flex items-center gap-2.5 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm rounded-xl transition-all duration-300 shadow-xl shadow-blue-600/25 hover:shadow-blue-600/40 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="button"
+          >
+            <span>Start Your Project</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </motion.div>
       </div>
@@ -160,3 +155,4 @@ const PortfolioSection: React.FC = () => {
 };
 
 export default PortfolioSection;
+
