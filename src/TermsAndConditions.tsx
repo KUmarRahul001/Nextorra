@@ -1,84 +1,238 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { 
+  FiFileText, 
+  FiCheckCircle, 
+  FiDollarSign, 
+  FiCode, 
+  FiClock, 
+  FiShield, 
+  FiAlertTriangle, 
+  FiMail 
+} from 'react-icons/fi';
+import SEO from './components/SEO';
 
 const TermsAndConditions: React.FC = () => {
+  const lastUpdated = "August 19, 2026";
+
   return (
-    <main className="container py-16 max-w-4xl text-dark animate-fade-in">
-      <h1 className="text-4xl md:text-5xl font-bold mb-10 gradient-text">
-        Terms and Conditions
-      </h1>
+    <>
+      <SEO
+        title="Terms and Conditions – Rahnoxa Commercial & Engineering Engagement"
+        description="Transparent legal terms, payment schedules, 30-day bug fix warranty, and intellectual property transfer agreements for Rahnoxa engineering projects."
+        keywords="terms of service, software development agreement, milestone payments, source code ownership, bug warranty SLA, Rahnoxa terms"
+        url="https://rahnoxa.pages.dev/terms-and-conditions"
+        type="website"
+      />
 
-      <section className="mb-10 animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">1. Agreement to Terms</h2>
-        <p className="text-gray mb-4">
-          By accessing and using Rahnoxa's services, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not access our services.
-        </p>
-      </section>
+      <main className="min-h-screen bg-[#FAFCFF] text-slate-900 pt-32 pb-24 border-b border-slate-200/80">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+          
+          {/* Header Banner */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-mono font-bold uppercase tracking-wider mb-4 shadow-2xs">
+              <FiFileText className="h-4 w-4 text-blue-600" />
+              <span>Commercial Terms</span>
+            </div>
 
-      <section className="mb-10 animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">2. Services</h2>
-        <p className="text-gray mb-4">
-          Rahnoxa provides digital marketing and software development services including but not limited to web platforms, custom applications, mobile apps, ERP systems, and API integrations.
-        </p>
-        <ul className="list-disc list-inside text-gray space-y-2 pl-5">
-          <li>All services are provided "as is" without warranty of any kind</li>
-          <li>Service delivery timelines are estimates and subject to change</li>
-          <li>We reserve the right to modify or discontinue services without notice</li>
-        </ul>
-      </section>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 mb-4">
+              Terms &amp; Conditions of Service
+            </h1>
 
-      <section className="mb-10 animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">3. Payment Terms</h2>
-        <p className="text-gray mb-4">
-          Payment terms vary by service and package selected. Generally:
-        </p>
-        <ul className="list-disc list-inside text-gray space-y-2 pl-5">
-          <li>Advance payment may be required for certain services</li>
-          <li>Monthly services are billed at the start of each month</li>
-          <li>Late payments may result in service suspension</li>
-        </ul>
-      </section>
+            <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+              Clear, transparent engineering agreements with milestone-based delivery, 100% code ownership, and zero hidden lock-in fees.
+            </p>
 
-      <section className="mb-10 animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">4. Intellectual Property</h2>
-        <p className="text-gray mb-4">
-          All materials, including designs, code, and content created by Rahnoxa remain our intellectual property until full payment is received and ownership transfer is explicitly stated in writing.
-        </p>
-      </section>
+            <div className="mt-4 inline-block text-xs font-mono text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full">
+              Effective Date: {lastUpdated} · Version 2.4
+            </div>
+          </motion.div>
 
-      <section className="mb-10 animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">5. Client Responsibilities</h2>
-        <p className="text-gray mb-4">
-          Clients are responsible for:
-        </p>
-        <ul className="list-disc list-inside text-gray space-y-2 pl-5">
-          <li>Providing accurate and timely information</li>
-          <li>Reviewing and approving deliverables</li>
-          <li>Ensuring compliance with relevant laws and regulations</li>
-          <li>Maintaining confidentiality of project details</li>
-        </ul>
-      </section>
+          {/* Core Highlights */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 inline-block mb-3">
+                <FiCode className="h-5 w-5" />
+              </div>
+              <h3 className="text-base font-bold text-slate-900 mb-1">100% Code Transfer</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Full copyright and repository ownership transfer directly to the client upon final milestone settlement.
+              </p>
+            </div>
 
-      <section className="mb-10 animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">6. Limitation of Liability</h2>
-        <p className="text-gray mb-4">
-          Rahnoxa shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of our services.
-        </p>
-      </section>
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 inline-block mb-3">
+                <FiShield className="h-5 w-5" />
+              </div>
+              <h3 className="text-base font-bold text-slate-900 mb-1">30-Day Bug Warranty</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                All production deployments include 30 calendar days of technical warranty for bug fixes and SLA diagnostics.
+              </p>
+            </div>
 
-      <section className="mb-10 animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">7. Termination</h2>
-        <p className="text-gray mb-4">
-          Either party may terminate services with written notice according to the terms specified in the service agreement. Termination does not affect accrued rights or liabilities.
-        </p>
-      </section>
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 inline-block mb-3">
+                <FiDollarSign className="h-5 w-5" />
+              </div>
+              <h3 className="text-base font-bold text-slate-900 mb-1">Milestone Payments</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Transparent phased payments tied directly to tangible sprint deliverables and staging approval.
+              </p>
+            </div>
+          </div>
 
-      <section className="animate-slide-up">
-        <h2 className="text-2xl font-semibold text-primary mb-4">8. Changes to Terms</h2>
-        <p className="text-gray mb-4">
-          We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to our website.
-        </p>
-      </section>
-    </main>
+          {/* Main Legal Content */}
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 lg:p-12 shadow-xs space-y-12 text-slate-700 leading-relaxed text-sm sm:text-base">
+            
+            {/* Section 1 */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                  <FiFileText className="h-5 w-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  1. Agreement &amp; Acceptance
+                </h2>
+              </div>
+              <p>
+                By commissioning software development, subscribing to marketing retainers, or utilizing the web platform of <strong>Rahnoxa</strong>, you (the "Client") agree to be bound by these Terms and Conditions. These terms govern all formal Statements of Work (SOW), sprint milestones, and engineering advisory services provided by Rahnoxa.
+              </p>
+            </section>
+
+            {/* Section 2 */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                  <FiCode className="h-5 w-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  2. Engineering Scope &amp; Deliverables
+                </h2>
+              </div>
+              <p>
+                Rahnoxa provides bespoke software engineering, web application development, ERP architectures, API integrations, and digital growth services. Every project operates under a defined Scope of Work:
+              </p>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-600 list-disc list-inside">
+                <li><strong>Deliverable Specifications:</strong> Exact technical features, frameworks, third-party APIs, and screen mockups are agreed upon prior to commencing development.</li>
+                <li><strong>Scope Changes:</strong> Any features requested beyond the initial agreed milestone scope will be quoted separately as an add-on sprint or future phase.</li>
+                <li><strong>Staging Environment Previews:</strong> Clients receive access to live staging environments to test features and provide feedback at each sprint milestone.</li>
+              </ul>
+            </section>
+
+            {/* Section 3 */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                  <FiDollarSign className="h-5 w-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  3. Commercial Pricing &amp; Payment Milestones
+                </h2>
+              </div>
+              <p>
+                We operate on a transparent milestone structure ensuring fairness and clarity for both parties:
+              </p>
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs sm:text-sm">
+                <p>• <strong>Fixed-Scope Projects:</strong> Typically structured as 40% initial discovery advance, 30% upon staging milestone demo, and 30% upon final production deployment and code transfer.</p>
+                <p>• <strong>Fast-Track Tasks (Under ₹10,000):</strong> 50% advance booking and 50% upon completed live deployment.</p>
+                <p>• <strong>Monthly Retainers &amp; Care Plans:</strong> Invoiced at the beginning of each billing cycle on a 30-day recurring basis.</p>
+                <p>• <strong>Taxes:</strong> All stated prices exclude 18% GST where applicable.</p>
+              </div>
+            </section>
+
+            {/* Section 4 */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                  <FiShield className="h-5 w-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  4. Intellectual Property &amp; 100% Code Ownership
+                </h2>
+              </div>
+              <p>
+                Upon receipt of full and final payment for the project:
+              </p>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-600">
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-600 font-bold">✓</span>
+                  <span><strong>Full Transfer:</strong> The Client receives exclusive commercial ownership of all custom frontend UI code, backend microservices, database schemas, and proprietary assets created specifically for the project.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-600 font-bold">✓</span>
+                  <span><strong>No Vendor Lock-in:</strong> We hand over Git repositories, deployment configurations, and database credentials directly to you.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-600 font-bold">✓</span>
+                  <span><strong>Open Source Components:</strong> Standard third-party libraries (e.g. React, Node.js, Tailwind CSS) remain subject to their respective open-source licenses (MIT, Apache 2.0).</span>
+                </li>
+              </ul>
+            </section>
+
+            {/* Section 5 */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                  <FiClock className="h-5 w-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  5. 30-Day Post-Launch Technical Warranty
+                </h2>
+              </div>
+              <p>
+                Every standard project launched by Rahnoxa includes <strong>30 calendar days of complimentary post-launch bug fix warranty</strong> starting from the live deployment date:
+              </p>
+              <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs sm:text-sm text-emerald-950 space-y-1.5">
+                <p>• <strong>Included:</strong> Fixing software glitches, broken links, backend exception errors, responsive visual bugs, or discrepancies against the approved Scope of Work.</p>
+                <p>• <strong>Excluded:</strong> New feature requests, structural redesigns, third-party API outage interruptions, or issues caused by unauthorized client code modifications.</p>
+              </div>
+            </section>
+
+            {/* Section 6 */}
+            <section className="space-y-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                  <FiAlertTriangle className="h-5 w-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  6. Limitation of Liability
+                </h2>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600">
+                To the maximum extent permitted by applicable Indian law, Rahnoxa shall not be held liable for indirect, punitive, or consequential business damages resulting from third-party hosting outages (e.g., AWS, Cloudflare, Supabase downtime), third-party API changes, or force majeure events. Total commercial liability is strictly limited to the aggregate fee paid by the Client for the specific affected milestone.
+              </p>
+            </section>
+
+            {/* Section 7 */}
+            <section className="space-y-4 pt-4 border-t border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                  <FiMail className="h-5 w-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  7. Governing Law &amp; Inquiries
+                </h2>
+              </div>
+              <p className="text-sm">
+                These terms are governed by and construed in accordance with the laws of the Republic of India. For commercial contracts or legal clarifications:
+              </p>
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm space-y-1.5">
+                <p><strong>Entity:</strong> Rahnoxa Engineering</p>
+                <p><strong>Legal &amp; Billing Email:</strong> <a href="mailto:contact.rahnoxa@protonmail.com" className="text-blue-600 font-semibold hover:underline">contact.rahnoxa@protonmail.com</a></p>
+                <p><strong>Jurisdiction:</strong> Courts of Jharkhand, India</p>
+              </div>
+            </section>
+
+          </div>
+
+        </div>
+      </main>
+    </>
   );
 };
 
