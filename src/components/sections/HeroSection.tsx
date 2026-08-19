@@ -1,8 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers, FiCpu } from 'react-icons/fi';
-import { HiSparkles, HiOutlineCubeTransparent, HiOutlineBolt } from 'react-icons/hi2';
-import { TbCube3dSphere, TbBraces } from 'react-icons/tb';
+import { motion, useTime, useTransform } from 'framer-motion';
+import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers } from 'react-icons/fi';
+import { HiSparkles, HiOutlineBolt, HiOutlineCpuChip } from 'react-icons/hi2';
+import { TbCube3dSphere, TbBraces, TbTopologyStar3 } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
@@ -19,10 +19,10 @@ const HeroSection: React.FC = () => {
         type="website"
       />
 
-      <section className="relative min-h-[90vh] flex items-center bg-[#FAFCFF] text-slate-900 pt-32 pb-24 overflow-hidden gradient-mesh-light border-b border-slate-200/80">
-        {/* Ambient Lighting Orbs */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-gradient-to-tr from-blue-500/10 to-indigo-500/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-cyan-400/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative min-h-[92vh] flex items-center bg-[#FAFCFF] text-slate-900 pt-32 pb-24 overflow-hidden gradient-mesh-light border-b border-slate-200/80">
+        {/* Ambient Lighting Background Spheres */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-blue-500/10 via-indigo-500/10 to-cyan-400/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[550px] h-[550px] bg-cyan-400/15 rounded-full blur-[130px] pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
@@ -105,123 +105,166 @@ const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: 3D Isometric Software Building Engine & Isometric Hologram */}
+            {/* Right Column: 3D Holographic Software Architecture Engine with Rich Orbiting Motion */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="lg:col-span-6 relative flex items-center justify-center min-h-[460px] sm:min-h-[500px]"
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="lg:col-span-6 relative flex items-center justify-center min-h-[500px] sm:min-h-[540px]"
             >
-              {/* Outer Radiant Glow Sphere */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-indigo-500/15 to-cyan-400/25 rounded-full blur-3xl opacity-70 animate-pulse pointer-events-none" />
+              {/* Dynamic Aura Ripple Layer */}
+              <motion.div 
+                animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 via-indigo-600/15 to-cyan-400/30 rounded-full blur-3xl pointer-events-none" 
+              />
 
-              {/* 3D Isometric Stage Container */}
-              <div className="relative w-full max-w-[480px] h-[460px] sm:h-[490px] flex items-center justify-center perspective-[1200px]">
+              {/* 3D Perspective Canvas */}
+              <div className="relative w-full max-w-[500px] h-[500px] sm:h-[520px] flex items-center justify-center perspective-[1400px]">
                 
-                {/* ── Central 3D Isometric Hologram Cube ── */}
+                {/* ── Orbital Track 1: Outer Dashed Particle Ring ── */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[440px] h-[440px] rounded-full border border-blue-300/30 border-dashed pointer-events-none"
+                >
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]" />
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
+                </motion.div>
+
+                {/* ── Orbital Track 2: Inner Counter-Rotating Ring ── */}
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[330px] h-[330px] rounded-full border border-indigo-400/25 pointer-events-none"
+                >
+                  <span className="absolute top-1/2 left-0 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_12px_#6366f1]" />
+                </motion.div>
+
+                {/* ── Central 3D Isometric Hologram Block with HDR Glow ── */}
                 <motion.div
                   animate={{ 
-                    rotateY: [0, 360],
-                    rotateX: [15, 25, 15],
-                    y: [-10, 10, -10]
+                    rotateY: [-18, 18, -18],
+                    rotateX: [12, -8, 12],
+                    rotateZ: [-2, 2, -2],
+                    y: [-14, 14, -14]
                   }}
                   transition={{ 
-                    rotateY: { duration: 24, repeat: Infinity, ease: "linear" },
-                    rotateX: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-                    y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+                    duration: 7, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
                   }}
-                  className="relative w-44 h-44 sm:w-52 sm:h-52 transform-style-preserve-3d flex items-center justify-center cursor-pointer"
+                  className="relative w-48 h-48 sm:w-56 sm:h-56 transform-style-preserve-3d flex items-center justify-center cursor-pointer group"
                 >
-                  {/* Glowing Hologram Ring System */}
-                  <div className="absolute -inset-10 rounded-full border border-blue-400/30 animate-[spin_16s_linear_infinite] border-dashed pointer-events-none" />
-                  <div className="absolute -inset-20 rounded-full border border-indigo-400/20 animate-[spin_28s_linear_infinite_reverse] pointer-events-none" />
-                  
-                  {/* Core 3D Glowing Cube Geometry with Glassmorphic Gradient Faces */}
-                  <div className="relative w-36 h-36 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br from-blue-600/90 via-indigo-600/80 to-cyan-500/90 p-[2px] shadow-2xl shadow-blue-500/40 backdrop-blur-xl border border-white/40 flex items-center justify-center">
-                    <div className="w-full h-full rounded-[22px] bg-gradient-to-br from-slate-900/90 via-blue-950/90 to-indigo-950/90 p-5 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                      {/* Grid overlay pattern */}
-                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f615_1px,transparent_1px),linear-gradient(to_bottom,#3b82f615_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+                  {/* Neon Outer Frame */}
+                  <div className="absolute inset-0 rounded-[32px] bg-gradient-to-br from-blue-500 via-indigo-600 to-cyan-400 p-[2.5px] shadow-[0_0_40px_rgba(59,130,246,0.35)] transition-all duration-300 group-hover:shadow-[0_0_60px_rgba(59,130,246,0.55)]">
+                    <div className="w-full h-full rounded-[30px] bg-slate-950/95 backdrop-blur-2xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden border border-white/10">
                       
-                      {/* Laser scanning line animation */}
+                      {/* Isometric Grid Mesh Texture */}
+                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#38bdf812_1px,transparent_1px),linear-gradient(to_bottom,#38bdf812_1px,transparent_1px)] bg-[size:18px_18px] pointer-events-none" />
+                      
+                      {/* Laser Compilation Scan Animation */}
                       <motion.div 
-                        animate={{ top: ['0%', '100%', '0%'] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_8px_#38bdf8] pointer-events-none"
+                        animate={{ top: ['-10%', '110%', '-10%'] }}
+                        transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee] pointer-events-none"
                       />
 
-                      {/* Center Tech Symbol */}
-                      <TbCube3dSphere className="h-12 w-12 sm:h-14 sm:w-14 text-cyan-400 animate-pulse relative z-10 drop-shadow-[0_0_12px_rgba(56,189,248,0.6)]" />
+                      {/* Floating Tech Cube Symbol */}
+                      <motion.div
+                        animate={{ scale: [1, 1.06, 1] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        className="relative z-10 p-3 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-cyan-400/30 mb-2"
+                      >
+                        <TbCube3dSphere className="h-12 w-12 sm:h-14 sm:w-14 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
+                      </motion.div>
                       
-                      <div className="mt-2 relative z-10">
-                        <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-300 uppercase block">
+                      <div className="relative z-10">
+                        <span className="text-[11px] font-mono font-black tracking-[0.2em] text-cyan-300 uppercase block">
                           BUILDING ENGINE
                         </span>
-                        <span className="text-[9px] font-mono text-slate-400">
-                          Live Architecture
+                        <span className="text-[9.5px] font-mono text-slate-400 mt-0.5 block">
+                          Live Architecture v2.4
                         </span>
                       </div>
+
                     </div>
                   </div>
                 </motion.div>
 
-                {/* ── Orbiting Satellite 1: Code & Architecture Block (Top Right) ── */}
+                {/* ── Satellite Card 1: TypeScript Core (Top Right) ── */}
                 <motion.div
-                  animate={{ y: [-8, 8, -8], x: [4, -4, 4] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute top-4 right-0 sm:right-2 p-3 sm:p-3.5 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-blue-500/10 flex items-center gap-3 z-20 group hover:border-blue-400 transition-all cursor-pointer"
+                  animate={{ 
+                    y: [-10, 10, -10],
+                    x: [0, -6, 0]
+                  }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  whileHover={{ scale: 1.05, y: -4 }}
                   onClick={() => navigate('/services/full-stack-web-apps')}
+                  className="absolute top-2 right-2 sm:right-4 p-3.5 sm:p-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-blue-500/10 flex items-center gap-3 z-30 cursor-pointer transition-all hover:border-blue-400 hover:shadow-blue-500/20 group"
                 >
-                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-xs">
                     <FiCode className="h-4 w-4" />
                   </div>
                   <div className="text-left pr-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
-                      <p className="text-xs font-bold text-slate-900">Typescript Core</p>
+                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <p className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">TypeScript Core</p>
                     </div>
-                    <p className="text-[10px] text-slate-500 font-mono">React 18 · Node APIs</p>
+                    <p className="text-[10px] text-slate-500 font-mono mt-0.5">React 18 · Node APIs</p>
                   </div>
                 </motion.div>
 
-                {/* ── Orbiting Satellite 2: Live Compilation & CI/CD Pipeline (Bottom Left) ── */}
+                {/* ── Satellite Card 2: Enterprise ERP (Bottom Left) ── */}
                 <motion.div
-                  animate={{ y: [8, -8, 8], x: [-4, 4, -4] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-                  className="absolute bottom-6 left-0 sm:left-2 p-3 sm:p-3.5 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-indigo-500/10 flex items-center gap-3 z-20 group hover:border-indigo-400 transition-all cursor-pointer"
+                  animate={{ 
+                    y: [10, -10, 10],
+                    x: [0, 6, 0]
+                  }}
+                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
                   onClick={() => navigate('/services/erp-enterprise-applications')}
+                  className="absolute bottom-4 left-0 sm:left-2 p-3.5 sm:p-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-indigo-500/10 flex items-center gap-3 z-30 cursor-pointer transition-all hover:border-indigo-400 hover:shadow-indigo-500/20 group"
                 >
-                  <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                  <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-xs">
                     <FiLayers className="h-4 w-4" />
                   </div>
                   <div className="text-left pr-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-                      <p className="text-xs font-bold text-slate-900">Enterprise ERP</p>
+                      <span className="h-2 w-2 rounded-full bg-blue-500 animate-ping" />
+                      <p className="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">Enterprise ERP</p>
                     </div>
-                    <p className="text-[10px] text-slate-500 font-mono">Role-Based · PostgreSQL</p>
+                    <p className="text-[10px] text-slate-500 font-mono mt-0.5">Role-Based · PostgreSQL</p>
                   </div>
                 </motion.div>
 
-                {/* ── Orbiting Satellite 3: Edge Latency & Cloud Specs (Bottom Right) ── */}
+                {/* ── Satellite Card 3: Edge Latency Metric (Bottom Right) ── */}
                 <motion.div
-                  animate={{ y: [-6, 6, -6], x: [3, -3, 3] }}
-                  transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-                  className="absolute bottom-4 right-4 sm:right-6 p-3 sm:p-3.5 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-cyan-500/10 flex items-center gap-3 z-20 group hover:border-cyan-400 transition-all"
+                  animate={{ 
+                    y: [-8, 8, -8],
+                    x: [-4, 4, -4]
+                  }}
+                  transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="absolute bottom-8 right-2 sm:right-6 p-3 sm:p-3.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-cyan-200 shadow-xl shadow-cyan-500/10 flex items-center gap-3 z-30"
                 >
-                  <div className="p-2.5 rounded-xl bg-cyan-50 text-cyan-600 border border-cyan-100">
+                  <div className="p-2 rounded-xl bg-cyan-50 text-cyan-600 border border-cyan-100">
                     <HiOutlineBolt className="h-4 w-4" />
                   </div>
                   <div className="text-left pr-1">
-                    <p className="text-xs font-bold text-slate-900">&lt; 85ms Latency</p>
+                    <p className="text-xs font-black text-slate-900 font-mono">&lt; 85ms Latency</p>
                     <p className="text-[10px] text-slate-500 font-mono">Edge CDN Deployed</p>
                   </div>
                 </motion.div>
 
-                {/* ── Floating Badge 4: Production Verified (Top Left) ── */}
+                {/* ── Floating Badge 4: Code Ownership (Top Left) ── */}
                 <motion.div
-                  animate={{ y: [6, -6, 6] }}
-                  transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
-                  className="absolute top-6 left-2 sm:left-4 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-emerald-200 shadow-md flex items-center gap-2 z-20"
+                  animate={{ 
+                    y: [8, -8, 8],
+                    x: [3, -3, 3]
+                  }}
+                  transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
+                  className="absolute top-4 left-2 sm:left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-emerald-200 shadow-md flex items-center gap-2 z-30"
                 >
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-[11px] font-mono font-bold text-slate-800">
