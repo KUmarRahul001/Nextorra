@@ -33,8 +33,16 @@ const Navbar: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [servicesOpen]);
 
+  // Lock body scroll only when mobile menu drawer is actually opened
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   const smoothScrollTo = (id: string) => {
@@ -60,8 +68,8 @@ const Navbar: React.FC = () => {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 shadow-2xl shadow-black/40 py-1'
-          : 'bg-transparent py-2.5 sm:py-3'
+          ? 'bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 shadow-2xl shadow-black/50 py-1'
+          : 'bg-slate-950/80 backdrop-blur-md border-b border-slate-800/40 py-2.5 sm:py-3'
       }`}
       role="navigation"
       aria-label="Primary Navigation"
@@ -73,7 +81,10 @@ const Navbar: React.FC = () => {
             to="/" 
             className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0 group" 
             aria-label="Homepage" 
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false);
+              setServicesOpen(false);
+            }}
           >
             <div className="relative h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 rounded-xl overflow-hidden flex-shrink-0 p-0.5 bg-gradient-to-tr from-blue-600 to-cyan-400 group-hover:shadow-lg group-hover:shadow-blue-500/25 transition-all">
               <div className="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
@@ -114,7 +125,7 @@ const Navbar: React.FC = () => {
                 onClick={() => setServicesOpen(prev => !prev)}
                 className={`flex items-center gap-1 px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium transition-colors ${
                   servicesOpen
-                    ? 'text-blue-400 bg-slate-800/60'
+                    ? 'text-blue-400 bg-slate-800/80 border border-slate-700/60'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
                 }`}
                 aria-haspopup="true"
@@ -126,21 +137,21 @@ const Navbar: React.FC = () => {
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${servicesOpen ? 'rotate-180 text-blue-400' : ''}`} />
               </button>
               
-              {/* 2-Column Mega Menu for clean visibility & no vertical clipping */}
+              {/* 2-Column Mega Menu for clean visibility & solid opaque background */}
               <div
                 ref={servicesDropdownRef}
                 id="services-menu"
-                className={`absolute top-full left-0 sm:-left-24 lg:left-0 mt-2.5 w-[320px] sm:w-[580px] lg:w-[620px] bg-slate-900/98 backdrop-blur-2xl rounded-2xl shadow-2xl shadow-black/80 border border-slate-700/80 overflow-hidden transition-all duration-200 origin-top-left z-50 ${
+                className={`absolute top-full left-0 sm:-left-20 lg:left-0 mt-3 w-[320px] sm:w-[580px] lg:w-[620px] bg-slate-950 rounded-2xl shadow-2xl shadow-black/90 border border-slate-700/90 overflow-hidden transition-all duration-200 origin-top-left z-50 ${
                   servicesOpen
-                    ? 'opacity-100 scale-100 visible'
+                    ? 'opacity-100 scale-100 visible pointer-events-auto'
                     : 'opacity-0 scale-95 invisible pointer-events-none'
                 }`}
                 role="menu"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-800 max-h-[75vh] overflow-y-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-800/80 max-h-[75vh] overflow-y-auto">
                   {/* Column 1: Software & Engineering — Tier 1 */}
-                  <div className="p-2 sm:p-3">
-                    <div className="px-3 py-1.5 mb-1 bg-blue-950/40 border border-blue-800/30 rounded-lg">
+                  <div className="p-3 bg-slate-950">
+                    <div className="px-3 py-1.5 mb-2 bg-blue-950/60 border border-blue-800/40 rounded-lg">
                       <p className="text-[11px] font-bold text-blue-400 uppercase tracking-wider">
                         Software &amp; Engineering
                       </p>
@@ -150,7 +161,7 @@ const Navbar: React.FC = () => {
                         <Link
                           key={route}
                           to={route}
-                          className="flex items-center justify-between px-3 py-2 text-slate-300 hover:text-white hover:bg-blue-600/15 rounded-lg transition-all text-xs font-medium group"
+                          className="flex items-center justify-between px-3 py-2 text-slate-200 hover:text-white hover:bg-blue-600/20 rounded-lg transition-all text-xs font-medium group"
                           onClick={() => {
                             setServicesOpen(false);
                             setIsOpen(false);
@@ -165,9 +176,9 @@ const Navbar: React.FC = () => {
                   </div>
 
                   {/* Column 2: Marketing & Business Support — Tier 2 */}
-                  <div className="p-2 sm:p-3 bg-slate-950/40">
-                    <div className="px-3 py-1.5 mb-1 bg-slate-900 border border-slate-800 rounded-lg">
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  <div className="p-3 bg-slate-900/60">
+                    <div className="px-3 py-1.5 mb-2 bg-slate-900 border border-slate-800 rounded-lg">
+                      <p className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
                         Marketing &amp; Business Support
                       </p>
                     </div>
@@ -176,7 +187,7 @@ const Navbar: React.FC = () => {
                         <Link
                           key={route}
                           to={route}
-                          className="flex items-center justify-between px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-lg transition-all text-xs font-medium group"
+                          className="flex items-center justify-between px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/90 rounded-lg transition-all text-xs font-medium group"
                           onClick={() => {
                             setServicesOpen(false);
                             setIsOpen(false);
@@ -328,7 +339,7 @@ const Navbar: React.FC = () => {
               className={`transition-all duration-300 overflow-hidden pl-2 ${servicesOpen ? 'max-h-[500px] overflow-y-auto py-1' : 'max-h-0'}`} 
               role="menu"
             >
-              <div className="my-1 py-1 px-3 bg-blue-950/30 rounded-lg">
+              <div className="my-1 py-1 px-3 bg-blue-950/40 border border-blue-900/30 rounded-lg">
                 <p className="text-[11px] font-bold text-blue-400 uppercase tracking-wider">
                   Software &amp; Engineering
                 </p>
@@ -348,7 +359,7 @@ const Navbar: React.FC = () => {
                 </Link>
               ))}
 
-              <div className="my-1 mt-2 py-1 px-3 bg-slate-900 rounded-lg">
+              <div className="my-1 mt-2 py-1 px-3 bg-slate-900 border border-slate-800 rounded-lg">
                 <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                   Marketing &amp; Business Support
                 </p>
