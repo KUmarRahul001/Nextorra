@@ -1,132 +1,73 @@
 import React, { useEffect, useRef } from 'react';
-import { ArrowRight, CheckCircle2, Shield, Zap, Terminal, Database, Server, Cpu } from 'lucide-react';
-import { SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiFramer, SiDocker, SiRedis, SiTailwindcss } from 'react-icons/si';
+import { ArrowRight, CheckCircle2, ShieldCheck, Zap, Layers, Sparkles, TrendingUp, Cpu, Server, Code } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Typed from 'typed.js';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
-/* ─── Isometric 3D Technology Cube / Floating Badge ─── */
-const Isometric3DCanvas: React.FC = () => {
+/* ─── Premium Human-Crafted Live Production Telemetry Panel ─── */
+const ProductionSystemOverview: React.FC = () => {
   return (
-    <div className="relative w-full max-w-lg mx-auto aspect-[4/3] flex items-center justify-center select-none">
-      {/* Subtle depth lighting */}
-      <div className="absolute w-72 h-72 bg-blue-600/10 rounded-full blur-[90px] pointer-events-none" />
-      <div className="absolute w-56 h-56 bg-indigo-600/10 rounded-full blur-[70px] pointer-events-none" />
-
-      {/* Central Interactive 3D Perspective Architecture Hub */}
-      <motion.div
-        animate={{ y: [-8, 8, -8] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        className="relative z-10 w-full p-6 sm:p-7 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-md"
-        style={{
-          transformStyle: 'preserve-3d',
-          transform: 'perspective(1000px) rotateX(4deg) rotateY(-4deg)',
-        }}
-      >
-        {/* Terminal Header */}
-        <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-            <span className="text-[11px] font-mono text-slate-400 ml-2 flex items-center gap-1.5">
-              <Terminal className="h-3 w-3 text-blue-400" />
-              rahnoxa-stack.config.ts
-            </span>
+    <div className="relative w-full max-w-lg mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-7 shadow-2xl space-y-6">
+      {/* Top Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-center gap-2.5">
+          <div className="p-1.5 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30">
+            <Cpu className="h-4 w-4" />
           </div>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            Active Cluster
-          </span>
-        </div>
-
-        {/* 3D Tech Grid of Verified Enterprise Icons */}
-        <div className="grid grid-cols-2 gap-3.5 mb-5 font-mono text-xs">
-          {/* React + Framer Motion */}
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
-            <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                <SiReact className="h-4 w-4 animate-[spin_10s_linear_infinite]" />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-xs">React &amp; Vite</p>
-                <p className="text-[10px] text-slate-500">Frontend SPA</p>
-              </div>
-            </div>
-            <SiFramer className="h-3.5 w-3.5 text-pink-400" title="Framer Motion" />
-          </div>
-
-          {/* TypeScript & Tailwind */}
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
-            <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                <SiTypescript className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-xs">TypeScript</p>
-                <p className="text-[10px] text-slate-500">Strict Typing</p>
-              </div>
-            </div>
-            <SiTailwindcss className="h-3.5 w-3.5 text-cyan-400" title="Tailwind CSS" />
-          </div>
-
-          {/* Node.js & Docker */}
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
-            <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <SiNodedotjs className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-xs">Node.js Engine</p>
-                <p className="text-[10px] text-slate-500">REST / Microservices</p>
-              </div>
-            </div>
-            <SiDocker className="h-3.5 w-3.5 text-blue-400" title="Docker Containerization" />
-          </div>
-
-          {/* PostgreSQL & Redis */}
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
-            <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                <SiPostgresql className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-xs">PostgreSQL</p>
-                <p className="text-[10px] text-slate-500">ACID Relational</p>
-              </div>
-            </div>
-            <SiRedis className="h-3.5 w-3.5 text-rose-500" title="Redis In-Memory Cache" />
+          <div>
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Enterprise Delivery Engine</h4>
+            <p className="text-[11px] text-slate-400 font-mono">System Integrity: 100%</p>
           </div>
         </div>
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          Active Operations
+        </span>
+      </div>
 
-        {/* Real-time Telemetry SLA Footer */}
-        <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-slate-300">Engineered with Precision</span>
-          </div>
-          <span className="text-blue-400">v2.4.0 Live</span>
+      {/* Key Real-World Operational Metrics */}
+      <div className="grid grid-cols-2 gap-3.5">
+        <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
+          <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider block">Average Delivery SLA</span>
+          <p className="text-xl font-bold text-white">3–7 Business Days</p>
+          <p className="text-[10px] text-blue-400">Milestone Sprint Deployments</p>
         </div>
-      </motion.div>
 
-      {/* Floating 3D Micro-Chips */}
-      <motion.div
-        animate={{ y: [6, -10, 6], rotate: [0, 4, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-        className="absolute -top-3 -right-2 p-2.5 rounded-xl bg-slate-900/95 border border-slate-700 shadow-xl flex items-center gap-2 z-20"
-      >
-        <SiReact className="h-4 w-4 text-cyan-400 animate-spin" />
-        <span className="text-[11px] font-mono text-white font-bold">React 18</span>
-      </motion.div>
+        <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
+          <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider block">System Uptime Target</span>
+          <p className="text-xl font-bold text-emerald-400">99.9% Uptime</p>
+          <p className="text-[10px] text-slate-400">Automated Failover &amp; Backups</p>
+        </div>
+      </div>
 
-      <motion.div
-        animate={{ y: [-6, 8, -6], rotate: [0, -4, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        className="absolute -bottom-3 -left-2 p-2.5 rounded-xl bg-slate-900/95 border border-slate-700 shadow-xl flex items-center gap-2 z-20"
-      >
-        <SiFramer className="h-4 w-4 text-pink-400" />
-        <span className="text-[11px] font-mono text-white font-bold">Framer Motion</span>
-      </motion.div>
+      {/* Capabilities Overview List */}
+      <div className="space-y-2.5 text-xs text-slate-300">
+        <div className="flex items-center justify-between p-3 rounded-lg bg-slate-950/60 border border-slate-800/60">
+          <div className="flex items-center gap-2.5">
+            <Server className="h-4 w-4 text-indigo-400" />
+            <span className="font-semibold text-white">Full-Stack Cloud &amp; ERP Architecture</span>
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">Production Ready</span>
+        </div>
+
+        <div className="flex items-center justify-between p-3 rounded-lg bg-slate-950/60 border border-slate-800/60">
+          <div className="flex items-center gap-2.5">
+            <Code className="h-4 w-4 text-cyan-400" />
+            <span className="font-semibold text-white">Strict TypeScript &amp; Automated CI/CD</span>
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">Zero Technical Debt</span>
+        </div>
+      </div>
+
+      {/* Trust & Guarantee Footer */}
+      <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-4 w-4 text-emerald-400" />
+          <span>Transparent Commercial Pricing</span>
+        </div>
+        <span className="font-mono text-slate-500">Fixed Milestone Scope</span>
+      </div>
     </div>
   );
 };
@@ -234,9 +175,9 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: 3D Isometric Architecture Canvas with React & Framer Icons */}
+            {/* Right Column: Clean Production System Overview */}
             <div className="lg:col-span-5 w-full">
-              <Isometric3DCanvas />
+              <ProductionSystemOverview />
             </div>
 
           </div>
