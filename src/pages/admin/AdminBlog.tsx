@@ -128,20 +128,20 @@ const AdminBlog: React.FC = () => {
       {!isEditing ? (
         <>
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-800">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-200">
             <div>
-              <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
                 <FileText className="h-6 w-6 text-indigo-400" />
                 Blog &amp; Content Management
               </h1>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Create, review, edit, and publish technical SEO articles. Review automated AI drafts before releasing publicly.
               </p>
             </div>
 
             <button
               onClick={handleOpenNew}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-slate-900 text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors"
             >
               <Plus className="h-4 w-4" />
               Write New Article
@@ -149,10 +149,10 @@ const AdminBlog: React.FC = () => {
           </div>
 
           {/* Posts Table */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
-                <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+              <table className="w-full text-left text-xs text-slate-700">
+                <thead className="bg-[#F8FAFC]/80 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
                   <tr>
                     <th className="py-3.5 px-4">Article</th>
                     <th className="py-3.5 px-4">Category</th>
@@ -162,7 +162,7 @@ const AdminBlog: React.FC = () => {
                     <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody className="divide-y divide-slate-100/60">
                   {isLoading ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-500">
@@ -177,18 +177,18 @@ const AdminBlog: React.FC = () => {
                     </tr>
                   ) : (
                     posts.map((post) => (
-                      <tr key={post.id} className="hover:bg-slate-800/40 transition-colors">
+                      <tr key={post.id} className="hover:bg-slate-50 transition-colors">
                         <td className="py-4 px-4">
                           <div>
-                            <p className="font-semibold text-white text-sm">{post.title}</p>
-                            <p className="text-[11px] text-slate-400 line-clamp-1 max-w-sm">
+                            <p className="font-semibold text-slate-900 text-sm">{post.title}</p>
+                            <p className="text-[11px] text-slate-500 line-clamp-1 max-w-sm">
                               {post.excerpt}
                             </p>
                           </div>
                         </td>
 
                         <td className="py-4 px-4">
-                          <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-medium">
+                          <span className="px-2 py-0.5 rounded bg-slate-50 text-slate-700 font-medium">
                             {post.category}
                           </span>
                         </td>
@@ -200,7 +200,7 @@ const AdminBlog: React.FC = () => {
                               AI Generated
                             </span>
                           ) : (
-                            <span className="text-slate-400 text-[11px]">Manual</span>
+                            <span className="text-slate-500 text-[11px]">Manual</span>
                           )}
                         </td>
 
@@ -227,14 +227,14 @@ const AdminBlog: React.FC = () => {
                         <td className="py-4 px-4 text-right space-x-2">
                           <button
                             onClick={() => handleOpenEdit(post)}
-                            className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-blue-600 transition-colors"
+                            className="p-1.5 rounded-lg bg-slate-50 text-slate-700 hover:text-slate-900 hover:bg-blue-600 transition-colors"
                             title="Edit / Review Article"
                           >
                             <Edit3 className="h-3.5 w-3.5" />
                           </button>
                           <button
                             onClick={() => handleDelete(post.slug)}
-                            className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-rose-400 hover:bg-rose-500/20 transition-colors"
+                            className="p-1.5 rounded-lg bg-slate-50 text-slate-700 hover:text-rose-400 hover:bg-rose-500/20 transition-colors"
                             title="Delete Article"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -251,21 +251,21 @@ const AdminBlog: React.FC = () => {
       ) : (
         /* ── Full Article Editor ── */
         <div className="space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-200">
             <button
               onClick={() => setIsEditing(false)}
-              className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Articles List
             </button>
 
             <div className="flex items-center gap-2">
-              <div className="bg-slate-900 border border-slate-800 rounded-lg p-1 flex gap-1 text-xs">
+              <div className="bg-white border border-slate-200 rounded-lg p-1 flex gap-1 text-xs">
                 <button
                   onClick={() => setActiveTab('write')}
                   className={`px-3 py-1 rounded-md transition-colors ${
-                    activeTab === 'write' ? 'bg-blue-600 text-white font-semibold' : 'text-slate-400'
+                    activeTab === 'write' ? 'bg-blue-600 text-slate-900 font-semibold' : 'text-slate-500'
                   }`}
                 >
                   Markdown Editor
@@ -273,7 +273,7 @@ const AdminBlog: React.FC = () => {
                 <button
                   onClick={() => setActiveTab('preview')}
                   className={`px-3 py-1 rounded-md transition-colors ${
-                    activeTab === 'preview' ? 'bg-blue-600 text-white font-semibold' : 'text-slate-400'
+                    activeTab === 'preview' ? 'bg-blue-600 text-slate-900 font-semibold' : 'text-slate-500'
                   }`}
                 >
                   Live Preview
@@ -282,14 +282,14 @@ const AdminBlog: React.FC = () => {
 
               <button
                 onClick={() => handleSave('DRAFT')}
-                className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5"
+                className="px-3.5 py-1.5 bg-slate-50 hover:bg-slate-700 text-slate-800 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5"
               >
                 <Save className="h-3.5 w-3.5" />
                 Save Draft
               </button>
               <button
                 onClick={() => handleSave('PUBLISHED')}
-                className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors flex items-center gap-1.5"
+                className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-slate-900 text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors flex items-center gap-1.5"
               >
                 <Send className="h-3.5 w-3.5" />
                 Publish Live
@@ -301,7 +301,7 @@ const AdminBlog: React.FC = () => {
             {/* Main Editor / Preview Column */}
             <div className="lg:col-span-8 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">
                   Article Headline / Title *
                 </label>
                 <input
@@ -310,12 +310,12 @@ const AdminBlog: React.FC = () => {
                   value={currentPost.title}
                   onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })}
                   placeholder="e.g. Architecting Scalable Custom ERP Systems..."
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-base font-bold text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-base font-bold text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">
                   Summary / Meta Excerpt *
                 </label>
                 <textarea
@@ -323,26 +323,26 @@ const AdminBlog: React.FC = () => {
                   value={currentPost.excerpt}
                   onChange={(e) => setCurrentPost({ ...currentPost, excerpt: e.target.value })}
                   placeholder="Brief synopsis for SEO description and card previews..."
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-300 focus:outline-none focus:border-blue-500 resize-none"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-500 resize-none"
                 />
               </div>
 
               {activeTab === 'write' ? (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">
                     Markdown Article Content *
                   </label>
                   <textarea
                     rows={18}
                     value={currentPost.content}
                     onChange={(e) => setCurrentPost({ ...currentPost, content: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-xs text-slate-200 focus:outline-none focus:border-blue-500 leading-relaxed"
+                    className="w-full bg-white border border-slate-200 rounded-xl p-4 font-mono text-xs text-slate-800 focus:outline-none focus:border-blue-500 leading-relaxed"
                   />
                 </div>
               ) : (
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 min-h-[400px]">
-                  <h2 className="text-2xl font-bold text-white mb-4">{currentPost.title}</h2>
-                  <div className="prose prose-invert max-w-none text-xs sm:text-sm text-slate-300 whitespace-pre-line">
+                <div className="bg-white border border-slate-200 rounded-xl p-6 min-h-[400px]">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-4">{currentPost.title}</h2>
+                  <div className="prose prose-invert max-w-none text-xs sm:text-sm text-slate-700 whitespace-pre-line">
                     {currentPost.content}
                   </div>
                 </div>
@@ -351,17 +351,17 @@ const AdminBlog: React.FC = () => {
 
             {/* Sidebar Meta Column */}
             <div className="lg:col-span-4 space-y-4">
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3.5 text-xs">
-                <h3 className="font-bold text-sm text-white pb-2 border-b border-slate-800">
+              <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-3.5 text-xs">
+                <h3 className="font-bold text-sm text-slate-900 pb-2 border-b border-slate-200">
                   Publishing &amp; Taxonomy
                 </h3>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Category</label>
+                  <label className="block text-slate-500 mb-1">Category</label>
                   <select
                     value={currentPost.category}
                     onChange={(e) => setCurrentPost({ ...currentPost, category: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   >
                     {CATEGORIES.map((c) => (
                       <option key={c} value={c}>
@@ -372,43 +372,43 @@ const AdminBlog: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Tags (comma-separated)</label>
+                  <label className="block text-slate-500 mb-1">Tags (comma-separated)</label>
                   <input
                     type="text"
                     value={currentPost.tags}
                     onChange={(e) => setCurrentPost({ ...currentPost, tags: e.target.value })}
                     placeholder="ERP, React, Cloud"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Featured Image URL</label>
+                  <label className="block text-slate-500 mb-1">Featured Image URL</label>
                   <input
                     type="text"
                     value={currentPost.featured_image}
                     onChange={(e) => setCurrentPost({ ...currentPost, featured_image: e.target.value })}
                     placeholder="/assets/image.png"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Author</label>
+                  <label className="block text-slate-500 mb-1">Author</label>
                   <input
                     type="text"
                     value={currentPost.author}
                     onChange={(e) => setCurrentPost({ ...currentPost, author: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-400 mb-1">Status</label>
+                  <label className="block text-slate-500 mb-1">Status</label>
                   <select
                     value={currentPost.status}
                     onChange={(e) => setCurrentPost({ ...currentPost, status: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 font-semibold"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500 font-semibold"
                   >
                     <option value="DRAFT">Draft</option>
                     <option value="PUBLISHED">Published Live</option>

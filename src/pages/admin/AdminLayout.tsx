@@ -1,32 +1,32 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  FolderGit2,
-  FileText,
-  Users,
-  MessageSquare,
-  Sparkles,
-  Database,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  ShieldCheck,
-  ExternalLink,
-  Bot,
-} from 'lucide-react';
+  FiGrid,
+  FiFolder,
+  FiFileText,
+  FiUsers,
+  FiMessageSquare,
+  FiDatabase,
+  FiSettings,
+  FiLogOut,
+  FiMenu,
+  FiX,
+  FiExternalLink,
+  FiShield,
+  FiZap
+} from 'react-icons/fi';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 import { useAuth } from '../../context/AuthContext';
 
 const NAV_ITEMS = [
-  { name: 'Dashboard', path: '/admin', icon: <LayoutDashboard className="h-4 w-4" /> },
-  { name: 'Projects', path: '/admin/projects', icon: <FolderGit2 className="h-4 w-4" /> },
-  { name: 'Blog & Articles', path: '/admin/blog', icon: <FileText className="h-4 w-4" /> },
-  { name: 'Leads & Enquiries', path: '/admin/leads', icon: <Users className="h-4 w-4" /> },
-  { name: 'Chat Transcripts', path: '/admin/chat', icon: <MessageSquare className="h-4 w-4" /> },
-  { name: 'Chat Knowledge', path: '/admin/knowledge', icon: <Database className="h-4 w-4" /> },
-  { name: 'Daily SEO Automation', path: '/admin/automation', icon: <Sparkles className="h-4 w-4" /> },
-  { name: 'Settings', path: '/admin/settings', icon: <Settings className="h-4 w-4" /> },
+  { name: 'Dashboard', path: '/admin', icon: <FiGrid className="h-4 w-4" /> },
+  { name: 'Projects', path: '/admin/projects', icon: <FiFolder className="h-4 w-4" /> },
+  { name: 'Blog & Articles', path: '/admin/blog', icon: <FiFileText className="h-4 w-4" /> },
+  { name: 'Leads & Enquiries', path: '/admin/leads', icon: <FiUsers className="h-4 w-4" /> },
+  { name: 'Chat Transcripts', path: '/admin/chat', icon: <FiMessageSquare className="h-4 w-4" /> },
+  { name: 'Chat Knowledge', path: '/admin/knowledge', icon: <FiDatabase className="h-4 w-4" /> },
+  { name: 'SEO Automation', path: '/admin/automation', icon: <HiOutlineSparkles className="h-4 w-4" /> },
+  { name: 'Settings', path: '/admin/settings', icon: <FiSettings className="h-4 w-4" /> },
 ];
 
 const AdminLayout: React.FC = () => {
@@ -38,8 +38,11 @@ const AdminLayout: React.FC = () => {
   // Route protection
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
-        <div className="text-sm">Verifying administrator session...</div>
+      <div className="min-h-screen bg-[#FAFCFF] flex items-center justify-center text-slate-500">
+        <div className="text-sm font-mono flex items-center gap-2">
+          <span className="h-3 w-3 rounded-full bg-blue-600 animate-ping" />
+          Verifying administrator session...
+        </div>
       </div>
     );
   }
@@ -54,20 +57,26 @@ const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col lg:flex-row font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col lg:flex-row font-sans">
       {/* ── Desktop Sidebar ── */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 border-r border-slate-800 p-4 justify-between flex-shrink-0">
+      <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 p-5 justify-between flex-shrink-0 shadow-xs">
         <div className="space-y-6">
-          {/* Logo */}
-          <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-sm shadow-md">
-              R
+          {/* Official Brand Logo */}
+          <Link to="/" className="flex items-center gap-3 px-2 py-1 group">
+            <img 
+              src="/brand/logo-symbol-transparent.png" 
+              alt="Rahnoxa Logo" 
+              className="h-8 w-auto object-contain transition-transform group-hover:scale-105" 
+            />
+            <div className="flex flex-col">
+              <span className="font-black text-sm text-slate-900 tracking-tight leading-none">
+                RAHNOXA
+              </span>
+              <span className="text-[9px] text-blue-600 font-mono tracking-widest uppercase font-bold mt-0.5">
+                ADMIN CONSOLE
+              </span>
             </div>
-            <div>
-              <h2 className="font-bold text-sm text-white">Rahnoxa Admin</h2>
-              <span className="text-[10px] text-cyan-400 font-mono">v2.4 Production</span>
-            </div>
-          </div>
+          </Link>
 
           {/* Navigation Links */}
           <nav className="space-y-1">
@@ -83,8 +92,8 @@ const AdminLayout: React.FC = () => {
                   to={item.path}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     active
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                 >
                   {item.icon}
@@ -96,81 +105,108 @@ const AdminLayout: React.FC = () => {
         </div>
 
         {/* User Badge & Actions */}
-        <div className="space-y-3 pt-4 border-t border-slate-800">
+        <div className="space-y-3 pt-4 border-t border-slate-100">
           <Link
             to="/"
             target="_blank"
-            className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-950/60 border border-slate-800 text-xs text-slate-400 hover:text-white transition-colors"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between px-3.5 py-2 text-xs font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
           >
-            <span>Live Website</span>
-            <ExternalLink className="h-3.5 w-3.5" />
+            <span className="flex items-center gap-2">
+              <FiExternalLink className="h-3.5 w-3.5" />
+              <span>Live Website</span>
+            </span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+              v2.4
+            </span>
           </Link>
 
-          <div className="flex items-center justify-between px-3 py-2 bg-slate-800/40 rounded-xl">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">
-                {user?.username.charAt(0).toUpperCase()}
+          <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+            <div className="flex items-center gap-2.5 overflow-hidden">
+              <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                {user?.username?.[0]?.toUpperCase() || 'A'}
               </div>
-              <div className="text-left">
-                <p className="text-xs font-medium text-white">{user?.username}</p>
-                <p className="text-[10px] text-slate-500 capitalize">{user?.role}</p>
+              <div className="truncate">
+                <p className="text-xs font-bold text-slate-900 truncate">
+                  {user?.name || user?.username || 'Lead Engineer'}
+                </p>
+                <p className="text-[10px] text-slate-500 font-mono capitalize">
+                  {user?.role || 'Administrator'}
+                </p>
               </div>
             </div>
 
             <button
               onClick={handleLogout}
-              className="p-1.5 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-slate-800 transition-colors"
-              title="Sign Out"
+              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors flex-shrink-0"
+              title="Logout"
             >
-              <LogOut className="h-4 w-4" />
+              <FiLogOut className="h-4 w-4" />
             </button>
           </div>
         </div>
       </aside>
 
-      {/* ── Mobile Top Header ── */}
-      <header className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+      {/* ── Mobile Header Bar ── */}
+      <div className="lg:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-xs">
-            R
-          </div>
-          <span className="font-bold text-sm text-white">Rahnoxa Admin</span>
+          <img 
+            src="/brand/logo-symbol-transparent.png" 
+            alt="Rahnoxa Logo" 
+            className="h-7 w-auto object-contain" 
+          />
+          <span className="font-bold text-sm text-slate-900">Rahnoxa Admin</span>
         </div>
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+          className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100"
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? <FiX className="h-5 w-5" /> : <FiMenu className="h-5 w-5" />}
         </button>
-      </header>
+      </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* ── Mobile Drawer ── */}
       {mobileOpen && (
-        <div className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 py-3 space-y-1">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800"
+        <div className="lg:hidden bg-white border-b border-slate-200 p-4 space-y-2 shadow-lg">
+          <nav className="space-y-1">
+            {NAV_ITEMS.map((item) => {
+              const active =
+                item.path === '/admin'
+                  ? location.pathname === '/admin'
+                  : location.pathname.startsWith(item.path);
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                    active
+                      ? 'bg-blue-600 text-white'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </nav>
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+            <button
+              onClick={handleLogout}
+              className="text-xs font-semibold text-rose-600 flex items-center gap-2 px-3 py-2 hover:bg-rose-50 rounded-lg w-full"
             >
-              {item.icon}
-              <span>{item.name}</span>
-            </Link>
-          ))}
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-rose-400 hover:bg-slate-800 text-left pt-2 border-t border-slate-800"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Sign Out</span>
-          </button>
+              <FiLogOut className="h-4 w-4" />
+              <span>Log out</span>
+            </button>
+          </div>
         </div>
       )}
 
-      {/* ── Main Content Body ── */}
-      <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-950">
+      {/* ── Main Operations Workspace ── */}
+      <main className="flex-1 overflow-y-auto min-h-screen bg-[#F8FAFC]">
         <Outlet />
       </main>
     </div>

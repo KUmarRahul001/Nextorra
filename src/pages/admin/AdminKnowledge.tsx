@@ -83,20 +83,20 @@ const AdminKnowledge: React.FC = () => {
   return (
     <div className="space-y-6 font-sans">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             <Database className="h-6 w-6 text-cyan-400" />
             RahBot Knowledge Base
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Manage company context, service parameters, FAQs, and engineering capabilities used by RahBot to answer client enquiries accurately.
           </p>
         </div>
 
         <button
           onClick={handleOpenCreate}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-slate-900 text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors"
         >
           <Plus className="h-4 w-4" />
           Add Knowledge Item
@@ -115,7 +115,7 @@ const AdminKnowledge: React.FC = () => {
           items.map((item) => (
             <div
               key={item.id}
-              className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-3"
+              className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between space-y-3"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -125,14 +125,14 @@ const AdminKnowledge: React.FC = () => {
                   <div className="flex gap-1.5">
                     <button
                       onClick={() => handleOpenEdit(item)}
-                      className="p-1 rounded bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white"
+                      className="p-1 rounded bg-slate-50 hover:bg-blue-600 text-slate-500 hover:text-slate-900"
                       title="Edit"
                     >
                       <Edit2 className="h-3.5 w-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="p-1 rounded bg-slate-800 hover:bg-rose-600 text-slate-400 hover:text-white"
+                      className="p-1 rounded bg-slate-50 hover:bg-rose-600 text-slate-500 hover:text-slate-900"
                       title="Delete"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -140,14 +140,14 @@ const AdminKnowledge: React.FC = () => {
                   </div>
                 </div>
 
-                <h3 className="font-bold text-sm text-white mb-2">{item.title}</h3>
-                <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line">
+                <h3 className="font-bold text-sm text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-line">
                   {item.content}
                 </p>
               </div>
 
               {item.tags && (
-                <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-500 truncate">
+                <div className="pt-2 border-t border-slate-200 text-[11px] text-slate-500 truncate">
                   Tags: {item.tags}
                 </div>
               )}
@@ -158,36 +158,36 @@ const AdminKnowledge: React.FC = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 text-slate-100 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 className="font-bold text-base text-white">
+        <div className="fixed inset-0 z-50 bg-[#F8FAFC]/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 text-slate-900 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="font-bold text-base text-slate-900">
                 {editingItem ? 'Edit Knowledge Item' : 'Add Knowledge Item'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-slate-500 hover:text-slate-900">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Title *</label>
+                <label className="block text-slate-700 font-medium mb-1">Title *</label>
                 <input
                   type="text"
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. ERP Inventory Module Capabilities"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Category</label>
+                <label className="block text-slate-700 font-medium mb-1">Category</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 capitalize"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500 capitalize"
                 >
                   {CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -198,19 +198,19 @@ const AdminKnowledge: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Content / Context *</label>
+                <label className="block text-slate-700 font-medium mb-1">Content / Context *</label>
                 <textarea
                   required
                   rows={5}
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   placeholder="Detailed factual information for RahBot to cite..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">
+                <label className="block text-slate-700 font-medium mb-1">
                   Search Tags (comma-separated)
                 </label>
                 <input
@@ -218,21 +218,21 @@ const AdminKnowledge: React.FC = () => {
                   value={formData.tags}
                   onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                   placeholder="erp, inventory, warehouse, rbac"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold"
+                  className="px-4 py-2 rounded-lg bg-slate-50 text-slate-700 font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold shadow-md"
+                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-slate-900 font-semibold shadow-md"
                 >
                   Save Entry
                 </button>

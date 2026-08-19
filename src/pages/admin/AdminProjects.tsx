@@ -135,20 +135,20 @@ const AdminProjects: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             <FolderGit2 className="h-6 w-6 text-blue-400" />
             Project &amp; Showcase Manager
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Add and update engineering showcases dynamically on the public Rahnoxa website without modifying code.
           </p>
         </div>
 
         <button
           onClick={handleOpenCreate}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-slate-900 text-xs font-semibold rounded-lg shadow-md shadow-blue-600/30 transition-colors"
         >
           <Plus className="h-4 w-4" />
           Add New Project
@@ -156,10 +156,10 @@ const AdminProjects: React.FC = () => {
       </div>
 
       {/* Projects Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+          <table className="w-full text-left text-xs text-slate-700">
+            <thead className="bg-[#F8FAFC]/80 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
               <tr>
                 <th className="py-3.5 px-4">Project</th>
                 <th className="py-3.5 px-4">Category</th>
@@ -169,7 +169,7 @@ const AdminProjects: React.FC = () => {
                 <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-slate-100/60">
               {isLoading ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-slate-500">
@@ -184,10 +184,10 @@ const AdminProjects: React.FC = () => {
                 </tr>
               ) : (
                 projects.map((proj) => (
-                  <tr key={proj.id} className="hover:bg-slate-800/40 transition-colors">
+                  <tr key={proj.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-800 border border-slate-700 flex-shrink-0">
+                        <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-50 border border-slate-200 flex-shrink-0">
                           <img
                             src={proj.thumbnail || proj.images?.[0] || '/assets/image.png'}
                             alt={proj.title}
@@ -195,8 +195,8 @@ const AdminProjects: React.FC = () => {
                           />
                         </div>
                         <div>
-                          <p className="font-semibold text-white">{proj.title}</p>
-                          <p className="text-[11px] text-slate-400 line-clamp-1 max-w-xs">
+                          <p className="font-semibold text-slate-900">{proj.title}</p>
+                          <p className="text-[11px] text-slate-500 line-clamp-1 max-w-xs">
                             {proj.short_description}
                           </p>
                         </div>
@@ -216,7 +216,7 @@ const AdminProjects: React.FC = () => {
                           .map((tech: string, i: number) => (
                             <span
                               key={i}
-                              className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px]"
+                              className="px-1.5 py-0.5 rounded bg-slate-50 text-slate-500 text-[10px]"
                             >
                               {tech}
                             </span>
@@ -254,21 +254,21 @@ const AdminProjects: React.FC = () => {
                         href={`/projects/${proj.slug || proj.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-cyan-600 transition-colors"
+                        className="inline-block p-1.5 rounded-lg bg-slate-50 text-slate-700 hover:text-slate-900 hover:bg-cyan-600 transition-colors"
                         title="View Public Showcase Page"
                       >
                         <Eye className="h-3.5 w-3.5" />
                       </a>
                       <button
                         onClick={() => handleOpenEdit(proj)}
-                        className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-blue-600 transition-colors"
+                        className="p-1.5 rounded-lg bg-slate-50 text-slate-700 hover:text-slate-900 hover:bg-blue-600 transition-colors"
                         title="Edit Project"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => handleDelete(proj.id)}
-                        className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-rose-400 hover:bg-rose-500/20 transition-colors"
+                        className="p-1.5 rounded-lg bg-slate-50 text-slate-700 hover:text-rose-400 hover:bg-rose-500/20 transition-colors"
                         title="Delete Project"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -284,15 +284,15 @@ const AdminProjects: React.FC = () => {
 
       {/* Add / Edit Project Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 text-slate-100 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 className="font-bold text-base text-white">
+        <div className="fixed inset-0 z-50 bg-[#F8FAFC]/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 text-slate-900 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="font-bold text-base text-slate-900">
                 {editingProject ? 'Edit Project Showcase' : 'Add New Project Showcase'}
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-500 hover:text-slate-900"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -300,24 +300,24 @@ const AdminProjects: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Project Title *</label>
+                <label className="block text-slate-700 font-medium mb-1">Project Title *</label>
                 <input
                   type="text"
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. Enterprise ERP Inventory Portal"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">Category</label>
+                  <label className="block text-slate-700 font-medium mb-1">Category</label>
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   >
                     <option value="Web App">Web App</option>
                     <option value="Mobile App">Mobile App</option>
@@ -329,11 +329,11 @@ const AdminProjects: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">Status</label>
+                  <label className="block text-slate-700 font-medium mb-1">Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   >
                     <option value="PUBLISHED">Published</option>
                     <option value="DRAFT">Draft</option>
@@ -343,7 +343,7 @@ const AdminProjects: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">
+                <label className="block text-slate-700 font-medium mb-1">
                   Technologies (comma-separated)
                 </label>
                 <input
@@ -351,64 +351,64 @@ const AdminProjects: React.FC = () => {
                   value={formData.technologies}
                   onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
                   placeholder="React, TypeScript, Tailwind, Node.js"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Short Summary *</label>
+                <label className="block text-slate-700 font-medium mb-1">Short Summary *</label>
                 <textarea
                   required
                   rows={2}
                   value={formData.short_description}
                   onChange={(e) => setFormData({ ...formData, short_description: e.target.value })}
                   placeholder="Brief summary of architectural scope..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 resize-none"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500 resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Full Case Study &amp; Architecture Details</label>
+                <label className="block text-slate-700 font-medium mb-1">Full Case Study &amp; Architecture Details</label>
                 <textarea
                   rows={4}
                   value={formData.full_description}
                   onChange={(e) => setFormData({ ...formData, full_description: e.target.value })}
                   placeholder="Detailed architectural breakdown, business challenges solved, database design, and key milestones..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">Live Demo / Preview URL</label>
+                  <label className="block text-slate-700 font-medium mb-1">Live Demo / Preview URL</label>
                   <input
                     type="url"
                     value={formData.demo_url}
                     onChange={(e) => setFormData({ ...formData, demo_url: e.target.value })}
                     placeholder="https://client-preview.rahnoxa.com"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">GitHub / Code URL</label>
+                  <label className="block text-slate-700 font-medium mb-1">GitHub / Code URL</label>
                   <input
                     type="url"
                     value={formData.github_url}
                     onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
                     placeholder="https://github.com/organization/repo"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">
+                <label className="block text-slate-700 font-medium mb-1">
                   Project Image / Cloudinary Asset
                 </label>
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <label className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-950 border border-dashed border-slate-700 hover:border-blue-500 rounded-xl text-slate-300 text-xs font-semibold transition-colors">
+                    <label className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 bg-[#F8FAFC] border border-dashed border-slate-200 hover:border-blue-500 rounded-xl text-slate-700 text-xs font-semibold transition-colors">
                       {isUploading ? (
                         <>
                           <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
@@ -444,7 +444,7 @@ const AdminProjects: React.FC = () => {
                     </label>
 
                     {formData.thumbnail && (
-                      <div className="w-12 h-10 rounded-lg overflow-hidden bg-slate-950 border border-slate-700 flex-shrink-0">
+                      <div className="w-12 h-10 rounded-lg overflow-hidden bg-[#F8FAFC] border border-slate-200 flex-shrink-0">
                         <img
                           src={formData.thumbnail}
                           alt="Thumbnail preview"
@@ -459,7 +459,7 @@ const AdminProjects: React.FC = () => {
                     value={formData.thumbnail}
                     onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
                     placeholder="https://res.cloudinary.com/... or CDN URL"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 text-xs"
+                    className="w-full bg-[#F8FAFC] border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500 text-xs"
                   />
                 </div>
               </div>
@@ -470,24 +470,24 @@ const AdminProjects: React.FC = () => {
                   id="featured"
                   checked={formData.featured}
                   onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                  className="rounded bg-slate-950 border-slate-800 text-blue-600 focus:ring-0"
+                  className="rounded bg-[#F8FAFC] border-slate-200 text-blue-600 focus:ring-0"
                 />
-                <label htmlFor="featured" className="text-slate-300 cursor-pointer">
+                <label htmlFor="featured" className="text-slate-700 cursor-pointer">
                   Feature in homepage showcase
                 </label>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-semibold"
+                  className="px-4 py-2 rounded-lg bg-slate-50 text-slate-700 hover:bg-slate-700 font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold shadow-md"
+                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-slate-900 font-semibold shadow-md"
                 >
                   {editingProject ? 'Save Changes' : 'Create Project'}
                 </button>
