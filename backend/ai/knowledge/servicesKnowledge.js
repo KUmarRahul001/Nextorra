@@ -1,7 +1,31 @@
 /**
  * Authoritative Central Service Knowledge Base for RahBot & Backend AI Gateway
- * Synchronized with canonical commercial pricing matrix (PRICE_MATRIX.md & src/data/services.ts).
+ * Synchronized with canonical commercial pricing matrix (src/data/services.ts & projects.ts).
  */
+
+export const RAHNOXA_COMPANY_KNOWLEDGE = {
+  name: 'Rahnoxa',
+  legalName: 'Rahnoxa Software & Cloud Technologies',
+  tagline: 'Bespoke Software Engineering for High-Growth Businesses',
+  foundedLocation: 'Jharkhand, India',
+  deliveryMode: 'Remote & Distributed Worldwide',
+  contact: {
+    email: 'contact.rahnoxa@protonmail.com',
+    phones: ['+91 8434237052', '+91 8434237049'],
+    hours: 'Mon–Sat: 9:00 AM – 8:00 PM IST',
+    sla: '24 to 48 hours for architectural reviews and quotes',
+  },
+  guarantees: [
+    '100% Client Code & Database Ownership (No recurring per-user seat licenses)',
+    '30-Day Post-Launch Technical Bug Fix Warranty included across all contracts',
+    'Milestone-Based Sprints with direct Git repository access & staging deployments',
+    '50% Milestone Start / 50% Final Production Handover commercial model',
+  ],
+  stack: [
+    'React 18 & Vite', 'TypeScript', 'Node.js & Express', 'Next.js', 'Go', 'Python',
+    'PostgreSQL', 'Supabase', 'Redis', 'React Native & Flutter', 'Cloudflare CDN & Edge',
+  ],
+};
 
 export const RAHNOXA_SERVICES_KNOWLEDGE = [
   // ─── 1. Custom ERP & Enterprise Applications ──────────────────────────────────
@@ -31,8 +55,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Third-Party Integrations: Connect ERP with banking APIs, accounting software, and CRMs.',
       'Flexible Deployment: Cloud-hosted, on-premise, or hybrid deployment models.',
     ],
-    pricing: 'Starting at ₹75,000 for Starter (Single Module), ₹1,50,000 for Growth (3 Modules - Recommended), and ₹2,75,000+ for Pro Enterprise Suite.',
-    sla: 'Architectural discovery & project estimate delivered within 24 to 48 hours.',
+    pricing: 'Starting at ₹59,999 for Starter (Single Module, 3–5 Wks), ₹1,19,999 for Growth (3 Modules, 6–8 Wks - Recommended), and ₹2,25,000+ for Pro Enterprise Suite.',
+    sla: 'Architectural discovery & project estimate delivered within 24 to 48 hours. Includes 30-Day Technical Bug Fix Warranty.',
   },
 
   // ─── 2. Full-Stack Web Applications ──────────────────────────────────────────
@@ -59,8 +83,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Database Architecture: Efficient normalized schemas with PostgreSQL and Redis caching.',
       'API Engineering: Clean RESTful and GraphQL endpoints with automated OpenAPI documentation.',
     ],
-    pricing: 'Starting at ₹39,999 for Starter MVP (2 Weeks), ₹69,999 for Growth Platform (3–4 Weeks - Recommended), and ₹1,19,999 for Pro Custom Architecture.',
-    sla: 'Full requirement scoping and technical blueprint delivered within 24 to 48 hours.',
+    pricing: 'Starting at ₹34,999 for Starter MVP (2–3 Weeks), ₹64,999 for Growth Platform (4–5 Weeks - Recommended), and ₹99,999 for Pro Custom Architecture (6–8 Weeks).',
+    sla: 'Full requirement scoping and technical blueprint delivered within 24 to 48 hours. Includes 30-Day Technical Bug Fix Warranty.',
   },
 
   // ─── 3. SaaS Product Engineering ─────────────────────────────────────────────
@@ -87,8 +111,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Billing & Subscriptions: Webhook-driven recurring payments, coupons, and automated invoicing.',
       'Admin Telemetry: Live operational dashboards tracking MRR, churn, active sessions, and errors.',
     ],
-    pricing: 'Starting at ₹64,999 for Starter SaaS MVP (3–4 Weeks), ₹1,24,999 for Growth SaaS (5–6 Weeks - Recommended), and ₹2,19,999+ for Scale Architecture.',
-    sla: 'SaaS architectural review provided within 24 to 48 hours.',
+    pricing: 'Starting at ₹49,999 for Starter SaaS MVP (3–5 Weeks), ₹99,999 for Growth SaaS (5–8 Weeks - Recommended), and ₹1,79,999+ for Scale Architecture (8–12 Weeks).',
+    sla: 'SaaS architectural review provided within 24 to 48 hours. Includes 30-Day Technical Bug Fix Warranty.',
   },
 
   // ─── 4. Custom Software & API Integration ────────────────────────────────────
@@ -115,8 +139,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Data Pipelines & ETL: Reliable data transformation pipelines moving millions of records automatically.',
       'Legacy System Modernization: REST/GraphQL API wrappers for on-premise and legacy databases.',
     ],
-    pricing: 'Starting at ₹1,999 for Single API/Gateway Setup, ₹5,999 for Standard Automation Bridge (Recommended), and ₹11,999 for Pro Multi-System Sync. Emergency crash fix at ₹2,999.',
-    sla: 'Technical API review and scoping response within 24 to 48 hours.',
+    pricing: 'Starting at ₹1,999 for Single API/Gateway Setup (5–7 Days), ₹5,999 for Standard Automation Bridge (5–7 Days - Recommended), and ₹11,999 for Pro Multi-System Sync (2–3 Weeks). Emergency fix at ₹2,999.',
+    sla: 'Technical API review and scoping response within 24 to 48 hours. Includes 30-Day Technical Bug Fix Warranty.',
   },
 
   // ─── 5. Mobile App Development ───────────────────────────────────────────────
@@ -143,8 +167,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Backend & Cloud Sync: Low-latency API synchronization with offline queuing.',
       'Analytics & Crash Reporting: Integrated telemetry for crash diagnostics and user journeys.',
     ],
-    pricing: 'Starting at ₹44,999 for Starter Android App (3 Weeks), ₹79,999 for Cross-Platform iOS+Android (4–5 Weeks - Recommended), and ₹1,39,999 for Pro Marketplace Apps.',
-    sla: 'Mobile architecture scoping and wireframe consult within 24 to 48 hours.',
+    pricing: 'Starting at ₹44,999 for Starter Android App (3–4 Weeks), ₹79,999 for Cross-Platform iOS+Android (4–6 Weeks - Recommended), and ₹1,39,999 for Pro Marketplace Apps (6–8 Weeks).',
+    sla: 'Mobile architecture scoping and wireframe consult within 24 to 48 hours. Includes 30-Day Technical Bug Fix Warranty.',
   },
 
   // ─── 6. Native Desktop Applications ──────────────────────────────────────────
@@ -156,7 +180,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
     category: 'Software & Engineering',
     route: '/services/desktop-applications',
     summary:
-      'Cross-platform desktop software for Windows, macOS, and Linux for internal business operations, offline data processing, and hardware interfacing.',
+      'Cross-platform desktop software for Windows, macOS, and Linux for internal business operations, offline data processing, POS billing, and hardware interfacing.',
     technologies: ['Electron', 'Tauri', 'C++', 'Python', 'React', 'SQLite'],
     benefits: [
       'Operates completely offline without requiring internet connectivity',
@@ -170,8 +194,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Hardware Peripheral Interfacing: Serial, USB, POS thermal printers, and barcode readers.',
       'Silent Auto-Updater: Background binary delta updates without manual reinstallation.',
     ],
-    pricing: 'Starting at ₹34,999 for Starter Utility (2 Weeks), ₹59,999 for Growth POS & Hardware (3–4 Weeks - Recommended), and ₹99,999 for Pro High-Performance Tools.',
-    sla: 'Technical desktop feasibility review within 24 to 48 hours.',
+    pricing: 'Starting at ₹34,999 for Starter Utility (2–3 Weeks), ₹59,999 for Growth POS & Hardware (3–5 Weeks - Recommended), and ₹99,999 for Pro High-Performance Tools (5–7 Weeks).',
+    sla: 'Technical desktop feasibility review within 24 to 48 hours. Includes 30-Day Technical Bug Fix Warranty.',
   },
 
   // ─── 7. Modern Website Design ────────────────────────────────────────────────
@@ -189,7 +213,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Sub-second page load times with perfect 95+ Google PageSpeed Core Web Vitals',
       'Semantic SEO and automatic sitemap / structured schema markup for top search engine rankings',
       'Fluid responsiveness across ultra-wide monitors, laptops, tablets, and smartphones',
-      'Bespoke dark glassmorphism and subtle micro-interactions that elevate brand credibility',
+      'Bespoke modern UI and subtle micro-interactions that elevate brand credibility',
     ],
     features: [
       'Custom Brand Design: Bespoke layouts crafted specifically for your industry without generic templates.',
@@ -197,8 +221,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Automated SEO: OpenGraph social previews, dynamic meta tags, and structured JSON-LD data.',
       'Lead Capture Integration: Instant form routing to email, CRM, and WhatsApp alerts.',
     ],
-    pricing: 'Starting at ₹4,999 for Starter Landing Page (2–3 Days), ₹11,999 for Growth Business Site (4–7 Days - Recommended), and ₹18,999 for Pro Corporate Portal (7–12 Days). Express 24h available from ₹7,499.',
-    sla: 'Website concept outline and quote provided within 24 to 48 hours.',
+    pricing: 'Starting at ₹4,999 for Starter Landing Page (5–7 Days), ₹11,999 for Growth Business Site (2–3 Weeks - Recommended), and ₹18,999 for Pro Corporate Portal (3–4 Weeks). Express 48h available from ₹7,499.',
+    sla: 'Website concept outline and quote provided within 24 to 48 hours. Includes 30-Day Technical Bug Fix Warranty.',
   },
 
   // ─── 8. B2B Lead Generation ──────────────────────────────────────────────────
@@ -223,7 +247,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Landing Page Funnels: Conversion-optimized lead capture forms with instant WhatsApp routing.',
       'Outreach Pipelines: Compliant B2B email and LinkedIn lead discovery sequences.',
     ],
-    pricing: 'Starting at ₹2,499 for GBP Setup & Verification, ₹4,499 for Local Map Domination & Funnel (Recommended), and ₹3,499/mo for Ongoing Local Dominance Retainer.',
+    pricing: 'Starting at ₹2,499 for GBP Setup & Verification (5–7 Days), ₹4,499 for Local Map Domination & Funnel (5–7 Days - Recommended), and ₹3,499/mo for Ongoing Local Dominance Retainer.',
     sla: 'Lead generation strategy blueprint delivered within 24 to 48 hours.',
   },
 
@@ -249,7 +273,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Promotional SMS Broadcasts: Scheduled bulk marketing campaigns to verified customer lists.',
       'DLT Registration Support: End-to-end guidance for entity and header/template approvals.',
     ],
-    pricing: 'Starting at ₹1,999 for SMS API Gateway Setup, ₹3,499 for DLT Registration & Automation Suite (Recommended), and ₹6,999 for Pro Custom Messaging Engines. SMS credits billed at wholesale rates (~₹0.15/SMS).',
+    pricing: 'Starting at ₹1,999 for SMS API Gateway Setup (5–7 Days), ₹3,499 for DLT Registration & Automation Suite (5–7 Days - Recommended), and ₹6,999 for Pro Custom Messaging Engines (2–3 Weeks). SMS credits billed at wholesale rates (~₹0.15/SMS).',
     sla: 'SMS campaign setup and API configuration in 24 to 48 hours.',
   },
 
@@ -275,7 +299,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Instant Auto-Responder: Automatic SMS or WhatsApp brochure sent immediately upon disconnection.',
       'CRM Synchronization: Live webhook pushing caller phone numbers into your database.',
     ],
-    pricing: 'Starting at ₹2,499 for Starter Missed Call Capture, ₹4,499 for Growth WhatsApp Callback Suite (Recommended), and ₹7,999 for Pro Multi-Channel Analytics Suite.',
+    pricing: 'Starting at ₹2,499 for Starter Missed Call Capture (5–7 Days), ₹4,499 for Growth WhatsApp Callback Suite (5–7 Days - Recommended), and ₹7,999 for Pro Multi-Channel Analytics Suite (2–3 Weeks).',
     sla: 'Virtual number routing and response automation setup within 24 to 48 hours.',
   },
 
@@ -301,7 +325,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Multi-Level IVR Trees: Custom keypress navigation routing callers to appropriate departments.',
       'Call Recording & Telemetry: Live call duration, recording storage, and missed-call triage.',
     ],
-    pricing: 'Starting at ₹3,499 for Voice Broadcasting (OBD), ₹6,499 for Growth Virtual IVR Receptionist (Recommended), and ₹11,999 for Pro Cloud PBX Systems.',
+    pricing: 'Starting at ₹3,499 for Voice Broadcasting (5–7 Days), ₹6,499 for Growth Virtual IVR Receptionist (5–7 Days - Recommended), and ₹11,999 for Pro Cloud PBX Systems (2–3 Weeks).',
     sla: 'IVR flow design and telecom setup in 24 to 48 hours.',
   },
 
@@ -353,7 +377,7 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Lifecycle Automation Workflows: Multi-step welcome series, lead nurture drips, and post-purchase sequences.',
       'Responsive Template Design: Clean branded email templates tested across major email clients.',
     ],
-    pricing: 'Starting at ₹1,999 for Deliverability & SPF/DKIM Rescue, ₹3,999 for Automation & Template Setup (Recommended), and ₹4,999/mo for Monthly Email Campaign Management.',
+    pricing: 'Starting at ₹1,999 for Deliverability & SPF/DKIM Rescue (2–4 Days), ₹3,999 for Automation & Template Setup (5–7 Days - Recommended), and ₹4,999/mo for Monthly Email Campaign Management.',
     sla: 'Email template design and DNS audit within 24 to 48 hours.',
   },
 
@@ -381,8 +405,8 @@ export const RAHNOXA_SERVICES_KNOWLEDGE = [
       'Investor Pitch Decks: 12–15 slide data-driven presentations in PowerPoint / Google Slides / PDF.',
       'Marketing Collateral: Brochures, flyers, digital banners, roll-up standees, and catalog covers.',
     ],
-    pricing: 'Starting at ₹2,499 for Fast-Track Logo Starter (2 Days), ₹4,499 for Complete Brand Identity Suite (3–4 Days - Recommended), and ₹8,999 for Investor Pitch Deck & Corporate Kit.',
-    sla: 'Initial logo concepts and creative review within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for Fast-Track Logo Starter (5–7 Days), ₹4,499 for Complete Brand Identity Suite (5–7 Days - Recommended), and ₹8,999 for Investor Pitch Deck & Corporate Kit (2–3 Weeks).',
+    sla: 'Initial logo concepts and creative review within 24 to 48 hours. Includes 30-Day Technical Warranty.',
   },
 
   // ─── 15. Talent Track: Engineering Internships ───────────────────────────────
