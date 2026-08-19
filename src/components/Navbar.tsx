@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
-import logo from './assets/logo.png';
 import { tier1Services, tier2Services } from '../data/services';
 
 const Navbar: React.FC = () => {
@@ -48,13 +47,18 @@ const Navbar: React.FC = () => {
   const smoothScrollTo = (id: string) => {
     const performScroll = () => {
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (el) {
+        const navHeight = 64;
+        const targetTop = el.getBoundingClientRect().top + window.scrollY - navHeight;
+        window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+      }
     };
+
     if (location.pathname === '/') {
       performScroll();
     } else {
       navigate('/');
-      setTimeout(performScroll, 300);
+      setTimeout(performScroll, 350);
     }
   };
 
@@ -65,41 +69,38 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-200 ${
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm py-2'
-          : 'bg-white/80 backdrop-blur-sm border-b border-slate-200/80 py-3 sm:py-3.5'
+          ? 'bg-white/95 backdrop-blur-md shadow-xs border-b border-slate-200/80 py-2'
+          : 'bg-white/80 backdrop-blur-sm border-b border-slate-100 py-3'
       }`}
-      role="navigation"
       aria-label="Primary Navigation"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-12 sm:h-14">
-          {/* Logo */}
+          {/* Logo with clean direct RX mark rendering */}
           <Link 
             to="/" 
-            className="flex items-center gap-2.5 flex-shrink-0" 
+            className="flex items-center gap-3 flex-shrink-0 group" 
             aria-label="Homepage" 
             onClick={() => {
               setIsOpen(false);
               setServicesOpen(false);
             }}
           >
-            <div className="h-8 w-8 rounded-lg overflow-hidden flex-shrink-0 bg-blue-600 flex items-center justify-center p-1 border border-blue-500/30">
-              <img 
-                src={logo} 
-                alt="Rahnoxa Logo" 
-                className="h-full w-full object-contain" 
-                loading="eager" 
-              />
-            </div>
+            <img 
+              src="/brand/logo-symbol-transparent.png" 
+              alt="Rahnoxa Logo" 
+              className="h-9 w-auto object-contain transition-transform group-hover:scale-105" 
+              loading="eager" 
+            />
             <div className="flex flex-col">
-              <span className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 leading-none">
-                Rahnoxa
+              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 leading-none">
+                RAHNOXA
               </span>
-              <span className="text-[10px] text-slate-500 font-mono tracking-wider uppercase mt-0.5">
-                Engineering
+              <span className="text-[10px] text-blue-600 font-mono tracking-widest uppercase font-bold mt-0.5">
+                ENGINEERING
               </span>
             </div>
           </Link>
@@ -255,182 +256,128 @@ const Navbar: React.FC = () => {
             </button>
           </div>
 
-          {/* Desktop Right CTA */}
-          <div className="hidden md:flex items-center gap-2 lg:gap-3">
-            <button 
-              onClick={() => handleScrollLink('contact')} 
-              className="text-slate-600 hover:text-slate-900 px-2.5 lg:px-3 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-100 transition-colors"
-              type="button"
+          {/* Right Action Button & Contact Link */}
+          <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
+            <Link 
+              to="/contact" 
+              className="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-100 transition-colors"
             >
               Contact
-            </button>
-            <Link
-              to="/get-started"
-              className="px-3.5 lg:px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs lg:text-sm font-semibold transition-all shadow-sm"
+            </Link>
+            <button
               onClick={() => {
-                setIsOpen(false);
-                setServicesOpen(false);
+                navigate('/get-started');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              className="btn btn-primary text-xs lg:text-sm px-4 lg:px-5 py-2 rounded-lg font-semibold shadow-sm"
+              type="button"
             >
               Start a Project
-            </Link>
+            </button>
           </div>
 
-          {/* Mobile & Small Screen Menu Toggle (< 800px / md) */}
-          <button
-            className="md:hidden text-slate-300 hover:text-white p-2 rounded-lg hover:bg-slate-800/50 transition-colors"
-            onClick={() => setIsOpen(prev => !prev)}
-            aria-label={isOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={isOpen}
-            aria-controls="mobile-menu"
-          >
-            {isOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+          {/* Mobile Hamburger Button */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={() => {
+                navigate('/get-started');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="btn btn-primary text-xs px-3 py-1.5 rounded-lg font-semibold"
+              type="button"
+            >
+              Start
+            </button>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 focus:outline-none"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isOpen}
+              type="button"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown (< 800px) */}
-      <div 
-        id="mobile-menu" 
-        className={`md:hidden transition-all duration-300 overflow-hidden border-b border-slate-800/80 bg-slate-950/98 backdrop-blur-2xl ${
-          isOpen ? 'max-h-[88vh] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <div className="container mx-auto px-4 py-4 flex flex-col gap-1 text-slate-200">
-          <button 
-            onClick={() => handleScrollLink('about')} 
-            className="text-left text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 transition-colors font-medium text-sm" 
-            type="button"
-          >
-            About
-          </button>
-          
-          <Link
-            to="/blog"
-            className="text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 transition-colors font-medium text-sm"
-            onClick={() => setIsOpen(false)}
-          >
-            Blog &amp; Insights
-          </Link>
-
-          <Link
-            to="/internship"
-            onClick={() => setIsOpen(false)}
-            className="text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 transition-colors font-medium text-sm"
-          >
-            Internship
-          </Link>
-
-          {/* Mobile Services Accordion */}
-          <div>
+      {/* Mobile Drawer Menu (Solid Background) */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 max-h-[85vh] overflow-y-auto shadow-xl">
+          <div className="flex flex-col space-y-1">
             <button
-              onClick={() => setServicesOpen(prev => !prev)}
-              className="w-full text-left text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 flex items-center justify-between transition-colors font-medium text-sm"
-              aria-haspopup="true"
-              aria-expanded={servicesOpen}
+              onClick={() => handleScrollLink('about')}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 text-left"
               type="button"
-              aria-controls="mobile-services-menu"
             >
-              <span>Services</span>
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180 text-blue-400' : ''}`} />
+              About
             </button>
-            
-            <div 
-              id="mobile-services-menu" 
-              className={`transition-all duration-300 overflow-hidden pl-2 ${servicesOpen ? 'max-h-[500px] overflow-y-auto py-1' : 'max-h-0'}`} 
-              role="menu"
+            <Link
+              to="/internship"
+              onClick={() => setIsOpen(false)}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100"
             >
-              <div className="my-1 py-1 px-3 bg-blue-950/40 border border-blue-900/30 rounded-lg">
-                <p className="text-[11px] font-bold text-blue-400 uppercase tracking-wider">
-                  Software &amp; Engineering
-                </p>
-              </div>
-              {tier1Services.map(({ name, route }) => (
-                <Link
-                  key={route}
-                  to={route}
-                  onClick={() => {
-                    setIsOpen(false);
-                    setServicesOpen(false);
-                  }}
-                  className="block py-2 pl-4 pr-3 text-slate-300 hover:text-white hover:bg-blue-600/10 rounded-lg transition-colors text-xs"
-                  role="menuitem"
-                >
-                  {name}
-                </Link>
-              ))}
-
-              <div className="my-1 mt-2 py-1 px-3 bg-slate-900 border border-slate-800 rounded-lg">
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  Marketing &amp; Business Support
-                </p>
-              </div>
-              {tier2Services.map(({ name, route }) => (
-                <Link
-                  key={route}
-                  to={route}
-                  onClick={() => {
-                    setIsOpen(false);
-                    setServicesOpen(false);
-                  }}
-                  className="block py-2 pl-4 pr-3 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-colors text-xs"
-                  role="menuitem"
-                >
-                  {name}
-                </Link>
-              ))}
+              Internship
+            </Link>
+            <Link
+              to="/services"
+              onClick={() => setIsOpen(false)}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100"
+            >
+              All Services
+            </Link>
+            <button
+              onClick={() => handleScrollLink('pricing')}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 text-left"
+              type="button"
+            >
+              Pricing
+            </button>
+            <button
+              onClick={() => handleScrollLink('portfolio')}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 text-left"
+              type="button"
+            >
+              Work
+            </button>
+            <Link
+              to="/blog"
+              onClick={() => setIsOpen(false)}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100"
+            >
+              Blog
+            </Link>
+            <button
+              onClick={() => handleScrollLink('why-choose')}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 text-left"
+              type="button"
+            >
+              Why Us
+            </button>
+            <Link
+              to="/contact"
+              onClick={() => setIsOpen(false)}
+              className="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100"
+            >
+              Contact
+            </Link>
+            <div className="pt-3">
+              <button
+                onClick={() => {
+                  navigate('/get-started');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  setIsOpen(false);
+                }}
+                className="btn btn-primary w-full py-2.5 rounded-lg text-sm font-semibold shadow-sm"
+                type="button"
+              >
+                Start a Project
+              </button>
             </div>
           </div>
-
-          <button 
-            onClick={() => handleScrollLink('pricing')} 
-            className="text-left text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 transition-colors font-medium text-sm" 
-            type="button"
-          >
-            Pricing
-          </button>
-
-          <button 
-            onClick={() => handleScrollLink('portfolio')} 
-            className="text-left text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 transition-colors font-medium text-sm" 
-            type="button"
-          >
-            Work
-          </button>
-
-          <button 
-            onClick={() => handleScrollLink('why-choose')} 
-            className="text-left text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 transition-colors font-medium text-sm" 
-            type="button"
-          >
-            Why Us
-          </button>
-
-          <Link
-            to="/get-started"
-            className="text-slate-300 hover:text-white py-2.5 px-4 rounded-xl hover:bg-slate-800/60 transition-colors font-medium text-sm"
-            onClick={() => setIsOpen(false)}
-          >
-            Contact
-          </Link>
-
-          <button
-            onClick={() => {
-              navigate('/get-started');
-              setIsOpen(false);
-            }}
-            className="w-full mt-2 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center font-semibold rounded-xl shadow-lg shadow-blue-600/25 transition-all text-sm"
-            type="button"
-          >
-            Start a Project
-          </button>
         </div>
-      </div>
-    </nav>
+      )}
+    </header>
   );
 };
 
