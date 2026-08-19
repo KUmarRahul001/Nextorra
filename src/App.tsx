@@ -56,10 +56,28 @@ function App() {
         {/* Suspense fallback for lazy loading */}
         <Suspense
           fallback={
-            <div className="h-screen flex justify-center items-center bg-slate-950 text-slate-400 text-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                <span>Loading Rahnoxa Platform...</span>
+            <div className="h-screen w-full flex flex-col justify-center items-center bg-[#FAFCFF] text-slate-900">
+              <div className="relative flex flex-col items-center gap-4">
+                {/* Brand Logo with Pulsing Glow Ring */}
+                <div className="relative p-4 rounded-3xl bg-white shadow-xl shadow-blue-500/10 border border-slate-200/80 flex items-center justify-center">
+                  <div className="absolute -inset-2 rounded-3xl border-2 border-blue-500/30 border-t-blue-600 animate-spin" />
+                  <img 
+                    src="/brand/logo-symbol-transparent.png" 
+                    alt="Rahnoxa" 
+                    className="h-10 w-auto object-contain animate-pulse" 
+                  />
+                </div>
+
+                {/* Typography & Status Bar */}
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-sm font-black tracking-wider text-slate-900 font-mono">
+                    RAHNOXA
+                  </span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600 animate-ping" />
+                    <span className="text-xs text-slate-500 font-mono">Initializing System...</span>
+                  </div>
+                </div>
               </div>
             </div>
           }
