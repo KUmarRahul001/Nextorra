@@ -2,6 +2,14 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    screens: {
+      'xs': '340px',   // Mobile phone breakpoint (340px)
+      'sm': '480px',   // Large phone breakpoint
+      'md': '800px',   // Tablet breakpoint (800px)
+      'lg': '1024px',  // Small laptop
+      'xl': '1200px',  // Desktop breakpoint (1200px)
+      '2xl': '1440px', // Large monitor
+    },
     extend: {
       colors: {
         primary: {

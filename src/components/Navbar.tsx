@@ -60,49 +60,49 @@ const Navbar: React.FC = () => {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-slate-950/85 backdrop-blur-xl border-b border-slate-800/80 shadow-2xl shadow-black/40 py-1'
-          : 'bg-transparent py-3'
+          ? 'bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 shadow-2xl shadow-black/40 py-1'
+          : 'bg-transparent py-2.5 sm:py-3'
       }`}
       role="navigation"
       aria-label="Primary Navigation"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-18">
+      <div className="container mx-auto px-3.5 xs:px-4 sm:px-6 xl:px-8">
+        <div className="flex justify-between items-center h-14 xs:h-16 sm:h-18">
           {/* Logo */}
           <Link 
             to="/" 
-            className="flex items-center gap-3 flex-shrink-0 group" 
+            className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0 group" 
             aria-label="Homepage" 
             onClick={() => setIsOpen(false)}
           >
-            <div className="relative h-10 w-10 rounded-xl overflow-hidden flex-shrink-0 p-0.5 bg-gradient-to-tr from-blue-600 to-cyan-400 group-hover:shadow-lg group-hover:shadow-blue-500/25 transition-all">
+            <div className="relative h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 rounded-xl overflow-hidden flex-shrink-0 p-0.5 bg-gradient-to-tr from-blue-600 to-cyan-400 group-hover:shadow-lg group-hover:shadow-blue-500/25 transition-all">
               <div className="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
                 <img 
                   src={logo} 
                   alt="Rahnoxa Logo" 
-                  className="h-7 w-7 object-contain group-hover:scale-105 transition-transform" 
+                  className="h-5 w-5 xs:h-6 xs:w-6 sm:h-7 sm:w-7 object-contain group-hover:scale-105 transition-transform" 
                   loading="lazy" 
                   draggable={false} 
                 />
               </div>
             </div>
-            <span className="text-xl font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+            <span className="text-lg xs:text-xl font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
               Rahnoxa
             </span>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+          {/* Desktop Menu (Desktop >= 1200px / xl, Tablet >= 800px / md) */}
+          <div className="hidden md:flex items-center gap-0.5 lg:gap-1.5 xl:gap-2">
             <button 
               onClick={() => handleScrollLink('about')} 
-              className="text-slate-300 hover:text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-slate-800/50 transition-colors" 
+              className="text-slate-300 hover:text-white px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-800/50 transition-colors" 
               type="button"
             >
               About
             </button>
             <Link 
               to="/internship" 
-              className="text-slate-300 hover:text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-slate-800/50 transition-colors"
+              className="text-slate-300 hover:text-white px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-800/50 transition-colors"
             >
               Internship
             </Link>
@@ -112,7 +112,7 @@ const Navbar: React.FC = () => {
               <button
                 ref={servicesButtonRef}
                 onClick={() => setServicesOpen(prev => !prev)}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1 px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium transition-colors ${
                   servicesOpen
                     ? 'text-blue-400 bg-slate-800/60'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
@@ -123,86 +123,109 @@ const Navbar: React.FC = () => {
                 aria-controls="services-menu"
               >
                 Services
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180 text-blue-400' : ''}`} />
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${servicesOpen ? 'rotate-180 text-blue-400' : ''}`} />
               </button>
               
+              {/* 2-Column Mega Menu for clean visibility & no vertical clipping */}
               <div
                 ref={servicesDropdownRef}
                 id="services-menu"
-                className={`absolute top-full left-0 mt-2.5 w-84 bg-slate-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl shadow-black/60 border border-slate-700/80 overflow-hidden transition-all duration-200 origin-top-left ${
+                className={`absolute top-full left-0 sm:-left-24 lg:left-0 mt-2.5 w-[320px] sm:w-[580px] lg:w-[620px] bg-slate-900/98 backdrop-blur-2xl rounded-2xl shadow-2xl shadow-black/80 border border-slate-700/80 overflow-hidden transition-all duration-200 origin-top-left z-50 ${
                   servicesOpen
                     ? 'opacity-100 scale-100 visible'
                     : 'opacity-0 scale-95 invisible pointer-events-none'
                 }`}
                 role="menu"
               >
-                {/* Software & Engineering — Tier 1 */}
-                <div className="px-4 py-2.5 bg-slate-950/70 border-b border-slate-800">
-                  <p className="text-[11px] font-semibold text-blue-400 uppercase tracking-wider">
-                    Software &amp; Engineering
-                  </p>
-                </div>
-                <div className="py-1">
-                  {tier1Services.map(({ name, route }) => (
-                    <Link
-                      key={route}
-                      to={route}
-                      className="flex items-center justify-between px-4 py-2 text-slate-300 hover:text-white hover:bg-blue-600/10 hover:border-l-2 hover:border-blue-500 transition-all text-sm group"
-                      onClick={() => {
-                        setServicesOpen(false);
-                        setIsOpen(false);
-                      }}
-                      role="menuitem"
-                    >
-                      <span>{name}</span>
-                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 text-blue-400 transition-all" />
-                    </Link>
-                  ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-800 max-h-[75vh] overflow-y-auto">
+                  {/* Column 1: Software & Engineering — Tier 1 */}
+                  <div className="p-2 sm:p-3">
+                    <div className="px-3 py-1.5 mb-1 bg-blue-950/40 border border-blue-800/30 rounded-lg">
+                      <p className="text-[11px] font-bold text-blue-400 uppercase tracking-wider">
+                        Software &amp; Engineering
+                      </p>
+                    </div>
+                    <div className="space-y-0.5">
+                      {tier1Services.map(({ name, route }) => (
+                        <Link
+                          key={route}
+                          to={route}
+                          className="flex items-center justify-between px-3 py-2 text-slate-300 hover:text-white hover:bg-blue-600/15 rounded-lg transition-all text-xs font-medium group"
+                          onClick={() => {
+                            setServicesOpen(false);
+                            setIsOpen(false);
+                          }}
+                          role="menuitem"
+                        >
+                          <span className="truncate pr-2">{name}</span>
+                          <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 text-blue-400 transition-all flex-shrink-0" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Column 2: Marketing & Business Support — Tier 2 */}
+                  <div className="p-2 sm:p-3 bg-slate-950/40">
+                    <div className="px-3 py-1.5 mb-1 bg-slate-900 border border-slate-800 rounded-lg">
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                        Marketing &amp; Business Support
+                      </p>
+                    </div>
+                    <div className="space-y-0.5">
+                      {tier2Services.map(({ name, route }) => (
+                        <Link
+                          key={route}
+                          to={route}
+                          className="flex items-center justify-between px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-lg transition-all text-xs font-medium group"
+                          onClick={() => {
+                            setServicesOpen(false);
+                            setIsOpen(false);
+                          }}
+                          role="menuitem"
+                        >
+                          <span className="truncate pr-2">{name}</span>
+                          <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 text-slate-400 transition-all flex-shrink-0" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Marketing & Business Support — Tier 2 */}
-                <div className="px-4 py-2.5 bg-slate-950/70 border-y border-slate-800">
-                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                    Marketing &amp; Business Support
-                  </p>
-                </div>
-                <div className="py-1">
-                  {tier2Services.map(({ name, route }) => (
-                    <Link
-                      key={route}
-                      to={route}
-                      className="flex items-center justify-between px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-800/60 hover:border-l-2 hover:border-slate-400 transition-all text-sm group"
-                      onClick={() => {
-                        setServicesOpen(false);
-                        setIsOpen(false);
-                      }}
-                      role="menuitem"
-                    >
-                      <span>{name}</span>
-                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 text-slate-400 transition-all" />
-                    </Link>
-                  ))}
+                {/* Footer bar inside mega menu */}
+                <div className="px-4 py-2.5 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
+                  <span className="text-[11px] text-slate-400">Looking for a custom scope?</span>
+                  <Link
+                    to="/services"
+                    onClick={() => {
+                      setServicesOpen(false);
+                      setIsOpen(false);
+                    }}
+                    className="text-xs font-semibold text-blue-400 hover:text-cyan-300 inline-flex items-center gap-1"
+                  >
+                    <span>View All Services</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
                 </div>
               </div>
             </div>
 
             <button 
               onClick={() => handleScrollLink('pricing')} 
-              className="text-slate-300 hover:text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-slate-800/50 transition-colors" 
+              className="text-slate-300 hover:text-white px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-800/50 transition-colors" 
               type="button"
             >
               Pricing
             </button>
             <button 
               onClick={() => handleScrollLink('portfolio')} 
-              className="text-slate-300 hover:text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-slate-800/50 transition-colors" 
+              className="text-slate-300 hover:text-white px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-800/50 transition-colors" 
               type="button"
             >
               Work
             </button>
             <Link 
               to="/blog" 
-              className="text-slate-300 hover:text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-slate-800/50 transition-colors"
+              className="text-slate-300 hover:text-white px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-800/50 transition-colors"
               onClick={() => {
                 setIsOpen(false);
                 setServicesOpen(false);
@@ -212,34 +235,34 @@ const Navbar: React.FC = () => {
             </Link>
             <button 
               onClick={() => handleScrollLink('why-choose')} 
-              className="text-slate-300 hover:text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-slate-800/50 transition-colors" 
+              className="text-slate-300 hover:text-white px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-800/50 transition-colors" 
               type="button"
             >
               Why Us
             </button>
           </div>
 
-          {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Desktop & Tablet CTA Buttons */}
+          <div className="hidden md:flex items-center gap-2 lg:gap-3">
             <Link 
               to="/get-started"
-              className="text-slate-300 hover:text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-slate-800/50 transition-colors"
+              className="text-slate-300 hover:text-white px-2.5 lg:px-3.5 py-2 rounded-lg text-xs lg:text-sm font-medium hover:bg-slate-800/50 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Contact
             </Link>
             <button
               onClick={() => navigate('/get-started')}
-              className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-600/20 border border-blue-400/30 hover:shadow-blue-500/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="px-3.5 lg:px-5 py-2 lg:py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-xs lg:text-sm font-semibold rounded-xl shadow-lg shadow-blue-600/20 border border-blue-400/30 hover:shadow-blue-500/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
               type="button"
             >
               Start a Project
             </button>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile & Small Screen Menu Toggle (< 800px / md) */}
           <button
-            className="lg:hidden text-slate-300 hover:text-white p-2 rounded-lg hover:bg-slate-800/50 transition-colors"
+            className="md:hidden text-slate-300 hover:text-white p-2 rounded-lg hover:bg-slate-800/50 transition-colors"
             onClick={() => setIsOpen(prev => !prev)}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
@@ -254,11 +277,11 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Dropdown (< 800px) */}
       <div 
         id="mobile-menu" 
-        className={`lg:hidden transition-all duration-300 overflow-hidden border-b border-slate-800/80 bg-slate-950/95 backdrop-blur-2xl ${
-          isOpen ? 'max-h-[85vh] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'
+        className={`md:hidden transition-all duration-300 overflow-hidden border-b border-slate-800/80 bg-slate-950/98 backdrop-blur-2xl ${
+          isOpen ? 'max-h-[88vh] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="container mx-auto px-4 py-4 flex flex-col gap-1 text-slate-200">
@@ -302,12 +325,14 @@ const Navbar: React.FC = () => {
             
             <div 
               id="mobile-services-menu" 
-              className={`transition-all duration-300 overflow-hidden pl-3 ${servicesOpen ? 'max-h-screen py-1' : 'max-h-0'}`} 
+              className={`transition-all duration-300 overflow-hidden pl-2 ${servicesOpen ? 'max-h-[500px] overflow-y-auto py-1' : 'max-h-0'}`} 
               role="menu"
             >
-              <p className="pl-4 pt-2 pb-1 text-[11px] font-semibold text-blue-400 uppercase tracking-wider">
-                Software &amp; Engineering
-              </p>
+              <div className="my-1 py-1 px-3 bg-blue-950/30 rounded-lg">
+                <p className="text-[11px] font-bold text-blue-400 uppercase tracking-wider">
+                  Software &amp; Engineering
+                </p>
+              </div>
               {tier1Services.map(({ name, route }) => (
                 <Link
                   key={route}
@@ -316,16 +341,18 @@ const Navbar: React.FC = () => {
                     setIsOpen(false);
                     setServicesOpen(false);
                   }}
-                  className="block py-2 pl-6 pr-4 text-slate-300 hover:text-white hover:bg-blue-600/10 rounded-lg transition-colors text-xs"
+                  className="block py-2 pl-4 pr-3 text-slate-300 hover:text-white hover:bg-blue-600/10 rounded-lg transition-colors text-xs"
                   role="menuitem"
                 >
                   {name}
                 </Link>
               ))}
 
-              <p className="pl-4 pt-3 pb-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-t border-slate-800/60 mt-2">
-                Marketing &amp; Business Support
-              </p>
+              <div className="my-1 mt-2 py-1 px-3 bg-slate-900 rounded-lg">
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  Marketing &amp; Business Support
+                </p>
+              </div>
               {tier2Services.map(({ name, route }) => (
                 <Link
                   key={route}
@@ -334,7 +361,7 @@ const Navbar: React.FC = () => {
                     setIsOpen(false);
                     setServicesOpen(false);
                   }}
-                  className="block py-2 pl-6 pr-4 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-colors text-xs"
+                  className="block py-2 pl-4 pr-3 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-colors text-xs"
                   role="menuitem"
                 >
                   {name}

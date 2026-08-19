@@ -273,7 +273,7 @@ const RahBot: React.FC = () => {
   return (
     <>
       {/* ── Floating Launcher Button (Bottom Right) ── */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+      <div className="fixed bottom-4 right-3.5 xs:bottom-5 xs:right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end">
         <AnimatePresence>
           {!isOpen && (
             <motion.button
@@ -283,17 +283,17 @@ const RahBot: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsOpen(true)}
-              className="flex items-center gap-2.5 px-4 py-3.5 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white rounded-full shadow-2xl hover:shadow-blue-500/25 border border-blue-400/30 transition-all group"
+              className="flex items-center gap-2 xs:gap-2.5 px-3 xs:px-4 py-2.5 xs:py-3.5 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white rounded-full shadow-2xl hover:shadow-blue-500/25 border border-blue-400/30 transition-all group"
               aria-label="Open RahBot Assistant"
             >
               <div className="relative">
-                <Bot className="h-5 w-5 text-cyan-300 group-hover:rotate-12 transition-transform" />
+                <Bot className="h-4.5 w-4.5 xs:h-5 xs:w-5 text-cyan-300 group-hover:rotate-12 transition-transform" />
                 <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>
                 </span>
               </div>
-              <span className="font-semibold text-sm tracking-wide pr-1">Ask RahBot</span>
+              <span className="font-semibold text-xs xs:text-sm tracking-wide pr-0.5 xs:pr-1">Ask RahBot</span>
             </motion.button>
           )}
         </AnimatePresence>
@@ -307,25 +307,25 @@ const RahBot: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[440px] h-[620px] max-h-[90vh] bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden text-slate-100 font-sans"
+            className="fixed bottom-2 right-2 xs:bottom-4 xs:right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-1rem)] xs:w-[calc(100vw-2rem)] sm:w-[420px] md:w-[440px] h-[540px] xs:h-[580px] sm:h-[620px] max-h-[92vh] bg-slate-900/98 border border-slate-700/80 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden text-slate-100 font-sans"
           >
             {/* Header */}
-            <div className="px-4 py-3.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="relative p-2 rounded-xl bg-blue-600/20 border border-blue-500/30 text-cyan-400">
-                  <Bot className="h-5 w-5" />
+            <div className="px-3 xs:px-4 py-3 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-2.5 xs:gap-3">
+                <div className="relative p-1.5 xs:p-2 rounded-xl bg-blue-600/20 border border-blue-500/30 text-cyan-400">
+                  <Bot className="h-4.5 w-4.5 xs:h-5 xs:w-5" />
                   <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border border-slate-950"></span>
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-sm text-white">RahBot</h3>
-                    <span className="text-[10px] px-1.5 py-0.5 bg-blue-500/20 text-cyan-300 border border-blue-400/20 rounded font-medium">
+                  <div className="flex items-center gap-1.5 xs:gap-2">
+                    <h3 className="font-bold text-xs xs:text-sm text-white">RahBot</h3>
+                    <span className="text-[9px] xs:text-[10px] px-1.5 py-0.5 bg-blue-500/20 text-cyan-300 border border-blue-400/20 rounded font-medium">
                       AI Assistant
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-400 flex items-center gap-1.5">
+                  <p className="text-[10px] xs:text-[11px] text-slate-400 flex items-center gap-1.5">
                     <span>Rahnoxa Engineering</span>
-                    <span className="inline-flex items-center gap-0.5 text-cyan-400 text-[10px]">
+                    <span className="inline-flex items-center gap-0.5 text-cyan-400 text-[9px] xs:text-[10px]">
                       <Clock className="h-2.5 w-2.5" />
                       24–48h SLA
                     </span>
@@ -333,7 +333,7 @@ const RahBot: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5 xs:gap-1">
                 <button
                   onClick={() => setShowLeadForm((prev) => !prev)}
                   className={`p-1.5 rounded-lg transition-colors ${
@@ -380,11 +380,11 @@ const RahBot: React.FC = () => {
             </div>
 
             {/* Chat Body & Messages */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3.5 hide-scrollbar text-sm">
+            <div className="flex-1 p-3 xs:p-4 overflow-y-auto space-y-3 xs:space-y-3.5 hide-scrollbar text-xs xs:text-sm">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex gap-2 xs:gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {msg.role === 'assistant' && (
                     <div className="p-1.5 rounded-lg bg-blue-600/20 border border-blue-500/30 text-cyan-400 self-start mt-0.5 flex-shrink-0">
@@ -393,7 +393,7 @@ const RahBot: React.FC = () => {
                   )}
 
                   <div
-                    className={`max-w-[88%] p-3.5 rounded-2xl ${
+                    className={`max-w-[90%] xs:max-w-[88%] p-3 xs:p-3.5 rounded-2xl ${
                       msg.role === 'user'
                         ? 'bg-blue-600 text-white rounded-br-none shadow-md'
                         : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 rounded-bl-none leading-relaxed shadow-sm'
@@ -405,13 +405,13 @@ const RahBot: React.FC = () => {
 
                     {/* Contextual CTA Action Button */}
                     {msg.role === 'assistant' && msg.ctaType && msg.ctaType !== 'none' && !showLeadForm && (
-                      <div className="mt-2.5 pt-2 border-t border-slate-700/50 flex items-center justify-between gap-2">
+                      <div className="mt-2.5 pt-2 border-t border-slate-700/50 flex flex-wrap items-center justify-between gap-1.5">
                         <span className="text-[10px] text-slate-400">
                           {msg.ctaType === 'submit_enquiry' ? 'Ready to discuss scope?' : 'Learn more:'}
                         </span>
                         <button
                           onClick={() => handleCTAClick(msg)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] font-semibold rounded-md shadow-sm transition-all"
+                          className="inline-flex items-center gap-1 px-2 xs:px-2.5 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[10px] xs:text-[11px] font-semibold rounded-md shadow-sm transition-all"
                         >
                           <span>{msg.ctaLabel || 'View Details'}</span>
                           <ArrowRight className="h-3 w-3" />
@@ -419,7 +419,7 @@ const RahBot: React.FC = () => {
                       </div>
                     )}
 
-                    <div className="text-[10px] text-right mt-1 opacity-60">
+                    <div className="text-[9px] xs:text-[10px] text-right mt-1 opacity-60">
                       {msg.timestamp}
                     </div>
                   </div>
@@ -449,12 +449,12 @@ const RahBot: React.FC = () => {
                   initial={{ opacity: 0, y: 10, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.97 }}
-                  className="p-4 rounded-xl bg-slate-950 border border-blue-500/50 space-y-3 shadow-2xl"
+                  className="p-3.5 xs:p-4 rounded-xl bg-slate-950 border border-blue-500/50 space-y-3 shadow-2xl"
                 >
                   <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                     <span className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
                       <Sparkles className="h-3.5 w-3.5" />
-                      Project Enquiry (24–48h Response SLA)
+                      Project Enquiry (24–48h SLA)
                     </span>
                     <button
                       onClick={() => setShowLeadForm(false)}
@@ -477,7 +477,7 @@ const RahBot: React.FC = () => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                       <div>
                         <label className="block text-slate-400 mb-1 font-medium">Email *</label>
                         <input
@@ -556,12 +556,12 @@ const RahBot: React.FC = () => {
             </div>
 
             {/* Quick Prompts */}
-            <div className="px-3 py-2 bg-slate-950/60 border-t border-slate-800/80 flex gap-1.5 overflow-x-auto hide-scrollbar">
+            <div className="px-2.5 xs:px-3 py-2 bg-slate-950/60 border-t border-slate-800/80 flex gap-1.5 overflow-x-auto hide-scrollbar">
               {QUICK_PROMPTS.map((prompt, i) => (
                 <button
                   key={i}
                   onClick={() => handleSend(prompt)}
-                  className="flex-shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-slate-800/80 hover:bg-blue-600/30 text-slate-300 hover:text-white border border-slate-700 hover:border-blue-500/50 transition-colors"
+                  className="flex-shrink-0 text-[10px] xs:text-[11px] px-2 xs:px-2.5 py-1 rounded-full bg-slate-800/80 hover:bg-blue-600/30 text-slate-300 hover:text-white border border-slate-700 hover:border-blue-500/50 transition-colors"
                 >
                   {prompt}
                 </button>
@@ -569,25 +569,25 @@ const RahBot: React.FC = () => {
             </div>
 
             {/* Input Bar */}
-            <div className="p-3 bg-slate-950 border-t border-slate-800">
+            <div className="p-2.5 xs:p-3 bg-slate-950 border-t border-slate-800">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   handleSend();
                 }}
-                className="flex items-center gap-2"
+                className="flex items-center gap-1.5 xs:gap-2"
               >
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about custom ERP, apps, pricing, or scope..."
-                  className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                  placeholder="Ask about custom ERP, apps, pricing..."
+                  className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 xs:px-3.5 py-1.5 xs:py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={!input.trim() || isTyping}
-                  className="p-2 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 text-white rounded-xl transition-colors disabled:text-slate-500"
+                  className="p-1.5 xs:p-2 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 text-white rounded-xl transition-colors disabled:text-slate-500"
                   aria-label="Send Message"
                 >
                   <Send className="h-4 w-4" />
