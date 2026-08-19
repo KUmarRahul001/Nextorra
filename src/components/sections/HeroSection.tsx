@@ -1,13 +1,90 @@
-import React from 'react';
-import { motion, useTime, useTransform } from 'framer-motion';
-import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers, FiZap, FiChevronRight } from 'react-icons/fi';
 import { HiSparkles, HiOutlineBolt, HiOutlineCpuChip } from 'react-icons/hi2';
 import { TbCube3dSphere, TbBraces, TbTopologyStar3 } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
+type CapabilityId = 'ownership' | 'typescript' | 'erp' | 'performance';
+
+interface Capability {
+  id: CapabilityId;
+  label: string;
+  title: string;
+  description: string;
+  details: string[];
+  techTags: string[];
+  route: string;
+  badgeBg: string;
+  icon: React.ReactNode;
+  positionClasses: string;
+}
+
+const capabilities: Capability[] = [
+  {
+    id: 'ownership',
+    label: '100% Code Ownership',
+    title: 'Custom Engineering',
+    description: 'Custom software built around the actual requirements of your business with direct repository handover.',
+    details: ['Architecture Scoped', 'Strict Source Control', 'Zero Vendor Lock-in'],
+    techTags: ['Git Repos', 'Clean Code', 'Full Transfer'],
+    route: '/services/web-development',
+    badgeBg: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+    icon: <FiShield className="h-4 w-4 text-emerald-600" />,
+    positionClasses: 'top-2 left-2 sm:top-4 sm:left-4',
+  },
+  {
+    id: 'typescript',
+    label: 'TypeScript Core',
+    title: 'Type-Safe Architecture',
+    description: 'Maintainable frontend and backend architectures with end-to-end type safety and automated testing.',
+    details: ['React 18 & Vite', 'Typed REST / Node APIs', 'Component-Driven UI'],
+    techTags: ['React', 'TypeScript', 'Node.js'],
+    route: '/services/full-stack-web-apps',
+    badgeBg: 'bg-blue-50 text-blue-600 border-blue-200',
+    icon: <FiCode className="h-4 w-4 text-blue-600" />,
+    positionClasses: 'top-2 right-2 sm:top-4 sm:right-4',
+  },
+  {
+    id: 'erp',
+    label: 'Enterprise ERP',
+    title: 'Operational Systems',
+    description: 'Custom ERP and business logic modules built around real operational workflows and audit trails.',
+    details: ['Role-Based RBAC', 'PostgreSQL Models', 'Multi-Branch Workflows'],
+    techTags: ['ERP', 'RBAC', 'PostgreSQL'],
+    route: '/services/erp-enterprise-applications',
+    badgeBg: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+    icon: <FiLayers className="h-4 w-4 text-indigo-600" />,
+    positionClasses: 'bottom-2 left-2 sm:bottom-4 sm:left-4',
+  },
+  {
+    id: 'performance',
+    label: 'Optimized Systems',
+    title: 'Performance Focus',
+    description: 'High-throughput system architecture with fast CDN rendering and efficient query caching.',
+    details: ['Global CDN Edge', 'Optimized Assets', 'ACID Reliability'],
+    techTags: ['Vite', 'Cloudflare', 'Redis Cache'],
+    route: '/services/custom-software-api-integration',
+    badgeBg: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    icon: <HiOutlineBolt className="h-4 w-4 text-cyan-600" />,
+    positionClasses: 'bottom-2 right-2 sm:bottom-4 sm:right-4',
+  },
+];
+
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
+  const [activeId, setActiveId] = useState<CapabilityId | null>(null);
+
+  const toggleCapability = (id: CapabilityId) => {
+    setActiveId(prev => (prev === id ? null : id));
+  };
+
+  const handleNext = (e: React.MouseEvent, currentIdx: number) => {
+    e.stopPropagation();
+    const nextIdx = (currentIdx + 1) % capabilities.length;
+    setActiveId(capabilities[nextIdx].id);
+  };
 
   return (
     <>
@@ -105,86 +182,81 @@ const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: 3D Holographic Software Architecture Engine with Rich Orbiting Motion */}
+            {/* Right Column: 3D Holographic Interactive Capability Artwork Canvas */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="lg:col-span-6 relative flex items-center justify-center min-h-[500px] sm:min-h-[540px]"
+              className="lg:col-span-6 relative flex items-center justify-center min-h-[520px] sm:min-h-[560px]"
             >
-              {/* Dynamic Aura Ripple Layer */}
+              {/* Dynamic Ambient Aura Layer */}
               <motion.div 
-                animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
+                animate={{ scale: [1, 1.1, 1], opacity: [0.35, 0.6, 0.35] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 via-indigo-600/15 to-cyan-400/30 rounded-full blur-3xl pointer-events-none" 
+                className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 via-indigo-600/15 to-cyan-400/25 rounded-full blur-3xl pointer-events-none" 
               />
 
               {/* 3D Perspective Canvas */}
-              <div className="relative w-full max-w-[500px] h-[500px] sm:h-[520px] flex items-center justify-center perspective-[1400px]">
+              <div className="relative w-full max-w-[520px] h-[520px] sm:h-[560px] flex items-center justify-center perspective-[1400px]">
                 
                 {/* ── Orbital Track 1: Outer Dashed Particle Ring ── */}
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 36, repeat: Infinity, ease: "linear" }}
                   className="absolute w-[440px] h-[440px] rounded-full border border-blue-300/30 border-dashed pointer-events-none"
                 >
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]" />
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
                 </motion.div>
 
-                {/* ── Orbital Track 2: Inner Counter-Rotating Ring ── */}
+                {/* ── Orbital Track 2: Inner Ring ── */}
                 <motion.div
                   animate={{ rotate: -360 }}
-                  transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-                  className="absolute w-[330px] h-[330px] rounded-full border border-indigo-400/25 pointer-events-none"
+                  transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[330px] h-[330px] rounded-full border border-indigo-400/20 pointer-events-none"
                 >
-                  <span className="absolute top-1/2 left-0 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_12px_#6366f1]" />
+                  <span className="absolute top-1/2 left-0 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_10px_#6366f1]" />
                 </motion.div>
 
-                {/* ── Central 3D Isometric Hologram Block with HDR Glow ── */}
+                {/* ── Central 3D Isometric Hologram Core ── */}
                 <motion.div
                   animate={{ 
-                    rotateY: [-18, 18, -18],
-                    rotateX: [12, -8, 12],
-                    rotateZ: [-2, 2, -2],
-                    y: [-14, 14, -14]
+                    rotateY: [-15, 15, -15],
+                    rotateX: [10, -6, 10],
+                    y: [-8, 8, -8]
                   }}
                   transition={{ 
                     duration: 7, 
                     repeat: Infinity, 
                     ease: "easeInOut" 
                   }}
-                  className="relative w-48 h-48 sm:w-56 sm:h-56 transform-style-preserve-3d flex items-center justify-center cursor-pointer group"
+                  className={`relative w-44 h-44 sm:w-52 sm:h-52 transform-style-preserve-3d flex items-center justify-center transition-all duration-300 ${
+                    activeId !== null ? 'opacity-40 scale-95' : 'opacity-100 scale-100'
+                  }`}
                 >
-                  {/* Neon Outer Frame */}
-                  <div className="absolute inset-0 rounded-[32px] bg-gradient-to-br from-blue-500 via-indigo-600 to-cyan-400 p-[2.5px] shadow-[0_0_40px_rgba(59,130,246,0.35)] transition-all duration-300 group-hover:shadow-[0_0_60px_rgba(59,130,246,0.55)]">
-                    <div className="w-full h-full rounded-[30px] bg-slate-950/95 backdrop-blur-2xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden border border-white/10">
+                  <div className="absolute inset-0 rounded-[30px] bg-gradient-to-br from-blue-500 via-indigo-600 to-cyan-400 p-[2px] shadow-[0_0_35px_rgba(59,130,246,0.3)]">
+                    <div className="w-full h-full rounded-[28px] bg-slate-950/95 backdrop-blur-2xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden border border-white/10">
                       
                       {/* Isometric Grid Mesh Texture */}
-                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#38bdf812_1px,transparent_1px),linear-gradient(to_bottom,#38bdf812_1px,transparent_1px)] bg-[size:18px_18px] pointer-events-none" />
+                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#38bdf812_1px,transparent_1px),linear-gradient(to_bottom,#38bdf812_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
                       
                       {/* Laser Compilation Scan Animation */}
                       <motion.div 
                         animate={{ top: ['-10%', '110%', '-10%'] }}
-                        transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
-                        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee] pointer-events-none"
+                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_#22d3ee] pointer-events-none"
                       />
 
-                      {/* Floating Tech Cube Symbol */}
-                      <motion.div
-                        animate={{ scale: [1, 1.06, 1] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        className="relative z-10 p-3 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-cyan-400/30 mb-2"
-                      >
-                        <TbCube3dSphere className="h-12 w-12 sm:h-14 sm:w-14 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
-                      </motion.div>
+                      <div className="relative z-10 p-2.5 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-cyan-400/30 mb-2">
+                        <TbCube3dSphere className="h-10 w-10 sm:h-12 sm:w-12 text-cyan-400 drop-shadow-[0_0_12px_rgba(34,211,238,0.7)]" />
+                      </div>
                       
                       <div className="relative z-10">
-                        <span className="text-[11px] font-mono font-black tracking-[0.2em] text-cyan-300 uppercase block">
+                        <span className="text-[10px] font-mono font-black tracking-[0.2em] text-cyan-300 uppercase block">
                           BUILDING ENGINE
                         </span>
-                        <span className="text-[9.5px] font-mono text-slate-400 mt-0.5 block">
-                          Live Architecture v2.4
+                        <span className="text-[9px] font-mono text-slate-400 mt-0.5 block">
+                          Live Architecture
                         </span>
                       </div>
 
@@ -192,85 +264,128 @@ const HeroSection: React.FC = () => {
                   </div>
                 </motion.div>
 
-                {/* ── Satellite Card 1: TypeScript Core (Top Right) ── */}
-                <motion.div
-                  animate={{ 
-                    y: [-10, 10, -10],
-                    x: [0, -6, 0]
-                  }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  onClick={() => navigate('/services/full-stack-web-apps')}
-                  className="absolute top-2 right-2 sm:right-4 p-3.5 sm:p-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-blue-500/10 flex items-center gap-3 z-30 cursor-pointer transition-all hover:border-blue-400 hover:shadow-blue-500/20 group"
-                >
-                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-xs">
-                    <FiCode className="h-4 w-4" />
-                  </div>
-                  <div className="text-left pr-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <p className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">TypeScript Core</p>
-                    </div>
-                    <p className="text-[10px] text-slate-500 font-mono mt-0.5">React 18 · Node APIs</p>
-                  </div>
-                </motion.div>
+                {/* ── 4 Interactive Expand-in-Place Capability Nodes ── */}
+                {capabilities.map((cap, idx) => {
+                  const isExpanded = activeId === cap.id;
+                  const isOtherExpanded = activeId !== null && !isExpanded;
 
-                {/* ── Satellite Card 2: Enterprise ERP (Bottom Left) ── */}
-                <motion.div
-                  animate={{ 
-                    y: [10, -10, 10],
-                    x: [0, 6, 0]
-                  }}
-                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  onClick={() => navigate('/services/erp-enterprise-applications')}
-                  className="absolute bottom-4 left-0 sm:left-2 p-3.5 sm:p-4 rounded-2xl bg-white/90 backdrop-blur-xl border border-slate-200/90 shadow-xl shadow-indigo-500/10 flex items-center gap-3 z-30 cursor-pointer transition-all hover:border-indigo-400 hover:shadow-indigo-500/20 group"
-                >
-                  <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-xs">
-                    <FiLayers className="h-4 w-4" />
-                  </div>
-                  <div className="text-left pr-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-blue-500 animate-ping" />
-                      <p className="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">Enterprise ERP</p>
-                    </div>
-                    <p className="text-[10px] text-slate-500 font-mono mt-0.5">Role-Based · PostgreSQL</p>
-                  </div>
-                </motion.div>
+                  return (
+                    <motion.div
+                      key={cap.id}
+                      layout
+                      transition={{ 
+                        layout: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                        opacity: { duration: 0.25 }
+                      }}
+                      className={`absolute ${cap.positionClasses} z-30 transition-opacity duration-300 ${
+                        isOtherExpanded ? 'opacity-30' : 'opacity-100'
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleCapability(cap.id)}
+                        aria-expanded={isExpanded}
+                        aria-label={`${cap.title} capability node`}
+                        className={`text-left rounded-2xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                          isExpanded
+                            ? 'w-[280px] sm:w-[310px] p-5 shadow-2xl shadow-blue-500/20 border-blue-400 ring-1 ring-blue-400/40 z-40'
+                            : 'p-3 sm:p-3.5 shadow-lg shadow-slate-200/50 border-slate-200/90 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10 cursor-pointer'
+                        }`}
+                      >
+                        {!isExpanded ? (
+                          /* Compact State */
+                          <div className="flex items-center gap-2.5">
+                            <div className={`p-2 rounded-xl border ${cap.badgeBg} shadow-2xs`}>
+                              {cap.icon}
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="text-xs font-bold text-slate-900 tracking-tight">
+                                  {cap.label}
+                                </span>
+                              </div>
+                              <span className="text-[9.5px] font-mono text-slate-400 block mt-0.5">
+                                Click to explore
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          /* Expanded in Place State */
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.25 }}
+                            className="space-y-3.5"
+                          >
+                            {/* Header */}
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                              <div className="flex items-center gap-2">
+                                <div className={`p-1.5 rounded-lg border ${cap.badgeBg}`}>
+                                  {cap.icon}
+                                </div>
+                                <h4 className="text-xs font-bold text-slate-900 uppercase font-mono tracking-wider">
+                                  {cap.title}
+                                </h4>
+                              </div>
+                              <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">
+                                0{idx + 1} / 04
+                              </span>
+                            </div>
 
-                {/* ── Satellite Card 3: Edge Latency Metric (Bottom Right) ── */}
-                <motion.div
-                  animate={{ 
-                    y: [-8, 8, -8],
-                    x: [-4, 4, -4]
-                  }}
-                  transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="absolute bottom-8 right-2 sm:right-6 p-3 sm:p-3.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-cyan-200 shadow-xl shadow-cyan-500/10 flex items-center gap-3 z-30"
-                >
-                  <div className="p-2 rounded-xl bg-cyan-50 text-cyan-600 border border-cyan-100">
-                    <HiOutlineBolt className="h-4 w-4" />
-                  </div>
-                  <div className="text-left pr-1">
-                    <p className="text-xs font-black text-slate-900 font-mono">&lt; 85ms Latency</p>
-                    <p className="text-[10px] text-slate-500 font-mono">Edge CDN Deployed</p>
-                  </div>
-                </motion.div>
+                            {/* Description */}
+                            <p className="text-xs text-slate-600 leading-relaxed font-normal">
+                              {cap.description}
+                            </p>
 
-                {/* ── Floating Badge 4: Code Ownership (Top Left) ── */}
-                <motion.div
-                  animate={{ 
-                    y: [8, -8, 8],
-                    x: [3, -3, 3]
-                  }}
-                  transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
-                  className="absolute top-4 left-2 sm:left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-emerald-200 shadow-md flex items-center gap-2 z-30"
-                >
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[11px] font-mono font-bold text-slate-800">
-                    100% Code Ownership
-                  </span>
-                </motion.div>
+                            {/* 2-3 Supporting Details */}
+                            <div className="space-y-1.5 pt-1">
+                              {cap.details.map((detail, dIdx) => (
+                                <div key={dIdx} className="flex items-center gap-2 text-[11px] text-slate-700">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                                  <span className="font-medium">{detail}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Tech Stack Pills */}
+                            <div className="flex flex-wrap gap-1.5 pt-1">
+                              {cap.techTags.map((tag, tIdx) => (
+                                <span key={tIdx} className="text-[9.5px] font-mono px-2 py-0.5 rounded bg-slate-50 border border-slate-200 text-slate-600">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Footer with Next Action & Route Link */}
+                            <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                              <span
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(cap.route);
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                                className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 cursor-pointer"
+                              >
+                                <span>Service Specs</span>
+                                <FiArrowRight className="h-3 w-3" />
+                              </span>
+
+                              <button
+                                type="button"
+                                onClick={(e) => handleNext(e, idx)}
+                                className="text-[11px] font-mono font-bold text-slate-800 hover:text-blue-600 px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 transition-colors inline-flex items-center gap-1"
+                              >
+                                <span>Next</span>
+                                <FiChevronRight className="h-3 w-3" />
+                              </button>
+                            </div>
+                          </motion.div>
+                        )}
+                      </button>
+                    </motion.div>
+                  );
+                })}
 
               </div>
             </motion.div>
