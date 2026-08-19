@@ -1,5 +1,4 @@
 import React from 'react';
-import { Search, Compass, Layout, Code2, Rocket, LifeBuoy, CheckCircle2 } from 'lucide-react';
 
 const phases = [
   {
@@ -34,18 +33,18 @@ const phases = [
 
 const DeliveryProcess: React.FC = () => {
   return (
-    <section className="py-24 bg-slate-950 text-white relative border-b border-slate-800" id="delivery-process">
+    <section className="py-24 bg-slate-50 text-slate-900 relative border-b border-slate-200" id="delivery-process">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="max-w-3xl mb-16">
-          <span className="text-xs font-mono text-blue-400 uppercase tracking-widest block mb-2">
+          <span className="text-xs font-mono text-blue-600 font-bold uppercase tracking-widest block mb-2">
             Engineering Methodology
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             Predictable, Milestone-Driven Execution
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base mt-2">
+          <p className="text-slate-600 text-sm sm:text-base mt-2">
             No ambiguous estimates or endless scopes. We deliver through structured phases with tangible artifacts at every step.
           </p>
         </div>
@@ -55,32 +54,32 @@ const DeliveryProcess: React.FC = () => {
           {phases.map((item, index) => (
             <div
               key={index}
-              className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-between hover:border-slate-700 transition-colors space-y-6"
+              className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between hover:border-slate-350 hover:shadow-md transition-all space-y-6"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold font-mono text-blue-400">
+                  <span className="text-2xl font-bold font-mono text-blue-600">
                     {item.phase}
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-600 font-semibold">
                     {item.timeline}
                   </span>
                 </div>
 
-                <h3 className="text-base font-bold text-white">
+                <h3 className="text-base font-bold text-slate-900">
                   {item.name}
                 </h3>
 
-                <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                   {item.description}
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-slate-800/80">
-                <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider block mb-1">
+              <div className="pt-4 border-t border-slate-100">
+                <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider block mb-1">
                   Deliverable
                 </span>
-                <p className="text-xs font-semibold text-slate-200">
+                <p className="text-xs font-semibold text-slate-800">
                   {item.deliverable}
                 </p>
               </div>

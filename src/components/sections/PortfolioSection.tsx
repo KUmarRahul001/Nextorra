@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ExternalLink, ArrowRight, Eye, X, Terminal } from 'lucide-react';
+import { ExternalLink, ArrowRight, Eye, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../lib/api';
 import { projects as fallbackProjects, projectCategories as defaultCategories } from '../../data/projects';
@@ -64,19 +64,19 @@ const PortfolioSection: React.FC = () => {
   }, [activeCategory, activeProjects]);
 
   return (
-    <section className="py-24 bg-slate-950 text-white relative border-b border-slate-800" id="portfolio">
+    <section className="py-24 bg-white text-slate-900 relative border-b border-slate-200" id="portfolio">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header & Filter Controls */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-200">
           <div>
-            <span className="text-xs font-mono text-blue-400 uppercase tracking-widest block mb-2">
+            <span className="text-xs font-mono text-blue-600 font-bold uppercase tracking-widest block mb-2">
               Engineering Case Studies
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
               Production Work &amp; Systems
             </h2>
-            <p className="text-slate-400 text-sm sm:text-base mt-2">
+            <p className="text-slate-600 text-sm sm:text-base mt-2">
               Real architecture specifications, multi-branch deployments, and bespoke web platforms.
             </p>
           </div>
@@ -91,7 +91,7 @@ const PortfolioSection: React.FC = () => {
                 className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
                   activeCategory === category
                     ? 'bg-blue-600 text-white'
-                    : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                    : 'bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300'
                 }`}
               >
                 {category}
@@ -105,12 +105,12 @@ const PortfolioSection: React.FC = () => {
           {filteredItems.map((item, index) => (
             <div
               key={item.id}
-              className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col justify-between hover:border-slate-700 transition-colors group"
+              className="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col justify-between hover:border-slate-350 hover:shadow-lg transition-all group"
             >
               {/* Media Preview (Click to Zoom) */}
               <div
                 onClick={() => setSelectedImage(item.images[0])}
-                className="relative aspect-[16/10] bg-slate-950 overflow-hidden cursor-pointer"
+                className="relative aspect-[16/10] bg-slate-100 overflow-hidden cursor-pointer"
                 title="Click image to zoom full screen"
               >
                 <img
@@ -119,12 +119,12 @@ const PortfolioSection: React.FC = () => {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-slate-950/90 border border-slate-800 text-[10px] font-mono text-blue-400 uppercase tracking-wider">
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-white/95 border border-slate-200 text-[10px] font-mono text-blue-600 font-bold uppercase tracking-wider shadow-sm">
                   {item.category}
                 </div>
-                <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="px-3 py-1.5 rounded bg-slate-900/90 text-white text-xs font-medium flex items-center gap-1.5 shadow-lg">
-                    <Eye className="h-3.5 w-3.5 text-blue-400" />
+                <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="px-3 py-1.5 rounded bg-white/95 text-slate-900 text-xs font-semibold flex items-center gap-1.5 shadow-md">
+                    <Eye className="h-3.5 w-3.5 text-blue-600" />
                     <span>Zoom Preview</span>
                   </span>
                 </div>
@@ -135,23 +135,23 @@ const PortfolioSection: React.FC = () => {
                 <div>
                   <h3
                     onClick={() => navigate(`/projects/${item.slug || item.id}`)}
-                    className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors cursor-pointer flex items-center justify-between"
+                    className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors cursor-pointer flex items-center justify-between"
                   >
                     <span>{item.title}</span>
-                    <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                   </h3>
-                  <p className="text-slate-400 text-xs sm:text-sm mt-2 line-clamp-2 leading-relaxed">
+                  <p className="text-slate-600 text-xs sm:text-sm mt-2 line-clamp-2 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                   {/* Tech stack chips */}
                   <div className="flex flex-wrap gap-1.5">
                     {item.tags.slice(0, 3).map((tag: string, i: number) => (
                       <span
                         key={i}
-                        className="text-[10px] font-mono bg-slate-950 text-slate-400 border border-slate-800 px-2 py-0.5 rounded"
+                        className="text-[10px] font-mono bg-slate-50 text-slate-600 border border-slate-200 px-2 py-0.5 rounded"
                       >
                         {tag}
                       </span>
@@ -160,7 +160,7 @@ const PortfolioSection: React.FC = () => {
 
                   <button
                     onClick={() => navigate(`/projects/${item.slug || item.id}`)}
-                    className="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
                   >
                     <span>Details</span>
                   </button>
@@ -187,18 +187,18 @@ const PortfolioSection: React.FC = () => {
       {selectedImage && (
         <div
           onClick={() => setSelectedImage(null)}
-          className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
+          className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
         >
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute top-6 right-6 p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+            className="absolute top-6 right-6 p-2 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-slate-900 shadow-md"
           >
             <X className="h-6 w-6" />
           </button>
           <img
             src={selectedImage}
             alt="Full size project preview"
-            className="max-w-full max-h-[90vh] object-contain rounded-xl border border-slate-800 shadow-2xl"
+            className="max-w-full max-h-[90vh] object-contain rounded-xl border border-slate-200 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
         </div>

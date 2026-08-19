@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer
-      className="relative bg-slate-950 text-white pt-16 pb-8 overflow-hidden border-t border-slate-800"
+      className="relative bg-slate-900 text-white pt-16 pb-8 overflow-hidden border-t border-slate-800"
       aria-label="Site Footer"
       role="contentinfo"
     >
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
               }}
               className="flex items-center gap-3 mb-4 text-left"
             >
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-lg">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-lg shadow-sm">
                 R
               </div>
               <span className="text-2xl font-bold tracking-tight text-white">
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
               </span>
             </button>
 
-            <p className="text-slate-400 mb-6 max-w-sm text-sm leading-relaxed">
+            <p className="text-slate-300 mb-6 max-w-sm text-sm leading-relaxed">
               Software engineering company building custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern organizations.
             </p>
 
@@ -89,7 +89,7 @@ const Footer: React.FC = () => {
 
           {/* Navigation Links */}
           <nav className="lg:col-span-3" aria-label="Navigation Links">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-300 mb-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-200 mb-4">
               Navigation
             </h3>
             <ul className="space-y-2.5 text-sm text-slate-400">
@@ -115,7 +115,7 @@ const Footer: React.FC = () => {
                     }}
                     className="flex items-center gap-2 hover:text-blue-400 transition-colors w-full text-left"
                   >
-                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-600 flex-shrink-0" />
+                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-500 flex-shrink-0" />
                     {link.name}
                   </button>
                 </li>
@@ -125,7 +125,7 @@ const Footer: React.FC = () => {
 
           {/* Software & Engineering Services */}
           <nav className="lg:col-span-4" aria-label="Core Services">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-300 mb-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-200 mb-4">
               Software Services
             </h3>
             <ul className="space-y-2.5 text-sm text-slate-400">
@@ -138,7 +138,7 @@ const Footer: React.FC = () => {
                     }}
                     className="flex items-center gap-2 hover:text-blue-400 transition-colors w-full text-left"
                   >
-                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-600 flex-shrink-0" />
+                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-500 flex-shrink-0" />
                     {service.name}
                   </button>
                 </li>
@@ -148,7 +148,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Legal & Copyright Bar */}
-        <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+        <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
           <div>
             &copy; {currentYear} Rahnoxa. All rights reserved. Software Development &amp; Technology Engineering.
           </div>
@@ -159,7 +159,7 @@ const Footer: React.FC = () => {
                 navigate('/privacy-policy');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="hover:text-slate-400 transition-colors"
+              className="hover:text-white transition-colors"
             >
               Privacy Policy
             </button>
@@ -169,7 +169,7 @@ const Footer: React.FC = () => {
                 navigate('/terms-and-conditions');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="hover:text-slate-400 transition-colors"
+              className="hover:text-white transition-colors"
             >
               Terms &amp; Conditions
             </button>
