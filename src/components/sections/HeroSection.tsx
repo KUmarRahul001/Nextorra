@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers, FiChevronRight } from 'react-icons/fi';
+import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import { HiOutlineBolt } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
@@ -17,9 +17,10 @@ interface Capability {
   route: string;
   badgeBg: string;
   icon: React.ReactNode;
-  positionClasses: string;
+  homeOffset: { x: number; y: number }; // Offset relative to center (0, 0)
 }
 
+// 4 distinct coordinate positions around exact center (0, 0)
 const capabilities: Capability[] = [
   {
     id: 'ownership',
@@ -30,32 +31,8 @@ const capabilities: Capability[] = [
     techTags: ['Git Repos', 'Clean Code', 'Full Transfer'],
     route: '/services/web-development',
     badgeBg: 'bg-emerald-50 text-emerald-600 border-emerald-200',
-    icon: <FiShield className="h-3.5 w-3.5 text-emerald-600" />,
-    positionClasses: 'top-2 sm:top-4 left-1/2 -translate-x-1/2',
-  },
-  {
-    id: 'erp',
-    label: 'Enterprise ERP',
-    title: 'Operational Systems',
-    description: 'Custom ERP and business logic modules built around real operational workflows and audit trails.',
-    details: ['Role-Based RBAC', 'PostgreSQL Models', 'Multi-Branch Workflows'],
-    techTags: ['ERP', 'RBAC', 'PostgreSQL'],
-    route: '/services/erp-enterprise-applications',
-    badgeBg: 'bg-indigo-50 text-indigo-600 border-indigo-200',
-    icon: <FiLayers className="h-3.5 w-3.5 text-indigo-600" />,
-    positionClasses: 'top-1/2 -translate-y-1/2 left-0 sm:left-2',
-  },
-  {
-    id: 'performance',
-    label: 'Optimized Systems',
-    title: 'Performance Focus',
-    description: 'High-throughput system architecture with fast CDN rendering and efficient query caching.',
-    details: ['Global CDN Edge', 'Optimized Assets', 'ACID Reliability'],
-    techTags: ['Vite', 'Cloudflare', 'Redis Cache'],
-    route: '/services/custom-software-api-integration',
-    badgeBg: 'bg-cyan-50 text-cyan-600 border-cyan-200',
-    icon: <HiOutlineBolt className="h-3.5 w-3.5 text-cyan-600" />,
-    positionClasses: 'top-1/2 -translate-y-1/2 right-0 sm:right-2',
+    icon: <FiShield className="h-4 w-4 text-emerald-600" />,
+    homeOffset: { x: 0, y: -160 }, // Top
   },
   {
     id: 'typescript',
@@ -66,21 +43,48 @@ const capabilities: Capability[] = [
     techTags: ['React', 'TypeScript', 'Node.js'],
     route: '/services/full-stack-web-apps',
     badgeBg: 'bg-blue-50 text-blue-600 border-blue-200',
-    icon: <FiCode className="h-3.5 w-3.5 text-blue-600" />,
-    positionClasses: 'bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2',
+    icon: <FiCode className="h-4 w-4 text-blue-600" />,
+    homeOffset: { x: 165, y: 0 }, // Right
+  },
+  {
+    id: 'performance',
+    label: 'Optimized Systems',
+    title: 'Performance Focus',
+    description: 'High-throughput system architecture with fast CDN rendering and efficient query caching.',
+    details: ['Global CDN Edge', 'Optimized Assets', 'ACID Reliability'],
+    techTags: ['Vite', 'Cloudflare', 'Redis Cache'],
+    route: '/services/custom-software-api-integration',
+    badgeBg: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    icon: <HiOutlineBolt className="h-4 w-4 text-cyan-600" />,
+    homeOffset: { x: 0, y: 160 }, // Bottom
+  },
+  {
+    id: 'erp',
+    label: 'Enterprise ERP',
+    title: 'Operational Systems',
+    description: 'Custom ERP and business logic modules built around real operational workflows and audit trails.',
+    details: ['Role-Based RBAC', 'PostgreSQL Models', 'Multi-Branch Workflows'],
+    techTags: ['ERP', 'RBAC', 'PostgreSQL'],
+    route: '/services/erp-enterprise-applications',
+    badgeBg: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+    icon: <FiLayers className="h-4 w-4 text-indigo-600" />,
+    homeOffset: { x: -165, y: 0 }, // Left
   },
 ];
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<CapabilityId | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  // Click outside to collapse expanded capability
+  // Click outside to collapse active capability and return RX to center
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setActiveId(null);
+        if (!isTransitioning) {
+          setActiveId(null);
+        }
       }
     };
 
@@ -93,17 +97,41 @@ const HeroSection: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [activeId]);
+  }, [activeId, isTransitioning]);
 
-  const toggleCapability = (id: CapabilityId) => {
+  const selectCapability = (id: CapabilityId) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     setActiveId(prev => (prev === id ? null : id));
+    setTimeout(() => setIsTransitioning(false), 550);
   };
 
-  const handleNext = (e: React.MouseEvent, currentIdx: number) => {
+  const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (isTransitioning || activeId === null) return;
+    setIsTransitioning(true);
+    const currentIdx = capabilities.findIndex(c => c.id === activeId);
     const nextIdx = (currentIdx + 1) % capabilities.length;
     setActiveId(capabilities[nextIdx].id);
+    setTimeout(() => setIsTransitioning(false), 550);
   };
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isTransitioning || activeId === null) return;
+    setIsTransitioning(true);
+    const currentIdx = capabilities.findIndex(c => c.id === activeId);
+    const prevIdx = (currentIdx - 1 + capabilities.length) % capabilities.length;
+    setActiveId(capabilities[prevIdx].id);
+    setTimeout(() => setIsTransitioning(false), 550);
+  };
+
+  // Find active capability object and its original home position
+  const activeCapability = capabilities.find(c => c.id === activeId);
+  const activeIdx = capabilities.findIndex(c => c.id === activeId);
+
+  // Where does RX logo travel? When active, RX translates to the active capability's homeOffset
+  const rxTargetPos = activeCapability ? activeCapability.homeOffset : { x: 0, y: 0 };
 
   return (
     <>
@@ -200,133 +228,124 @@ const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: Interactive Clean Engineering Diagram (RX Anchor + Expandable Nodes) */}
+            {/* Right Column: Spatial Position-Swap Engineering Choreography Canvas */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="lg:col-span-6 relative flex items-center justify-center min-h-[480px] sm:min-h-[520px]"
             >
-              {/* Engineering Blueprint Diagram Canvas */}
+              {/* Engineering Blueprint Coordinate Canvas */}
               <div 
                 ref={containerRef}
                 className="relative w-full max-w-[500px] h-[480px] sm:h-[520px] flex items-center justify-center select-none"
               >
-                {/* ── Subtle Static Engineering Grid & Connector Cross-Lines ── */}
+                {/* ── Subtle Static Engineering Coordinate Guides ── */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500" fill="none">
-                  {/* Subtle Static Engineering Reference Circle */}
-                  <circle cx="250" cy="250" r="160" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="4 6" opacity="0.7" />
+                  {/* Subtle Static Reference Ring */}
+                  <circle cx="250" cy="250" r="160" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="4 6" opacity="0.6" />
                   
-                  {/* Top Connector Line */}
-                  <line 
-                    x1="250" y1="90" x2="250" y2="200" 
-                    stroke={activeId === 'ownership' ? '#3b82f6' : '#cbd5e1'} 
-                    strokeWidth={activeId === 'ownership' ? '1.5' : '1'} 
-                    strokeDasharray={activeId === 'ownership' ? 'none' : '2 3'}
-                    className="transition-colors duration-300"
-                  />
-                  {/* Bottom Connector Line */}
-                  <line 
-                    x1="250" y1="300" x2="250" y2="410" 
-                    stroke={activeId === 'typescript' ? '#3b82f6' : '#cbd5e1'} 
-                    strokeWidth={activeId === 'typescript' ? '1.5' : '1'} 
-                    strokeDasharray={activeId === 'typescript' ? 'none' : '2 3'}
-                    className="transition-colors duration-300"
-                  />
-                  {/* Left Connector Line */}
-                  <line 
-                    x1="110" y1="250" x2="200" y2="250" 
-                    stroke={activeId === 'erp' ? '#6366f1' : '#cbd5e1'} 
-                    strokeWidth={activeId === 'erp' ? '1.5' : '1'} 
-                    strokeDasharray={activeId === 'erp' ? 'none' : '2 3'}
-                    className="transition-colors duration-300"
-                  />
-                  {/* Right Connector Line */}
-                  <line 
-                    x1="300" y1="250" x2="390" y2="250" 
-                    stroke={activeId === 'performance' ? '#06b6d4' : '#cbd5e1'} 
-                    strokeWidth={activeId === 'performance' ? '1.5' : '1'} 
-                    strokeDasharray={activeId === 'performance' ? 'none' : '2 3'}
-                    className="transition-colors duration-300"
-                  />
-
-                  {/* Static Engineering Nodes */}
-                  <circle cx="250" cy="200" r="3" fill="#94a3b8" />
-                  <circle cx="250" cy="300" r="3" fill="#94a3b8" />
-                  <circle cx="200" cy="250" r="3" fill="#94a3b8" />
-                  <circle cx="300" cy="250" r="3" fill="#94a3b8" />
+                  {/* Cross-axial guide lines */}
+                  <line x1="250" y1="90" x2="250" y2="410" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="2 3" />
+                  <line x1="90" y1="250" x2="410" y2="250" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="2 3" />
                 </svg>
 
-                {/* ── Fixed Center RX Brand Anchor (No Box, No Grid, No Text, Static) ── */}
-                <div 
-                  onClick={() => setActiveId(null)}
-                  className="relative z-10 flex items-center justify-center p-4 cursor-pointer select-none group"
-                  title="Rahnoxa Engineering"
-                  aria-label="Rahnoxa Brand Anchor"
+                {/* ── CENTRAL RX BRAND MARK (Spatial Translation to Active Home Position) ── */}
+                <motion.div
+                  animate={{ 
+                    x: rxTargetPos.x, 
+                    y: rxTargetPos.y,
+                    scale: activeId !== null ? 0.85 : 1,
+                  }}
+                  transition={{ 
+                    duration: 0.5, 
+                    ease: [0.25, 1, 0.5, 1] 
+                  }}
+                  onClick={() => {
+                    if (activeId !== null && !isTransitioning) {
+                      selectCapability(activeId);
+                    }
+                  }}
+                  className="absolute z-10 flex items-center justify-center cursor-pointer select-none"
+                  title="Rahnoxa Core Brand Anchor"
+                  aria-label="Rahnoxa Core Brand Anchor"
                 >
                   <img 
                     src="/brand/logo-symbol-transparent.png" 
                     alt="Rahnoxa" 
-                    className="h-20 sm:h-24 w-auto object-contain transition-transform group-hover:scale-105" 
+                    className="h-20 sm:h-24 w-auto object-contain drop-shadow-xs" 
                     loading="eager"
                   />
-                </div>
+                </motion.div>
 
-                {/* ── 4 Light Interactive Capability Nodes ── */}
+                {/* ── 4 CAPABILITY NODES (Spatial Translation to Center & In-Center Expansion) ── */}
                 {capabilities.map((cap, idx) => {
-                  const isExpanded = activeId === cap.id;
-                  const isOtherExpanded = activeId !== null && !isExpanded;
+                  const isActive = activeId === cap.id;
+                  const isOther = activeId !== null && !isActive;
+
+                  // Target spatial position: If active, move to (0, 0) [Exact Center], otherwise stay at homeOffset
+                  const targetPosition = isActive ? { x: 0, y: 0 } : cap.homeOffset;
 
                   return (
                     <motion.div
                       key={cap.id}
-                      layout
-                      transition={{ 
-                        layout: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
-                        opacity: { duration: 0.2 }
+                      animate={{
+                        x: targetPosition.x,
+                        y: targetPosition.y,
+                        opacity: isOther ? 0.35 : 1,
+                        zIndex: isActive ? 40 : 20,
                       }}
-                      className={`absolute ${cap.positionClasses} z-20 transition-opacity duration-300 ${
-                        isOtherExpanded ? 'opacity-35' : 'opacity-100'
-                      }`}
+                      transition={{
+                        x: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+                        y: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+                        opacity: { duration: 0.3 },
+                      }}
+                      className="absolute"
                     >
                       <button
                         type="button"
-                        onClick={() => toggleCapability(cap.id)}
-                        aria-expanded={isExpanded}
+                        onClick={() => selectCapability(cap.id)}
+                        aria-expanded={isActive}
                         aria-label={`${cap.title} capability node`}
-                        className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 ${
-                          isExpanded
-                            ? 'w-[280px] sm:w-[300px] p-4 sm:p-5 shadow-xl shadow-blue-500/10 border-blue-400 z-30'
-                            : 'px-3 py-2 sm:px-3.5 sm:py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm cursor-pointer'
+                        disabled={isTransitioning}
+                        className={`text-left rounded-xl bg-white border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 ${
+                          isActive
+                            ? 'w-[290px] sm:w-[340px] p-5 shadow-2xl shadow-blue-500/15 border-blue-400'
+                            : 'w-[175px] sm:w-[190px] px-3.5 py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm cursor-pointer'
                         }`}
                       >
-                        {!isExpanded ? (
-                          /* Compact State (Light & Restrained Label) */
-                          <div className="flex items-center gap-2">
+                        {!isActive ? (
+                          /* Compact State at Home Position */
+                          <div className="flex items-center gap-2.5">
                             <span className="flex-shrink-0 text-slate-600">
                               {cap.icon}
                             </span>
-                            <span className="text-xs font-semibold text-slate-800 tracking-tight whitespace-nowrap">
-                              {cap.label}
-                            </span>
+                            <div className="truncate">
+                              <span className="text-xs font-semibold text-slate-800 tracking-tight block truncate">
+                                {cap.label}
+                              </span>
+                              <span className="text-[9px] font-mono text-slate-400 block mt-0.5">
+                                Click to swap
+                              </span>
+                            </div>
                           </div>
                         ) : (
-                          /* Expanded in Place State (Content Revealed) */
+                          /* Expanded State at EXACT CENTER */
                           <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.2 }}
-                            className="space-y-3"
+                            transition={{ duration: 0.25, delay: 0.15 }}
+                            className="space-y-3.5"
                           >
                             {/* Header */}
-                            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
                               <div className="flex items-center gap-2">
-                                <span className="text-blue-600">{cap.icon}</span>
+                                <span className="p-1 rounded bg-blue-50 text-blue-600">{cap.icon}</span>
                                 <h4 className="text-xs font-bold text-slate-900 uppercase font-mono tracking-wider">
                                   {cap.title}
                                 </h4>
                               </div>
-                              <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
+                              <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
                                 0{idx + 1} / 04
                               </span>
                             </div>
@@ -336,27 +355,27 @@ const HeroSection: React.FC = () => {
                               {cap.description}
                             </p>
 
-                            {/* Supporting Details */}
-                            <div className="space-y-1 pt-0.5">
+                            {/* 3-4 Supporting Details */}
+                            <div className="space-y-1.5 pt-0.5">
                               {cap.details.map((detail, dIdx) => (
-                                <div key={dIdx} className="flex items-center gap-1.5 text-[11px] text-slate-700">
+                                <div key={dIdx} className="flex items-center gap-2 text-[11px] text-slate-700">
                                   <span className="h-1.5 w-1.5 rounded-full bg-blue-500 flex-shrink-0" />
                                   <span className="font-medium">{detail}</span>
                                 </div>
                               ))}
                             </div>
 
-                            {/* Tech Stack Pills */}
-                            <div className="flex flex-wrap gap-1 pt-1">
+                            {/* Tech Stack Tags */}
+                            <div className="flex flex-wrap gap-1.5 pt-1">
                               {cap.techTags.map((tag, tIdx) => (
-                                <span key={tIdx} className="text-[9.5px] font-mono px-1.5 py-0.5 rounded bg-slate-50 border border-slate-200 text-slate-600">
+                                <span key={tIdx} className="text-[9.5px] font-mono px-2 py-0.5 rounded bg-slate-50 border border-slate-200 text-slate-600">
                                   {tag}
                                 </span>
                               ))}
                             </div>
 
-                            {/* Footer Action & Next Cycle */}
-                            <div className="flex items-center justify-between pt-2.5 border-t border-slate-100">
+                            {/* Footer Navigation & Service Specs Link */}
+                            <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                               <span
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -369,14 +388,26 @@ const HeroSection: React.FC = () => {
                                 <FiArrowRight className="h-3 w-3" />
                               </span>
 
-                              <button
-                                type="button"
-                                onClick={(e) => handleNext(e, idx)}
-                                className="text-[11px] font-mono font-bold text-slate-800 hover:text-blue-600 px-2 py-0.5 rounded bg-slate-100 hover:bg-blue-50 transition-colors inline-flex items-center gap-1"
-                              >
-                                <span>Next</span>
-                                <FiChevronRight className="h-3 w-3" />
-                              </button>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  onClick={handlePrev}
+                                  aria-label="Previous capability"
+                                  className="text-[11px] font-mono font-bold text-slate-700 hover:text-blue-600 p-1.5 rounded bg-slate-100 hover:bg-blue-50 transition-colors inline-flex items-center"
+                                >
+                                  <FiChevronLeft className="h-3.5 w-3.5" />
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={handleNext}
+                                  aria-label="Next capability"
+                                  className="text-[11px] font-mono font-bold text-slate-800 hover:text-blue-600 px-2.5 py-1 rounded bg-slate-100 hover:bg-blue-50 transition-colors inline-flex items-center gap-1"
+                                >
+                                  <span>Next</span>
+                                  <FiChevronRight className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
                             </div>
                           </motion.div>
                         )}
