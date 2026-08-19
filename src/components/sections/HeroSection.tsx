@@ -1,165 +1,64 @@
-import React, { useEffect, useRef } from 'react';
-import { ArrowRight, CheckCircle2, ShieldCheck, Zap, Layers, Sparkles, ExternalLink, Globe, Smartphone, Database, Server } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Typed from 'typed.js';
+import React from 'react';
+import { ArrowRight, Terminal, Globe, Cpu, Layers, Database, Shield, MoveUpRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
-/* ─── Modern Live Project Showcase Deck (Real Deliverables) ─── */
-const LiveShowcaseDeck: React.FC = () => {
-  const navigate = useNavigate();
-
-  return (
-    <div className="relative w-full max-w-lg mx-auto space-y-4">
-      {/* Top Main Interactive Project Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-5 hover:border-slate-700 transition-colors">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-mono text-blue-400 uppercase tracking-wider px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/20">
-            Featured Platform
-          </span>
-          <span className="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Live Deployment
-          </span>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-bold text-white tracking-tight">
-            Enterprise Cloud ERP &amp; Operations Suite
-          </h3>
-          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-            Multi-tenant inventory, automated billing, and role-based access control engine built on React 18, Node.js, and PostgreSQL.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800 text-center">
-          <div className="p-2 rounded-lg bg-slate-950/80 border border-slate-800/80">
-            <span className="text-[10px] text-slate-500 font-mono block">Architecture</span>
-            <span className="text-xs font-bold text-slate-200">Full-Stack</span>
-          </div>
-          <div className="p-2 rounded-lg bg-slate-950/80 border border-slate-800/80">
-            <span className="text-[10px] text-slate-500 font-mono block">SLA Delivery</span>
-            <span className="text-xs font-bold text-blue-400">7 Days</span>
-          </div>
-          <div className="p-2 rounded-lg bg-slate-950/80 border border-slate-800/80">
-            <span className="text-[10px] text-slate-500 font-mono block">Database</span>
-            <span className="text-xs font-bold text-emerald-400">PostgreSQL</span>
-          </div>
-        </div>
-
-        <button
-          onClick={() => navigate('/projects/enterprise-cloud-erp-platform')}
-          className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-md shadow-blue-600/20"
-        >
-          <span>View Architecture &amp; Case Study</span>
-          <ArrowRight className="h-3.5 w-3.5" />
-        </button>
-      </div>
-
-      {/* Secondary Quick-Access Stack Bar */}
-      <div className="grid grid-cols-2 gap-3">
-        <div
-          onClick={() => navigate('/services/app-development')}
-          className="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer flex items-center gap-3 group"
-        >
-          <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 group-hover:scale-105 transition-transform">
-            <Smartphone className="h-4 w-4" />
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">Mobile Engineering</h4>
-            <p className="text-[10px] text-slate-400">React Native &amp; iOS/Android</p>
-          </div>
-        </div>
-
-        <div
-          onClick={() => navigate('/services/full-stack-web-apps')}
-          className="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer flex items-center gap-3 group"
-        >
-          <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 group-hover:scale-105 transition-transform">
-            <Globe className="h-4 w-4" />
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-white group-hover:text-indigo-300 transition-colors">Custom Web Apps</h4>
-            <p className="text-[10px] text-slate-400">Microservices &amp; REST APIs</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-/* ─── Main Hero Section ─── */
 const HeroSection: React.FC = () => {
-  const el = useRef<HTMLSpanElement>(null);
-  const typed = useRef<Typed | null>(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (el.current) {
-      typed.current = new Typed(el.current, {
-        strings: [
-          'Enterprise ERP Systems',
-          'Scalable SaaS Platforms',
-          'Full-Stack Web Applications',
-          'High-Performance Mobile Apps',
-          'Custom API Architectures',
-        ],
-        typeSpeed: 45,
-        backSpeed: 30,
-        backDelay: 2400,
-        loop: true,
-      });
-    }
-
-    return () => {
-      typed.current?.destroy();
-    };
-  }, []);
 
   return (
     <>
       <SEO
-        title="Rahnoxa – Engineering Custom Software, ERPs & Scalable Digital Systems"
-        description="Rahnoxa is a software engineering company building custom web applications, mobile apps, enterprise ERP modules, and scalable cloud systems."
-        keywords="software development company, custom ERP development, web app engineering, mobile apps, SaaS development, enterprise software Jharkhand, Rahnoxa"
+        title="Rahnoxa – Software Systems & Enterprise Engineering"
+        description="Rahnoxa designs, builds, and deploys mission-critical web applications, enterprise ERP platforms, APIs, and scalable infrastructure."
+        keywords="software engineering, custom ERP, enterprise web applications, API architecture, SaaS development, Rahnoxa"
         url="https://rahnoxa.pages.dev/"
         type="website"
       />
 
-      <section className="relative min-h-[88vh] flex items-center bg-slate-950 overflow-hidden pt-28 pb-20 border-b border-slate-800">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            
-            {/* Left Column: Human, Confident Value Proposition */}
-            <div className="lg:col-span-7 text-white space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono">
-                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                <span>Enterprise Technology Partner</span>
-              </div>
+      <section className="relative bg-slate-950 text-white pt-32 pb-20 border-b border-slate-850 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Top Editorial Index & Meta Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-8 mb-10 border-b border-slate-850 text-xs font-mono text-slate-400">
+            <div className="flex items-center gap-3">
+              <span className="text-white font-bold tracking-wider">RAHNOXA</span>
+              <span className="text-slate-600">/</span>
+              <span>ENGINEERING &amp; SYSTEMS ARCHITECTURE</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <span className="hidden sm:inline-block text-slate-500">OPERATING SINCE 2024</span>
+              <span className="flex items-center gap-1.5 text-slate-300">
+                <span className="w-2 h-2 rounded-full bg-blue-500" />
+                ACTIVE FOR COMMERCIAL SCOPING
+              </span>
+            </div>
+          </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-[3.25rem] font-bold tracking-tight text-white leading-[1.12]">
-                We build dependable software systems for{' '}
-                <span
-                  ref={el}
-                  className="text-blue-400 block sm:inline mt-1 sm:mt-0"
-                />
+          {/* Asymmetric Core Hero Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start mb-16">
+            
+            {/* Primary Headline & Positioning (Span 7) */}
+            <div className="lg:col-span-7 space-y-8">
+              <h1 className="text-4xl sm:text-6xl lg:text-[4.2rem] font-bold text-white tracking-tight leading-[1.05]">
+                We build software systems that businesses actually run on.
               </h1>
 
-              <p className="text-slate-300 text-base sm:text-lg max-w-xl leading-relaxed">
-                From multi-branch ERP solutions and high-throughput SaaS backends to cross-platform mobile apps — Rahnoxa architects custom systems built strictly for operational reliability and business scale.
+              <p className="text-slate-300 text-lg sm:text-xl font-normal leading-relaxed max-w-2xl">
+                Rahnoxa architects and builds custom full-stack web platforms, enterprise ERP systems, microservices, and mobile applications engineered for high reliability, clean data integrity, and strict operational uptime.
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 <button
                   type="button"
                   onClick={() => {
                     navigate('/get-started');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="btn btn-primary"
+                  className="btn btn-primary px-8 py-3.5 text-sm rounded-lg"
                 >
-                  <span>Start Your Project</span>
+                  <span>Start a Project</span>
                   <ArrowRight className="h-4 w-4" />
                 </button>
                 <button
@@ -168,35 +67,125 @@ const HeroSection: React.FC = () => {
                     navigate('/services');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="btn btn-outline"
+                  className="btn btn-outline px-8 py-3.5 text-sm rounded-lg"
                 >
                   <span>Explore Engineering Services</span>
                 </button>
               </div>
+            </div>
 
-              {/* Verified Engineering Standards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-800/80 text-xs text-slate-400">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-blue-400 flex-shrink-0" />
-                  <span>Production-Grade Quality</span>
+            {/* Asymmetric Architectural Spec Column (Span 5) - Real Structured Technical Matrix */}
+            <div className="lg:col-span-5 border-l border-slate-850 pl-0 lg:pl-10 space-y-8">
+              <div>
+                <span className="text-[11px] font-mono uppercase tracking-widest text-blue-400 block mb-3">
+                  Core Engineering Scope
+                </span>
+                <p className="text-xs text-slate-400 leading-relaxed font-mono">
+                  Full lifecycle software development from architectural discovery, database entity-relationship modeling, and secure API gateways to production CI/CD deployments.
+                </p>
+              </div>
+
+              {/* Domain Index Matrix */}
+              <div className="space-y-3 font-mono text-xs">
+                <div 
+                  onClick={() => navigate('/services/erp-enterprise-applications')}
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-900/60 border border-slate-850 hover:border-slate-700 hover:bg-slate-900 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-slate-500 font-bold">01</span>
+                    <span className="text-slate-200 group-hover:text-white font-medium">Enterprise ERP &amp; Operations</span>
+                  </div>
+                  <MoveUpRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-indigo-400 flex-shrink-0" />
-                  <span>Milestone-Based Delivery</span>
+
+                <div 
+                  onClick={() => navigate('/services/full-stack-web-apps')}
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-900/60 border border-slate-850 hover:border-slate-700 hover:bg-slate-900 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-slate-500 font-bold">02</span>
+                    <span className="text-slate-200 group-hover:text-white font-medium">Full-Stack Web &amp; SaaS Platforms</span>
+                  </div>
+                  <MoveUpRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                  <span>Direct Technical Support</span>
+
+                <div 
+                  onClick={() => navigate('/services/custom-software-api-integration')}
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-900/60 border border-slate-850 hover:border-slate-700 hover:bg-slate-900 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-slate-500 font-bold">03</span>
+                    <span className="text-slate-200 group-hover:text-white font-medium">Custom APIs &amp; Microservices</span>
+                  </div>
+                  <MoveUpRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                </div>
+
+                <div 
+                  onClick={() => navigate('/services/app-development')}
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-900/60 border border-slate-850 hover:border-slate-700 hover:bg-slate-900 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-slate-500 font-bold">04</span>
+                    <span className="text-slate-200 group-hover:text-white font-medium">Cross-Platform Mobile Apps</span>
+                  </div>
+                  <MoveUpRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" />
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Live Project Showcase Deck */}
-            <div className="lg:col-span-5 w-full">
-              <LiveShowcaseDeck />
+          </div>
+
+          {/* Integrated Horizontal Engineering Baseline Banner */}
+          <div className="pt-8 border-t border-slate-850 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="space-y-1">
+              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
+                DELIVERY PROTOCOL
+              </span>
+              <p className="text-sm font-semibold text-white">
+                Milestone-Driven Sprints
+              </p>
+              <p className="text-xs text-slate-400">
+                Transparent weekly staging reviews
+              </p>
             </div>
 
+            <div className="space-y-1">
+              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
+                CODE INTEGRITY
+              </span>
+              <p className="text-sm font-semibold text-white">
+                Strict TypeScript &amp; Tests
+              </p>
+              <p className="text-xs text-slate-400">
+                Type-safe APIs and zero debt
+              </p>
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
+                DATA ARCHITECTURE
+              </span>
+              <p className="text-sm font-semibold text-white">
+                ACID Compliant Relational
+              </p>
+              <p className="text-xs text-slate-400">
+                PostgreSQL schemas &amp; Redis cache
+              </p>
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
+                DEPLOYMENT TARGET
+              </span>
+              <p className="text-sm font-semibold text-white">
+                Sub-150ms Global Edge
+              </p>
+              <p className="text-xs text-slate-400">
+                TLS 1.3 automated CI/CD pipelines
+              </p>
+            </div>
           </div>
+
         </div>
       </section>
     </>
