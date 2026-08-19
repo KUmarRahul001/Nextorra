@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
       aria-label="Primary Navigation"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-12 sm:h-14">
+        <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Clean Horizontal Brand Lockup */}
           <Link 
             to="/" 
@@ -91,10 +91,10 @@ const Navbar: React.FC = () => {
           >
             <img 
               src="/brand/logo-horizontal-clean.png" 
-              width={150}
-              height={900}
+              width={180}
+              height={45}
               alt="Rahnoxa Logo" 
-              className="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-[1.02]" 
+              className="h-9 sm:h-10.5 w-auto object-contain transition-transform group-hover:scale-[1.02]" 
               loading="eager" 
             />
           </Link>
