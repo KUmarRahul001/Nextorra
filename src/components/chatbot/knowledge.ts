@@ -385,7 +385,7 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
     technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Git', 'Cloud Architecture'],
     benefits: [
       'Direct contribution to production codebases and real business client projects',
-      '1-on-1 weekly code reviews and architectural mentorship from senior engineers',
+      '1-on-1 weekly code reviews and architectural mentorship directly from the lead software engineer',
       'Verifiable completion certificate and Letter of Recommendation (LOR) upon milestone completion',
       'Pre-placement offer (PPO) opportunities for exceptional engineering contributors',
     ],

@@ -44,7 +44,7 @@ const Internship: React.FC = () => {
               Engineering Internship Tracks
             </h1>
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
-              Work on production-grade codebases, participate in agile standups, and gain verifiable project experience under the mentorship of senior Rahnoxa engineers.
+              Work on production-grade codebases, participate in agile standups, and gain verifiable project experience under direct 1-on-1 mentorship from the lead software engineer.
             </p>
           </div>
 
