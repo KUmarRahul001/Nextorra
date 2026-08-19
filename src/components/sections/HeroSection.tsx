@@ -75,6 +75,26 @@ const capabilities: Capability[] = [
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<CapabilityId | null>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  // Click outside to close expanded capability
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setActiveId(null);
+      }
+    };
+
+    if (activeId !== null) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [activeId]);
 
   const toggleCapability = (id: CapabilityId) => {
     setActiveId(prev => (prev === id ? null : id));
@@ -196,8 +216,11 @@ const HeroSection: React.FC = () => {
                 className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 via-indigo-600/15 to-cyan-400/25 rounded-full blur-3xl pointer-events-none" 
               />
 
-              {/* 3D Perspective Canvas */}
-              <div className="relative w-full max-w-[520px] h-[520px] sm:h-[560px] flex items-center justify-center perspective-[1400px]">
+              {/* 3D Perspective Canvas with Click-Outside Ref */}
+              <div 
+                ref={containerRef}
+                className="relative w-full max-w-[520px] h-[520px] sm:h-[560px] flex items-center justify-center perspective-[1400px]"
+              >
                 
                 {/* ── Orbital Track 1: Outer Dashed Particle Ring ── */}
                 <motion.div
@@ -218,7 +241,7 @@ const HeroSection: React.FC = () => {
                   <span className="absolute top-1/2 left-0 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_10px_#6366f1]" />
                 </motion.div>
 
-                {/* ── Central 3D Isometric Hologram Core ── */}
+                {/* ── Central 3D Isometric Hologram Core (With Official Rahnoxa Brand Mark) ── */}
                 <motion.div
                   animate={{ 
                     rotateY: [-15, 15, -15],
@@ -247,16 +270,21 @@ const HeroSection: React.FC = () => {
                         className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_#22d3ee] pointer-events-none"
                       />
 
-                      <div className="relative z-10 p-2.5 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-cyan-400/30 mb-2">
-                        <TbCube3dSphere className="h-10 w-10 sm:h-12 sm:w-12 text-cyan-400 drop-shadow-[0_0_12px_rgba(34,211,238,0.7)]" />
+                      {/* Official Rahnoxa RX Brand Mark in Core */}
+                      <div className="relative z-10 p-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md mb-2 shadow-lg">
+                        <img 
+                          src="/brand/logo-symbol-transparent.png" 
+                          alt="Rahnoxa Core" 
+                          className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.7)]" 
+                        />
                       </div>
                       
                       <div className="relative z-10">
-                        <span className="text-[10px] font-mono font-black tracking-[0.2em] text-cyan-300 uppercase block">
-                          BUILDING ENGINE
+                        <span className="text-[11px] font-mono font-black tracking-[0.2em] text-white uppercase block">
+                          RAHNOXA
                         </span>
-                        <span className="text-[9px] font-mono text-slate-400 mt-0.5 block">
-                          Live Architecture
+                        <span className="text-[8.5px] font-mono text-cyan-400 tracking-wider uppercase font-bold mt-0.5 block">
+                          ENGINEERING CORE
                         </span>
                       </div>
 
