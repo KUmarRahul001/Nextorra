@@ -1,16 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  ArrowRight, 
-  ShieldCheck, 
-  Code2, 
-  Database, 
-  MoveUpRight,
-  Workflow,
-  CheckCircle2,
-  Lock,
-  Zap
-} from 'lucide-react';
+import { FiArrowRight, FiShield, FiCode, FiDatabase, FiArrowUpRight, FiZap, FiCheckCircle } from 'react-icons/fi';
+import { TbTopologyStar3 } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
@@ -39,43 +30,39 @@ const HeroSection: React.FC = () => {
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-blue-200/80 shadow-sm mb-8 backdrop-blur-md"
+            className="flex items-center gap-2 max-w-fit mb-8 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs text-xs font-semibold text-slate-700"
           >
             <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
             </span>
-            <span className="text-xs font-semibold text-slate-800">
-              Software Development &amp; Systems Architecture
-            </span>
-            <span className="text-[10px] font-mono uppercase bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-bold">
-              Available for Projects
-            </span>
+            <span className="font-mono text-blue-700">Next-Gen Software &amp; Cloud Systems</span>
+            <span className="text-slate-300">|</span>
+            <span className="text-slate-500 font-mono text-[11px]">Independent Engineer</span>
           </motion.div>
 
-          {/* Main 2-Column Grid Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
-            {/* Left Column: Bold Typography & CTAs */}
+            {/* Left Column: Core Value Proposition */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="lg:col-span-7 space-y-7"
+              className="lg:col-span-7 space-y-6 text-left"
             >
-              <h1 className="text-4xl sm:text-6xl lg:text-[4.1rem] font-extrabold text-slate-900 tracking-tight leading-[1.08]">
-                We Engineer{' '}
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 bg-clip-text text-transparent">
-                  High-Impact Digital Systems
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.12]">
+                We Engineer High-Impact{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  Digital Systems
                 </span>{' '}
                 That Scale.
               </h1>
 
-              <p className="text-slate-600 text-lg sm:text-xl font-normal leading-relaxed max-w-2xl">
-                From multi-tenant enterprise ERPs and bespoke full-stack SaaS platforms to REST APIs and cross-platform mobile apps — we build mission-critical technology engineered for operational stability and business growth.
+              <p className="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed font-normal">
+                From multi-tenant enterprise ERPs and bespoke full-stack SaaS platforms to high-throughput REST APIs and cross-platform mobile apps — we build mission-critical technology engineered for operational velocity.
               </p>
 
-              {/* Action Buttons */}
+              {/* Call-to-Actions */}
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <button
                   type="button"
@@ -83,10 +70,10 @@ const HeroSection: React.FC = () => {
                     navigate('/get-started');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="btn btn-primary px-8 py-4 text-sm font-bold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all group"
+                  className="btn btn-primary px-8 py-4 text-sm font-bold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all group inline-flex items-center gap-2"
                 >
                   <span>Start Your Project</span>
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <FiArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
                   type="button"
@@ -94,7 +81,7 @@ const HeroSection: React.FC = () => {
                     navigate('/services');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="btn btn-outline px-8 py-4 text-sm font-semibold rounded-xl hover:-translate-y-0.5 transition-all"
+                  className="btn btn-outline px-8 py-4 text-sm font-semibold rounded-xl hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
                 >
                   <span>Explore Engineering Services</span>
                 </button>
@@ -103,15 +90,15 @@ const HeroSection: React.FC = () => {
               {/* Truthful Commitments */}
               <div className="pt-8 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl text-left">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                  <FiCheckCircle className="h-4 w-4 text-blue-600 flex-shrink-0" />
                   <span className="text-xs font-semibold text-slate-700">Milestone-Based Delivery</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-indigo-600 flex-shrink-0" />
+                  <FiCheckCircle className="h-4 w-4 text-indigo-600 flex-shrink-0" />
                   <span className="text-xs font-semibold text-slate-700">Strict TypeScript Code</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                  <FiCheckCircle className="h-4 w-4 text-emerald-600 flex-shrink-0" />
                   <span className="text-xs font-semibold text-slate-700">Direct Technical Support</span>
                 </div>
               </div>
@@ -150,7 +137,7 @@ const HeroSection: React.FC = () => {
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                      <Code2 className="h-4 w-4" />
+                      <FiCode className="h-4 w-4" />
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
@@ -159,7 +146,7 @@ const HeroSection: React.FC = () => {
                       <p className="text-[11px] text-slate-500 font-mono">React 18 · TypeScript · Fast Rendering</p>
                     </div>
                   </div>
-                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                  <FiArrowUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
                 </motion.div>
 
                 {/* Layer 2: Modular ERP & Microservices */}
@@ -170,7 +157,7 @@ const HeroSection: React.FC = () => {
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                      <Workflow className="h-4 w-4" />
+                      <TbTopologyStar3 className="h-4 w-4" />
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
@@ -179,7 +166,7 @@ const HeroSection: React.FC = () => {
                       <p className="text-[11px] text-slate-500 font-mono">Role-Based Multi-Tenant Architecture</p>
                     </div>
                   </div>
-                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                  <FiArrowUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                 </motion.div>
 
                 {/* Layer 3: Scalable Cloud Persistence */}
@@ -190,7 +177,7 @@ const HeroSection: React.FC = () => {
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                      <Database className="h-4 w-4" />
+                      <FiDatabase className="h-4 w-4" />
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
@@ -199,7 +186,7 @@ const HeroSection: React.FC = () => {
                       <p className="text-[11px] text-slate-500 font-mono">ACID Transactions · Automated Backups</p>
                     </div>
                   </div>
-                  <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                  <FiArrowUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
                 </motion.div>
 
                 {/* Footer specs */}
@@ -215,7 +202,7 @@ const HeroSection: React.FC = () => {
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="absolute -top-3 -right-3 px-3.5 py-1.5 rounded-full bg-white shadow-lg border border-blue-100 flex items-center gap-1.5 z-20"
               >
-                <Zap className="h-3.5 w-3.5 text-blue-600" />
+                <FiZap className="h-3.5 w-3.5 text-blue-600" />
                 <span className="text-xs font-bold text-slate-800">Clean Architecture</span>
               </motion.div>
 
@@ -224,7 +211,7 @@ const HeroSection: React.FC = () => {
                 transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
                 className="absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white shadow-lg border border-indigo-100 flex items-center gap-1.5 z-20"
               >
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                <FiShield className="h-3.5 w-3.5 text-emerald-600" />
                 <span className="text-xs font-bold text-slate-800">Full Code Ownership</span>
               </motion.div>
             </motion.div>

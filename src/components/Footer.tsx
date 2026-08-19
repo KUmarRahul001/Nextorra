@@ -1,11 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  EnvelopeIcon,
-  PhoneIcon,
-  MapPinIcon,
-  ArrowRightIcon,
-} from "@heroicons/react/24/outline";
+import { FiMail, FiPhone, FiMapPin, FiArrowRight } from "react-icons/fi";
 import { tier1Services } from "../data/services";
 import config from "../config";
 
@@ -68,7 +63,7 @@ const Footer: React.FC = () => {
                 href={`mailto:${config.contact.email}`} 
                 className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors text-sm"
               >
-                <EnvelopeIcon className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                <FiMail className="h-4 w-4 text-blue-600 flex-shrink-0" />
                 <span className="break-all">{config.contact.email}</span>
               </a>
 
@@ -76,12 +71,12 @@ const Footer: React.FC = () => {
                 href={`tel:${config.contact.phone1.replace(/\s+/g, '')}`} 
                 className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors text-sm"
               >
-                <PhoneIcon className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                <FiPhone className="h-4 w-4 text-blue-600 flex-shrink-0" />
                 <span>{config.contact.phone1} / {config.contact.phone2}</span>
               </a>
 
               <div className="flex items-center gap-3 text-slate-600 text-sm">
-                <MapPinIcon className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                <FiMapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
                 <span>{config.contact.location} (Remote Delivery Worldwide)</span>
               </div>
             </div>
@@ -115,7 +110,7 @@ const Footer: React.FC = () => {
                     }}
                     className="flex items-center gap-2 hover:text-blue-600 transition-colors w-full text-left"
                   >
-                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                    <FiArrowRight className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
                     {link.name}
                   </button>
                 </li>
@@ -138,7 +133,7 @@ const Footer: React.FC = () => {
                     }}
                     className="flex items-center gap-2 hover:text-blue-600 transition-colors w-full text-left"
                   >
-                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                    <FiArrowRight className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
                     {service.name}
                   </button>
                 </li>

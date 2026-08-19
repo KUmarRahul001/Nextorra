@@ -1,36 +1,37 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code, GitPullRequest, Workflow, Headphones, ShieldCheck, Clock, ArrowRight } from 'lucide-react';
+import { FiCode, FiGitPullRequest, FiHeadphones, FiShield, FiClock, FiArrowRight } from 'react-icons/fi';
+import { TbTopologyStar3 } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 
 const reasons = [
   {
-    icon: <Code className="h-5 w-5 text-blue-600" />,
+    icon: <FiCode className="h-5 w-5 text-blue-600" />,
     title: 'Custom-Built Architecture',
     description: 'We tailor frontend, backend, and data models to your actual business requirements instead of forcing you into generic templates.',
   },
   {
-    icon: <Workflow className="h-5 w-5 text-indigo-600" />,
+    icon: <TbTopologyStar3 className="h-5 w-5 text-indigo-600" />,
     title: 'Full-Stack Capability',
     description: 'From web applications and mobile apps to database schemas and API integrations, we handle the complete technology scope.',
   },
   {
-    icon: <GitPullRequest className="h-5 w-5 text-blue-600" />,
+    icon: <FiGitPullRequest className="h-5 w-5 text-blue-600" />,
     title: 'Flexible Engagement Models',
     description: 'Work with us on fixed-scope milestone projects, dedicated feature sprints, or ongoing maintenance contracts.',
   },
   {
-    icon: <ShieldCheck className="h-5 w-5 text-emerald-600" />,
+    icon: <FiShield className="h-5 w-5 text-emerald-600" />,
     title: 'Clean, Maintainable Code',
     description: 'We prioritize readable, well-structured TypeScript and modern frameworks to ensure you can extend your software in the future.',
   },
   {
-    icon: <Clock className="h-5 w-5 text-blue-600" />,
+    icon: <FiClock className="h-5 w-5 text-blue-600" />,
     title: 'Transparent Communication',
     description: 'Direct communication, honest timeline estimates, and regular staging environment reviews throughout development.',
   },
   {
-    icon: <Headphones className="h-5 w-5 text-amber-600" />,
+    icon: <FiHeadphones className="h-5 w-5 text-amber-600" />,
     title: 'Post-Launch Support',
     description: 'We remain available after deployment for bug fixes, performance monitoring, and subsequent release cycles.',
   },
@@ -90,10 +91,10 @@ const WhyChooseUs: React.FC = () => {
               navigate('/get-started');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="btn btn-primary"
+            className="btn btn-primary inline-flex items-center gap-2"
           >
             <span>Start a Conversation About Your Project</span>
-            <ArrowRight className="h-4 w-4" />
+            <FiArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>

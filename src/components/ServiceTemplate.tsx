@@ -2,16 +2,16 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowRight,
-  Check,
-  Star,
-  Sparkles,
-  ShieldCheck,
-  Zap,
-  Clock,
-  AlertCircle,
-  HelpCircle,
-} from 'lucide-react';
+  FiArrowRight as ArrowRight,
+  FiCheck as Check,
+  FiStar as Star,
+  FiZap as Zap,
+  FiClock as Clock,
+  FiAlertCircle as AlertCircle,
+  FiHelpCircle as HelpCircle,
+  FiShield as ShieldCheck,
+} from 'react-icons/fi';
+import { HiSparkles as Sparkles } from 'react-icons/hi2';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumb from './Breadcrumb';
 import config from '../config';

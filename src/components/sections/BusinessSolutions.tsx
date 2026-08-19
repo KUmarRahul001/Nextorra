@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { FiCheckCircle, FiArrowRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const challenges = [
@@ -81,7 +81,7 @@ const BusinessSolutions: React.FC = () => {
                   {item.tag}
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-start gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <FiCheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>{item.title}</span>
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed mb-6">
@@ -99,7 +99,7 @@ const BusinessSolutions: React.FC = () => {
                   className="inline-flex items-center text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors gap-1.5"
                 >
                   <span>Discuss this solution</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <FiArrowRight className="h-3.5 w-3.5" />
                 </button>
               </div>
             </motion.div>

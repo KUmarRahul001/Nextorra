@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Layers, ShieldCheck, CheckCircle2, UserCheck } from 'lucide-react';
+import { FiTarget, FiLayers, FiShield, FiCheckCircle, FiUserCheck } from 'react-icons/fi';
 
 const AboutSection: React.FC = () => {
   return (
@@ -35,7 +35,7 @@ const AboutSection: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs">
                 <div className="flex items-center gap-2 mb-2 text-blue-600 font-bold text-base">
-                  <Target className="h-5 w-5" />
+                  <FiTarget className="h-5 w-5" />
                   <span>My Mission</span>
                 </div>
                 <p className="text-slate-600 text-xs leading-relaxed">
@@ -45,7 +45,7 @@ const AboutSection: React.FC = () => {
 
               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs">
                 <div className="flex items-center gap-2 mb-2 text-indigo-600 font-bold text-base">
-                  <Layers className="h-5 w-5" />
+                  <FiLayers className="h-5 w-5" />
                   <span>Engineering Philosophy</span>
                 </div>
                 <p className="text-slate-600 text-xs leading-relaxed">
@@ -65,7 +65,7 @@ const AboutSection: React.FC = () => {
           >
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
               <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
-                <UserCheck className="h-6 w-6" />
+                <FiUserCheck className="h-6 w-6" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-slate-900">How I Deliver</h3>
@@ -97,7 +97,7 @@ const AboutSection: React.FC = () => {
                 },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0 mt-1" />
+                  <FiCheckCircle className="h-4 w-4 text-blue-600 flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="text-sm font-bold text-slate-900">{item.title}</h4>
                     <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>

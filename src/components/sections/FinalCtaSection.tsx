@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, MessageSquare, Terminal } from 'lucide-react';
+import { FiArrowRight, FiMessageSquare, FiTerminal } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const FinalCtaSection: React.FC = () => {
@@ -17,7 +17,7 @@ const FinalCtaSection: React.FC = () => {
           className="bg-slate-50 border border-slate-200 rounded-3xl p-8 sm:p-14 shadow-xs"
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold uppercase tracking-wider mb-6 shadow-2xs">
-            <Terminal className="h-4 w-4 text-blue-600" />
+            <FiTerminal className="h-4 w-4 text-blue-600" />
             <span>Ready To Build?</span>
           </div>
 
@@ -36,10 +36,10 @@ const FinalCtaSection: React.FC = () => {
                 navigate('/get-started');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="btn btn-primary px-8 py-4 text-base font-bold shadow-md"
+              className="btn btn-primary px-8 py-4 text-base font-bold shadow-md inline-flex items-center gap-2"
             >
               <span>Start a Project Enquiry</span>
-              <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
+              <FiArrowRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
             </button>
             <button
               type="button"
@@ -47,9 +47,9 @@ const FinalCtaSection: React.FC = () => {
                 navigate('/services');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="btn btn-outline px-8 py-4 text-base font-semibold"
+              className="btn btn-outline px-8 py-4 text-base font-semibold inline-flex items-center gap-2"
             >
-              <MessageSquare className="h-5 w-5 mr-2 text-blue-600" />
+              <FiMessageSquare className="h-5 w-5 text-blue-600" />
               <span>Explore All Services</span>
             </button>
           </div>
