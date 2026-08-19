@@ -75,31 +75,14 @@ const capabilities: Capability[] = [
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<CapabilityId | null>(null);
-  const [isMoved, setIsMoved] = useState<boolean>(false);
-  const [showDetails, setShowDetails] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout[]>([]);
 
-  const clearAllTimers = () => {
-    timerRef.current.forEach(t => clearTimeout(t));
-    timerRef.current = [];
-  };
-
-  // Close / Reset back to IDLE with proper sequential collapse
+  // Close / Reset back to IDLE
   const closeActive = () => {
-    clearAllTimers();
-    setShowDetails(false);
-    const t1 = setTimeout(() => {
-      setIsMoved(false);
-      const t2 = setTimeout(() => {
-        setActiveId(null);
-      }, 550);
-      timerRef.current.push(t2);
-    }, 200);
-    timerRef.current.push(t1);
+    setActiveId(null);
   };
 
-  // Click outside to collapse
+  // Click outside to collapse back to IDLE
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -115,54 +98,13 @@ const HeroSection: React.FC = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
-      clearAllTimers();
     };
   }, [activeId]);
 
-  // Transition to a target capability:
-  // Step 1: Physical translation as compact node (550ms)
-  // Step 2: Only after arrival, expand and reveal details (300ms)
-  const transitionTo = (targetId: CapabilityId) => {
-    clearAllTimers();
-    setShowDetails(false);
-
-    if (activeId === targetId) {
-      closeActive();
-      return;
-    }
-
-    if (activeId !== null) {
-      // Return previous to home first
-      setIsMoved(false);
-      const t1 = setTimeout(() => {
-        setActiveId(targetId);
-        setIsMoved(true);
-        const t2 = setTimeout(() => {
-          setShowDetails(true);
-        }, 550);
-        timerRef.current.push(t2);
-      }, 350);
-      timerRef.current.push(t1);
-      return;
-    }
-
-    // Fresh start from IDLE:
-    setActiveId(targetId);
-    // Trigger movement on next tick
-    setTimeout(() => {
-      setIsMoved(true);
-    }, 20);
-
-    // After 550ms travel finishes -> Reveal details
-    const t1 = setTimeout(() => {
-      setShowDetails(true);
-    }, 570);
-    timerRef.current.push(t1);
-  };
-
+  // Click handler on capability node
   const handleNodeClick = (targetId: CapabilityId, e: React.MouseEvent) => {
     e.stopPropagation();
-    transitionTo(targetId);
+    setActiveId(prev => (prev === targetId ? null : targetId));
   };
 
   // Next capability handler
@@ -178,7 +120,7 @@ const HeroSection: React.FC = () => {
     }
 
     const nextIdx = currentIdx + 1;
-    transitionTo(capabilities[nextIdx].id);
+    setActiveId(capabilities[nextIdx].id);
   };
 
   // Prev capability handler
@@ -192,7 +134,7 @@ const HeroSection: React.FC = () => {
     }
 
     const prevIdx = currentIdx - 1;
-    transitionTo(capabilities[prevIdx].id);
+    setActiveId(capabilities[prevIdx].id);
   };
 
   // Find active capability object
@@ -200,8 +142,8 @@ const HeroSection: React.FC = () => {
   const activeIdx = capabilities.findIndex(c => c.id === activeId);
   const isFinalCapability = activeIdx === capabilities.length - 1;
 
-  // RX target position: Only moves to active capability home position when isMoved is true!
-  const rxTargetPos = (activeCapability && isMoved) ? activeCapability.homeOffset : { x: 0, y: 0 };
+  // RX target position: Only moves to active capability home position when activeId is present!
+  const rxTargetPos = activeCapability ? activeCapability.homeOffset : { x: 0, y: 0 };
 
   return (
     <>
@@ -322,10 +264,10 @@ const HeroSection: React.FC = () => {
                   animate={{ 
                     x: rxTargetPos.x, 
                     y: rxTargetPos.y,
-                    scale: (activeId !== null && isMoved) ? 0.85 : 1,
+                    scale: activeId !== null ? 0.85 : 1,
                   }}
                   transition={{ 
-                    duration: 0.55, 
+                    duration: 0.5, 
                     ease: [0.35, 0, 0.25, 1] 
                   }}
                   onClick={() => {
@@ -345,19 +287,18 @@ const HeroSection: React.FC = () => {
                   />
                 </motion.div>
 
-                {/* ── 4 CAPABILITY NODES (Visibly Travel to Center, Then Expand) ── */}
+                {/* ── 4 CAPABILITY NODES (Visibly Travel to Center & Unfold Details with Framer Motion layout) ── */}
                 {capabilities.map((cap, idx) => {
                   const isActive = activeId === cap.id;
                   const isOther = activeId !== null && !isActive;
-                  const isCentered = isActive && isMoved;
-                  const isFullyExpanded = isActive && showDetails;
 
                   // Target coordinates: Active node translates to (0, 0) [Exact Center], inactive stays at homeOffset
-                  const targetPosition = isCentered ? { x: 0, y: 0 } : cap.homeOffset;
+                  const targetPosition = isActive ? { x: 0, y: 0 } : cap.homeOffset;
 
                   return (
                     <motion.div
                       key={cap.id}
+                      layout
                       animate={{
                         x: targetPosition.x,
                         y: targetPosition.y,
@@ -365,13 +306,13 @@ const HeroSection: React.FC = () => {
                         zIndex: isActive ? 40 : 20,
                       }}
                       transition={{
-                        x: { duration: 0.55, ease: [0.35, 0, 0.25, 1] },
-                        y: { duration: 0.55, ease: [0.35, 0, 0.25, 1] },
-                        opacity: { duration: 0.3 },
+                        x: { duration: 0.5, ease: [0.35, 0, 0.25, 1] },
+                        y: { duration: 0.5, ease: [0.35, 0, 0.25, 1] },
+                        layout: { duration: 0.35, ease: [0.35, 0, 0.25, 1] },
+                        opacity: { duration: 0.25 },
                       }}
                       className="absolute"
                     >
-                      {/* Using div as interactive card container to fix invalid DOM nesting */}
                       <div
                         onClick={(e) => handleNodeClick(cap.id, e)}
                         role="button"
@@ -381,16 +322,16 @@ const HeroSection: React.FC = () => {
                             handleNodeClick(cap.id, e as any);
                           }
                         }}
-                        aria-expanded={isFullyExpanded}
+                        aria-expanded={isActive}
                         aria-label={`${cap.title} capability node`}
-                        className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 cursor-pointer ${
-                          isFullyExpanded
+                        className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 cursor-pointer overflow-hidden ${
+                          isActive
                             ? 'w-[290px] sm:w-[340px] p-5 shadow-2xl shadow-blue-500/15 border-blue-400 ring-1 ring-blue-400/20'
                             : 'w-[175px] sm:w-[190px] px-3.5 py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm'
                         }`}
                       >
-                        {!isFullyExpanded ? (
-                          /* Compact State (Stays compact during the entire movement phase!) */
+                        {!isActive ? (
+                          /* Compact State at Home Position */
                           <div className="flex items-center gap-2.5">
                             <span className={`p-1.5 rounded-lg border ${cap.badgeBg} flex-shrink-0`}>
                               {cap.icon}
@@ -405,11 +346,11 @@ const HeroSection: React.FC = () => {
                             </div>
                           </div>
                         ) : (
-                          /* Expanded Details State (Reveals ONLY AFTER arrival at center!) */
+                          /* Expanded Details State at EXACT CENTER */
                           <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.25 }}
+                            transition={{ duration: 0.3, delay: 0.1 }}
                             className="space-y-3.5"
                           >
                             {/* Header */}
