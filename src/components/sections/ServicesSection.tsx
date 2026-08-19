@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import {
   Globe,
@@ -18,205 +17,157 @@ import {
   PhoneCall,
   ArrowRight,
   Clock,
+  Layers,
+  ChevronRight,
 } from 'lucide-react';
 import { tier1Services, tier2Services, type Service } from '../../data/services';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 
-/** Map service slug → lucide-react icon element */
 const serviceIcons: Record<string, React.ReactNode> = {
-  'web-development': <Globe className="h-7 w-7 text-white" />,
-  'full-stack-web-apps': <Code2 className="h-7 w-7 text-white" />,
-  'app-development': <Smartphone className="h-7 w-7 text-white" />,
-  'custom-software-api-integration': <Settings className="h-7 w-7 text-white" />,
-  'erp-enterprise-applications': <Building2 className="h-7 w-7 text-white" />,
-  'saas-products': <Cloud className="h-7 w-7 text-white" />,
-  'desktop-applications': <Monitor className="h-7 w-7 text-white" />,
-  'social-media-marketing': <Share2 className="h-7 w-7 text-white" />,
-  'lead-generation': <Target className="h-7 w-7 text-white" />,
-  'sms-marketing': <MessageSquare className="h-7 w-7 text-white" />,
-  'email-marketing': <Mail className="h-7 w-7 text-white" />,
-  'missed-call-service': <Phone className="h-7 w-7 text-white" />,
-  'graphic-design': <Palette className="h-7 w-7 text-white" />,
-  'voice-call-services': <PhoneCall className="h-7 w-7 text-white" />,
+  'web-development': <Globe className="h-5 w-5 text-blue-400" />,
+  'full-stack-web-apps': <Code2 className="h-5 w-5 text-indigo-400" />,
+  'app-development': <Smartphone className="h-5 w-5 text-cyan-400" />,
+  'custom-software-api-integration': <Settings className="h-5 w-5 text-blue-400" />,
+  'erp-enterprise-applications': <Building2 className="h-5 w-5 text-indigo-400" />,
+  'saas-products': <Cloud className="h-5 w-5 text-cyan-400" />,
+  'desktop-applications': <Monitor className="h-5 w-5 text-blue-400" />,
+  'social-media-marketing': <Share2 className="h-5 w-5 text-slate-400" />,
+  'lead-generation': <Target className="h-5 w-5 text-slate-400" />,
+  'sms-marketing': <MessageSquare className="h-5 w-5 text-slate-400" />,
+  'email-marketing': <Mail className="h-5 w-5 text-slate-400" />,
+  'missed-call-service': <Phone className="h-5 w-5 text-slate-400" />,
+  'graphic-design': <Palette className="h-5 w-5 text-slate-400" />,
+  'voice-call-services': <PhoneCall className="h-5 w-5 text-slate-400" />,
 };
-
-interface ServiceCardProps {
-  service: Service;
-  index: number;
-  onLearnMore: (route: string) => void;
-}
-
-const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onLearnMore }) => (
-  <motion.div
-    key={service.slug}
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay: index * 0.08 }}
-    className="group relative flex flex-col"
-  >
-    <div className="glass-effect rounded-2xl p-6 sm:p-7 h-full border border-white/10 hover:border-blue-500/40 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between shadow-xl">
-      {/* Animated Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      <div>
-        {/* Top Header: Icon + Pricing Badge */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="w-13 h-13 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 p-3 group-hover:scale-105 transition-transform duration-300 shadow-md">
-            {serviceIcons[service.slug] ?? <Globe className="h-6 w-6 text-white" />}
-          </div>
-          <div className="text-right">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Starting From</span>
-            <span className="text-sm sm:text-base font-extrabold text-cyan-300">{service.pricing?.startingAt || 'Custom'}</span>
-          </div>
-        </div>
-
-        <h3 className="text-lg sm:text-xl font-bold mb-2 text-white group-hover:text-cyan-300 transition-colors duration-300">
-          {service.name}
-        </h3>
-
-        <p className="text-slate-300 mb-4 text-xs sm:text-sm leading-relaxed">
-          {service.shortDescription}
-        </p>
-
-        {/* Turnaround Pill */}
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-900/80 border border-slate-700/60 rounded-md text-[11px] text-slate-300 mb-4">
-          <Clock className="h-3 w-3 text-cyan-400" />
-          <span>{service.delivery || '3–7 Days'}</span>
-        </div>
-      </div>
-
-      {/* CTA Button */}
-      <div className="pt-4 border-t border-white/10 mt-2">
-        <button
-          type="button"
-          onClick={() => onLearnMore(service.route)}
-          className="flex items-center justify-between w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-blue-600 text-white transition-all duration-300 group/btn text-xs sm:text-sm font-semibold"
-        >
-          <span>View Specs &amp; Packages</span>
-          <ArrowRight className="h-4 w-4 transform group-hover/btn:translate-x-1 transition-transform" />
-        </button>
-      </div>
-    </div>
-  </motion.div>
-);
 
 const ServicesSection: React.FC = () => {
   const navigate = useNavigate();
-  const [showAll, setShowAll] = useState(false);
+  const [activeTab, setActiveTab] = useState<'engineering' | 'growth'>('engineering');
 
-  const handleLearnMore = (route: string) => {
-    navigate(route);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const displayedServices = activeTab === 'engineering' ? tier1Services : tier2Services;
 
   return (
     <>
       <Helmet>
-        <title>{`Our Services & Pricing – ${config.siteName}`}</title>
+        <title>{`Engineering & Business Services | ${config.siteName}`}</title>
         <meta
           name="description"
-          content={`${config.siteName} builds web apps, mobile apps, ERP systems, SaaS platforms, and custom software with transparent affordable Indian pricing.`}
+          content="Explore Rahnoxa's software development services: Full-Stack Web Apps, Mobile Engineering, Custom ERP Systems, and Growth Marketing."
         />
-        <link rel="canonical" href={`${config.siteUrl}/services`} />
       </Helmet>
 
-      <section className="section bg-gradient-to-b from-gray-900 to-primary-dark relative" id="services">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,64,175,0.1)_0%,transparent_100%)] opacity-50" />
+      <section className="py-24 bg-slate-950 text-white relative border-b border-slate-800" id="services">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Heading & Category Tabs */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-800">
+            <div className="max-w-2xl">
+              <span className="text-xs font-mono text-blue-400 uppercase tracking-widest block mb-2">
+                Capabilities &amp; Solutions
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+                Software Services Engineered for Scale
+              </h2>
+              <p className="text-slate-400 text-sm sm:text-base mt-2">
+                Clear deliverables, transparent commercial pricing, and structured delivery schedules.
+              </p>
+            </div>
 
-        <div className="container relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-3xl mx-auto mb-12"
-          >
-            <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold mb-3">
-              Affordable &amp; Transparent Engineering
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-white">
-              Software &amp; Digital Services
-            </h2>
-            <p className="text-gray-300 text-sm sm:text-base">
-              Explore starting prices, delivery timelines, and full specifications for every service.
-            </p>
-          </motion.div>
+            {/* Segmented Control Tabs */}
+            <div className="inline-flex p-1 rounded-lg bg-slate-900 border border-slate-800 self-start md:self-auto">
+              <button
+                onClick={() => setActiveTab('engineering')}
+                className={`px-4 py-2 rounded-md text-xs font-semibold transition-colors ${
+                  activeTab === 'engineering'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Core Engineering (Tier 1)
+              </button>
+              <button
+                onClick={() => setActiveTab('growth')}
+                className={`px-4 py-2 rounded-md text-xs font-semibold transition-colors ${
+                  activeTab === 'growth'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Growth &amp; Comms (Tier 2)
+              </button>
+            </div>
+          </div>
 
-          {/* Tier 1 — Software & Engineering */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {tier1Services.map((service, index) => (
-              <ServiceCard
+          {/* Structured Service Rows / Editorial List */}
+          <div className="divide-y divide-slate-800/80 border-y border-slate-800/80 mb-16">
+            {displayedServices.map((service, index) => (
+              <div
                 key={service.slug}
-                service={service}
-                index={index}
-                onLearnMore={handleLearnMore}
-              />
+                onClick={() => {
+                  navigate(service.route);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group py-6 sm:py-7 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:bg-slate-900/50 px-4 -mx-4 rounded-xl transition-colors cursor-pointer"
+              >
+                {/* Left: Index + Icon + Name + Description */}
+                <div className="flex items-start gap-4 sm:gap-6 max-w-3xl">
+                  <span className="font-mono text-xs text-slate-500 pt-1">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  
+                  <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex-shrink-0 group-hover:border-blue-500/40 transition-colors">
+                    {serviceIcons[service.slug] ?? <Globe className="h-5 w-5 text-blue-400" />}
+                  </div>
+
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-blue-400 transition-colors">
+                      {service.name}
+                    </h3>
+                    <p className="text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
+                      {service.shortDescription}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right: Pricing, Delivery & CTA link */}
+                <div className="flex items-center justify-between lg:justify-end gap-6 sm:gap-8 pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-850">
+                  <div className="text-left lg:text-right">
+                    <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider block">
+                      Starting At
+                    </span>
+                    <span className="text-sm sm:text-base font-bold text-white">
+                      {service.pricing?.startingAt || 'Custom Scope'}
+                    </span>
+                  </div>
+
+                  <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-900 border border-slate-800 text-xs text-slate-400 font-mono">
+                    <Clock className="h-3 w-3 text-blue-400" />
+                    <span>{service.delivery || '3–7 Days'}</span>
+                  </div>
+
+                  <div className="p-2 rounded-lg bg-slate-900 group-hover:bg-blue-600 text-slate-400 group-hover:text-white border border-slate-800 group-hover:border-blue-500 transition-all flex items-center justify-center">
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
 
-          {/* Tier 2 — Marketing & Business Support (collapsible) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8"
-          >
+          {/* Bottom Overview Link */}
+          <div className="text-center">
             <button
-              type="button"
-              onClick={() => setShowAll(prev => !prev)}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/20 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 text-xs sm:text-sm font-medium"
+              onClick={() => {
+                navigate('/services');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="btn btn-outline"
             >
-              {showAll ? 'Hide' : 'Show'} Marketing &amp; Business Support Services ({tier2Services.length})
-              <ArrowRight
-                className={`h-4 w-4 transition-transform duration-300 ${showAll ? 'rotate-90' : ''}`}
-              />
+              <span>View Full Services Catalog &amp; Deliverables</span>
+              <ArrowRight className="h-4 w-4" />
             </button>
-          </motion.div>
+          </div>
 
-          {showAll && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="mb-6 text-center">
-                <span className="inline-block px-4 py-1.5 bg-white/10 text-white/70 rounded-full text-xs font-semibold">
-                  Marketing &amp; Growth Support Services
-                </span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {tier2Services.map((service, index) => (
-                  <ServiceCard
-                    key={service.slug}
-                    service={service}
-                    index={index}
-                    onLearnMore={handleLearnMore}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* View all services CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mt-12"
-          >
-            <button
-              type="button"
-              onClick={() => { navigate('/services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-primary rounded-full font-semibold hover:bg-opacity-90 transition-all duration-300 group shadow-xl shadow-white/10 text-sm"
-            >
-              View Full Service Catalog
-              <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-            </button>
-          </motion.div>
         </div>
       </section>
     </>

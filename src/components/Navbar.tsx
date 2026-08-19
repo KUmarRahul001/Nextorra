@@ -66,40 +66,42 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-200 ${
         scrolled
-          ? 'bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/90 shadow-2xl shadow-black/50 py-1'
-          : 'bg-slate-950/80 backdrop-blur-md border-b border-slate-800/40 py-2.5 sm:py-3'
+          ? 'bg-slate-950/95 backdrop-blur-md border-b border-slate-800 shadow-xl shadow-black/40 py-2'
+          : 'bg-slate-950/80 backdrop-blur-sm border-b border-slate-800/40 py-3 sm:py-3.5'
       }`}
       role="navigation"
       aria-label="Primary Navigation"
     >
-      <div className="container mx-auto px-3.5 xs:px-4 sm:px-6 xl:px-8">
-        <div className="flex justify-between items-center h-14 xs:h-16 sm:h-18">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-12 sm:h-14">
           {/* Logo */}
           <Link 
             to="/" 
-            className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0 group" 
+            className="flex items-center gap-2.5 flex-shrink-0" 
             aria-label="Homepage" 
             onClick={() => {
               setIsOpen(false);
               setServicesOpen(false);
             }}
           >
-            <div className="relative h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 rounded-xl overflow-hidden flex-shrink-0 p-0.5 bg-gradient-to-tr from-blue-600 to-cyan-400 group-hover:shadow-lg group-hover:shadow-blue-500/25 transition-all">
-              <div className="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
-                <img 
-                  src={logo} 
-                  alt="Rahnoxa Logo" 
-                  className="h-5 w-5 xs:h-6 xs:w-6 sm:h-7 sm:w-7 object-contain group-hover:scale-105 transition-transform" 
-                  loading="lazy" 
-                  draggable={false} 
-                />
-              </div>
+            <div className="h-8 w-8 rounded-lg overflow-hidden flex-shrink-0 bg-blue-600 flex items-center justify-center p-1 border border-blue-400/30">
+              <img 
+                src={logo} 
+                alt="Rahnoxa Logo" 
+                className="h-full w-full object-contain" 
+                loading="eager" 
+              />
             </div>
-            <span className="text-lg xs:text-xl font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
-              Rahnoxa
-            </span>
+            <div className="flex flex-col">
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-white leading-none">
+                Rahnoxa
+              </span>
+              <span className="text-[10px] text-slate-400 font-mono tracking-wider uppercase mt-0.5">
+                Engineering
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Menu (Desktop >= 1200px / xl, Tablet >= 800px / md) */}

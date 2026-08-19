@@ -283,17 +283,17 @@ const RahBot: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsOpen(true)}
-              className="flex items-center gap-2 xs:gap-2.5 px-3 xs:px-4 py-2.5 xs:py-3.5 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white rounded-full shadow-2xl hover:shadow-blue-500/25 border border-blue-400/30 transition-all group"
+              className="flex items-center gap-2 px-4 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl shadow-2xl border border-slate-700 hover:border-blue-500 transition-all group"
               aria-label="Open RahBot Assistant"
             >
-              <div className="relative">
-                <Bot className="h-4.5 w-4.5 xs:h-5 xs:w-5 text-cyan-300 group-hover:rotate-12 transition-transform" />
-                <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>
-                </span>
+              <div className="relative p-1 rounded-lg bg-blue-600/20 text-blue-400">
+                <Bot className="h-4 w-4" />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400" />
               </div>
-              <span className="font-semibold text-xs xs:text-sm tracking-wide pr-0.5 xs:pr-1">Ask RahBot</span>
+              <div className="text-left pr-1">
+                <p className="font-bold text-xs text-white leading-none">RahBot</p>
+                <p className="text-[10px] text-slate-400 font-mono mt-0.5">Engineering Assist</p>
+              </div>
             </motion.button>
           )}
         </AnimatePresence>

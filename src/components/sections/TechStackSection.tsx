@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import {
   Code2,
   Server,
@@ -7,104 +6,98 @@ import {
   Smartphone,
   Cpu,
   GitBranch,
+  ShieldCheck,
+  CheckCircle,
 } from 'lucide-react';
 
 const techCategories = [
   {
-    category: 'Frontend & UI',
-    icon: <Code2 className="h-6 w-6 text-blue-500" />,
-    description: 'Responsive, accessible, and fast web user interfaces.',
-    items: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'HTML5 / CSS3'],
+    category: 'Frontend & Client Applications',
+    icon: <Code2 className="h-5 w-5 text-blue-400" />,
+    description: 'High-performance SPAs and responsive interfaces with strict typing and modern state management.',
+    items: ['React 18', 'TypeScript', 'Tailwind CSS', 'Vite', 'Next.js', 'Framer Motion'],
   },
   {
-    category: 'Backend & APIs',
-    icon: <Server className="h-6 w-6 text-indigo-500" />,
-    description: 'Server architecture, RESTful services, and integration layers.',
-    items: ['Node.js', 'Express', 'Python', 'REST APIs', 'Webhooks'],
+    category: 'Backend & Microservices',
+    icon: <Server className="h-5 w-5 text-indigo-400" />,
+    description: 'Stateless RESTful APIs, distributed services, authentication gateways, and task schedulers.',
+    items: ['Node.js', 'Express', 'Go', 'Python', 'JWT / OAuth2', 'REST & gRPC'],
   },
   {
-    category: 'Databases & Storage',
-    icon: <Database className="h-6 w-6 text-emerald-500" />,
-    description: 'Structured data persistence, transactions, and caching.',
-    items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'],
+    category: 'Database & Persistent Storage',
+    icon: <Database className="h-5 w-5 text-emerald-400" />,
+    description: 'Relational data modeling, ACID transactions, caching layers, and object storage.',
+    items: ['PostgreSQL', 'Redis', 'Supabase', 'MySQL', 'Cloudflare R2 / S3'],
   },
   {
-    category: 'Mobile & Cross-Platform',
-    icon: <Smartphone className="h-6 w-6 text-cyan-500" />,
-    description: 'Native and hybrid mobile app engineering for iOS and Android.',
-    items: ['React Native', 'Flutter', 'Android SDK', 'iOS tooling'],
-  },
-  {
-    category: 'Desktop & Systems',
-    icon: <Cpu className="h-6 w-6 text-purple-500" />,
-    description: 'Client software running on Windows, Linux, and macOS platforms.',
-    items: ['Electron', 'Native Shell Scripts', 'Local Storage APIs'],
-  },
-  {
-    category: 'DevOps & Toolchain',
-    icon: <GitBranch className="h-6 w-6 text-amber-500" />,
-    description: 'Version control, automated build pipelines, and cloud hosting.',
-    items: ['Git & GitHub', 'Netlify Edge', 'Docker Basics', 'CI/CD Pipelines'],
+    category: 'Mobile & Multi-Platform',
+    icon: <Smartphone className="h-5 w-5 text-cyan-400" />,
+    description: 'Cross-platform mobile applications sharing business logic with native-feel interactions.',
+    items: ['React Native', 'Flutter', 'Expo SDK', 'iOS APNs', 'Android FCM'],
   },
 ];
 
 const TechStackSection: React.FC = () => {
   return (
-    <section className="py-24 bg-slate-900/90 text-white relative overflow-hidden border-y border-slate-800/80">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          <span className="inline-block px-3.5 py-1.5 bg-blue-500/10 text-cyan-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
-            Technical Stack
+    <section className="py-24 bg-slate-950 text-white relative border-b border-slate-800" id="tech-stack">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="max-w-3xl mb-16">
+          <span className="text-xs font-mono text-blue-400 uppercase tracking-widest block mb-2">
+            Engineering Infrastructure
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
-            Modern Technologies We Work With
+          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            Production-Proven Technology Stack
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg">
-            We choose reliable, community-backed frameworks and tools suited to the longevity of your software.
+          <p className="text-slate-400 text-sm sm:text-base mt-2">
+            We avoid unnecessary bleeding-edge hype. Our systems are built on battle-tested frameworks that prioritize stability, maintainability, and long-term business value.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {techCategories.map((cat, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="bg-slate-950/80 rounded-2xl border border-slate-800 p-6 shadow-xl hover:border-blue-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+        {/* 2x2 Clean Engineering Stack Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {techCategories.map((cat, index) => (
+            <div
+              key={index}
+              className="bg-slate-900 border border-slate-800 rounded-xl p-6 sm:p-8 hover:border-slate-700 transition-colors space-y-4"
             >
-              <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex-shrink-0">
-                    {cat.icon}
-                  </div>
-                  <h3 className="text-lg font-bold text-white">{cat.category}</h3>
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex-shrink-0">
+                  {cat.icon}
                 </div>
-                <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-                  {cat.description}
-                </p>
+                <h3 className="text-lg font-bold text-white">
+                  {cat.category}
+                </h3>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-800/80">
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                {cat.description}
+              </p>
+
+              <div className="pt-3 border-t border-slate-800/80 flex flex-wrap gap-2">
                 {cat.items.map((tech, i) => (
                   <span
                     key={i}
-                    className="inline-block px-2.5 py-1 bg-slate-900 text-slate-300 border border-slate-800 rounded-lg text-xs font-medium"
+                    className="text-xs font-mono bg-slate-950 border border-slate-800 text-slate-300 px-2.5 py-1 rounded"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
+
+        {/* Technical Standards Callout Row */}
+        <div className="p-6 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-emerald-400 flex-shrink-0" />
+            <span>Strict TypeScript typing &amp; automated test coverage for core business logic</span>
+          </div>
+          <span className="font-mono text-slate-500">Security: OWASP Top 10 Compliant</span>
+        </div>
+
       </div>
     </section>
   );
