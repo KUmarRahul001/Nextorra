@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
+import { ExternalLink, Sparkles, ArrowRight, Loader2, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../lib/api';
 import { projects as fallbackProjects, projectCategories as defaultCategories } from '../../data/projects';
