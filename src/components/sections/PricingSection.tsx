@@ -93,8 +93,8 @@ const PricingSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-slate-900 text-white relative overflow-hidden" id="pricing">
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-24 bg-white text-slate-900 relative overflow-hidden border-b border-slate-200" id="pricing">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -102,19 +102,19 @@ const PricingSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="inline-block px-3.5 py-1.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+          <span className="text-xs font-mono text-blue-600 font-bold uppercase tracking-widest mb-2 block">
             Transparent Pricing Models
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">
             Affordable, Flexible Engagement Models
           </h2>
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
             From single milestone builds starting at ₹4,999 to continuous monthly care plans and same-day emergency rescue — structured for Indian SMBs and startups.
           </p>
         </motion.div>
 
         {/* 3 Main Engagement Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16">
           {engagementModels.map((model, index) => (
             <motion.div
               key={index}
@@ -122,37 +122,37 @@ const PricingSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className={`rounded-3xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-200 relative ${
+              className={`rounded-3xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 relative ${
                 model.popular
-                  ? 'bg-gradient-to-b from-blue-950/90 to-slate-900 border-2 border-blue-500 shadow-2xl shadow-blue-500/20 md:-translate-y-2'
-                  : 'bg-slate-950/80 border border-slate-800 shadow-lg hover:border-slate-700'
+                  ? 'bg-white border-2 border-blue-600 shadow-xl shadow-blue-500/10 md:-translate-y-2'
+                  : 'bg-white border border-slate-200 shadow-sm hover:shadow-md'
               }`}
             >
               {model.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-blue-400/30 shadow-md">
-                  Most Popular
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                  Recommended
                 </div>
               )}
 
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-cyan-300 border border-slate-700">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-50 text-blue-700 border border-slate-200">
                     {model.badge}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-2">{model.name}</h3>
-                <p className="text-xs text-slate-400 mb-5 leading-relaxed">{model.description}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{model.name}</h3>
+                <p className="text-xs text-slate-600 mb-5 leading-relaxed">{model.description}</p>
 
-                <div className="mb-6 pb-6 border-b border-slate-800">
-                  <p className="text-2xl font-black text-white">{model.pricing}</p>
-                  <p className="text-xs text-slate-400 mt-1">{model.pricingNote}</p>
+                <div className="mb-6 pb-6 border-t border-b border-slate-100 pt-4">
+                  <p className="text-2xl font-black text-slate-900">{model.pricing}</p>
+                  <p className="text-xs text-slate-500 mt-1">{model.pricingNote}</p>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   {model.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-xs text-slate-300">
-                      <Check className="h-4 w-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                    <li key={i} className="flex items-start gap-2.5 text-xs text-slate-600">
+                      <Check className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -164,8 +164,8 @@ const PricingSection: React.FC = () => {
                 onClick={handleCtaClick}
                 className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
                   model.popular
-                    ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20'
-                    : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
+                    ? 'btn btn-primary'
+                    : 'btn btn-outline'
                 }`}
               >
                 <span>{model.cta}</span>
@@ -176,49 +176,48 @@ const PricingSection: React.FC = () => {
         </div>
 
         {/* Emergency / Rescue Section Banner */}
-        <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
             <div>
-              <span className="text-[11px] font-bold text-yellow-400 uppercase tracking-wider flex items-center gap-1.5">
-                <AlertTriangle className="h-3.5 w-3.5" />
+              <span className="text-xs font-mono text-amber-700 font-bold uppercase tracking-wider block mb-1">
                 Rahnoxa Rescue &amp; Last-Minute Saver
               </span>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+              <h3 className="text-xl font-bold text-slate-900">
                 Urgent Technical Rescue &amp; Same-Day Fixes
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-600 mt-1">
                 When time is critical and other agencies say "wait 2 weeks" — Rahnoxa provides fixed-price rapid triage.
               </p>
             </div>
             <button
-              onClick={handleCtaClick}
-              className="px-5 py-2.5 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 rounded-xl text-xs font-bold transition-colors flex-shrink-0"
+              onClick={() => navigate('/contact')}
+              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg transition-colors flex-shrink-0"
             >
               Request Emergency Triage →
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {rescueTiers.map((rescue, i) => (
-              <div key={i} className="p-4 bg-slate-900/60 rounded-xl border border-slate-800/80 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] text-yellow-400 font-mono font-bold">{rescue.sla}</span>
-                    <span className="text-sm font-extrabold text-white">{rescue.price}</span>
-                  </div>
-                  <h4 className="text-xs font-bold text-slate-200 mb-1">{rescue.title}</h4>
-                  <p className="text-[11px] text-slate-400 leading-snug">{rescue.desc}</p>
+            {rescueTiers.map((tier, idx) => (
+              <div key={idx} className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-semibold">
+                    {tier.sla}
+                  </span>
+                  <span className="text-base font-bold text-slate-900">{tier.price}</span>
                 </div>
+                <h4 className="text-sm font-bold text-slate-900">{tier.title}</h4>
+                <p className="text-xs text-slate-600 leading-relaxed">{tier.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="text-center mt-10">
-          <p className="text-xs text-slate-500">
-            All prices in INR exclude 18% GST where applicable. Serving businesses across India with dedicated 24–48 hour discovery SLAs.
-          </p>
+        {/* Footnote */}
+        <div className="text-center mt-8 text-xs text-slate-500">
+          <p>All prices in INR exclude 18% GST where applicable. Serving businesses across India with dedicated 24–48 hour discovery SLAs.</p>
         </div>
+
       </div>
     </section>
   );

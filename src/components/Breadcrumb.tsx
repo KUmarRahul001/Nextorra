@@ -52,11 +52,11 @@ const Breadcrumb: React.FC = () => {
       </Helmet>
 
       <nav className="py-4 mb-2" aria-label="Breadcrumb">
-        <ol className="flex items-center space-x-2 text-xs sm:text-sm">
+        <ol className="flex items-center space-x-2 text-xs sm:text-sm font-medium">
           <li>
             <Link
               to="/"
-              className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5"
+              className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-1.5"
             >
               <Home className="h-3.5 w-3.5" />
               <span>Home</span>
@@ -72,14 +72,14 @@ const Breadcrumb: React.FC = () => {
 
             return (
               <React.Fragment key={name}>
-                <ChevronRight className="h-3.5 w-3.5 text-slate-600 flex-shrink-0" />
+                <ChevronRight className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
                 <li>
                   {isLast ? (
-                    <span className="text-blue-400 font-medium">{formattedName}</span>
+                    <span className="text-blue-600 font-bold">{formattedName}</span>
                   ) : (
                     <Link
                       to={routeTo}
-                      className="text-slate-400 hover:text-white transition-colors"
+                      className="text-slate-500 hover:text-blue-600 transition-colors"
                     >
                       {formattedName}
                     </Link>

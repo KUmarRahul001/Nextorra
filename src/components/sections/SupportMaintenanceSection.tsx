@@ -5,22 +5,22 @@ import { useNavigate } from 'react-router-dom';
 
 const supportPillars = [
   {
-    icon: <Wrench className="h-6 w-6 text-blue-400" />,
+    icon: <Wrench className="h-5 w-5 text-blue-600" />,
     title: 'Proactive Bug Fixing & Patches',
     desc: 'Rapid diagnosis and resolution of runtime errors, dependency bugs, and UI anomalies.',
   },
   {
-    icon: <ShieldCheck className="h-6 w-6 text-indigo-400" />,
+    icon: <ShieldCheck className="h-5 w-5 text-indigo-600" />,
     title: 'Security & Dependency Upgrades',
     desc: 'Regular updates to package dependencies, framework versions, and security patches.',
   },
   {
-    icon: <RefreshCw className="h-6 w-6 text-cyan-400" />,
+    icon: <RefreshCw className="h-5 w-5 text-blue-600" />,
     title: 'Feature Extensions & Refactoring',
     desc: 'Iterative feature additions and component refactoring as your operational needs grow.',
   },
   {
-    icon: <LifeBuoy className="h-6 w-6 text-emerald-400" />,
+    icon: <LifeBuoy className="h-5 w-5 text-emerald-600" />,
     title: 'Direct Technical Support',
     desc: 'Direct communication with software developers who understand your codebase and architecture.',
   },
@@ -30,9 +30,9 @@ const SupportMaintenanceSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-20 bg-slate-900 text-white relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl p-8 sm:p-12">
+    <section className="py-24 bg-white text-slate-900 relative overflow-hidden border-b border-slate-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 sm:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <motion.div
@@ -42,23 +42,23 @@ const SupportMaintenanceSection: React.FC = () => {
               transition={{ duration: 0.6 }}
               className="lg:col-span-7"
             >
-              <span className="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+              <span className="text-xs font-mono text-blue-600 font-bold uppercase tracking-widest block mb-2">
                 Long-Term Reliability
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-4">
                 We Maintain and Support What We Build
               </h2>
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
                 Software is never finished on launch day. Rahnoxa provides reliable maintenance agreements and technical support so your applications stay secure, fast, and compatible with evolving operating environments.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {supportPillars.map((pillar, idx) => (
-                  <div key={idx} className="flex items-start gap-3 bg-slate-800/60 p-3.5 rounded-lg border border-slate-700/40">
-                    <div className="mt-0.5">{pillar.icon}</div>
+                  <div key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+                    <div className="p-1.5 rounded-lg bg-blue-50 mt-0.5">{pillar.icon}</div>
                     <div>
-                      <h4 className="text-xs font-bold text-white mb-0.5">{pillar.title}</h4>
-                      <p className="text-[11px] text-slate-400 leading-snug">{pillar.desc}</p>
+                      <h4 className="text-xs font-bold text-slate-900 mb-0.5">{pillar.title}</h4>
+                      <p className="text-[11px] text-slate-500 leading-snug">{pillar.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -70,9 +70,9 @@ const SupportMaintenanceSection: React.FC = () => {
                   navigate('/get-started');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-semibold transition-all duration-200 shadow-md shadow-blue-600/20"
+                className="btn btn-primary"
               >
-                Discuss a Support Agreement
+                <span>Discuss a Support Agreement</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             </motion.div>
@@ -82,25 +82,25 @@ const SupportMaintenanceSection: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-5 bg-slate-950/60 border border-slate-800 rounded-xl p-6 font-mono text-xs text-slate-300"
+              className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 font-mono text-xs text-slate-700 shadow-sm"
             >
-              <div className="text-slate-500 mb-3">// Rahnoxa SLA &amp; Maintenance Policy</div>
+              <div className="text-slate-500 mb-3 font-semibold">// Rahnoxa SLA &amp; Maintenance Policy</div>
               <div className="space-y-2">
-                <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-                  <span className="text-slate-400">Response Window:</span>
-                  <span className="text-emerald-400 font-semibold">&lt; 24 Business Hours</span>
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Response Window:</span>
+                  <span className="text-emerald-700 font-bold">&lt; 24 Business Hours</span>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-                  <span className="text-slate-400">Dependency Audits:</span>
-                  <span className="text-blue-400 font-semibold">Monthly Cadence</span>
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Dependency Audits:</span>
+                  <span className="text-blue-700 font-bold">Monthly Cadence</span>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-                  <span className="text-slate-400">Security Patching:</span>
-                  <span className="text-indigo-400 font-semibold">Continuous</span>
+                <div className="flex justify-between py-2 border-b border-slate-100">
+                  <span className="text-slate-500">Security Patching:</span>
+                  <span className="text-indigo-700 font-bold">Continuous</span>
                 </div>
-                <div className="flex justify-between py-1.5">
-                  <span className="text-slate-400">Code Handover:</span>
-                  <span className="text-yellow-400 font-semibold">Full Client Ownership</span>
+                <div className="flex justify-between py-2">
+                  <span className="text-slate-500">Code Handover:</span>
+                  <span className="text-slate-900 font-bold">Full Client Ownership</span>
                 </div>
               </div>
             </motion.div>

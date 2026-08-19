@@ -32,18 +32,18 @@ const Internship: React.FC = () => {
         type="website"
       />
 
-      <div className="min-h-screen bg-slate-950 text-slate-100 pt-28 pb-20 selection:bg-blue-600 selection:text-white">
+      <div className="min-h-screen bg-[#FAFCFF] text-slate-900 pt-28 pb-20 selection:bg-blue-600 selection:text-white gradient-mesh-light">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-500/10 rounded-full border border-blue-500/30 text-xs font-semibold uppercase tracking-wider text-cyan-300 mb-6">
-              <GraduationCap className="h-3.5 w-3.5" />
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-50 rounded-full border border-blue-200 text-xs font-semibold uppercase tracking-wider text-blue-700 mb-6 shadow-2xs">
+              <GraduationCap className="h-3.5 w-3.5 text-blue-600" />
               Career Acceleration
             </span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-6">
+            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
               Engineering Internship Tracks
             </h1>
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
               Work on production-grade codebases, participate in agile standups, and gain verifiable project experience under the mentorship of senior Rahnoxa engineers.
             </p>
           </div>
@@ -53,31 +53,34 @@ const Internship: React.FC = () => {
             {internships.map((internship, index) => (
               <div
                 key={index}
-                className="bg-slate-900/60 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-5 flex flex-col justify-between group hover:-translate-y-1"
+                className="bg-white border border-slate-200 hover:border-blue-300 rounded-2xl shadow-xs hover:shadow-md transition-all duration-300 p-5 flex flex-col justify-between group hover:-translate-y-1"
               >
                 <div>
-                  <div className="w-full h-40 overflow-hidden rounded-xl mb-5 bg-slate-950 border border-slate-800">
+                  <div className="w-full h-40 overflow-hidden rounded-xl mb-5 bg-slate-50 border border-slate-100">
                     <img
                       src={internship.gif}
-                      alt={`${internship.title} Internship`}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      alt={internship.title}
+                      className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
                     />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-2">
                     {internship.title}
                   </h3>
-                  <p className="text-xs text-slate-400 mb-4">
-                    Hands-on mentorship, code reviews, and live milestone delivery.
+                  <p className="text-xs text-slate-500 mb-5 leading-relaxed">
+                    Live technical assignments, real code reviews, and industry certificates.
                   </p>
                 </div>
 
-                <button
-                  onClick={() => window.open(internship.applyLink, "_blank")}
-                  className="mt-2 w-full bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-4 rounded-xl transition-all duration-200 text-sm font-semibold shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 group/btn"
+                <a
+                  href={internship.applyLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-4 bg-slate-50 hover:bg-blue-600 text-slate-700 hover:text-white border border-slate-200 hover:border-blue-600 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-2xs"
                 >
-                  <span>Apply Now</span>
-                  <ExternalLink className="h-3.5 w-3.5 transform group-hover/btn:translate-x-0.5 transition-transform" />
-                </button>
+                  <span>Apply for Track</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
               </div>
             ))}
           </div>
