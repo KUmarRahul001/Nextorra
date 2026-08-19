@@ -79,9 +79,9 @@ const TermsAndConditions: React.FC = () => {
               <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 inline-block mb-3">
                 <FiDollarSign className="h-5 w-5" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1">Milestone Payments</h3>
+              <h3 className="text-base font-bold text-slate-900 mb-1">50% / 50% Payment Model</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Transparent phased payments tied directly to tangible sprint deliverables and staging approval.
+                Simple terms: 50% advance to start development, and 50% final balance after work is completed and approved.
               </p>
             </div>
           </div>
@@ -131,17 +131,25 @@ const TermsAndConditions: React.FC = () => {
                   <FiDollarSign className="h-5 w-5" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-                  3. Commercial Pricing &amp; Payment Milestones
+                  3. Commercial Pricing &amp; Payment Structure
                 </h2>
               </div>
               <p>
-                We operate on a transparent milestone structure ensuring fairness and clarity for both parties:
+                We operate on a straightforward, predictable <strong>50/50 payment model</strong> across all custom development projects:
               </p>
-              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs sm:text-sm">
-                <p>• <strong>Fixed-Scope Projects:</strong> Typically structured as 40% initial discovery advance, 30% upon staging milestone demo, and 30% upon final production deployment and code transfer.</p>
-                <p>• <strong>Fast-Track Tasks (Under ₹10,000):</strong> 50% advance booking and 50% upon completed live deployment.</p>
-                <p>• <strong>Monthly Retainers &amp; Care Plans:</strong> Invoiced at the beginning of each billing cycle on a 30-day recurring basis.</p>
-                <p>• <strong>Taxes:</strong> All stated prices exclude 18% GST where applicable.</p>
+              <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-3 text-xs sm:text-sm">
+                <div className="flex items-start gap-3">
+                  <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-xs font-mono">50% ADVANCE</span>
+                  <p className="text-slate-700"><strong>Project Initiation &amp; Architecture:</strong> 50% upfront payment upon contract signing and requirement finalization to book the dedicated engineering slot and begin development.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs font-mono">50% FINAL</span>
+                  <p className="text-slate-700"><strong>Completion &amp; Handover:</strong> 50% final balance payable after work completion, staging approval, production deployment, and before final source code / credential handover.</p>
+                </div>
+                <div className="pt-2 border-t border-slate-200 space-y-1 text-slate-600">
+                  <p>• <strong>Monthly Retainers &amp; Care Plans:</strong> Invoiced at the beginning of each billing cycle on a 30-day recurring basis.</p>
+                  <p>• <strong>Taxes:</strong> All stated prices exclude 18% GST where applicable.</p>
+                </div>
               </div>
             </section>
 
