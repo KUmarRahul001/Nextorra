@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   FolderGit2,
@@ -45,8 +45,7 @@ const AdminLayout: React.FC = () => {
   }
 
   if (!isAuthenticated) {
-    navigate('/admin/login');
-    return null;
+    return <Navigate to="/admin/login" replace />;
   }
 
   const handleLogout = () => {
