@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiArrowRight, FiCheckCircle, FiShield, FiCode, FiLayers, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import { HiOutlineBolt } from 'react-icons/hi2';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
 type CapabilityId = 'ownership' | 'typescript' | 'erp' | 'performance';
+type InteractionPhase = 'idle' | 'swapping' | 'settling' | 'expanded';
 
 interface Capability {
   id: CapabilityId;
@@ -17,7 +18,7 @@ interface Capability {
   route: string;
   badgeBg: string;
   icon: React.ReactNode;
-  homeOffset: { x: number; y: number }; // Offset relative to center (0, 0)
+  homeOffset: { x: number; y: number }; // Coordinate offset relative to center (0, 0)
 }
 
 // 4 distinct coordinate positions around exact center (0, 0)
@@ -75,60 +76,116 @@ const capabilities: Capability[] = [
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<CapabilityId | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [phase, setPhase] = useState<InteractionPhase>('idle');
+  const containerRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<NodeJS.Timeout[]>([]);
 
-  // Click outside to collapse active capability and return RX to center
-  React.useEffect(() => {
+  const clearAllTimers = () => {
+    timerRef.current.forEach(t => clearTimeout(t));
+    timerRef.current = [];
+  };
+
+  // Close / collapse active capability back to home position
+  const closeActive = () => {
+    if (activeId === null) return;
+    clearAllTimers();
+    // 1. Collapse detail contents first
+    setPhase('swapping');
+    // 2. Animate elements back home
+    const t1 = setTimeout(() => {
+      setActiveId(null);
+      setPhase('idle');
+    }, 600);
+    timerRef.current.push(t1);
+  };
+
+  // Click outside to collapse
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        if (!isTransitioning) {
-          setActiveId(null);
+        if (activeId !== null && phase === 'expanded') {
+          closeActive();
         }
       }
     };
 
-    if (activeId !== null) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
+      clearAllTimers();
     };
-  }, [activeId, isTransitioning]);
+  }, [activeId, phase]);
 
-  const selectCapability = (id: CapabilityId) => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setActiveId(prev => (prev === id ? null : id));
-    setTimeout(() => setIsTransitioning(false), 550);
+  // Spatial Transition Sequence to open a capability
+  const openCapability = (targetId: CapabilityId) => {
+    clearAllTimers();
+    
+    // If clicking the currently active expanded capability, collapse it
+    if (activeId === targetId && phase === 'expanded') {
+      closeActive();
+      return;
+    }
+
+    // If another capability is already active, first collapse & return, then transition to target
+    if (activeId !== null && activeId !== targetId) {
+      setPhase('swapping');
+      const t1 = setTimeout(() => {
+        // Now start swap to new target
+        setActiveId(targetId);
+        setPhase('swapping');
+        
+        // After 600ms physical travel: settle
+        const t2 = setTimeout(() => {
+          setPhase('settling');
+          // After 150ms settle: reveal expanded details
+          const t3 = setTimeout(() => {
+            setPhase('expanded');
+          }, 150);
+          timerRef.current.push(t3);
+        }, 600);
+        timerRef.current.push(t2);
+      }, 500);
+      timerRef.current.push(t1);
+      return;
+    }
+
+    // Fresh transition from idle:
+    setActiveId(targetId);
+    setPhase('swapping'); // Compact node travels to (0,0) and RX travels to target's home
+
+    // 1. Physical Translation travel duration: 600ms
+    const t1 = setTimeout(() => {
+      setPhase('settling');
+      // 2. Settle period: 150ms
+      const t2 = setTimeout(() => {
+        setPhase('expanded'); // 3. Expand card and reveal detailed content
+      }, 150);
+      timerRef.current.push(t2);
+    }, 600);
+    timerRef.current.push(t1);
   };
 
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isTransitioning || activeId === null) return;
-    setIsTransitioning(true);
+    if (phase !== 'expanded' || activeId === null) return;
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
     const nextIdx = (currentIdx + 1) % capabilities.length;
-    setActiveId(capabilities[nextIdx].id);
-    setTimeout(() => setIsTransitioning(false), 550);
+    openCapability(capabilities[nextIdx].id);
   };
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isTransitioning || activeId === null) return;
-    setIsTransitioning(true);
+    if (phase !== 'expanded' || activeId === null) return;
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
     const prevIdx = (currentIdx - 1 + capabilities.length) % capabilities.length;
-    setActiveId(capabilities[prevIdx].id);
-    setTimeout(() => setIsTransitioning(false), 550);
+    openCapability(capabilities[prevIdx].id);
   };
 
-  // Find active capability object and its original home position
+  // Find active capability object
   const activeCapability = capabilities.find(c => c.id === activeId);
-  const activeIdx = capabilities.findIndex(c => c.id === activeId);
 
   // Where does RX logo travel? When active, RX translates to the active capability's homeOffset
   const rxTargetPos = activeCapability ? activeCapability.homeOffset : { x: 0, y: 0 };
@@ -228,7 +285,7 @@ const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: Spatial Position-Swap Engineering Choreography Canvas */}
+            {/* Right Column: 3-Phase Spatial Position-Swap Canvas */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -242,15 +299,15 @@ const HeroSection: React.FC = () => {
               >
                 {/* ── Subtle Static Engineering Coordinate Guides ── */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500" fill="none">
-                  {/* Subtle Static Reference Ring */}
+                  {/* Static Reference Ring */}
                   <circle cx="250" cy="250" r="160" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="4 6" opacity="0.6" />
                   
-                  {/* Cross-axial guide lines */}
+                  {/* Subtle Cross-axial guide lines */}
                   <line x1="250" y1="90" x2="250" y2="410" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="2 3" />
                   <line x1="90" y1="250" x2="410" y2="250" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="2 3" />
                 </svg>
 
-                {/* ── CENTRAL RX BRAND MARK (Spatial Translation to Active Home Position) ── */}
+                {/* ── CENTRAL RX BRAND MARK (Visibly Translates to Active Capability's Home Position) ── */}
                 <motion.div
                   animate={{ 
                     x: rxTargetPos.x, 
@@ -258,12 +315,12 @@ const HeroSection: React.FC = () => {
                     scale: activeId !== null ? 0.85 : 1,
                   }}
                   transition={{ 
-                    duration: 0.5, 
-                    ease: [0.25, 1, 0.5, 1] 
+                    duration: 0.6, 
+                    ease: [0.4, 0, 0.2, 1] 
                   }}
                   onClick={() => {
-                    if (activeId !== null && !isTransitioning) {
-                      selectCapability(activeId);
+                    if (activeId !== null && phase === 'expanded') {
+                      closeActive();
                     }
                   }}
                   className="absolute z-10 flex items-center justify-center cursor-pointer select-none"
@@ -278,12 +335,13 @@ const HeroSection: React.FC = () => {
                   />
                 </motion.div>
 
-                {/* ── 4 CAPABILITY NODES (Spatial Translation to Center & In-Center Expansion) ── */}
+                {/* ── 4 CAPABILITY NODES (Visibly Move First as Compact Nodes, Then Expand Once Centered) ── */}
                 {capabilities.map((cap, idx) => {
                   const isActive = activeId === cap.id;
                   const isOther = activeId !== null && !isActive;
+                  const isFullyExpanded = isActive && phase === 'expanded';
 
-                  // Target spatial position: If active, move to (0, 0) [Exact Center], otherwise stay at homeOffset
+                  // Target coordinates: Active node translates to (0, 0) [Exact Center], inactive stays at homeOffset
                   const targetPosition = isActive ? { x: 0, y: 0 } : cap.homeOffset;
 
                   return (
@@ -296,26 +354,26 @@ const HeroSection: React.FC = () => {
                         zIndex: isActive ? 40 : 20,
                       }}
                       transition={{
-                        x: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
-                        y: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+                        x: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
+                        y: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
                         opacity: { duration: 0.3 },
                       }}
                       className="absolute"
                     >
                       <button
                         type="button"
-                        onClick={() => selectCapability(cap.id)}
-                        aria-expanded={isActive}
+                        onClick={() => openCapability(cap.id)}
+                        aria-expanded={isFullyExpanded}
                         aria-label={`${cap.title} capability node`}
-                        disabled={isTransitioning}
-                        className={`text-left rounded-xl bg-white border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 ${
-                          isActive
+                        disabled={phase === 'swapping'}
+                        className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 ${
+                          isFullyExpanded
                             ? 'w-[290px] sm:w-[340px] p-5 shadow-2xl shadow-blue-500/15 border-blue-400'
                             : 'w-[175px] sm:w-[190px] px-3.5 py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm cursor-pointer'
                         }`}
                       >
-                        {!isActive ? (
-                          /* Compact State at Home Position */
+                        {!isFullyExpanded ? (
+                          /* Compact State (Stays compact during the entire movement phase!) */
                           <div className="flex items-center gap-2.5">
                             <span className="flex-shrink-0 text-slate-600">
                               {cap.icon}
@@ -330,11 +388,11 @@ const HeroSection: React.FC = () => {
                             </div>
                           </div>
                         ) : (
-                          /* Expanded State at EXACT CENTER */
+                          /* Expanded State (ONLY reveals AFTER Arrival & Settle at exact center!) */
                           <motion.div
-                            initial={{ opacity: 0 }}
+                            initial={{ opacity: 0, height: 'auto' }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.25, delay: 0.15 }}
+                            transition={{ duration: 0.3 }}
                             className="space-y-3.5"
                           >
                             {/* Header */}
