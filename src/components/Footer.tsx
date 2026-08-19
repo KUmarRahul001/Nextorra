@@ -44,22 +44,15 @@ const Footer: React.FC = () => {
                 navigate('/');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="flex items-center gap-3 mb-4 text-left group"
+              className="mb-4 text-left group inline-block focus:outline-none"
+              aria-label="Rahnoxa Home"
             >
               <img 
-                src="/brand/logo-symbol-transparent.png" 
+                src="/brand/logo-horizontal-transparent.png" 
                 alt="Rahnoxa Logo" 
-                className="h-10 w-auto object-contain transition-transform group-hover:scale-105" 
+                className="h-11 w-auto object-contain transition-transform group-hover:scale-[1.02]" 
                 loading="eager" 
               />
-              <div className="flex flex-col">
-                <span className="text-2xl font-black tracking-tight text-slate-900 leading-none">
-                  RAHNOXA
-                </span>
-                <span className="text-[10px] text-blue-600 font-mono tracking-widest uppercase font-bold mt-0.5">
-                  ENGINEERING
-                </span>
-              </div>
             </button>
 
             <p className="text-slate-600 mb-6 max-w-sm text-sm leading-relaxed">
