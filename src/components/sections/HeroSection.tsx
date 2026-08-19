@@ -1,84 +1,132 @@
 import React, { useEffect, useRef } from 'react';
-import { ArrowRight, CheckCircle2, Terminal, Shield, Zap, Database } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Shield, Zap, Terminal, Database, Server, Cpu } from 'lucide-react';
+import { SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiFramer, SiDocker, SiRedis, SiTailwindcss } from 'react-icons/si';
 import { motion } from 'framer-motion';
 import Typed from 'typed.js';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
-/* ─── Architectural Technical Preview (Real Engineering Artifacts) ─── */
-const ArchitectureBlueprint: React.FC = () => {
+/* ─── Isometric 3D Technology Cube / Floating Badge ─── */
+const Isometric3DCanvas: React.FC = () => {
   return (
-    <div className="relative w-full max-w-lg mx-auto bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
-      {/* Top Console Bar */}
-      <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-          <div className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-          <div className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-          <span className="text-[11px] font-mono text-slate-400 ml-2">rahnoxa-core-architecture.ts</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">Production Ready</span>
-        </div>
-      </div>
+    <div className="relative w-full max-w-lg mx-auto aspect-[4/3] flex items-center justify-center select-none">
+      {/* Subtle depth lighting */}
+      <div className="absolute w-72 h-72 bg-blue-600/10 rounded-full blur-[90px] pointer-events-none" />
+      <div className="absolute w-56 h-56 bg-indigo-600/10 rounded-full blur-[70px] pointer-events-none" />
 
-      {/* Structured Technical Diagram & Code */}
-      <div className="p-5 font-mono text-xs text-slate-300 space-y-4">
-        {/* Layer 1: Client Gateway */}
-        <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <Zap className="h-4 w-4 text-blue-400" />
-            <div>
-              <p className="text-white font-semibold text-xs">Edge API &amp; React Gateway</p>
-              <p className="text-[10px] text-slate-500">Global CDN · TLS 1.3 · Sub-150ms</p>
-            </div>
+      {/* Central Interactive 3D Perspective Architecture Hub */}
+      <motion.div
+        animate={{ y: [-8, 8, -8] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        className="relative z-10 w-full p-6 sm:p-7 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-md"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: 'perspective(1000px) rotateX(4deg) rotateY(-4deg)',
+        }}
+      >
+        {/* Terminal Header */}
+        <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
+          <div className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+            <span className="text-[11px] font-mono text-slate-400 ml-2 flex items-center gap-1.5">
+              <Terminal className="h-3 w-3 text-blue-400" />
+              rahnoxa-stack.config.ts
+            </span>
           </div>
-          <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            HTTP/3
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            Active Cluster
           </span>
         </div>
 
-        {/* Connector Line */}
-        <div className="w-0.5 h-4 bg-slate-700 mx-auto" />
-
-        {/* Layer 2: Core Domain Services */}
-        <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <Terminal className="h-4 w-4 text-indigo-400" />
-            <div>
-              <p className="text-white font-semibold text-xs">Modular ERP &amp; Microservices</p>
-              <p className="text-[10px] text-slate-500">Node.js · Go · RBAC Multi-Tenant Engine</p>
+        {/* 3D Tech Grid of Verified Enterprise Icons */}
+        <div className="grid grid-cols-2 gap-3.5 mb-5 font-mono text-xs">
+          {/* React + Framer Motion */}
+          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <SiReact className="h-4 w-4 animate-[spin_10s_linear_infinite]" />
+              </div>
+              <div>
+                <p className="text-white font-semibold text-xs">React &amp; Vite</p>
+                <p className="text-[10px] text-slate-500">Frontend SPA</p>
+              </div>
             </div>
+            <SiFramer className="h-3.5 w-3.5 text-pink-400" title="Framer Motion" />
           </div>
-          <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-            REST / gRPC
-          </span>
+
+          {/* TypeScript & Tailwind */}
+          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                <SiTypescript className="h-4 w-4" />
+              </div>
+              <div>
+                <p className="text-white font-semibold text-xs">TypeScript</p>
+                <p className="text-[10px] text-slate-500">Strict Typing</p>
+              </div>
+            </div>
+            <SiTailwindcss className="h-3.5 w-3.5 text-cyan-400" title="Tailwind CSS" />
+          </div>
+
+          {/* Node.js & Docker */}
+          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <SiNodedotjs className="h-4 w-4" />
+              </div>
+              <div>
+                <p className="text-white font-semibold text-xs">Node.js Engine</p>
+                <p className="text-[10px] text-slate-500">REST / Microservices</p>
+              </div>
+            </div>
+            <SiDocker className="h-3.5 w-3.5 text-blue-400" title="Docker Containerization" />
+          </div>
+
+          {/* PostgreSQL & Redis */}
+          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between group hover:border-blue-500/40 transition-colors">
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <SiPostgresql className="h-4 w-4" />
+              </div>
+              <div>
+                <p className="text-white font-semibold text-xs">PostgreSQL</p>
+                <p className="text-[10px] text-slate-500">ACID Relational</p>
+              </div>
+            </div>
+            <SiRedis className="h-3.5 w-3.5 text-rose-500" title="Redis In-Memory Cache" />
+          </div>
         </div>
 
-        {/* Connector Line */}
-        <div className="w-0.5 h-4 bg-slate-700 mx-auto" />
-
-        {/* Layer 3: Persistence & Caching */}
-        <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <Database className="h-4 w-4 text-emerald-400" />
-            <div>
-              <p className="text-white font-semibold text-xs">PostgreSQL Cluster &amp; Redis Cache</p>
-              <p className="text-[10px] text-slate-500">ACID Compliant · Read Replicas · Automated Backups</p>
-            </div>
+        {/* Real-time Telemetry SLA Footer */}
+        <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-slate-300">Engineered with Precision</span>
           </div>
-          <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            Encrypted
-          </span>
+          <span className="text-blue-400">v2.4.0 Live</span>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Footer Metrics */}
-      <div className="px-5 py-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-        <span>Delivery SLA: <strong className="text-white">Strict Milestones</strong></span>
-        <span>Availability: <strong className="text-emerald-400">99.9% Uptime</strong></span>
-      </div>
+      {/* Floating 3D Micro-Chips */}
+      <motion.div
+        animate={{ y: [6, -10, 6], rotate: [0, 4, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+        className="absolute -top-3 -right-2 p-2.5 rounded-xl bg-slate-900/95 border border-slate-700 shadow-xl flex items-center gap-2 z-20"
+      >
+        <SiReact className="h-4 w-4 text-cyan-400 animate-spin" />
+        <span className="text-[11px] font-mono text-white font-bold">React 18</span>
+      </motion.div>
+
+      <motion.div
+        animate={{ y: [-6, 8, -6], rotate: [0, -4, 0] }}
+        transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        className="absolute -bottom-3 -left-2 p-2.5 rounded-xl bg-slate-900/95 border border-slate-700 shadow-xl flex items-center gap-2 z-20"
+      >
+        <SiFramer className="h-4 w-4 text-pink-400" />
+        <span className="text-[11px] font-mono text-white font-bold">Framer Motion</span>
+      </motion.div>
     </div>
   );
 };
@@ -186,9 +234,9 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Architectural Blueprint Card */}
+            {/* Right Column: 3D Isometric Architecture Canvas with React & Framer Icons */}
             <div className="lg:col-span-5 w-full">
-              <ArchitectureBlueprint />
+              <Isometric3DCanvas />
             </div>
 
           </div>
