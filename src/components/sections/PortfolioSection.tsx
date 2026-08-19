@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Sparkles, ArrowRight } from 'lucide-react';
+import { ExternalLink, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { projects, projectCategories } from '../../data/projects';
+import { api } from '../../lib/api';
+import { projects as fallbackProjects, projectCategories as defaultCategories } from '../../data/projects';
 
 const ALL_LABEL = 'All';
 
@@ -10,14 +11,64 @@ const ALL_LABEL = 'All';
 const cn = (...classes: string[]) => classes.filter(Boolean).join(' ');
 
 const PortfolioSection: React.FC = () => {
+  const [dbProjects, setDbProjects] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>(ALL_LABEL);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchLiveProjects = async () => {
+      try {
+        const res = await api.getProjects('PUBLISHED');
+        if (res && res.projects && res.projects.length > 0) {
+          // Normalize projects data from DB
+          const normalized = res.projects.map((p: any) => ({
+            id: p.id,
+            title: p.title,
+            category: p.category,
+            tags: Array.isArray(p.technologies)
+              ? p.technologies
+              : typeof p.technologies === 'string'
+              ? p.technologies.split(',').map((t: string) => t.trim())
+              : ['Engineering'],
+            description: p.short_description || p.full_description || '',
+            images: Array.isArray(p.images) && p.images.length > 0
+              ? p.images
+              : [p.thumbnail || '/assets/image.png'],
+            demoUrl: p.demo_url,
+            githubUrl: p.github_url,
+            featured: Boolean(p.featured),
+          }));
+          setDbProjects(normalized);
+        } else {
+          setDbProjects(fallbackProjects);
+        }
+      } catch (err) {
+        console.warn('Could not fetch remote projects from API, using catalog items:', err);
+        setDbProjects(fallbackProjects);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLiveProjects();
+  }, []);
+
+  const activeProjects = dbProjects.length > 0 ? dbProjects : fallbackProjects;
+
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    activeProjects.forEach((p) => {
+      if (p.category) cats.add(p.category);
+    });
+    return Array.from(cats).length > 0 ? Array.from(cats) : defaultCategories;
+  }, [activeProjects]);
+
   const filteredItems = useMemo(() => {
-    if (activeCategory === ALL_LABEL) return projects;
-    return projects.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
+    if (activeCategory === ALL_LABEL) return activeProjects;
+    return activeProjects.filter((item) => item.category === activeCategory);
+  }, [activeCategory, activeProjects]);
 
   const handleCategoryChange = useCallback((category: string) => {
     setActiveCategory(category);
@@ -53,7 +104,7 @@ const PortfolioSection: React.FC = () => {
 
         {/* Filter Tabs */}
         <div className="flex flex-wrap justify-center gap-2.5 mb-14">
-          {[ALL_LABEL, ...projectCategories].map((category, index) => (
+          {[ALL_LABEL, ...categories].map((category, index) => (
             <motion.button
               key={category}
               type="button"
