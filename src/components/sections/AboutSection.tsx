@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Layers, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Target, Layers, ShieldCheck, CheckCircle2, UserCheck } from 'lucide-react';
 
 const AboutSection: React.FC = () => {
   return (
@@ -21,35 +21,35 @@ const AboutSection: React.FC = () => {
             </span>
 
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-4">
-              Engineering Custom Software For Modern Organizations
+              Direct Engineering &amp; Software Solutions
             </h2>
 
             <p className="text-slate-600 text-base leading-relaxed mb-4">
-              Rahnoxa is a software development and technology solutions company. We specialize in designing, building, and deploying digital applications — including web platforms, mobile apps, enterprise ERP modules, SaaS products, and custom API integrations.
+              Rahnoxa is a specialized software development consultancy founded and run by an independent software engineer. You work directly with the builder who designs your architecture, writes your production code, and configures your cloud deployments.
             </p>
 
             <p className="text-slate-500 text-sm leading-relaxed mb-8">
-              We work with startups, growing SMEs, and enterprise teams seeking reliable technical partners who can translate operational needs into robust software systems.
+              No middle management, no junior handoffs, and no bureaucratic communication layers. Direct, transparent developer-to-client collaboration on web applications, enterprise ERPs, APIs, and mobile systems.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs">
                 <div className="flex items-center gap-2 mb-2 text-blue-600 font-bold text-base">
                   <Target className="h-5 w-5" />
-                  <span>Our Mission</span>
+                  <span>My Mission</span>
                 </div>
                 <p className="text-slate-600 text-xs leading-relaxed">
-                  To deliver tailored software solutions that solve concrete operational challenges and create sustainable technical advantage for our clients.
+                  To deliver tailored software solutions that solve concrete operational bottlenecks with high reliability and zero technical debt.
                 </p>
               </div>
 
               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs">
                 <div className="flex items-center gap-2 mb-2 text-indigo-600 font-bold text-base">
                   <Layers className="h-5 w-5" />
-                  <span>Our Philosophy</span>
+                  <span>Engineering Philosophy</span>
                 </div>
                 <p className="text-slate-600 text-xs leading-relaxed">
-                  Architecture first, clean code throughout, and milestone-based transparency from initial discovery to production deployment.
+                  Architecture first, strict TypeScript typing, and milestone-based transparency from initial discovery to deployment.
                 </p>
               </div>
             </div>
@@ -65,35 +65,35 @@ const AboutSection: React.FC = () => {
           >
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
               <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
-                <ShieldCheck className="h-6 w-6" />
+                <UserCheck className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">How We Deliver</h3>
-                <p className="text-xs text-slate-500 font-mono">Our engineering commitments on every project</p>
+                <h3 className="text-xl font-bold text-slate-900">How I Deliver</h3>
+                <p className="text-xs text-slate-500 font-mono">Independent developer commitments on every project</p>
               </div>
             </div>
 
             <div className="space-y-4">
               {[
                 {
+                  title: '1-on-1 Direct Engineering Access',
+                  desc: 'You communicate directly with the engineer building your system throughout the entire project.',
+                },
+                {
                   title: 'Requirements-First Scoping',
-                  desc: 'We map user journeys, operational dependencies, and integration endpoints before writing production code.',
+                  desc: 'User journeys, operational dependencies, and integration endpoints are mapped before writing production code.',
                 },
                 {
                   title: 'Modular & Maintainable Codebases',
-                  desc: 'We use structured TypeScript, componentized layouts, and clean API contracts to make future upgrades painless.',
+                  desc: 'Clean, typed codebases with componentized layouts and type-safe API contracts for easy future scaling.',
                 },
                 {
                   title: 'Data Security & Role Isolation',
-                  desc: 'We design applications with secure authentication, access control, and protected data schemas from day one.',
+                  desc: 'Secure authentication, access controls, and protected schemas designed from day one.',
                 },
                 {
-                  title: 'Responsive & Accessible Across Devices',
-                  desc: 'Every web and mobile interface is tested across screen dimensions, browser engines, and touch interfaces.',
-                },
-                {
-                  title: 'Transparent Collaboration',
-                  desc: 'Regular milestone check-ins, staging preview environments, and direct technical communication throughout the project.',
+                  title: 'Milestone Review & 100% Code Ownership',
+                  desc: 'Weekly staging previews, continuous feedback, and complete client ownership of code repositories.',
                 },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">

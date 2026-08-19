@@ -230,7 +230,7 @@ export const RahBot: React.FC = () => {
         {
           id: `lead-success-${Date.now()}`,
           role: 'assistant',
-          content: `✅ **Thank you, ${leadForm.name}!**\n\nYour project enquiry for **${leadForm.service}** has been securely registered with our engineering team. We review all technical requirements and reply via email / WhatsApp within **24–48 hours** with a formal architecture breakdown.\n\nYou can also contact us directly at **contact.rahnoxa@protonmail.com** or **+91 8434237052**.`,
+          content: `✅ **Thank you, ${leadForm.name}!**\n\nYour project enquiry for **${leadForm.service}** has been received. I personally review all technical requirements and reply via email / WhatsApp within **24–48 hours** with a scoped architecture breakdown.\n\nYou can also contact me directly at **contact.rahnoxa@protonmail.com** or **+91 8434237052**.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);

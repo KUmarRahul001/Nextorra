@@ -71,7 +71,7 @@ const ContactPage: React.FC = () => {
         submitted: true,
         error: false,
         message:
-          "Thank you! Your project enquiry has been submitted. The Rahnoxa engineering team will follow up within 24 hours.",
+          "Thank you! Your project enquiry has been submitted. I will personally review your technical requirements and follow up within 24 hours.",
       });
       setFormData({
         name: "",
