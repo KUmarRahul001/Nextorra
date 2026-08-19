@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
 
 type CapabilityId = 'ownership' | 'typescript' | 'erp' | 'performance';
-type InteractionPhase = 'idle' | 'swapping' | 'settled' | 'expanded';
 
 interface Capability {
   id: CapabilityId;
@@ -76,32 +75,18 @@ const capabilities: Capability[] = [
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<CapabilityId | null>(null);
-  const [phase, setPhase] = useState<InteractionPhase>('idle');
   const containerRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout[]>([]);
-
-  const clearAllTimers = () => {
-    timerRef.current.forEach(t => clearTimeout(t));
-    timerRef.current = [];
-  };
 
   // Close / Final Reset back to IDLE
   const closeActive = () => {
-    if (activeId === null) return;
-    clearAllTimers();
-    setPhase('swapping');
-    const t1 = setTimeout(() => {
-      setActiveId(null);
-      setPhase('idle');
-    }, 550);
-    timerRef.current.push(t1);
+    setActiveId(null);
   };
 
   // Click outside to collapse back to IDLE
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        if (activeId !== null && (phase === 'settled' || phase === 'expanded')) {
+        if (activeId !== null) {
           closeActive();
         }
       }
@@ -113,85 +98,45 @@ const HeroSection: React.FC = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
-      clearAllTimers();
     };
-  }, [activeId, phase]);
+  }, [activeId]);
 
-  // Click handler on capability node
-  const handleNodeClick = (targetId: CapabilityId) => {
-    if (phase === 'swapping') return;
-    clearAllTimers();
+  // Direct Click handler on capability node
+  const handleNodeClick = (targetId: CapabilityId, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
 
-    // 1. If this capability is currently settled at center -> Second click expands details!
-    if (activeId === targetId && phase === 'settled') {
-      setPhase('expanded');
-      return;
-    }
-
-    // 2. If it's already expanded and clicked -> Collapse back home to IDLE
-    if (activeId === targetId && phase === 'expanded') {
+    // If clicking the currently active expanded capability -> Collapse it
+    if (activeId === targetId) {
       closeActive();
       return;
     }
 
-    // 3. If another capability is active -> Return previous home, then swap new one to center & SETTLE
-    if (activeId !== null && activeId !== targetId) {
-      setPhase('swapping');
-      const t1 = setTimeout(() => {
-        setActiveId(targetId);
-        setPhase('swapping');
-        // Travel duration (550ms) -> Arrive and settle in center (waiting for second click to expand!)
-        const t2 = setTimeout(() => {
-          setPhase('settled');
-        }, 550);
-        timerRef.current.push(t2);
-      }, 400);
-      timerRef.current.push(t1);
-      return;
-    }
-
-    // 4. Fresh swap from idle: Node travels to center, RX travels to node's home -> SETTLED
+    // Direct swap and expand target capability!
     setActiveId(targetId);
-    setPhase('swapping');
-
-    const t1 = setTimeout(() => {
-      setPhase('settled');
-    }, 550);
-    timerRef.current.push(t1);
   };
 
   // NEXT BUTTON / BACK TO OVERVIEW HANDLER
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (activeId === null || phase === 'swapping') return;
+    if (activeId === null) return;
 
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
 
-    // Requirement B: If on the 4th (final) capability, "Back to Overview" performs Final Reset to IDLE!
+    // If on the 4th (final) capability, "Back to Overview" performs Final Reset to IDLE!
     if (currentIdx === capabilities.length - 1) {
       closeActive();
       return;
     }
 
-    // Next capability (1 -> 2, 2 -> 3, 3 -> 4) -> Swap to center and SETTLE (waiting for user click!)
+    // Move to next capability in sequence
     const nextIdx = currentIdx + 1;
-    clearAllTimers();
-    setPhase('swapping');
-    const t1 = setTimeout(() => {
-      setActiveId(capabilities[nextIdx].id);
-      setPhase('swapping');
-      const t2 = setTimeout(() => {
-        setPhase('settled');
-      }, 550);
-      timerRef.current.push(t2);
-    }, 400);
-    timerRef.current.push(t1);
+    setActiveId(capabilities[nextIdx].id);
   };
 
   // PREV BUTTON HANDLER
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (activeId === null || phase === 'swapping') return;
+    if (activeId === null) return;
 
     const currentIdx = capabilities.findIndex(c => c.id === activeId);
     if (currentIdx === 0) {
@@ -200,17 +145,7 @@ const HeroSection: React.FC = () => {
     }
 
     const prevIdx = currentIdx - 1;
-    clearAllTimers();
-    setPhase('swapping');
-    const t1 = setTimeout(() => {
-      setActiveId(capabilities[prevIdx].id);
-      setPhase('swapping');
-      const t2 = setTimeout(() => {
-        setPhase('settled');
-      }, 550);
-      timerRef.current.push(t2);
-    }, 400);
-    timerRef.current.push(t1);
+    setActiveId(capabilities[prevIdx].id);
   };
 
   // Find active capability object
@@ -316,7 +251,7 @@ const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: Click-to-Expand Spatial Position-Swap Canvas */}
+            {/* Right Column: Spatial Position-Swap Details Canvas */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -335,7 +270,7 @@ const HeroSection: React.FC = () => {
                   <line x1="90" y1="250" x2="410" y2="250" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="2 3" />
                 </svg>
 
-                {/* ── CENTRAL RX BRAND MARK (Visibly Translates to Active Capability's Home Position) ── */}
+                {/* ── CENTRAL RX BRAND MARK (Translates to Active Capability's Home Position) ── */}
                 <motion.div
                   animate={{ 
                     x: rxTargetPos.x, 
@@ -343,11 +278,11 @@ const HeroSection: React.FC = () => {
                     scale: activeId !== null ? 0.85 : 1,
                   }}
                   transition={{ 
-                    duration: 0.55, 
-                    ease: [0.4, 0, 0.2, 1] 
+                    duration: 0.5, 
+                    ease: [0.25, 1, 0.5, 1] 
                   }}
                   onClick={() => {
-                    if (activeId !== null && (phase === 'settled' || phase === 'expanded')) {
+                    if (activeId !== null) {
                       closeActive();
                     }
                   }}
@@ -363,12 +298,10 @@ const HeroSection: React.FC = () => {
                   />
                 </motion.div>
 
-                {/* ── 4 CAPABILITY NODES (Move to Center -> Settle -> Second Click Expands Details) ── */}
+                {/* ── 4 CAPABILITY NODES (Move to Center & Expand Details directly on Click!) ── */}
                 {capabilities.map((cap, idx) => {
                   const isActive = activeId === cap.id;
                   const isOther = activeId !== null && !isActive;
-                  const isSettledAtCenter = isActive && phase === 'settled';
-                  const isFullyExpanded = isActive && phase === 'expanded';
 
                   // Target coordinates: Active node translates to (0, 0) [Exact Center], inactive stays at homeOffset
                   const targetPosition = isActive ? { x: 0, y: 0 } : cap.homeOffset;
@@ -383,32 +316,25 @@ const HeroSection: React.FC = () => {
                         zIndex: isActive ? 40 : 20,
                       }}
                       transition={{
-                        x: { duration: 0.55, ease: [0.4, 0, 0.2, 1] },
-                        y: { duration: 0.55, ease: [0.4, 0, 0.2, 1] },
+                        x: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+                        y: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
                         opacity: { duration: 0.3 },
                       }}
                       className="absolute"
                     >
                       <button
                         type="button"
-                        onClick={() => handleNodeClick(cap.id)}
-                        aria-expanded={isFullyExpanded}
-                        aria-label={
-                          isSettledAtCenter 
-                            ? `Click to open ${cap.title} details` 
-                            : `${cap.title} capability node`
-                        }
-                        disabled={phase === 'swapping'}
+                        onClick={(e) => handleNodeClick(cap.id, e)}
+                        aria-expanded={isActive}
+                        aria-label={`${cap.title} capability node`}
                         className={`text-left rounded-xl bg-white border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/40 ${
-                          isFullyExpanded
+                          isActive
                             ? 'w-[290px] sm:w-[340px] p-5 shadow-2xl shadow-blue-500/15 border-blue-400 ring-1 ring-blue-400/20'
-                            : isSettledAtCenter
-                            ? 'w-[210px] sm:w-[230px] px-4 py-3 shadow-lg border-blue-500 ring-2 ring-blue-500/20 cursor-pointer animate-pulse'
                             : 'w-[175px] sm:w-[190px] px-3.5 py-2.5 shadow-xs border-slate-200 hover:border-blue-300 hover:shadow-sm cursor-pointer'
                         }`}
                       >
-                        {!isFullyExpanded ? (
-                          /* Compact State (During Transit & While Settled at Center) */
+                        {!isActive ? (
+                          /* Compact State at Home Position */
                           <div className="flex items-center gap-2.5">
                             <span className={`p-1.5 rounded-lg border ${cap.badgeBg} flex-shrink-0`}>
                               {cap.icon}
@@ -417,24 +343,17 @@ const HeroSection: React.FC = () => {
                               <span className="text-xs font-bold text-slate-800 tracking-tight block truncate">
                                 {cap.label}
                               </span>
-                              <div className="flex items-center justify-between mt-0.5">
-                                <span className={`text-[9.5px] font-mono font-semibold block ${isSettledAtCenter ? 'text-blue-600' : 'text-slate-400'}`}>
-                                  {isSettledAtCenter ? 'Click to open details ↵' : 'Click to explore'}
-                                </span>
-                                {isSettledAtCenter && (
-                                  <span className="text-[9px] font-mono text-slate-400 bg-slate-100 px-1 rounded ml-1">
-                                    0{idx + 1}/04
-                                  </span>
-                                )}
-                              </div>
+                              <span className="text-[9.5px] font-mono text-slate-400 block mt-0.5">
+                                Click to explore
+                              </span>
                             </div>
                           </div>
                         ) : (
-                          /* Expanded State (Triggered strictly on second click of centered node!) */
+                          /* Expanded Details State at EXACT CENTER */
                           <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.25 }}
+                            transition={{ duration: 0.25, delay: 0.15 }}
                             className="space-y-3.5"
                           >
                             {/* Header */}
