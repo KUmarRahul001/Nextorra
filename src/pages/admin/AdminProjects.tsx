@@ -343,7 +343,7 @@ const AdminProjects: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Short Description *</label>
+                <label className="block text-slate-300 font-medium mb-1">Short Summary *</label>
                 <textarea
                   required
                   rows={2}
@@ -355,12 +355,47 @@ const AdminProjects: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Thumbnail Asset URL</label>
+                <label className="block text-slate-300 font-medium mb-1">Full Case Study &amp; Architecture Details</label>
+                <textarea
+                  rows={4}
+                  value={formData.full_description}
+                  onChange={(e) => setFormData({ ...formData, full_description: e.target.value })}
+                  placeholder="Detailed architectural breakdown, business challenges solved, database design, and key milestones..."
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-300 font-medium mb-1">Live Demo / Preview URL</label>
+                  <input
+                    type="url"
+                    value={formData.demo_url}
+                    onChange={(e) => setFormData({ ...formData, demo_url: e.target.value })}
+                    placeholder="https://client-preview.rahnoxa.com"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-medium mb-1">GitHub / Code URL</label>
+                  <input
+                    type="url"
+                    value={formData.github_url}
+                    onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
+                    placeholder="https://github.com/organization/repo"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">Thumbnail / Gallery Image Asset URL</label>
                 <input
                   type="text"
                   value={formData.thumbnail}
                   onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
-                  placeholder="/assets/image.png"
+                  placeholder="/src/components/assets/image.png"
                   className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
                 />
               </div>

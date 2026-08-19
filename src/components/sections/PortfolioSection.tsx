@@ -55,6 +55,8 @@ const PortfolioSection: React.FC = () => {
     fetchLiveProjects();
   }, []);
 
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const activeProjects = dbProjects.length > 0 ? dbProjects : fallbackProjects;
 
   const categories = useMemo(() => {
@@ -140,34 +142,51 @@ const PortfolioSection: React.FC = () => {
               onMouseLeave={() => setHoveredItem(null)}
             >
               <div className="relative overflow-hidden rounded-2xl bg-slate-900/90 border border-slate-800/80 shadow-2xl transition-all duration-500 hover:border-blue-500/40 hover:-translate-y-1.5 flex flex-col h-full">
-                {/* Image Container */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
+                {/* Image Container (Click to Zoom Preview) */}
+                <div
+                  onClick={() => setSelectedImage(item.images[0])}
+                  className="relative aspect-[16/10] overflow-hidden bg-slate-950 cursor-pointer group/img"
+                  title="Click to zoom image"
+                >
                   <img
                     src={item.images[0] as unknown as string}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
                     loading="lazy"
                   />
+                  
                   {/* Category Pill */}
                   <span className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md text-cyan-300 border border-cyan-500/30 text-[11px] font-bold px-3 py-1 rounded-full z-10 shadow-lg">
                     {item.category}
                   </span>
+
+                  {/* Zoom indicator on hover */}
+                  <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-700 text-white text-[11px] font-medium shadow-xl flex items-center gap-1.5">
+                      <Sparkles className="h-3 w-3 text-cyan-400" />
+                      Click to Zoom Image
+                    </span>
+                  </div>
                 </div>
 
                 {/* Content Block */}
                 <div className="p-6 flex flex-col justify-between flex-grow">
                   <div>
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
-                      {item.title}
+                    <h3
+                      onClick={() => navigate(`/projects/${item.slug || item.id}`)}
+                      className="text-lg font-bold text-white mb-2 hover:text-blue-400 transition-colors cursor-pointer flex items-center justify-between group-hover:text-blue-400"
+                    >
+                      <span>{item.title}</span>
+                      <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400 flex-shrink-0 ml-2" />
                     </h3>
                     <p className="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed mb-4">
                       {item.description}
                     </p>
                   </div>
 
-                  <div>
-                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-800/60">
-                      {item.tags.map((tag, i) => (
+                  <div className="pt-3 border-t border-slate-800/60 flex flex-col gap-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {item.tags.map((tag: string, i: number) => (
                         <span
                           key={i}
                           className="text-[11px] font-medium bg-slate-800/80 text-slate-300 border border-slate-700/50 px-2 py-0.5 rounded-md"
@@ -176,6 +195,14 @@ const PortfolioSection: React.FC = () => {
                         </span>
                       ))}
                     </div>
+
+                    <button
+                      onClick={() => navigate(`/projects/${item.slug || item.id}`)}
+                      className="w-full mt-1 py-2 rounded-xl bg-slate-800/60 hover:bg-blue-600 text-slate-200 hover:text-white border border-slate-700/80 hover:border-blue-500 text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <span>View Full Case Study &amp; Specs</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -201,6 +228,27 @@ const PortfolioSection: React.FC = () => {
           </button>
         </motion.div>
       </div>
+
+      {/* ── Image Lightbox Modal for Zooming ── */}
+      {selectedImage && (
+        <div
+          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8 cursor-zoom-out animate-in fade-in duration-200"
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-6 right-6 p-3 rounded-full bg-slate-900 border border-slate-700 text-slate-300 hover:text-white shadow-2xl transition-colors"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <img
+            src={selectedImage}
+            alt="Full size showcase preview"
+            className="max-w-full max-h-[90vh] object-contain rounded-2xl border border-slate-800 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </section>
   );
 };

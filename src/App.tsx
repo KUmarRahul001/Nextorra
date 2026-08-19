@@ -14,6 +14,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const TermsAndConditions = lazy(() => import("./TermsAndConditions"));
 const PrivacyPolicy = lazy(() => import("./PrivacyPolicy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 
 // ── Tier 1: Software & Engineering (lazy loaded) ──
 const WebsiteDesign = lazy(() => import("./pages/services/WebsiteDesign"));
@@ -94,6 +95,9 @@ function App() {
 
               {/* 💼 Services Overview */}
               <Route path="services" element={<ServicesOverview />} />
+
+              {/* 🚀 Dynamic Project Showcase Details */}
+              <Route path="projects/:slug" element={<ProjectDetail />} />
 
               {/* ── Tier 1: Software & Engineering ── */}
               <Route path="services/web-development" element={<WebsiteDesign />} />
