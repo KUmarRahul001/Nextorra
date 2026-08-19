@@ -91,13 +91,12 @@ const Navbar: React.FC = () => {
           >
             <img 
               src="/brand/logo-horizontal-clean.png" 
+              width={150}
+              height={900}
               alt="Rahnoxa Logo" 
               className="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-[1.02]" 
               loading="eager" 
             />
-            <span className="text-[9px] text-blue-600 font-mono tracking-[0.25em] uppercase font-extrabold pl-12 -mt-1 sm:-mt-1.5 hidden sm:block">
-              ENGINEERING
-            </span>
           </Link>
 
           {/* Desktop Menu (Desktop >= 1200px / xl, Tablet >= 800px / md) */}
