@@ -1,6 +1,6 @@
 /**
  * Authoritative Client-Side Service Knowledge Base for RahBot
- * Synchronized with canonical commercial pricing matrix (PRICE_MATRIX.md & src/data/services.ts).
+ * Synchronized with canonical commercial pricing matrix (src/data/services.ts).
  */
 
 import { ServiceKnowledgeItem } from './types';
@@ -32,8 +32,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Third-Party Integrations: Connect ERP to banking, accounting software, and CRMs.',
       'Flexible Deployment: Cloud-hosted, on-premise, or hybrid deployment models.',
     ],
-    pricing: 'Starting at ₹75,000 for Starter (Single Module), ₹1,50,000 for Growth (3 Modules - Recommended), and ₹2,75,000+ for Pro Enterprise Suite.',
-    sla: 'Architectural discovery & project estimate delivered within 24 to 48 hours.',
+    pricing: 'Starting at ₹59,999 for Starter (Single Module, 3–5 Wks), ₹1,19,999 for Growth (3 Modules, 6–8 Wks - Recommended), and ₹2,25,000+ for Pro Enterprise Suite.',
+    sla: 'Architectural discovery & project estimate delivered within 24 to 48 hours. Includes 30-Day Post-Launch Bug Fix Warranty.',
     aliases: ['erp', 'enterprise', 'enterprise software', 'enterprise application', 'hrms', 'inventory', 'warehouse', 'supply chain', 'billing system', 'pos'],
   },
   {
@@ -59,8 +59,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Database Architecture: Efficient normalized schemas with PostgreSQL and Redis caching.',
       'API Engineering: Clean RESTful and GraphQL endpoints with automated documentation.',
     ],
-    pricing: 'Starting at ₹39,999 for Starter MVP (2 Weeks), ₹69,999 for Growth Platform (3–4 Weeks - Recommended), and ₹1,19,999 for Pro Custom Architecture.',
-    sla: 'Full requirement scoping and technical blueprint delivered within 24 to 48 hours.',
+    pricing: 'Starting at ₹34,999 for Starter MVP (2–3 Weeks), ₹64,999 for Growth Platform (4–5 Weeks - Recommended), and ₹99,999 for Pro Custom Architecture (6–8 Weeks).',
+    sla: 'Full requirement scoping and technical blueprint delivered within 24 to 48 hours. Includes 30-Day Post-Launch Bug Fix Warranty.',
     aliases: ['web app', 'web application', 'web apps', 'full stack', 'portal', 'dashboard', 'custom portal', 'react app', 'node app'],
   },
   {
@@ -86,8 +86,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Billing & Subscriptions: Webhook-driven Stripe and Paddle recurring payments, coupons, and invoicing.',
       'Admin Telemetry: Live operational dashboards tracking MRR, churn, active sessions, and errors.',
     ],
-    pricing: 'Starting at ₹64,999 for Starter SaaS MVP (3–4 Weeks), ₹1,24,999 for Growth SaaS (5–6 Weeks - Recommended), and ₹2,19,999+ for Scale Architecture.',
-    sla: 'SaaS architectural review provided within 24 to 48 hours.',
+    pricing: 'Starting at ₹49,999 for Starter SaaS MVP (3–5 Weeks), ₹99,999 for Growth SaaS (5–8 Weeks - Recommended), and ₹1,79,999+ for Scale Architecture (8–12 Weeks).',
+    sla: 'SaaS architectural review provided within 24 to 48 hours. Includes 30-Day Post-Launch Bug Fix Warranty.',
     aliases: ['saas', 'software as a service', 'subscription platform', 'b2b saas', 'cloud app', 'multi tenant', 'saas mvp'],
   },
   {
@@ -113,8 +113,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Data Pipelines & ETL: Reliable data transformation pipelines moving millions of records automatically.',
       'Legacy System Modernization: REST/GraphQL API wrappers for on-premise and legacy databases.',
     ],
-    pricing: 'Starting at ₹1,999 for Single API/Gateway Setup, ₹5,999 for Standard Automation Bridge (Recommended), and ₹11,999 for Pro Multi-System Sync. Emergency crash fix at ₹2,999.',
-    sla: 'Technical API review and scoping response within 24 to 48 hours.',
+    pricing: 'Starting at ₹1,999 for Single API/Gateway Setup (3–5 Days), ₹4,999 for Standard Automation Bridge (5–7 Days - Recommended), and ₹11,999 for Pro Multi-System Sync (2–3 Weeks).',
+    sla: 'Technical API review and scoping response within 24 to 48 hours. Includes 30-Day Post-Launch Bug Fix Warranty.',
     aliases: ['api', 'integration', 'custom software', 'webhook', 'sync', 'automation', 'zapier alternative', 'n8n', 'razorpay integration', 'payment gateway'],
   },
   {
@@ -140,8 +140,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Backend & Cloud Sync: Low-latency API synchronization with offline queuing.',
       'Analytics & Crash Reporting: Integrated telemetry for crash diagnostics and user journeys.',
     ],
-    pricing: 'Starting at ₹44,999 for Starter Android App (3 Weeks), ₹79,999 for Cross-Platform iOS+Android (4–5 Weeks - Recommended), and ₹1,39,999 for Pro Marketplace Apps.',
-    sla: 'Mobile architecture scoping and wireframe consult within 24 to 48 hours.',
+    pricing: 'Starting at ₹39,999 for Starter Android App (2–3 Weeks), ₹69,999 for Cross-Platform iOS+Android (4–6 Weeks - Recommended), and ₹1,19,999 for Pro Marketplace Apps (6–8 Weeks).',
+    sla: 'Mobile architecture scoping and wireframe consult within 24 to 48 hours. Includes 30-Day Post-Launch Bug Fix Warranty.',
     aliases: ['app', 'mobile app', 'mobile development', 'ios', 'android', 'react native', 'flutter', 'cross-platform', 'iphone app'],
   },
   {
@@ -166,8 +166,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Hardware Peripheral Interfacing: Serial, USB, POS thermal printers, and barcode readers.',
       'Silent Auto-Updater: Background binary delta updates without manual reinstallation.',
     ],
-    pricing: 'Starting at ₹34,999 for Starter Utility (2 Weeks), ₹59,999 for Growth POS & Hardware (3–4 Weeks - Recommended), and ₹99,999 for Pro High-Performance Tools.',
-    sla: 'Technical desktop feasibility review within 24 to 48 hours.',
+    pricing: 'Starting at ₹29,999 for Starter Utility (2–3 Weeks), ₹54,999 for Growth POS & Hardware (3–5 Weeks - Recommended), and ₹89,999 for Pro High-Performance Tools (5–8 Weeks).',
+    sla: 'Technical desktop feasibility review within 24 to 48 hours. Includes 30-Day Post-Launch Bug Fix Warranty.',
     aliases: ['desktop', 'desktop app', 'desktop software', 'electron', 'tauri', 'windows app', 'mac app', 'linux app'],
   },
   {
@@ -184,16 +184,16 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Sub-second page load times with perfect 95+ Google PageSpeed Core Web Vitals',
       'Semantic SEO and automatic sitemap / structured schema markup for top search engine rankings',
       'Fluid responsiveness across ultra-wide monitors, laptops, tablets, and smartphones',
-      'Bespoke dark glassmorphism and subtle micro-interactions that elevate brand credibility',
+      'Bespoke modern design and subtle micro-interactions that elevate brand credibility',
     ],
     features: [
       'Custom Brand Design: Bespoke layouts crafted specifically for your industry without generic templates.',
       'Mobile-First Development: Responsive touch-optimized navigation and fluid grids.',
       'Automated SEO: OpenGraph social previews, dynamic meta tags, and structured JSON-LD data.',
-      'Lead Capture Integration: Instant form routing to email, CRM, and WhatsApp alerts.',
+      'Lead Capture Integration: Instant form routing to email and WhatsApp alerts.',
     ],
-    pricing: 'Starting at ₹4,999 for Starter Landing Page (2–3 Days), ₹11,999 for Growth Business Site (4–7 Days - Recommended), and ₹18,999 for Pro Corporate Portal (7–12 Days). Express 24h available from ₹7,499.',
-    sla: 'Design concept & quote delivered within 24 to 48 hours.',
+    pricing: 'Starting at ₹4,999 for Starter Landing Page (5–7 Business Days), ₹11,999 for Growth Business Site (2–3 Weeks - Recommended), and ₹18,999 for Pro Corporate Portal (3–4 Weeks).',
+    sla: 'Design concept & quote delivered within 24 to 48 hours. Includes 30-Day Post-Launch Bug Fix Warranty.',
     aliases: ['website', 'website design', 'landing page', 'web design', 'corporate site', 'redesign', 'company website'],
   },
   {
@@ -204,7 +204,7 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
     category: 'Marketing & Business Support',
     route: '/services/lead-generation',
     summary:
-      'Data-driven outreach, Google Business Profile local dominance, and automated lead capture funnels connecting prospects directly with your sales team.',
+      'Data-driven outreach, Google Business Profile local dominance, and automated lead capture funnels connecting prospects directly with your business.',
     technologies: ['Google Business Profile', 'Meta Ads', 'WhatsApp Automation', 'CRM Integrations'],
     benefits: [
       'Qualified prospects delivered directly into your sales pipeline without cold outreach friction',
@@ -217,8 +217,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Landing Page Funnels: Conversion-optimized lead capture forms with instant WhatsApp routing.',
       'Outreach Pipelines: Compliant B2B email and LinkedIn lead discovery sequences.',
     ],
-    pricing: 'Starting at ₹2,499 for GBP Setup & Verification, ₹4,499 for Local Map Domination & Funnel (Recommended), and ₹3,499/mo for Ongoing Local Dominance Retainer.',
-    sla: 'Lead generation strategy proposal within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for GBP Setup & Verification (5–7 Days), ₹4,499 for Local Map Domination & Funnel (5–7 Days - Recommended), and ₹3,499/mo for Ongoing Local Dominance Retainer.',
+    sla: 'Lead generation strategy proposal within 24 to 48 hours. Includes 30-Day Technical Warranty.',
     aliases: ['lead gen', 'lead generation', 'leads', 'prospecting', 'outreach', 'sales pipeline', 'b2b leads', 'google business profile', 'gbp', 'local seo'],
   },
   {
@@ -242,8 +242,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Content Strategy & Copywriting: Captions, hashtags, and call-to-action hooks tailored to Indian audiences.',
       'Paid Ad Management: Targeted Instagram and Facebook ad setup with pixel tracking and retargeting.',
     ],
-    pricing: 'Starting at ₹2,499 for Starter Creative Pack (10 Posts), ₹5,999/mo for Growth Social Retainer (16 Posts/mo - Recommended), and ₹11,999/mo for Pro Brand Dominance Retainer.',
-    sla: 'Social media audit and proposal within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for Starter Creative Pack (10 Posts, 5–7 Days), ₹5,999/mo for Growth Social Retainer (16 Posts/mo - Recommended), and ₹11,999/mo for Pro Brand Dominance Retainer.',
+    sla: 'Social media audit and proposal within 24 to 48 hours. Full commercial ownership of assets.',
     aliases: ['social media', 'social media marketing', 'smm', 'linkedin', 'instagram', 'twitter', 'facebook marketing', 'content marketing', 'creatives'],
   },
   {
@@ -267,8 +267,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Lifecycle Automation Workflows: Multi-step welcome series, lead nurture drips, and post-purchase sequences.',
       'Responsive Template Design: Clean branded email templates tested across major email clients.',
     ],
-    pricing: 'Starting at ₹1,999 for Deliverability & SPF/DKIM Rescue, ₹3,999 for Automation & Template Setup (Recommended), and ₹4,999/mo for Monthly Email Campaign Management.',
-    sla: 'Email template design and DNS deliverability audit in 24 to 48 hours.',
+    pricing: 'Starting at ₹1,999 for Deliverability & SPF/DKIM Rescue (3–5 Days), ₹3,999 for Automation & Template Setup (5–7 Days - Recommended), and ₹4,999/mo for Monthly Email Campaign Management.',
+    sla: 'Email template design and DNS deliverability audit in 24 to 48 hours. Includes 30-Day Technical Warranty.',
     aliases: ['email marketing', 'email automation', 'newsletters', 'drip campaign', 'brevo', 'mailchimp', 'cold email', 'spf', 'dkim', 'dmarc', 'email deliverability'],
   },
   {
@@ -292,8 +292,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Promotional SMS Broadcasts: Scheduled bulk marketing campaigns to verified customer lists.',
       'DLT Registration Support: End-to-end guidance for entity and header/template approvals.',
     ],
-    pricing: 'Starting at ₹1,999 for SMS API Gateway Setup, ₹3,499 for DLT Registration & Automation Suite (Recommended), and ₹6,999 for Pro Custom Messaging Engines. SMS credits billed at wholesale rates (~₹0.15/SMS).',
-    sla: 'SMS gateway integration & DLT review within 24 to 48 hours.',
+    pricing: 'Starting at ₹1,999 for SMS API Gateway Setup (3–5 Days), ₹3,499 for DLT Registration & Automation Suite (5–7 Days - Recommended), and ₹6,999 for Pro Custom Messaging Engines (2–3 Weeks).',
+    sla: 'SMS gateway integration & DLT review within 24 to 48 hours. Includes 30-Day Technical Warranty.',
     aliases: ['sms', 'sms marketing', 'bulk sms', 'smpp', 'otp', 'transactional sms', 'dlt', 'dlt registration', 'promotional sms'],
   },
   {
@@ -317,8 +317,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Instant Auto-Responder: Automatic SMS or WhatsApp brochure sent immediately upon disconnection.',
       'CRM Synchronization: Live webhook pushing caller phone numbers into your database.',
     ],
-    pricing: 'Starting at ₹2,499 for Starter Missed Call Capture, ₹4,499 for Growth WhatsApp Callback Suite (Recommended), and ₹7,999 for Pro Multi-Channel Analytics Suite.',
-    sla: 'Virtual number routing and response automation setup within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for Starter Missed Call Capture (5–7 Days), ₹4,499 for Growth WhatsApp Callback Suite (5–7 Days - Recommended), and ₹7,999 for Pro Multi-Channel Analytics Suite (2–3 Weeks).',
+    sla: 'Virtual number routing and response automation setup within 24 to 48 hours. Includes 30-Day Technical Warranty.',
     aliases: ['missed call', 'missed call service', 'virtual number', 'toll free', 'call alert', 'call capture', 'ivr missed call'],
   },
   {
@@ -342,8 +342,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Multi-Level IVR Trees: Custom keypress navigation routing callers to appropriate departments.',
       'Call Recording & Telemetry: Live call duration, recording storage, and missed-call triage.',
     ],
-    pricing: 'Starting at ₹3,499 for Voice Broadcasting (OBD), ₹6,499 for Growth Virtual IVR Receptionist (Recommended), and ₹11,999 for Pro Cloud PBX Systems.',
-    sla: 'IVR menu design and telecom setup in 24 to 48 hours.',
+    pricing: 'Starting at ₹3,499 for Voice Broadcasting (5–7 Days), ₹6,499 for Growth Virtual IVR Receptionist (5–7 Days - Recommended), and ₹11,999 for Pro Cloud PBX Systems (2–3 Weeks).',
+    sla: 'IVR menu design and telecom setup in 24 to 48 hours. Includes 30-Day Technical Warranty.',
     aliases: ['voice call', 'voice broadcast', 'obd', 'ivr', 'cloud telephony', 'virtual receptionist', 'automated call', 'phone menu'],
   },
   {
@@ -369,8 +369,8 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
       'Investor Pitch Decks: 12–15 slide data-driven presentations in PowerPoint / Google Slides / PDF.',
       'Marketing Collateral: Brochures, flyers, digital banners, roll-up standees, and catalog covers.',
     ],
-    pricing: 'Starting at ₹2,499 for Fast-Track Logo Starter (2 Days), ₹4,499 for Complete Brand Identity Suite (3–4 Days - Recommended), and ₹8,999 for Investor Pitch Deck & Corporate Kit.',
-    sla: 'Design concept review and asset delivery within 24 to 48 hours.',
+    pricing: 'Starting at ₹2,499 for Fast-Track Logo Starter (5–7 Days), ₹4,499 for Complete Brand Identity Suite (5–7 Days - Recommended), and ₹8,999 for Investor Pitch Deck & Corporate Kit (2–3 Weeks).',
+    sla: 'Design concept review and asset delivery within 24 to 48 hours. Master source files (AI, SVG, PDF) included.',
     aliases: ['graphic design', 'logo', 'branding', 'brand identity', 'pitch deck', 'presentation', 'brochure', 'flyer', 'stationery', 'visiting card'],
   },
   {
@@ -381,7 +381,7 @@ export const SERVICES_KNOWLEDGE_BASE: ServiceKnowledgeItem[] = [
     category: 'Talent & Careers',
     route: '/internship',
     summary:
-      'Hands-on software engineering and AI internships for students and aspiring developers in India. Work on real production codebases with senior mentors.',
+      'Hands-on software engineering and AI internships for students and aspiring developers in India. Work on real production codebases with direct 1-on-1 mentorship from the lead software engineer.',
     technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Git', 'Cloud Architecture'],
     benefits: [
       'Direct contribution to production codebases and real business client projects',
