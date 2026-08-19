@@ -1,5 +1,11 @@
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
@@ -39,7 +45,10 @@ export const config = {
   
   // Database / Supabase (Strict remote PostgreSQL)
   supabaseUrl: process.env.SUPABASE_URL || '',
-  supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+  supabaseServiceKey: process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+  supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '',
+  supabaseJwksUrl: process.env.SUPABASE_JWKS_URL || '',
+  databaseUrl: process.env.DATABASE_URL || '',
   
   // Initial Admin Provisioning
   initialAdminEmail: process.env.INITIAL_ADMIN_EMAIL || 'contact.rahnoxa@protonmail.com',
