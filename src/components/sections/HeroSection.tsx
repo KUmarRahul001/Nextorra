@@ -2,17 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
-  Sparkles, 
   ShieldCheck, 
-  Zap, 
-  Layers, 
   Code2, 
-  Server, 
   Database, 
-  Smartphone, 
   MoveUpRight,
   Workflow,
-  Cpu
+  CheckCircle2,
+  Lock,
+  Zap
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../SEO';
@@ -23,17 +20,17 @@ const HeroSection: React.FC = () => {
   return (
     <>
       <SEO
-        title="Rahnoxa – Modern Software Systems & Cloud Engineering"
-        description="Rahnoxa designs, builds, and deploys high-performance web platforms, enterprise ERP applications, APIs, and scalable mobile systems."
-        keywords="software engineering, modern web apps, ERP development, cloud architecture, mobile apps, SaaS, Rahnoxa"
+        title="Rahnoxa – Custom Software Engineering & Cloud Solutions"
+        description="Rahnoxa designs, builds, and deploys custom web applications, enterprise ERP platforms, APIs, and scalable mobile systems."
+        keywords="software engineering, custom ERP development, web apps, API architecture, mobile apps, SaaS, Rahnoxa Jharkhand"
         url="https://rahnoxa.pages.dev/"
         type="website"
       />
 
       <section className="relative min-h-[92vh] flex items-center bg-[#FAFCFF] text-slate-900 pt-32 pb-24 overflow-hidden gradient-mesh-light border-b border-slate-200/80">
-        {/* Animated Background Aura Lights */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-indigo-400/10 rounded-full blur-[120px] pointer-events-none" />
+        {/* Ambient Lighting Orbs */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
@@ -49,10 +46,10 @@ const HeroSection: React.FC = () => {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
             </span>
             <span className="text-xs font-semibold text-slate-800">
-              Next-Gen Software &amp; Cloud Systems
+              Software Development &amp; Systems Architecture
             </span>
             <span className="text-[10px] font-mono uppercase bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-bold">
-              v2.4 Live
+              Available for Projects
             </span>
           </motion.div>
 
@@ -75,7 +72,7 @@ const HeroSection: React.FC = () => {
               </h1>
 
               <p className="text-slate-600 text-lg sm:text-xl font-normal leading-relaxed max-w-2xl">
-                From multi-tenant enterprise ERPs and bespoke full-stack SaaS platforms to high-throughput REST APIs and cross-platform mobile apps — we build mission-critical technology engineered for operational velocity.
+                From multi-tenant enterprise ERPs and bespoke full-stack SaaS platforms to REST APIs and cross-platform mobile apps — we build mission-critical technology engineered for operational stability and business growth.
               </p>
 
               {/* Action Buttons */}
@@ -103,19 +100,19 @@ const HeroSection: React.FC = () => {
                 </button>
               </div>
 
-              {/* Verified Trust Metrics */}
-              <div className="pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-4 max-w-lg text-left">
-                <div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">99.9%</p>
-                  <p className="text-xs font-medium text-slate-500 mt-0.5">Uptime Architecture</p>
+              {/* Truthful Commitments */}
+              <div className="pt-8 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl text-left">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                  <span className="text-xs font-semibold text-slate-700">Milestone-Based Delivery</span>
                 </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-blue-600">3–7 Days</p>
-                  <p className="text-xs font-medium text-slate-500 mt-0.5">Milestone Sprints</p>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-indigo-600 flex-shrink-0" />
+                  <span className="text-xs font-semibold text-slate-700">Strict TypeScript Code</span>
                 </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-indigo-600">100%</p>
-                  <p className="text-xs font-medium text-slate-500 mt-0.5">TypeScript &amp; Tested</p>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                  <span className="text-xs font-semibold text-slate-700">Direct Technical Support</span>
                 </div>
               </div>
             </motion.div>
@@ -130,7 +127,7 @@ const HeroSection: React.FC = () => {
               {/* Main Interactive Glassmorphism Architecture Canvas */}
               <div className="relative p-6 sm:p-7 rounded-2xl glass-card-light shadow-xl border border-slate-200/80 space-y-4">
                 
-                {/* Header with live status */}
+                {/* Header with real system status */}
                 <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-rose-400" />
@@ -141,7 +138,7 @@ const HeroSection: React.FC = () => {
                     </span>
                   </div>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
-                    Live Cluster
+                    Live Platform
                   </span>
                 </div>
 
@@ -159,7 +156,7 @@ const HeroSection: React.FC = () => {
                       <h4 className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                         Edge Frontend &amp; SPA Layer
                       </h4>
-                      <p className="text-[11px] text-slate-500 font-mono">React 18 · TypeScript · Sub-150ms</p>
+                      <p className="text-[11px] text-slate-500 font-mono">React 18 · TypeScript · Fast Rendering</p>
                     </div>
                   </div>
                   <MoveUpRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" />
@@ -212,14 +209,14 @@ const HeroSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Floating Animated Accent Chips */}
+              {/* Floating Animated Accent Badges */}
               <motion.div
                 animate={{ y: [-4, 6, -4] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="absolute -top-3 -right-3 px-3.5 py-1.5 rounded-full bg-white shadow-lg border border-blue-100 flex items-center gap-1.5 z-20"
               >
                 <Zap className="h-3.5 w-3.5 text-blue-600" />
-                <span className="text-xs font-bold text-slate-800">Ultra-Fast Performance</span>
+                <span className="text-xs font-bold text-slate-800">Clean Architecture</span>
               </motion.div>
 
               <motion.div
@@ -228,7 +225,7 @@ const HeroSection: React.FC = () => {
                 className="absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white shadow-lg border border-indigo-100 flex items-center gap-1.5 z-20"
               >
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                <span className="text-xs font-bold text-slate-800">Enterprise Security</span>
+                <span className="text-xs font-bold text-slate-800">Full Code Ownership</span>
               </motion.div>
             </motion.div>
 
