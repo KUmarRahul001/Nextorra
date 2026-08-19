@@ -35,11 +35,11 @@ const Footer: React.FC = () => {
 
   return (
     <footer
-      className="relative bg-slate-900 text-white pt-16 pb-8 overflow-hidden border-t border-slate-800"
+      className="relative bg-white text-slate-800 pt-16 pb-8 overflow-hidden border-t border-slate-200"
       aria-label="Site Footer"
       role="contentinfo"
     >
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-12">
 
           {/* Company Info */}
@@ -54,34 +54,34 @@ const Footer: React.FC = () => {
               <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-lg shadow-sm">
                 R
               </div>
-              <span className="text-2xl font-bold tracking-tight text-white">
+              <span className="text-2xl font-bold tracking-tight text-slate-900">
                 {config.siteName}
               </span>
             </button>
 
-            <p className="text-slate-300 mb-6 max-w-sm text-sm leading-relaxed">
+            <p className="text-slate-600 mb-6 max-w-sm text-sm leading-relaxed">
               Software engineering company building custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations for modern organizations.
             </p>
 
             <div className="space-y-3 mb-6">
               <a 
                 href={`mailto:${config.contact.email}`} 
-                className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors text-sm"
+                className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors text-sm"
               >
-                <EnvelopeIcon className="h-4 w-4 text-blue-400 flex-shrink-0" />
+                <EnvelopeIcon className="h-4 w-4 text-blue-600 flex-shrink-0" />
                 <span className="break-all">{config.contact.email}</span>
               </a>
 
               <a 
                 href={`tel:${config.contact.phone1.replace(/\s+/g, '')}`} 
-                className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors text-sm"
+                className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors text-sm"
               >
-                <PhoneIcon className="h-4 w-4 text-blue-400 flex-shrink-0" />
+                <PhoneIcon className="h-4 w-4 text-blue-600 flex-shrink-0" />
                 <span>{config.contact.phone1} / {config.contact.phone2}</span>
               </a>
 
-              <div className="flex items-center gap-3 text-slate-300 text-sm">
-                <MapPinIcon className="h-4 w-4 text-blue-400 flex-shrink-0" />
+              <div className="flex items-center gap-3 text-slate-600 text-sm">
+                <MapPinIcon className="h-4 w-4 text-blue-600 flex-shrink-0" />
                 <span>{config.contact.location} (Remote Delivery Worldwide)</span>
               </div>
             </div>
@@ -89,10 +89,10 @@ const Footer: React.FC = () => {
 
           {/* Navigation Links */}
           <nav className="lg:col-span-3" aria-label="Navigation Links">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-200 mb-4">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900 mb-4">
               Navigation
             </h3>
-            <ul className="space-y-2.5 text-sm text-slate-400">
+            <ul className="space-y-2.5 text-sm text-slate-600">
               {[
                 { name: "Home", id: "hero" },
                 { name: "About", id: "about" },
@@ -113,9 +113,9 @@ const Footer: React.FC = () => {
                         smoothScrollTo(link.id);
                       }
                     }}
-                    className="flex items-center gap-2 hover:text-blue-400 transition-colors w-full text-left"
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors w-full text-left"
                   >
-                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-500 flex-shrink-0" />
+                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
                     {link.name}
                   </button>
                 </li>
@@ -125,10 +125,10 @@ const Footer: React.FC = () => {
 
           {/* Software & Engineering Services */}
           <nav className="lg:col-span-4" aria-label="Core Services">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-200 mb-4">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900 mb-4">
               Software Services
             </h3>
-            <ul className="space-y-2.5 text-sm text-slate-400">
+            <ul className="space-y-2.5 text-sm text-slate-600">
               {tier1Services.map((service) => (
                 <li key={service.slug}>
                   <button
@@ -136,9 +136,9 @@ const Footer: React.FC = () => {
                       navigate(service.route);
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="flex items-center gap-2 hover:text-blue-400 transition-colors w-full text-left"
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors w-full text-left"
                   >
-                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-500 flex-shrink-0" />
+                    <ArrowRightIcon className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
                     {service.name}
                   </button>
                 </li>
@@ -148,7 +148,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Legal & Copyright Bar */}
-        <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+        <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <div>
             &copy; {currentYear} Rahnoxa. All rights reserved. Software Development &amp; Technology Engineering.
           </div>
@@ -159,7 +159,7 @@ const Footer: React.FC = () => {
                 navigate('/privacy-policy');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="hover:text-white transition-colors"
+              className="hover:text-slate-900 transition-colors"
             >
               Privacy Policy
             </button>
@@ -169,7 +169,7 @@ const Footer: React.FC = () => {
                 navigate('/terms-and-conditions');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="hover:text-white transition-colors"
+              className="hover:text-slate-900 transition-colors"
             >
               Terms &amp; Conditions
             </button>
