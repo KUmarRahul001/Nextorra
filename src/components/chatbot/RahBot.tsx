@@ -17,6 +17,7 @@ import {
 import { api } from '../../lib/api';
 import { ChatMessage, ConversationContext, LeadFormData } from './types';
 import { resolveService } from './serviceResolver';
+import { detectIntent } from './intentDetector';
 import { buildBotDecision } from './responseBuilder';
 import { createInitialContext, updateConversationContext } from './conversationState';
 
