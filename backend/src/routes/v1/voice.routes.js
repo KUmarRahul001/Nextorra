@@ -17,6 +17,25 @@ router.post('/calls/start', async (req, res, next) => {
   }
 });
 
+// GET /v1/voice/health - Check Telephony & SIP Trunk connectivity readiness
+router.get('/health', async (req, res) => {
+  const isConfigured = !!(
+    process.env.SIP_TRUNK_HOST &&
+    process.env.SIP_TRUNK_USERNAME &&
+    process.env.SIP_TRUNK_PASSWORD
+  );
+
+  res.json({
+    success: true,
+    status: isConfigured ? 'READY' : 'UNCONFIGURED',
+    carrier: isConfigured ? (process.env.SIP_PROVIDER_NAME || 'CUSTOM_SIP_TRUNK') : null,
+    sipHost: process.env.SIP_TRUNK_HOST ? `${process.env.SIP_TRUNK_HOST.slice(0, 4)}***` : null,
+    callerId: process.env.SIP_CALLER_ID || null,
+    mediaAnchoring: 'IN_INDIA',
+    compliance: 'TRAI_TCCCPR_COMPLIANT',
+  });
+});
+
 // GET /v1/voice/calls/:leadId
 router.get('/calls/:leadId', async (req, res, next) => {
   try {

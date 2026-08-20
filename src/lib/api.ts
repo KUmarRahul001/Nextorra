@@ -255,6 +255,10 @@ export const api = {
     return apiFetch(`/voice/calls/${leadId}`);
   },
 
+  async getVoiceHealth() {
+    return apiFetch('/voice/health');
+  },
+
   // ── Automation ──
   async getAutomation() {
     return apiFetch('/automation');

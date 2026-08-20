@@ -73,21 +73,29 @@ const AdminLeads: React.FC = () => {
           </p>
         </div>
 
-        {/* Filter */}
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-slate-500">Status:</span>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-900 focus:outline-none focus:border-blue-500"
-          >
-            <option value="ALL">All Statuses</option>
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
+        {/* Status & Telephony Carrier Health */}
+        <div className="flex flex-wrap items-center gap-3 text-xs">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border bg-slate-50 border-slate-200">
+            <span className="h-2 w-2 rounded-full bg-amber-400"></span>
+            <span className="text-slate-600 font-medium">SIP Carrier:</span>
+            <span className="text-slate-900 font-semibold">Waiting for Carrier</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-slate-500">Status:</span>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-900 focus:outline-none focus:border-blue-500"
+            >
+              <option value="ALL">All Statuses</option>
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
