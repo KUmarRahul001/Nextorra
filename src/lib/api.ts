@@ -243,7 +243,28 @@ export const api = {
     });
   },
 
-  // ── Voice Agent (Multi-Provider: Open-Source / Bland AI) ──
+  // ── Real-Time Cloud Voice Sessions (Browser / WebRTC) ──
+  async createVoiceSession(leadId: string, language: string = 'English') {
+    return apiFetch('/voice/sessions', {
+      method: 'POST',
+      body: JSON.stringify({ lead_id: leadId, language }),
+    });
+  },
+
+  async sendVoiceUtterance(sessionId: string, text: string) {
+    return apiFetch(`/voice/sessions/${sessionId}/speak`, {
+      method: 'POST',
+      body: JSON.stringify({ text }),
+    });
+  },
+
+  async endVoiceSession(sessionId: string) {
+    return apiFetch(`/voice/sessions/${sessionId}/end`, {
+      method: 'POST',
+    });
+  },
+
+  // ── Telephony & Providers ──
   async startVoiceCall(leadId: string, providerId: string = 'auto') {
     return apiFetch('/voice/calls/start', {
       method: 'POST',

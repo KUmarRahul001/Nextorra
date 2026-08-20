@@ -199,22 +199,38 @@ const AdminLeads: React.FC = () => {
                         <button
                           onClick={async () => {
                             try {
+                              const res = await api.createVoiceSession(lead.id, 'English');
+                              alert(`🎙️ [RISHIMA CLOUD VOICE SESSION STARTED]\n\n• Session ID: ${res.session.sessionId}\n• Prospect: ${res.session.leadName}\n• Service: ${res.session.leadService}\n• Rishima Initial Greeting:\n"${res.session.greeting}"\n\nLive real-time WebRTC audio pipeline connected.`);
+                              loadLeads();
+                            } catch (err: any) {
+                              alert(err.message || 'Failed to start voice session');
+                            }
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-50 hover:bg-cyan-600 text-cyan-700 hover:text-white border border-cyan-200 transition-colors text-xs font-semibold"
+                          title="Start Real-Time Browser WebRTC Voice Session"
+                        >
+                          <Phone className="h-3.5 w-3.5" />
+                          Voice Session
+                        </button>
+                        <button
+                          onClick={async () => {
+                            try {
                               const res = await api.startVoiceCall(lead.id, selectedProvider);
-                              alert(`📞 [OUTBOUND AI CALL INITIATED]\n\n• Target Phone: ${lead.phone}\n• Contact Name: ${lead.name}\n• Service: ${lead.service}\n• Engine: ${res.call?.provider || 'LiveKit / SIP'}\n• Status: ${res.call?.status || 'DIALING'}\n\nCall dispatched successfully.`);
+                              alert(`📞 [OUTBOUND PSTN CALL INITIATED]\n\n• Target Phone: ${lead.phone}\n• Contact Name: ${lead.name}\n• Engine: ${res.call?.provider || 'LiveKit / SIP'}\n• Status: ${res.call?.status || 'DIALING'}`);
                               loadLeads();
                             } catch (err: any) {
                               if (err.message && err.message.includes('PSTN_NOT_CONFIGURED')) {
-                                alert(`⚠️ Real PSTN Calling is not configured.\n\nTo place physical telephone calls, connect a verified SIP trunk in the server environment (SIP_TRUNK_HOST, SIP_TRUNK_USERNAME, SIP_TRUNK_PASSWORD) or configure an authorized Bland AI API key (BLAND_API_KEY).`);
+                                alert(`⚠️ PSTN Telephony is not configured.\n\nTo place physical telephone calls that ring a mobile phone, connect an authorized SIP carrier in the server environment.`);
                               } else {
                                 alert(err.message || 'Call initiation failed');
                               }
                             }
                           }}
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 transition-colors text-xs font-semibold"
-                          title="Place Real Outbound AI Call"
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-50 text-slate-400 hover:text-slate-700 border border-slate-200 transition-colors text-xs font-semibold cursor-pointer"
+                          title="Place PSTN Outbound Phone Call"
                         >
                           <Phone className="h-3.5 w-3.5" />
-                          AI Call
+                          Phone Call
                         </button>
                         <button
                           onClick={() => setSelectedLead(lead)}

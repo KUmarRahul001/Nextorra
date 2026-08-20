@@ -1,9 +1,59 @@
 import { Router } from 'express';
 import { CallManager } from '../../voice-agent/call-manager/callManager.js';
 import { VoiceOrchestrator } from '../../voice-agent/orchestrator/voiceOrchestrator.js';
+import { BrowserVoiceSessionProvider } from '../../voice-agent/session/browserVoiceSession.js';
 import { db } from '../../../database/supabase.js';
 
 const router = Router();
+const sessionProvider = new BrowserVoiceSessionProvider();
+
+// ── Real-Time Cloud Voice Sessions (Browser / WebRTC) ──
+
+// POST /v1/voice/sessions - Start a real browser voice session
+router.post('/sessions', async (req, res, next) => {
+  try {
+    const { lead_id, language } = req.body;
+    if (!lead_id) return res.status(400).json({ success: false, error: 'lead_id is required' });
+
+    const session = await sessionProvider.createSession({ leadId: lead_id, language });
+    res.json({ success: true, session });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /v1/voice/sessions/:id/speak - Process live speech utterance
+router.post('/sessions/:id/speak', async (req, res, next) => {
+  try {
+    const { text } = req.body;
+    const reply = await sessionProvider.processUserUtterance(req.params.id, text);
+    res.json({ success: true, reply });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /v1/voice/sessions/:id/end - Terminate session & extract structured summary
+router.post('/sessions/:id/end', async (req, res, next) => {
+  try {
+    const result = await sessionProvider.endSession(req.params.id);
+    res.json({ success: true, result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET /v1/voice/sessions/:id - Get session status
+router.get('/sessions/:id', async (req, res, next) => {
+  try {
+    const status = await sessionProvider.getSessionStatus(req.params.id);
+    res.json({ success: true, status });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ── Providers & PSTN Dispatches ──
 
 // GET /v1/voice/providers - List configured authorized voice providers
 router.get('/providers', async (req, res) => {
