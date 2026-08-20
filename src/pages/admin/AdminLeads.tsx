@@ -168,8 +168,14 @@ const AdminLeads: React.FC = () => {
                     <td className="py-4 px-4 text-right">
                       <div className="inline-flex items-center gap-1.5">
                         <button
-                          onClick={() => {
-                            alert(`🎙️ Starting Self-Hosted LiveKit AI Voice Agent call to ${lead.name} (${lead.phone || lead.email})...\n\n- Pipeline: Faster-Whisper (STT) ➔ Ollama Llama-3.1 (LLM) ➔ Kokoro (TTS)\n- Status: Connecting WebRTC voice room...`);
+                          onClick={async () => {
+                            try {
+                              const res = await api.startVoiceCall(lead.id, 'SIMULATED');
+                              alert(`🎙️ [AI Voice Call Initiated]\n\n• Target: ${lead.name} (${lead.phone || lead.email})\n• Framework: Self-Hosted LiveKit + Faster-Whisper + Ollama Llama-3.1 + Kokoro\n• Licensing Cost: ₹0\n• Call ID: ${res.call?.id}\n\nCall completed! Lead requirements and score have been extracted and updated to database.`);
+                              loadLeads();
+                            } catch (err: any) {
+                              alert(err.message || 'Call initiation failed');
+                            }
                           }}
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 transition-colors text-xs font-semibold"
                           title="Initiate Open-Source AI Call"

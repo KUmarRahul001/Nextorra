@@ -243,6 +243,18 @@ export const api = {
     });
   },
 
+  // ── Voice Agent (Self-Hosted LiveKit) ──
+  async startVoiceCall(leadId: string, mode: string = 'SIMULATED') {
+    return apiFetch('/voice/calls/start', {
+      method: 'POST',
+      body: JSON.stringify({ lead_id: leadId, mode }),
+    });
+  },
+
+  async getLeadVoiceCalls(leadId: string) {
+    return apiFetch(`/voice/calls/${leadId}`);
+  },
+
   // ── Automation ──
   async getAutomation() {
     return apiFetch('/automation');

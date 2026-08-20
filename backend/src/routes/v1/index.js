@@ -9,6 +9,7 @@ import knowledgeRoutes from './knowledge.routes.js';
 import automationRoutes from './automation.routes.js';
 import settingsRoutes from './settings.routes.js';
 import uploadRoutes from './upload.routes.js';
+import voiceRoutes from './voice.routes.js';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/knowledge', knowledgeRoutes);
 router.use('/automation', automationRoutes);
 router.use('/settings', settingsRoutes);
 router.use('/upload', uploadRoutes);
+router.use('/voice', voiceRoutes);
 
 export default router;

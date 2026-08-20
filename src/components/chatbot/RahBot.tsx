@@ -319,12 +319,14 @@ export const RahBot: React.FC = () => {
       const leadPayload = {
         name: leadForm.name,
         email: leadForm.email,
-        phone: leadForm.phone,
-        company: leadForm.company || '',
-        service_requested: leadForm.service,
-        estimated_budget: leadForm.budget,
-        timeline: leadForm.timeline,
-        notes: `[Submitted via RahBot Assistant]\n${leadForm.description}`,
+        phone: leadForm.phone || null,
+        company: leadForm.company || null,
+        service: leadForm.service || 'Custom ERP & Enterprise Applications',
+        project_description: leadForm.description || 'Enquiry submitted via RahBot Assistant',
+        budget: leadForm.budget || 'To be discussed',
+        timeline: leadForm.timeline || 'Flexible',
+        source: 'rahbot_chat',
+        conversation_id: context.conversationId || null,
       };
 
       await api.submitLead(leadPayload);

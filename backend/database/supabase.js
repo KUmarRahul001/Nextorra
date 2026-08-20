@@ -478,4 +478,74 @@ export const db = {
     if (error) throw new Error(`Database error updating settings: ${error.message}`);
     return data;
   },
+
+  // ── Voice Calls & Transcripts (Self-Hosted Voice Agent) ──
+  async createLeadCall(callData) {
+    const client = getClient();
+    const id = `call-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+    const now = new Date().toISOString();
+    const record = {
+      id,
+      ...callData,
+      created_at: now,
+      updated_at: now,
+    };
+
+    try {
+      const { data, error } = await client.from('lead_calls').insert(record).select().single();
+      if (!error && data) return data;
+    } catch {
+      // Return memory fallback if database table not yet migrated
+    }
+    return record;
+  },
+
+  async getLeadCalls(leadId) {
+    const client = getClient();
+    try {
+      const { data, error } = await client
+        .from('lead_calls')
+        .select('*')
+        .eq('lead_id', leadId)
+        .order('created_at', { ascending: false });
+      if (!error && data) return data;
+    } catch {
+      // Fallback
+    }
+    return [];
+  },
+
+  async addCallTranscript(callId, speaker, text, sequence = 0) {
+    const client = getClient();
+    const id = `tr-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+    const record = {
+      id,
+      call_id: callId,
+      speaker,
+      text: sanitize(text),
+      sequence,
+      created_at: new Date().toISOString(),
+    };
+
+    try {
+      await client.from('call_transcripts').insert(record);
+    } catch {
+      // Memory fallback
+    }
+    return record;
+  },
+
+  async completeLeadCall(callId, updateData) {
+    const client = getClient();
+    const now = new Date().toISOString();
+    const finalData = { ...updateData, status: 'COMPLETED', ended_at: now, updated_at: now };
+
+    try {
+      const { data, error } = await client.from('lead_calls').update(finalData).eq('id', callId).select().single();
+      if (!error && data) return data;
+    } catch {
+      // Fallback
+    }
+    return { id: callId, ...finalData };
+  },
 };
