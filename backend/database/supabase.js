@@ -255,6 +255,13 @@ export const db = {
     return data || [];
   },
 
+  async getLead(id) {
+    const client = getClient();
+    const { data, error } = await client.from('leads').select('*').eq('id', id).maybeSingle();
+    if (error) throw new Error(`Database error fetching lead: ${error.message}`);
+    return data;
+  },
+
   async createLead(data) {
     const client = getClient();
     const id = data.id || `lead-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
