@@ -30,10 +30,13 @@ const QUICK_PROMPTS = [
 ];
 
 // Helper to render Markdown bold and links safely
-const FormattedMessage: React.FC<{ text: string; onNavigate: (path: string) => void }> = ({
-  text,
+const FormattedMessage: React.FC<{ text?: string; onNavigate: (path: string) => void }> = ({
+  text = '',
   onNavigate,
 }) => {
+  if (!text || typeof text !== 'string') {
+    return null;
+  }
   const parts = text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
 
   return (
@@ -136,21 +139,29 @@ export const RahBot: React.FC = () => {
     if (!overrideText) setInput('');
     setIsTyping(true);
 
-    const detectedService = resolveService(textToSend);
-    const updatedContext = updateConversationContext(context, textToSend, detectedService);
+    const detectedService = resolveService(textToSend, context);
+    const { intent } = detectIntent(textToSend, detectedService, context);
+    const updatedContext = updateConversationContext(
+      context,
+      textToSend,
+      intent,
+      detectedService.service?.id,
+      detectedService.service?.name
+    );
     setContext(updatedContext);
 
-    // Call backend assistant API with local intelligence fallback
+    // Call backend assistant API with local deterministic intelligence fallback
     try {
-      const response = await api.askChatbot(textToSend, {
-        detectedService: detectedService?.key,
-        serviceName: detectedService?.name,
-        route: detectedService?.route,
-        pricing: detectedService?.pricing,
-        history: messages.slice(-4).map((m) => ({ role: m.role, content: m.content })),
-      });
+      const response: any = await api.sendChatMessage(textToSend, context.conversationId);
 
-      const botReply = response?.reply || buildBotDecision(textToSend, updatedContext);
+      const replyContent = response?.data?.reply || response?.reply || response?.data?.message;
+      if (!replyContent) {
+        throw new Error('Empty or invalid remote AI response');
+      }
+
+      const ctaType = response?.data?.ctaType || response?.ctaType || 'none';
+      const ctaLabel = response?.data?.ctaLabel || response?.ctaLabel;
+      const targetRoute = response?.data?.targetRoute || response?.targetRoute;
 
       setTimeout(() => {
         setMessages((prev) => [
@@ -158,18 +169,18 @@ export const RahBot: React.FC = () => {
           {
             id: `assistant-${Date.now()}`,
             role: 'assistant',
-            content: botReply.content,
+            content: replyContent,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            ctaType: botReply.ctaType,
-            ctaLabel: botReply.ctaLabel,
-            ctaRoute: botReply.ctaRoute,
+            ctaType,
+            ctaLabel,
+            targetRoute,
           },
         ]);
         setIsTyping(false);
-      }, 500);
+      }, 400);
     } catch (err) {
       console.warn('Using local RahBot fallback rule engine:', err);
-      const botReply = buildBotDecision(textToSend, updatedContext);
+      const botReply = buildBotDecision(textToSend, detectedService, updatedContext);
 
       setTimeout(() => {
         setMessages((prev) => [
@@ -177,23 +188,26 @@ export const RahBot: React.FC = () => {
           {
             id: `assistant-${Date.now()}`,
             role: 'assistant',
-            content: botReply.content,
+            content: botReply.reply,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             ctaType: botReply.ctaType,
             ctaLabel: botReply.ctaLabel,
-            ctaRoute: botReply.ctaRoute,
+            targetRoute: botReply.targetRoute,
           },
         ]);
+        if (botReply.shouldOpenForm) {
+          setShowLeadForm(true);
+        }
         setIsTyping(false);
-      }, 500);
+      }, 400);
     }
   };
 
   const handleCTAClick = (msg: ChatMessage) => {
-    if (msg.ctaType === 'submit_enquiry') {
+    if (msg.ctaType === 'submit_enquiry' || msg.ctaType === 'consultation') {
       setShowLeadForm(true);
-    } else if (msg.ctaRoute) {
-      navigate(msg.ctaRoute);
+    } else if (msg.targetRoute) {
+      navigate(msg.targetRoute);
       setIsOpen(false);
     } else {
       setShowLeadForm(true);

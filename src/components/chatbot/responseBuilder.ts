@@ -215,8 +215,13 @@ export function buildBotDecision(
   }
 
   return {
+    intent,
+    resolvedService,
     reply,
-    cta,
-    shouldOpenForm,
+    ctaType: cta.type,
+    ctaLabel: cta.label,
+    ctaAction: cta.action,
+    targetRoute: cta.targetRoute,
+    shouldOpenForm: shouldOpenForm || cta.action === 'open_form',
   };
 }
