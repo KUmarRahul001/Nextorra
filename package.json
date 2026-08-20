@@ -2,12 +2,15 @@
   "name": "rahnoxa-platform",
   "private": true,
   "version": "2.4.0",
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
-    "build": "npm --prefix frontend run build",
-    "build:frontend": "npm --prefix frontend run build",
+    "build": "cd frontend && npm install && npm run build",
+    "build:frontend": "cd frontend && npm install && npm run build",
     "build:backend": "npm --prefix backend run build",
     "test:bot": "npm --prefix frontend run test:bot",
     "test:frontend": "npm --prefix frontend run test:bot",
