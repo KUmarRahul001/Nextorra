@@ -1,10 +1,11 @@
 /**
- * Rahnoxa AI Voice Call Manager
- * Orchestrates calls, manages state machine transitions, records transcripts, and triggers summarization.
+ * Rahnoxa Real AI Voice Call Manager
+ * Pure real PSTN/SIP execution pipeline. Strictly zero fake simulation in production.
  */
 
 import { db } from '../../../database/supabase.js';
 import { buildVoiceSystemPrompt } from '../prompts/voice.prompt.js';
+import { TelephonyProvider } from '../telephony/telephonyProvider.js';
 
 export const CALL_STATUSES = {
   QUEUED: 'QUEUED',
@@ -17,16 +18,32 @@ export const CALL_STATUSES = {
 
 export class CallManager {
   /**
-   * Start or simulate an AI Voice Call for a given lead
+   * Initiate a Real PSTN AI Phone Call
    */
-  static async initiateCall({ leadId, adminId, mode = 'SIMULATED' }) {
+  static async initiateCall({ leadId, adminId }) {
     const lead = await db.getLead(leadId);
     if (!lead) throw new Error(`Lead with ID ${leadId} not found`);
+
+    if (!lead.phone || lead.phone.trim().length < 8) {
+      throw new Error(`Lead ${lead.name} does not have a valid phone number to dial.`);
+    }
 
     // Ensure only one active call exists per lead
     const activeCall = await db.getActiveCallForLead?.(leadId).catch(() => null);
     if (activeCall && ['DIALING', 'IN_PROGRESS', 'QUEUED'].includes(activeCall.status)) {
       throw new Error(`An active call (${activeCall.id}) is already in progress for this lead.`);
+    }
+
+    // Check PSTN configuration strictly before creating a call record
+    const sipHost = process.env.SIP_TRUNK_HOST;
+    const sipUser = process.env.SIP_TRUNK_USERNAME;
+    const sipPass = process.env.SIP_TRUNK_PASSWORD;
+
+    if (!sipHost || !sipUser || !sipPass) {
+      const err = new Error('Real PSTN calling is not configured. Connect and configure a verified SIP trunk in the server environment (SIP_TRUNK_HOST, SIP_TRUNK_USERNAME, SIP_TRUNK_PASSWORD) to place real physical phone calls.');
+      err.code = 'PSTN_NOT_CONFIGURED';
+      err.statusCode = 503;
+      throw err;
     }
 
     // Fetch relevant service knowledge (canonical matching without random fallback)
@@ -61,9 +78,9 @@ export class CallManager {
     const callRecord = await db.createLeadCall({
       lead_id: lead.id,
       agent_id: 'rahbot_voice_v1',
-      status: CALL_STATUSES.IN_PROGRESS,
+      status: CALL_STATUSES.QUEUED,
       direction: 'OUTBOUND',
-      mode,
+      mode: 'PSTN_LIVE',
       metadata: {
         target_name: lead.name,
         target_phone: lead.phone,
@@ -72,59 +89,27 @@ export class CallManager {
       },
     });
 
-    // Run simulated conversation workflow if in simulated dev mode
-    if (mode === 'SIMULATED') {
-      this._runSimulationAsync(callRecord.id, lead);
+    // Initiate real SIP dial via TelephonyProvider
+    try {
+      const dialResult = await TelephonyProvider.dial({
+        callId: callRecord.id,
+        destinationPhone: lead.phone,
+        mode: 'PSTN_LIVE',
+      });
+
+      return {
+        ...callRecord,
+        status: dialResult.status,
+        provider: dialResult.provider,
+        message: dialResult.message,
+      };
+    } catch (err) {
+      await db.completeLeadCall(callRecord.id, {
+        status: CALL_STATUSES.FAILED,
+        outcome: 'SIP_DIAL_FAILED',
+        metadata: { error: err.message },
+      }).catch(() => {});
+      throw err;
     }
-
-    return callRecord;
-  }
-
-  /**
-   * Internal simulation engine for zero-cost offline development & testing
-   */
-  static async _runSimulationAsync(callId, lead) {
-    const simTranscripts = [
-      { speaker: 'AGENT', text: `Hi ${lead.name}! This is RahBot calling from Rahnoxa. I noticed your enquiry regarding ${lead.service || 'software development'}. Do you have two minutes to discuss your project scope?` },
-      { speaker: 'LEAD', text: `Yes, sure. We are looking for an ERP solution with inventory, billing, and HR modules for our 2 branches.` },
-      { speaker: 'AGENT', text: `That's great. At Rahnoxa, we engineer modular ERP systems with real-time branch sync, strict RBAC, and clean APIs. What is your target deployment timeline?` },
-      { speaker: 'LEAD', text: `We are looking to roll this out within 2 to 3 months, and our estimated budget is around ₹1.5 to ₹2.5 Lakhs.` },
-      { speaker: 'AGENT', text: `Understood! Our starter ERP modules begin at ₹59,999 with 50% start / 50% handover milestones and a 30-Day Bug Warranty. I have recorded your specifications, and our senior architect will follow up with a proposal within 24 to 48 hours.` },
-      { speaker: 'LEAD', text: `Perfect, thank you!` },
-    ];
-
-    for (let i = 0; i < simTranscripts.length; i++) {
-      await new Promise((r) => setTimeout(r, 400));
-      await db.addCallTranscript(callId, simTranscripts[i].speaker, simTranscripts[i].text, i);
-    }
-
-    // Extract structured summary & update lead
-    const summaryData = {
-      summary: `Lead ${lead.name} requires a custom ERP with Inventory, Billing, and HRMS for 2 branches within 2–3 months. Budget estimated at ₹1.5L–₹2.5L.`,
-      requirements: ['Inventory Management', 'Billing / POS', 'HRMS Module', 'Multi-Branch Sync (2 branches)'],
-      extractedBudget: '₹1,50,000 – ₹2,50,000',
-      extractedTimeline: '2–3 Months',
-      leadScore: 88,
-      leadTemperature: 'HOT',
-      nextAction: 'Prepare Custom ERP Milestone Proposal',
-    };
-
-    await db.completeLeadCall(callId, {
-      duration_seconds: 142,
-      summary: summaryData.summary,
-      outcome: 'QUALIFIED_SUCCESS',
-      sentiment: 'POSITIVE',
-      lead_score: summaryData.leadScore,
-      next_action: summaryData.nextAction,
-      metadata: summaryData,
-    });
-
-    // Update the parent lead record with verified extracted scope
-    await db.updateLead(lead.id, {
-      status: 'QUALIFIED',
-      budget: summaryData.extractedBudget,
-      timeline: summaryData.extractedTimeline,
-      notes: `[AI Voice Call Summary - 88/100 HOT]:\n${summaryData.summary}`,
-    });
   }
 }
