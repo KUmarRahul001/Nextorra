@@ -152,45 +152,64 @@ export const RahBot: React.FC = () => {
 
     // Call backend assistant API with local deterministic intelligence fallback
     try {
-      const response: any = await api.sendChatMessage(textToSend, context.conversationId);
+      let replyText = '';
+      let ctaType = 'submit_enquiry';
+      let ctaLabel = 'Submit Project Enquiry';
+      let targetRoute: string | undefined = undefined;
 
-      // Support all API response formats: response.message.content or response.data.message.content or response.reply
-      const replyContent =
-        response?.message?.content ||
-        response?.data?.message?.content ||
-        response?.data?.reply ||
-        response?.reply ||
-        response?.data?.message;
+      try {
+        const response: any = await api.sendChatMessage(textToSend, context.conversationId);
+        replyText =
+          response?.message?.content ||
+          response?.data?.message?.content ||
+          response?.data?.reply ||
+          response?.reply ||
+          response?.data?.message ||
+          '';
 
-      if (!replyContent || typeof replyContent !== 'string') {
-        throw new Error('Empty or invalid remote AI response');
+        if (response?.conversation_id) {
+          setContext((c) => ({ ...c, conversationId: response.conversation_id }));
+        }
+        if (response?.data?.ctaType || response?.ctaType) {
+          ctaType = response?.data?.ctaType || response?.ctaType;
+        }
+        if (response?.data?.ctaLabel || response?.ctaLabel) {
+          ctaLabel = response?.data?.ctaLabel || response?.ctaLabel;
+        }
+        if (response?.data?.targetRoute || response?.targetRoute) {
+          targetRoute = response?.data?.targetRoute || response?.targetRoute;
+        }
+      } catch (networkErr) {
+        console.warn('Backend unavailable, using local RahBot knowledge engine:', networkErr);
       }
 
-      if (response?.conversation_id) {
-        setContext((c) => ({ ...c, conversationId: response.conversation_id }));
+      // If backend was offline or returned empty, generate using full authoritative local knowledge engine
+      if (!replyText || typeof replyText !== 'string' || replyText.trim().length === 0) {
+        const botReply = buildBotDecision(textToSend, detectedService, updatedContext);
+        replyText = botReply.reply;
+        ctaType = botReply.ctaType;
+        ctaLabel = botReply.ctaLabel || 'Submit Project Enquiry';
+        targetRoute = botReply.targetRoute;
+        if (botReply.shouldOpenForm) {
+          setShowLeadForm(true);
+        }
       }
-
-      const ctaType = response?.data?.ctaType || response?.ctaType || 'submit_enquiry';
-      const ctaLabel = response?.data?.ctaLabel || response?.ctaLabel || 'Submit Project Enquiry';
-      const targetRoute = response?.data?.targetRoute || response?.targetRoute;
 
       setMessages((prev) => [
         ...prev,
         {
           id: `assistant-${Date.now()}`,
           role: 'assistant',
-          content: replyContent,
+          content: replyText,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          ctaType,
+          ctaType: ctaType as any,
           ctaLabel,
           targetRoute,
         },
       ]);
-      setIsTyping(false);
-    } catch (err) {
-      console.warn('Using local RahBot fallback rule engine:', err);
+    } catch (unexpectedErr) {
+      console.error('Critical chat processing error:', unexpectedErr);
       const botReply = buildBotDecision(textToSend, detectedService, updatedContext);
-
       setMessages((prev) => [
         ...prev,
         {
@@ -203,9 +222,7 @@ export const RahBot: React.FC = () => {
           targetRoute: botReply.targetRoute,
         },
       ]);
-      if (botReply.shouldOpenForm) {
-        setShowLeadForm(true);
-      }
+    } finally {
       setIsTyping(false);
     }
   };
@@ -242,7 +259,7 @@ export const RahBot: React.FC = () => {
         notes: `[Submitted via RahBot Assistant]\n${leadForm.description}`,
       };
 
-      await api.createLead(leadPayload);
+      await api.submitLead(leadPayload);
       setLeadSubmitted(true);
       setShowLeadForm(false);
 
@@ -257,7 +274,7 @@ export const RahBot: React.FC = () => {
       ]);
     } catch (err) {
       console.error('Lead submission failed:', err);
-      alert('Unable to send enquiry. Please check your internet connection or email us directly.');
+      alert('Unable to send enquiry. Please check your internet connection or email us directly at contact.rahnoxa@protonmail.com.');
     } finally {
       setIsSubmittingLead(false);
     }
