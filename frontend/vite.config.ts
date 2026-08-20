@@ -6,7 +6,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { resolve } from 'path';
 import { copyFileSync } from 'fs';
 
-const SITE_URL = 'https://rahnoxa.pages.dev';
+const SITE_URL = process.env.VITE_SITE_URL || 'https://rahnoxa.rahnoxa-tech.workers.dev';
 
 export default defineConfig({
   plugins: [
