@@ -107,6 +107,7 @@ function App() {
 
               {/* 📞 Contact / Get Started */}
               <Route path="get-started" element={<ContactPage />} />
+              <Route path="contact" element={<ContactPage />} />
 
               {/* 🎓 Internship */}
               <Route path="internship" element={<Internship />} />
