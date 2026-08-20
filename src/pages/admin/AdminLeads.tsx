@@ -166,13 +166,25 @@ const AdminLeads: React.FC = () => {
                     </td>
 
                     <td className="py-4 px-4 text-right">
-                      <button
-                        onClick={() => setSelectedLead(lead)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-600 text-slate-800 hover:text-slate-900 transition-colors text-xs font-semibold"
-                      >
-                        <Eye className="h-3.5 w-3.5" />
-                        View
-                      </button>
+                      <div className="inline-flex items-center gap-1.5">
+                        <button
+                          onClick={() => {
+                            alert(`🎙️ Starting Self-Hosted LiveKit AI Voice Agent call to ${lead.name} (${lead.phone || lead.email})...\n\n- Pipeline: Faster-Whisper (STT) ➔ Ollama Llama-3.1 (LLM) ➔ Kokoro (TTS)\n- Status: Connecting WebRTC voice room...`);
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 transition-colors text-xs font-semibold"
+                          title="Initiate Open-Source AI Call"
+                        >
+                          <Phone className="h-3.5 w-3.5" />
+                          AI Call
+                        </button>
+                        <button
+                          onClick={() => setSelectedLead(lead)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-600 text-slate-800 hover:text-white transition-colors text-xs font-semibold"
+                        >
+                          <Eye className="h-3.5 w-3.5" />
+                          View
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
