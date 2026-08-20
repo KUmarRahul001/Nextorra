@@ -75,8 +75,8 @@ export const config = {
     maxRetries: parseInt(process.env.AI_MAX_RETRIES || '2', 10),
   },
 
-  // News API & Live Trend Aggregator
-  newsApiKey: process.env.NEWS_API_KEY || 'cdd54872be2d44e4bec703de97506c1c',
+  // News API & Live Trend Aggregator (Strictly read from environment)
+  newsApiKey: process.env.NEWS_API_KEY || '',
 
   // Automation (Auto-publish real live news blogs immediately)
   autoPublishBlogs: process.env.AUTO_PUBLISH_BLOGS !== 'false',
