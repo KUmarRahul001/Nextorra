@@ -1,16 +1,29 @@
 import { Router } from 'express';
 import { CallManager } from '../../voice-agent/call-manager/callManager.js';
+import { VoiceOrchestrator } from '../../voice-agent/orchestrator/voiceOrchestrator.js';
 import { db } from '../../../database/supabase.js';
 
 const router = Router();
 
+// GET /v1/voice/providers - List configured authorized voice providers
+router.get('/providers', async (req, res) => {
+  const providers = VoiceOrchestrator.getAvailableProviders().map((p) => ({
+    id: p.id,
+    name: p.name,
+    type: p.type,
+    isConfigured: p.isConfigured,
+    licensingCost: p.licensingCost,
+  }));
+  res.json({ success: true, providers });
+});
+
 // POST /v1/voice/calls/start
 router.post('/calls/start', async (req, res, next) => {
   try {
-    const { lead_id, mode } = req.body;
+    const { lead_id, provider_id } = req.body;
     if (!lead_id) return res.status(400).json({ success: false, error: 'lead_id is required' });
 
-    const call = await CallManager.initiateCall({ leadId: lead_id, mode: mode || 'SIMULATED' });
+    const call = await CallManager.initiateCall({ leadId: lead_id, providerId: provider_id || 'auto' });
     res.json({ success: true, call });
   } catch (err) {
     next(err);

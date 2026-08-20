@@ -243,12 +243,16 @@ export const api = {
     });
   },
 
-  // ── Voice Agent (Self-Hosted LiveKit) ──
-  async startVoiceCall(leadId: string, mode: string = 'SIMULATED') {
+  // ── Voice Agent (Multi-Provider: Open-Source / Bland AI) ──
+  async startVoiceCall(leadId: string, providerId: string = 'auto') {
     return apiFetch('/voice/calls/start', {
       method: 'POST',
-      body: JSON.stringify({ lead_id: leadId, mode }),
+      body: JSON.stringify({ lead_id: leadId, provider_id: providerId }),
     });
+  },
+
+  async getVoiceProviders() {
+    return apiFetch('/voice/providers');
   },
 
   async getLeadVoiceCalls(leadId: string) {

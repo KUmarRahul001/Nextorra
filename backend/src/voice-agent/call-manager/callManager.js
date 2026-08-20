@@ -6,6 +6,7 @@
 import { db } from '../../../database/supabase.js';
 import { buildVoiceSystemPrompt } from '../prompts/voice.prompt.js';
 import { TelephonyProvider } from '../telephony/telephonyProvider.js';
+import { VoiceOrchestrator } from '../orchestrator/voiceOrchestrator.js';
 
 export const CALL_STATUSES = {
   QUEUED: 'QUEUED',
@@ -20,7 +21,7 @@ export class CallManager {
   /**
    * Initiate a Real PSTN AI Phone Call
    */
-  static async initiateCall({ leadId, adminId }) {
+  static async initiateCall({ leadId, adminId, providerId = 'auto' }) {
     const lead = await db.getLead(leadId);
     if (!lead) throw new Error(`Lead with ID ${leadId} not found`);
 
@@ -75,6 +76,9 @@ export class CallManager {
       callObjective: 'Conduct discovery, qualify project scope, timeline, and estimate requirements.',
     });
 
+    // Select appropriate Voice Provider via Orchestrator
+    const selectedProvider = VoiceOrchestrator.selectProvider(providerId);
+
     const callRecord = await db.createLeadCall({
       lead_id: lead.id,
       agent_id: 'rahbot_voice_v1',
@@ -86,27 +90,31 @@ export class CallManager {
         target_phone: lead.phone,
         target_service: lead.service,
         system_prompt: systemPrompt,
+        provider: selectedProvider.type,
+        provider_account: selectedProvider.name,
       },
     });
 
-    // Initiate real SIP dial via TelephonyProvider
+    // Initiate call via selected Voice Provider adapter
     try {
-      const dialResult = await TelephonyProvider.dial({
+      const dialResult = await selectedProvider.instance.createCall({
         callId: callRecord.id,
         destinationPhone: lead.phone,
-        mode: 'PSTN_LIVE',
+        systemPrompt,
+        callerId: process.env.SIP_CALLER_ID,
       });
 
       return {
         ...callRecord,
         status: dialResult.status,
         provider: dialResult.provider,
+        providerAccount: dialResult.providerAccount,
         message: dialResult.message,
       };
     } catch (err) {
       await db.completeLeadCall(callRecord.id, {
         status: CALL_STATUSES.FAILED,
-        outcome: 'SIP_DIAL_FAILED',
+        outcome: 'DIAL_FAILED',
         metadata: { error: err.message },
       }).catch(() => {});
       throw err;

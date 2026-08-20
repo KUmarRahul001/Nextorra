@@ -30,6 +30,8 @@ const AdminLeads: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState<any | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
+  const [providers, setProviders] = useState<any[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<string>('auto');
 
   const loadLeads = async () => {
     setIsLoading(true);
@@ -43,8 +45,18 @@ const AdminLeads: React.FC = () => {
     }
   };
 
+  const loadProviders = async () => {
+    try {
+      const res = await api.getVoiceProviders();
+      setProviders(res.providers || []);
+    } catch {
+      setProviders([]);
+    }
+  };
+
   useEffect(() => {
     loadLeads();
+    loadProviders();
   }, [filterStatus]);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
@@ -73,12 +85,21 @@ const AdminLeads: React.FC = () => {
           </p>
         </div>
 
-        {/* Status & Telephony Carrier Health */}
+        {/* Status & Provider Controls */}
         <div className="flex flex-wrap items-center gap-3 text-xs">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border bg-slate-50 border-slate-200">
-            <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-            <span className="text-slate-600 font-medium">SIP Carrier:</span>
-            <span className="text-slate-900 font-semibold">Waiting for Carrier</span>
+          <div className="flex items-center gap-2">
+            <span className="text-slate-500 font-medium">Voice Engine:</span>
+            <select
+              value={selectedProvider}
+              onChange={(e) => setSelectedProvider(e.target.value)}
+              className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-900 font-semibold focus:outline-none focus:border-blue-500 shadow-sm"
+            >
+              <option value="auto">⚡ Auto (Best Available)</option>
+              <option value="open_source">🟢 Open-Source LiveKit (₹0)</option>
+              {providers.filter(p => p.type === 'BLAND').map(p => (
+                <option key={p.id} value={p.id}>📞 {p.name}</option>
+              ))}
+            </select>
           </div>
 
           <div className="flex items-center gap-2">
@@ -178,19 +199,19 @@ const AdminLeads: React.FC = () => {
                         <button
                           onClick={async () => {
                             try {
-                              const res = await api.startVoiceCall(lead.id, 'PSTN_LIVE');
-                              alert(`📞 [REAL PSTN CALL INITIATED]\n\n• Target Phone: ${lead.phone}\n• Contact Name: ${lead.name}\n• Service: ${lead.service}\n• Telephony Gateway: LiveKit SIP ➔ Wholesale Telecom Carrier\n• Status: DIALING\n\nLive audio stream established.`);
+                              const res = await api.startVoiceCall(lead.id, selectedProvider);
+                              alert(`📞 [OUTBOUND AI CALL INITIATED]\n\n• Target Phone: ${lead.phone}\n• Contact Name: ${lead.name}\n• Service: ${lead.service}\n• Engine: ${res.call?.provider || 'LiveKit / SIP'}\n• Status: ${res.call?.status || 'DIALING'}\n\nCall dispatched successfully.`);
                               loadLeads();
                             } catch (err: any) {
                               if (err.message && err.message.includes('PSTN_NOT_CONFIGURED')) {
-                                alert(`⚠️ Real PSTN Calling is not configured.\n\nTo place physical telephone calls that ring a mobile phone, connect and configure your SIP trunk credentials in the server environment (SIP_TRUNK_HOST, SIP_TRUNK_USERNAME, SIP_TRUNK_PASSWORD).`);
+                                alert(`⚠️ Real PSTN Calling is not configured.\n\nTo place physical telephone calls, connect a verified SIP trunk in the server environment (SIP_TRUNK_HOST, SIP_TRUNK_USERNAME, SIP_TRUNK_PASSWORD) or configure an authorized Bland AI API key (BLAND_API_KEY).`);
                               } else {
                                 alert(err.message || 'Call initiation failed');
                               }
                             }
                           }}
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 transition-colors text-xs font-semibold"
-                          title="Place Real PSTN Phone Call"
+                          title="Place Real Outbound AI Call"
                         >
                           <Phone className="h-3.5 w-3.5" />
                           AI Call
