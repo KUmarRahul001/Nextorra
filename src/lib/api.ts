@@ -201,10 +201,19 @@ export const api = {
 
   // ── Chat (RahBot) ──
   async sendChatMessage(message: string, conversation_id?: string, session_id?: string) {
-    return apiFetch('/chat', {
-      method: 'POST',
-      body: JSON.stringify({ message, conversation_id, session_id }),
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s bounded timeout
+
+    try {
+      const res = await apiFetch('/chat', {
+        method: 'POST',
+        body: JSON.stringify({ message, conversation_id, session_id }),
+        signal: controller.signal,
+      });
+      return res;
+    } finally {
+      clearTimeout(timeoutId);
+    }
   },
 
   // ── Knowledge ──
