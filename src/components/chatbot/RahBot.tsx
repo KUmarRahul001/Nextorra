@@ -336,7 +336,6 @@ export const RahBot: React.FC = () => {
       setShowLeadForm(true);
     } else if (msg.targetRoute) {
       navigate(msg.targetRoute);
-      setIsOpen(false);
     } else {
       setShowLeadForm(true);
     }
@@ -344,7 +343,6 @@ export const RahBot: React.FC = () => {
 
   const handleNavigate = (path: string) => {
     navigate(path);
-    setIsOpen(false);
   };
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
