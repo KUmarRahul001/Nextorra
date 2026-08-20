@@ -13,6 +13,38 @@ export class RahnoxaLocalProvider {
   async chat({ message, contextKnowledge, systemPrompt }) {
     const lower = message.toLowerCase().trim();
 
+    // 0. Greetings & Identity
+    if (
+      /^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening)|namaste|howdy|who are you|are you there)\b/i.test(lower) ||
+      lower === 'hi' ||
+      lower === 'hello' ||
+      lower === 'hey' ||
+      lower.includes('hi rahbot') ||
+      lower.includes('hello rahbot')
+    ) {
+      return {
+        reply:
+          "Hi! I'm **RahBot**, Rahnoxa's AI engineering assistant.\n\nI can help you explore our software development services, transparent pricing, technology stacks, internships, or project specifications.\n\nWhat would you like to know?",
+        intent: 'greeting',
+      };
+    }
+
+    // 0.1 Thanks & Appreciation
+    if (/^(thanks|thank\s+you|thx|appreciate\s+it)\b/i.test(lower)) {
+      return {
+        reply: "You're very welcome! If you have any further questions about our tech stack, pricing tiers, or need an engineering review, feel free to ask anytime.",
+        intent: 'thanks',
+      };
+    }
+
+    // 0.2 Goodbye & Closing
+    if (/^(bye|goodbye|see\s+you|that'?s\s+all)\b/i.test(lower)) {
+      return {
+        reply: 'Thank you for reaching out to Rahnoxa. Have a great day ahead! If you ever need engineering support or want to start a project, we are right here.',
+        intent: 'goodbye',
+      };
+    }
+
     // 1. Direct Contact / Leadership reach
     if (
       lower.includes('speak to human') ||
@@ -295,11 +327,11 @@ export class RahnoxaLocalProvider {
       };
     }
 
-    // 16. Fallback for Custom or Unknown Questions -> Prompt for details + Form + 24-48 hr guarantee
+    // 16. Fallback for Unknown Questions -> Informative Assistance
     return {
       reply:
-        "I'd love to help you with that! Because every system architecture and custom workflow has unique technical requirements, please share your details in the project enquiry form below.\n\nOur senior engineering team will review your specifications and contact you via email/phone within **24 to 48 hours** with a detailed technical breakdown and estimate.\n\nYou can also [Start a Project Online](/get-started) or reach us at `contact.rahnoxa@protonmail.com`.",
-      intent: 'lead_qualification',
+        "I don't have that specific detail in my configured Rahnoxa knowledge base.\n\nI can help you with our custom software services (ERP, Web Apps, Mobile, SaaS, API Integrations), transparent pricing packages, technology stacks, internships, or project specifications. What would you like to explore?",
+      intent: 'general_help',
     };
   }
 

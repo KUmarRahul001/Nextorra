@@ -24,9 +24,9 @@ export function buildBotDecision(
     // ── 1. Greeting ─────────────────────────────────────────────────────────────
     case 'greeting':
       reply =
-        'Hello! I am **RahBot**, the AI Business Assistant for **Rahnoxa**.\n\n' +
-        'I can help you explore our software engineering services (Custom ERP, Full-Stack Web, Mobile Apps, SaaS, API Integrations), view transparent Indian pricing starting from ₹1,499–₹4,999, or prepare an emergency rescue request.\n\n' +
-        'How can I help you today?';
+        "Hi! I'm **RahBot**, Rahnoxa's AI engineering assistant.\n\n" +
+        "I can help you explore our software development services, transparent pricing, technology stacks, internships, or project specifications.\n\n" +
+        "What would you like to know?";
       break;
 
     // ── 2. Thanks ───────────────────────────────────────────────────────────────

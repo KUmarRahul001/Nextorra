@@ -120,10 +120,9 @@ export const RahBot: React.FC = () => {
       {
         id: 'welcome',
         role: 'assistant',
-        content: `Hello! I am **RahBot**, the AI Engineering Assistant for **Rahnoxa**.\n\nI can help you explore our software development services (Custom ERP, Web Apps, Mobile Apps, SaaS, API Integrations), estimate scopes, or prepare a project enquiry for our engineering team.\n\nHow can I help you today?`,
+        content: `Hi! I'm **RahBot**, Rahnoxa's AI engineering assistant.\n\nI can help you explore our software development services, transparent pricing, technology stacks, internships, or project specifications.\n\nWhat would you like to know?`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        ctaType: 'submit_enquiry',
-        ctaLabel: 'Submit Project Enquiry',
+        ctaType: 'none',
       },
     ]);
   }, []);
@@ -164,9 +163,10 @@ export const RahBot: React.FC = () => {
     // Call backend assistant API with local deterministic intelligence fallback
     try {
       let replyText = '';
-      let ctaType = 'submit_enquiry';
-      let ctaLabel = 'Submit Project Enquiry';
-      let targetRoute: string | undefined = undefined;
+      const botDecision = buildBotDecision(textToSend, detectedService, updatedContext);
+      let ctaType = botDecision.ctaType;
+      let ctaLabel = botDecision.ctaLabel;
+      let targetRoute = botDecision.targetRoute;
 
       try {
         const response: any = await api.sendChatMessage(textToSend, context.conversationId);
@@ -194,14 +194,10 @@ export const RahBot: React.FC = () => {
         console.warn('Backend unavailable, using local RahBot knowledge engine:', networkErr);
       }
 
-      // If backend was offline or returned empty, generate using full authoritative local knowledge engine
+      // If backend was offline or returned empty, generate using authoritative local knowledge engine
       if (!replyText || typeof replyText !== 'string' || replyText.trim().length === 0) {
-        const botReply = buildBotDecision(textToSend, detectedService, updatedContext);
-        replyText = botReply.reply;
-        ctaType = botReply.ctaType;
-        ctaLabel = botReply.ctaLabel || 'Submit Project Enquiry';
-        targetRoute = botReply.targetRoute;
-        if (botReply.shouldOpenForm) {
+        replyText = botDecision.reply;
+        if (botDecision.shouldOpenForm) {
           setShowLeadForm(true);
         }
       }
