@@ -52,12 +52,13 @@ class RahnoxaAIGateway {
     };
   }
 
-  async generateBlogArticle({ topic, keyword, category }) {
+  async generateBlogArticle({ topic, keyword, category, summary }) {
     const provider = this.getProvider();
     return provider.generateArticle({
       topic,
       keyword,
       category,
+      summary,
       systemPrompt: BLOG_SYSTEM_V1,
       model: config.ai.blogModel,
     });

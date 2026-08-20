@@ -2,35 +2,7 @@ import cron from 'node-cron';
 import { db } from '../database/supabase.js';
 import { aiGateway } from '../ai/core/gateway.js';
 import { config } from '../config/env.js';
-
-// Pre-defined rotating technical topic matrix
-const TOPIC_REPOSITORY = [
-  {
-    topic: 'Enterprise API Integration Strategies for High-Throughput Microservices',
-    category: 'Software Architecture',
-    keyword: 'enterprise api integration services',
-  },
-  {
-    topic: 'Why Custom Software Outperforms Generic SaaS for Complex Business Workflows',
-    category: 'Software Engineering',
-    keyword: 'custom software development vs saas',
-  },
-  {
-    topic: 'Designing Secure Multi-Tenant Databases for Cloud SaaS Applications',
-    category: 'Database & Cloud',
-    keyword: 'multi-tenant database architecture',
-  },
-  {
-    topic: 'Microservices vs Modular Monolith: Modern Architectural Trade-offs',
-    category: 'Software Architecture',
-    keyword: 'modular monolith architecture',
-  },
-  {
-    topic: 'Automated CI/CD Pipelines & Zero-Downtime Deployment on Edge Cloud',
-    category: 'DevOps & Cloud',
-    keyword: 'edge cloud deployment strategies',
-  },
-];
+import { NewsService } from '../src/services/news.service.js';
 
 export async function executeDailySEOAutomation() {
   const startTime = new Date().toISOString();
@@ -41,39 +13,40 @@ export async function executeDailySEOAutomation() {
     const job = jobs[0] || { auto_publish: config.autoPublishBlogs ? 1 : 0 };
     const autoPublish = Boolean(job.auto_publish);
 
-    // Topic Selection & Deduplication
-    const runs = await db.getAutomationRuns(15);
-    const usedTopics = new Set(runs.map((r) => r.topic));
-    const selectedTopic = TOPIC_REPOSITORY.find((t) => !usedTopics.has(t.topic)) || TOPIC_REPOSITORY[0];
+    // 1. Fetch real-time trending news across Tech, IT, AI, Science
+    const newsTopic = await NewsService.getTrendingTechNews();
 
-    // Generate Article via Custom AI Gateway
+    // 2. Generate Article via Custom AI Gateway
     const generated = await aiGateway.generateBlogArticle({
-      topic: selectedTopic.topic,
-      keyword: selectedTopic.keyword,
-      category: selectedTopic.category,
+      topic: newsTopic.title,
+      keyword: newsTopic.keyword || newsTopic.title,
+      category: newsTopic.category || 'Tech & IT Innovation',
+      summary: newsTopic.summary,
     });
 
     const status = autoPublish ? 'PUBLISHED' : 'DRAFT';
     const now = new Date().toISOString();
+    const slug = `${generated.slug}-${Date.now().toString(36).slice(-4)}`;
+    const siteUrl = config.siteUrl.replace(/\/+$/, '');
 
     const post = await db.createBlogPost({
       title: generated.title,
-      slug: `${generated.slug}-${Date.now().toString(36).slice(-4)}`,
+      slug,
       excerpt: generated.excerpt,
       content: generated.content,
       featured_image: '/assets/image.png',
       category: generated.category,
       tags: generated.tags,
-      author: 'Rahnoxa AI Engine',
+      author: 'Rahnoxa AI Intelligence',
       reading_time: generated.reading_time || '6 min read',
       status,
       is_ai_generated: 1,
-      ai_topic: selectedTopic.topic,
-      ai_keyword: selectedTopic.keyword,
-      ai_seo_score: generated.ai_seo_score || 92,
-      seo_title: `${generated.title} – Rahnoxa`,
+      ai_topic: newsTopic.title,
+      ai_keyword: newsTopic.keyword,
+      ai_seo_score: generated.ai_seo_score || 95,
+      seo_title: `${generated.title} | ${config.siteName || 'Rahnoxa'}`,
       seo_description: generated.excerpt,
-      canonical_url: `https://rahnoxa.pages.dev/blog/${generated.slug}`,
+      canonical_url: `${siteUrl}/blog/${slug}`,
       published_at: status === 'PUBLISHED' ? now : null,
     });
 

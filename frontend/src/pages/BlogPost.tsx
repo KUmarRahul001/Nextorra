@@ -99,40 +99,119 @@ const BlogPost: React.FC = () => {
     mainEntityOfPage: `${config.siteUrl}/blog/${post.slug}`,
   };
 
-  // Simple clean markdown-to-html paragraph formatter
+  // Enhanced clean markdown-to-html paragraph formatter
+  const renderFormattedText = (text: string) => {
+    // Parse bold text and markdown links
+    const parts = text.split(/(\[.*?\]\(.*?\)|\*\*.*?\*\*)/g);
+    return parts.map((part, idx) => {
+      if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
+        const match = part.match(/\[(.*?)\]\((.*?)\)/);
+        if (match) {
+          const [, linkText, linkUrl] = match;
+          if (linkUrl.startsWith('/')) {
+            return (
+              <Link key={idx} to={linkUrl} className="text-blue-600 font-semibold hover:underline">
+                {linkText}
+              </Link>
+            );
+          }
+          return (
+            <a key={idx} href={linkUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">
+              {linkText}
+            </a>
+          );
+        }
+      }
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={idx} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
   const renderContent = (content: string) => {
     const blocks = content.split('\n\n');
     return blocks.map((block, i) => {
-      if (block.startsWith('### ')) {
+      const trimmed = block.trim();
+      if (trimmed === '---') {
+        return <hr key={i} className="my-8 border-slate-200" />;
+      }
+      if (trimmed.startsWith('#### ')) {
+        return (
+          <h4 key={i} className="text-lg font-bold text-slate-900 mt-6 mb-2 tracking-tight">
+            {renderFormattedText(trimmed.replace('#### ', ''))}
+          </h4>
+        );
+      }
+      if (trimmed.startsWith('### ')) {
         return (
           <h3 key={i} className="text-xl sm:text-2xl font-bold text-slate-900 mt-8 mb-3 tracking-tight">
-            {block.replace('### ', '')}
+            {renderFormattedText(trimmed.replace('### ', ''))}
           </h3>
         );
       }
-      if (block.startsWith('## ')) {
+      if (trimmed.startsWith('## ')) {
         return (
           <h2 key={i} className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-10 mb-4 tracking-tight border-b border-slate-200 pb-2">
-            {block.replace('## ', '')}
+            {renderFormattedText(trimmed.replace('## ', ''))}
           </h2>
         );
       }
-      if (block.startsWith('- ')) {
-        const items = block.split('\n').map((l) => l.replace('- ', ''));
+      if (trimmed.startsWith('|')) {
+        const rows = trimmed.split('\n').filter((r) => r.trim().length > 0 && !r.includes(':---'));
+        if (rows.length > 0) {
+          const headerCells = rows[0].split('|').filter((c) => c.trim().length > 0);
+          const bodyRows = rows.slice(1);
+          return (
+            <div key={i} className="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-2xs">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200 text-slate-900 font-bold">
+                  <tr>
+                    {headerCells.map((h, idx) => (
+                      <th key={idx} className="p-3 border-r last:border-r-0 border-slate-200">{renderFormattedText(h.trim())}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-700">
+                  {bodyRows.map((row, rIdx) => {
+                    const cells = row.split('|').filter((c) => c.trim().length > 0);
+                    return (
+                      <tr key={rIdx} className="hover:bg-blue-50/30 transition-colors">
+                        {cells.map((cell, cIdx) => (
+                          <td key={cIdx} className="p-3 border-r last:border-r-0 border-slate-100">{renderFormattedText(cell.trim())}</td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          );
+        }
+      }
+      if (trimmed.startsWith('> ')) {
+        return (
+          <blockquote key={i} className="border-l-4 border-blue-600 bg-blue-50/50 rounded-r-xl p-4 my-6 italic text-slate-700">
+            {renderFormattedText(trimmed.replace(/^>\s*/, ''))}
+          </blockquote>
+        );
+      }
+      if (trimmed.startsWith('- ')) {
+        const items = trimmed.split('\n').map((l) => l.replace(/^[-\*]\s*/, ''));
         return (
           <ul key={i} className="space-y-2 my-4 pl-4 list-disc list-inside text-slate-700 text-sm sm:text-base">
             {items.map((item, idx) => (
-              <li key={idx}>{item}</li>
+              <li key={idx}>{renderFormattedText(item)}</li>
             ))}
           </ul>
         );
       }
-      if (block.startsWith('1. ') || block.startsWith('2. ') || block.startsWith('3. ')) {
-        const items = block.split('\n').map((l) => l.replace(/^\d+\.\s+/, ''));
+      if (/^\d+\.\s/.test(trimmed)) {
+        const items = trimmed.split('\n').map((l) => l.replace(/^\d+\.\s*/, ''));
         return (
           <ol key={i} className="space-y-2 my-4 pl-4 list-decimal list-inside text-slate-700 text-sm sm:text-base">
             {items.map((item, idx) => (
-              <li key={idx}>{item}</li>
+              <li key={idx}>{renderFormattedText(item)}</li>
             ))}
           </ol>
         );
@@ -140,7 +219,7 @@ const BlogPost: React.FC = () => {
 
       return (
         <p key={i} className="text-slate-700 text-sm sm:text-base leading-relaxed my-4">
-          {block}
+          {renderFormattedText(block)}
         </p>
       );
     });
