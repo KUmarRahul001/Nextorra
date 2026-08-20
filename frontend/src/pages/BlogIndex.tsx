@@ -5,6 +5,7 @@ import { Calendar, Clock, Tag, ArrowRight, Search, Sparkles, BookOpen } from 'lu
 import SEO from '../components/SEO';
 import config from '../config';
 import { api } from '../lib/api';
+import { SEED_BLOG_POSTS } from '../data/seedBlogPosts';
 
 const CATEGORIES = [
   'All',
@@ -18,10 +19,10 @@ const CATEGORIES = [
 ];
 
 const BlogIndex: React.FC = () => {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>(SEED_BLOG_POSTS);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,9 +31,22 @@ const BlogIndex: React.FC = () => {
         const res = await api.getBlogPosts({
           category: selectedCategory === 'All' ? undefined : selectedCategory,
         });
-        setPosts(res.posts || []);
+        if (res.posts && res.posts.length > 0) {
+          setPosts(res.posts);
+        } else {
+          // Fallback to local high-ranking seed articles
+          let filtered = SEED_BLOG_POSTS;
+          if (selectedCategory !== 'All') {
+            filtered = SEED_BLOG_POSTS.filter((p) => p.category === selectedCategory);
+          }
+          setPosts(filtered);
+        }
       } catch {
-        setPosts([]);
+        let filtered = SEED_BLOG_POSTS;
+        if (selectedCategory !== 'All') {
+          filtered = SEED_BLOG_POSTS.filter((p) => p.category === selectedCategory);
+        }
+        setPosts(filtered);
       } finally {
         setIsLoading(false);
       }

@@ -16,6 +16,7 @@ import {
 import SEO from '../components/SEO';
 import config from '../config';
 import { api } from '../lib/api';
+import { SEED_BLOG_POSTS } from '../data/seedBlogPosts';
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -33,10 +34,20 @@ const BlogPost: React.FC = () => {
         if (res.post) {
           setPost(res.post);
         } else {
-          setError('Article not found');
+          const fallback = SEED_BLOG_POSTS.find((p) => p.slug === slug);
+          if (fallback) {
+            setPost(fallback);
+          } else {
+            setError('Article not found');
+          }
         }
       } catch (err: any) {
-        setError(err.message || 'Article not found');
+        const fallback = SEED_BLOG_POSTS.find((p) => p.slug === slug);
+        if (fallback) {
+          setPost(fallback);
+        } else {
+          setError(err.message || 'Article not found');
+        }
       } finally {
         setIsLoading(false);
       }
