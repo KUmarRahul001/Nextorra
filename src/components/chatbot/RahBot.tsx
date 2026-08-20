@@ -154,52 +154,59 @@ export const RahBot: React.FC = () => {
     try {
       const response: any = await api.sendChatMessage(textToSend, context.conversationId);
 
-      const replyContent = response?.data?.reply || response?.reply || response?.data?.message;
-      if (!replyContent) {
+      // Support all API response formats: response.message.content or response.data.message.content or response.reply
+      const replyContent =
+        response?.message?.content ||
+        response?.data?.message?.content ||
+        response?.data?.reply ||
+        response?.reply ||
+        response?.data?.message;
+
+      if (!replyContent || typeof replyContent !== 'string') {
         throw new Error('Empty or invalid remote AI response');
       }
 
-      const ctaType = response?.data?.ctaType || response?.ctaType || 'none';
-      const ctaLabel = response?.data?.ctaLabel || response?.ctaLabel;
+      if (response?.conversation_id) {
+        setContext((c) => ({ ...c, conversationId: response.conversation_id }));
+      }
+
+      const ctaType = response?.data?.ctaType || response?.ctaType || 'submit_enquiry';
+      const ctaLabel = response?.data?.ctaLabel || response?.ctaLabel || 'Submit Project Enquiry';
       const targetRoute = response?.data?.targetRoute || response?.targetRoute;
 
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `assistant-${Date.now()}`,
-            role: 'assistant',
-            content: replyContent,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            ctaType,
-            ctaLabel,
-            targetRoute,
-          },
-        ]);
-        setIsTyping(false);
-      }, 400);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `assistant-${Date.now()}`,
+          role: 'assistant',
+          content: replyContent,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          ctaType,
+          ctaLabel,
+          targetRoute,
+        },
+      ]);
+      setIsTyping(false);
     } catch (err) {
       console.warn('Using local RahBot fallback rule engine:', err);
       const botReply = buildBotDecision(textToSend, detectedService, updatedContext);
 
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `assistant-${Date.now()}`,
-            role: 'assistant',
-            content: botReply.reply,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            ctaType: botReply.ctaType,
-            ctaLabel: botReply.ctaLabel,
-            targetRoute: botReply.targetRoute,
-          },
-        ]);
-        if (botReply.shouldOpenForm) {
-          setShowLeadForm(true);
-        }
-        setIsTyping(false);
-      }, 400);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `assistant-${Date.now()}`,
+          role: 'assistant',
+          content: botReply.reply,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          ctaType: botReply.ctaType,
+          ctaLabel: botReply.ctaLabel,
+          targetRoute: botReply.targetRoute,
+        },
+      ]);
+      if (botReply.shouldOpenForm) {
+        setShowLeadForm(true);
+      }
+      setIsTyping(false);
     }
   };
 
