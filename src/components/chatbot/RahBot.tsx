@@ -169,12 +169,45 @@ export const RahBot: React.FC = () => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isSendingRef = useRef(false);
+  const chatPanelRef = useRef<HTMLDivElement>(null);
 
-  // Clear stuck typing indicators and mutexes on page navigation
+  // Close bot and clear state on page navigation
   useEffect(() => {
+    setIsOpen(false);
     setIsTyping(false);
     isSendingRef.current = false;
   }, [location.pathname]);
+
+  // Close bot when clicking outside the chat panel
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        isOpen &&
+        chatPanelRef.current &&
+        !chatPanelRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     // Initial welcome message
@@ -383,6 +416,7 @@ export const RahBot: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={chatPanelRef}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
