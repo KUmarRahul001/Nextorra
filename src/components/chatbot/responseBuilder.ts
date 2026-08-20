@@ -184,11 +184,11 @@ export function buildBotDecision(
     // ── 12. Consultation / Human Handoff ────────────────────────────────────────
     case 'consultation':
       reply =
-        "You can reach the Rahnoxa engineering leadership team directly via:\n\n" +
+        "To schedule a **technical consultation** or project discovery call with our engineering team, reach out directly via:\n\n" +
         "- **Email**: `contact.rahnoxa@protonmail.com`\n" +
         "- **Phone / WhatsApp**: `+91 8434237052` / `+91 8434237049`\n" +
         "- **Location**: Jharkhand, India (Remote Engineering Worldwide)\n" +
-        "- **Response SLA**: We reply to all technical inquiries within **24 to 48 hours**.\n\n" +
+        "- **Response SLA**: We reply to all consultation inquiries within **24 to 48 hours**.\n\n" +
         "You can also use the Project Enquiry form below to submit your architecture specifications.";
       break;
 
@@ -206,7 +206,13 @@ export function buildBotDecision(
         `\n\nTo apply, visit our [Engineering Internship Track](/internship).`;
       break;
 
-    // ── 14. Fallback ────────────────────────────────────────────────────────────
+    // ── 14. Ambiguous / Context Lacking ────────────────────────────────────────
+    case 'ambiguous':
+      reply =
+        'Which service or package would you like to explore (e.g. Custom ERP, Full-Stack Web Apps, Mobile Apps, SaaS, or API Integrations)?';
+      break;
+
+    // ── 15. Fallback ────────────────────────────────────────────────────────────
     default:
       reply =
         "I'm here to help you explore Rahnoxa's software development services, transparent pricing starting at ₹1,499–₹4,999, or submit a technical project enquiry.\n\n" +

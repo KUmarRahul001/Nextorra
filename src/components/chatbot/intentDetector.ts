@@ -136,7 +136,24 @@ export function detectIntent(
     };
   }
 
-  // 9. Pricing, Packages & Cost Questions
+  // 9. Ambiguity Check (Pricing or Tech query with NO service identified or in context)
+  if (
+    (lower.includes('cost') ||
+      lower.includes('price') ||
+      lower.includes('how much') ||
+      lower.includes('tech stack') ||
+      lower.includes('what stack')) &&
+    resolvedService.service === null &&
+    !context.currentServiceId
+  ) {
+    return {
+      intent: 'ambiguous',
+      confidence: 0.85,
+      reason: 'Cost or stack question lacking service context',
+    };
+  }
+
+  // 10. Pricing, Packages & Cost Questions (Service is identified or in context)
   if (
     lower.includes('cost') ||
     lower.includes('price') ||

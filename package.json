@@ -9,6 +9,7 @@
     "dev:backend": "npm --prefix backend run dev",
     "build": "vite build",
     "build:frontend": "vite build",
+    "test:bot": "npx tsx scripts/test-rahbot.ts",
     "test:backend": "npm --prefix backend test",
     "lint": "eslint .",
     "preview": "vite preview"
