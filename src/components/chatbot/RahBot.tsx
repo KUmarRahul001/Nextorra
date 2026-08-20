@@ -30,7 +30,7 @@ const QUICK_PROMPTS = [
   'Tell me about engineering internships',
 ];
 
-// Helper to render Markdown bold and links safely with automatic fallback
+// Helper to render Markdown headings, bullets, bold, and links safely with automatic fallback
 const FormattedMessage: React.FC<{ text?: string; onNavigate: (path: string) => void }> = ({
   text = '',
   onNavigate,
@@ -40,54 +40,108 @@ const FormattedMessage: React.FC<{ text?: string; onNavigate: (path: string) => 
   }
 
   try {
-    const parts = text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
-
-    return (
-      <span className="leading-relaxed">
-        {parts.map((part, idx) => {
-          if (!part) return null;
-          if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
-            const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
-            if (match) {
-              const [, label, url] = match;
-              const isInternal = url.startsWith('/');
-              return isInternal ? (
-                <button
-                  key={idx}
-                  onClick={() => onNavigate(url)}
-                  className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
-                >
-                  <span>{label}</span>
-                  <ArrowRight className="h-3 w-3" />
-                </button>
-              ) : (
-                <a
-                  key={idx}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
-                >
-                  <span>{label}</span>
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              );
-            }
-          }
-          if (part.startsWith('**') && part.endsWith('**')) {
-            return (
-              <strong key={idx} className="font-bold text-slate-900">
-                {part.slice(2, -2)}
-              </strong>
+    const renderInline = (inlineText: string) => {
+      const parts = inlineText.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
+      return parts.map((part, idx) => {
+        if (!part) return null;
+        if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
+          const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+          if (match) {
+            const [, label, url] = match;
+            const isInternal = url.startsWith('/');
+            return isInternal ? (
+              <button
+                key={idx}
+                onClick={() => onNavigate(url)}
+                className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
+              >
+                <span>{label}</span>
+                <ArrowRight className="h-3 w-3" />
+              </button>
+            ) : (
+              <a
+                key={idx}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
+              >
+                <span>{label}</span>
+                <ExternalLink className="h-3 w-3" />
+              </a>
             );
           }
-          return <span key={idx}>{part}</span>;
+        }
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return (
+            <strong key={idx} className="font-bold text-slate-900">
+              {part.slice(2, -2)}
+            </strong>
+          );
+        }
+        return <span key={idx}>{part}</span>;
+      });
+    };
+
+    const lines = text.split('\n');
+
+    return (
+      <div className="space-y-1.5 leading-relaxed">
+        {lines.map((line, lIdx) => {
+          const trimmed = line.trim();
+          if (!trimmed) {
+            return <div key={lIdx} className="h-1" />;
+          }
+
+          // Heading 4: ####
+          if (trimmed.startsWith('#### ')) {
+            return (
+              <h5 key={lIdx} className="font-bold text-slate-800 text-[12px] pt-1 tracking-tight">
+                {renderInline(trimmed.replace(/^####\s+/, ''))}
+              </h5>
+            );
+          }
+
+          // Heading 3: ###
+          if (trimmed.startsWith('### ')) {
+            return (
+              <h4 key={lIdx} className="font-bold text-slate-900 text-[13px] pt-1.5 pb-0.5 tracking-tight border-b border-slate-100 flex items-center gap-1">
+                {renderInline(trimmed.replace(/^###\s+/, ''))}
+              </h4>
+            );
+          }
+
+          // Heading 2: ##
+          if (trimmed.startsWith('## ')) {
+            return (
+              <h3 key={lIdx} className="font-extrabold text-blue-900 text-sm pt-2 pb-1 tracking-tight">
+                {renderInline(trimmed.replace(/^##\s+/, ''))}
+              </h3>
+            );
+          }
+
+          // Bullet items
+          if (trimmed.startsWith('- ') || trimmed.startsWith('• ') || trimmed.startsWith('* ')) {
+            const itemText = trimmed.replace(/^[-•*]\s+/, '');
+            return (
+              <div key={lIdx} className="flex items-start gap-1.5 pl-1.5 text-slate-700">
+                <span className="text-blue-500 font-bold leading-none mt-1">•</span>
+                <span className="flex-1">{renderInline(itemText)}</span>
+              </div>
+            );
+          }
+
+          return (
+            <p key={lIdx} className="leading-relaxed">
+              {renderInline(line)}
+            </p>
+          );
         })}
-      </span>
+      </div>
     );
   } catch (renderErr) {
     console.warn('[RahBot] FormattedMessage render error, falling back to plain text:', renderErr);
-    return <span className="leading-relaxed whitespace-pre-wrap">{text}</span>;
+    return <div className="leading-relaxed whitespace-pre-wrap">{text}</div>;
   }
 };
 
