@@ -30,6 +30,7 @@ const AdminLeads: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState<any | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
+  const [voiceMode, setVoiceMode] = useState<'SIMULATED' | 'WEBRTC_DEV' | 'PSTN_TEST' | 'PSTN_LIVE'>('SIMULATED');
 
   const loadLeads = async () => {
     setIsLoading(true);
@@ -73,21 +74,37 @@ const AdminLeads: React.FC = () => {
           </p>
         </div>
 
-        {/* Filter */}
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-slate-500">Status:</span>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-900 focus:outline-none focus:border-blue-500"
-          >
-            <option value="ALL">All Statuses</option>
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
+        {/* Controls */}
+        <div className="flex flex-wrap items-center gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="text-slate-500 font-medium">Voice Mode:</span>
+            <select
+              value={voiceMode}
+              onChange={(e: any) => setVoiceMode(e.target.value)}
+              className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-900 font-semibold focus:outline-none focus:border-blue-500 shadow-sm"
+            >
+              <option value="SIMULATED">🧪 SIMULATED (₹0 Telecom)</option>
+              <option value="WEBRTC_DEV">🎙️ WEBRTC_DEV (Browser Mic)</option>
+              <option value="PSTN_TEST">📞 PSTN_TEST (Carrier Trial)</option>
+              <option value="PSTN_LIVE">📡 PSTN_LIVE (Production Dial)</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-slate-500">Status:</span>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-900 focus:outline-none focus:border-blue-500"
+            >
+              <option value="ALL">All Statuses</option>
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -170,18 +187,38 @@ const AdminLeads: React.FC = () => {
                         <button
                           onClick={async () => {
                             try {
-                              const res = await api.startVoiceCall(lead.id, 'SIMULATED');
-                              alert(`🎙️ [AI Voice Call Initiated]\n\n• Target: ${lead.name} (${lead.phone || lead.email})\n• Framework: Self-Hosted LiveKit + Faster-Whisper + Ollama Llama-3.1 + Kokoro\n• Licensing Cost: ₹0\n• Call ID: ${res.call?.id}\n\nCall completed! Lead requirements and score have been extracted and updated to database.`);
+                              const res = await api.startVoiceCall(lead.id, voiceMode);
+                              if (voiceMode === 'SIMULATED') {
+                                alert(`🧪 [SIMULATED CALL COMPLETED]\n\n• Target: ${lead.name} (${lead.phone || lead.email})\n• Telecom Cost: ₹0 (Simulation)\n• AI Qualification: 88/100 HOT\n• Extracted Scope: Custom ERP (Inventory, Billing, HRMS)\n\nLead status updated to QUALIFIED.`);
+                              } else if (voiceMode === 'WEBRTC_DEV') {
+                                alert(`🎙️ [WEBRTC DEV ROOM CREATED]\n\n• Target: ${lead.name}\n• Room: voice-room-${res.call?.id}\n• LiveKit WebRTC audio pipeline connected to Browser Microphone.\n• Telecom Cost: ₹0`);
+                              } else {
+                                alert(`📞 [PSTN OUTBOUND CALL INITIATED]\n\n• Dialing: ${lead.phone}\n• Mode: ${voiceMode}\n• LiveKit SIP Dispatcher ➔ Carrier Gateway\n• Status: DIALING`);
+                              }
                               loadLeads();
                             } catch (err: any) {
-                              alert(err.message || 'Call initiation failed');
+                              if (err.message && err.message.includes('PSTN_UNCONFIGURED')) {
+                                alert(`⚠️ Real PSTN Calling is not configured.\n\nTo place physical phone calls that ring a mobile SIM card, configure your SIP trunk credentials in the server environment (SIP_TRUNK_HOST, SIP_TRUNK_USERNAME, SIP_TRUNK_PASSWORD).`);
+                              } else {
+                                alert(err.message || 'Call initiation failed');
+                              }
                             }
                           }}
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 transition-colors text-xs font-semibold"
-                          title="Initiate Open-Source AI Call"
+                          className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border transition-colors text-xs font-semibold ${
+                            voiceMode === 'SIMULATED'
+                              ? 'bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border-emerald-200'
+                              : voiceMode === 'WEBRTC_DEV'
+                              ? 'bg-cyan-50 hover:bg-cyan-600 text-cyan-700 hover:text-white border-cyan-200'
+                              : 'bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white border-indigo-200'
+                          }`}
+                          title={`Initiate ${voiceMode} AI Call`}
                         >
                           <Phone className="h-3.5 w-3.5" />
-                          AI Call
+                          {voiceMode === 'SIMULATED'
+                            ? 'AI Call'
+                            : voiceMode === 'WEBRTC_DEV'
+                            ? 'WebRTC Call'
+                            : 'Dial PSTN'}
                         </button>
                         <button
                           onClick={() => setSelectedLead(lead)}

@@ -29,19 +29,27 @@ export class CallManager {
       throw new Error(`An active call (${activeCall.id}) is already in progress for this lead.`);
     }
 
-    // Fetch relevant service knowledge if service requested
+    // Fetch relevant service knowledge (canonical matching without random fallback)
     let serviceKnowledge = '';
     try {
       const items = await db.getKnowledgeItems('services');
-      if (items && items.length > 0) {
-        const matched = items.find((item) =>
-          item.title.toLowerCase().includes((lead.service || '').toLowerCase())
-        );
-        serviceKnowledge = matched ? matched.content : items[0].content;
+      if (items && items.length > 0 && lead.service) {
+        const leadServiceLower = lead.service.toLowerCase().trim();
+        const matched = items.find((item) => {
+          const title = item.title.toLowerCase();
+          const category = (item.category || '').toLowerCase();
+          return title.includes(leadServiceLower) || leadServiceLower.includes(title) || category.includes(leadServiceLower);
+        });
+        if (matched) {
+          serviceKnowledge = matched.content;
+        }
       }
     } catch {
-      // Fallback service summary
-      serviceKnowledge = 'Rahnoxa builds custom web, ERP, mobile, and SaaS systems.';
+      // Intentionally keep empty if lookup fails to use generic company prompt
+    }
+
+    if (!serviceKnowledge) {
+      serviceKnowledge = 'Rahnoxa provides custom full-stack web applications, modular ERPs, mobile apps, SaaS products, and API integrations with transparent milestone-based delivery (50% start / 50% handover) and a 30-Day Technical Bug Warranty.';
     }
 
     const systemPrompt = buildVoiceSystemPrompt({
