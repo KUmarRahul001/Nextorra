@@ -170,21 +170,24 @@ export const RahBot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isSendingRef = useRef(false);
   const chatPanelRef = useRef<HTMLDivElement>(null);
+  const launcherRef = useRef<HTMLDivElement>(null);
 
-  // Close bot and clear state on page navigation
+  // Clear stuck typing and sending flags on route changes without freezing state
   useEffect(() => {
-    setIsOpen(false);
     setIsTyping(false);
     isSendingRef.current = false;
   }, [location.pathname]);
 
-  // Close bot when clicking outside the chat panel
+  // Close bot when clicking outside the chat panel and launcher button
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
       if (
         isOpen &&
         chatPanelRef.current &&
-        !chatPanelRef.current.contains(event.target as Node)
+        !chatPanelRef.current.contains(target) &&
+        launcherRef.current &&
+        !launcherRef.current.contains(target)
       ) {
         setIsOpen(false);
       }
@@ -386,7 +389,7 @@ export const RahBot: React.FC = () => {
   return (
     <>
       {/* ── Trigger Launcher Floating Button ── */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
+      <div ref={launcherRef} className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
         <AnimatePresence>
           {!isOpen && (
             <motion.button
