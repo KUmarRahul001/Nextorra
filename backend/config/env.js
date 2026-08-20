@@ -78,6 +78,6 @@ export const config = {
   // News API & Live Trend Aggregator
   newsApiKey: process.env.NEWS_API_KEY || 'cdd54872be2d44e4bec703de97506c1c',
 
-  // Automation
-  autoPublishBlogs: process.env.AUTO_PUBLISH_BLOGS === 'true',
+  // Automation (Auto-publish real live news blogs immediately)
+  autoPublishBlogs: process.env.AUTO_PUBLISH_BLOGS !== 'false',
 };

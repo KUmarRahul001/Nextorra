@@ -84,12 +84,11 @@ export async function executeDailySEOAutomation() {
 
 /**
  * Initialize node-cron schedule:
- * 18:00 IST = 12:30 UTC -> Cron: "30 12 * * *"
+ * Runs automated live news blogging pipeline every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
  */
 export function initSeoScheduler() {
-  // Cron: At 12:30 UTC every day (which is 18:00 IST)
-  cron.schedule('30 12 * * *', async () => {
-    console.log('[Scheduler] Triggering scheduled 18:00 IST (12:30 UTC) Daily Blog Generator...');
+  cron.schedule('0 */6 * * *', async () => {
+    console.log('[Scheduler] Triggering 6-hour live news blog generator and auto-publisher...');
     try {
       await executeDailySEOAutomation();
     } catch (err) {
@@ -97,5 +96,5 @@ export function initSeoScheduler() {
     }
   });
 
-  console.log('⏰ Scheduled Daily SEO Blog Generator registered for 18:00 IST (12:30 UTC daily)');
+  console.log('⏰ Continuous Automated SEO Blog Generator registered (Every 6 hours auto-publish)');
 }
