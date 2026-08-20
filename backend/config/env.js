@@ -75,6 +75,9 @@ export const config = {
     maxRetries: parseInt(process.env.AI_MAX_RETRIES || '2', 10),
   },
 
+  // News API & Live Trend Aggregator
+  newsApiKey: process.env.NEWS_API_KEY || 'cdd54872be2d44e4bec703de97506c1c',
+
   // Automation
   autoPublishBlogs: process.env.AUTO_PUBLISH_BLOGS === 'true',
 };
