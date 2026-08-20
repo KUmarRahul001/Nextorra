@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -147,6 +147,7 @@ const FormattedMessage: React.FC<{ text?: string; onNavigate: (path: string) => 
 
 export const RahBot: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -167,6 +168,13 @@ export const RahBot: React.FC = () => {
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isSendingRef = useRef(false);
+
+  // Clear stuck typing indicators and mutexes on page navigation
+  useEffect(() => {
+    setIsTyping(false);
+    isSendingRef.current = false;
+  }, [location.pathname]);
 
   useEffect(() => {
     // Initial welcome message
@@ -184,8 +192,6 @@ export const RahBot: React.FC = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping, showLeadForm]);
-
-  const isSendingRef = useRef(false);
 
   const handleSend = async (overrideText?: string) => {
     const textToSend = (overrideText || input).trim();
@@ -418,32 +424,43 @@ export const RahBot: React.FC = () => {
                   <FileText className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => {
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     setMessages([
                       {
-                        id: `reset-${Date.now()}`,
+                        id: `welcome-${Date.now()}`,
                         role: 'assistant',
-                        content: 'Chat session restarted. How can I help you today?',
+                        content: `Hi! I'm **RahBot**, Rahnoxa's AI engineering assistant.\n\nI can help you explore our software development services, transparent pricing, technology stacks, internships, or project specifications.\n\nWhat would you like to know?`,
                         timestamp: new Date().toLocaleTimeString([], {
                           hour: '2-digit',
                           minute: '2-digit',
                         }),
-                        ctaType: 'submit_enquiry',
-                        ctaLabel: 'Submit Project Enquiry',
+                        ctaType: 'none',
                       },
                     ]);
                     setContext(createInitialContext());
                     setShowLeadForm(false);
                     setLeadSubmitted(false);
+                    setIsTyping(false);
+                    setInput('');
+                    isSendingRef.current = false;
                   }}
-                  className="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors"
+                  className="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
                   title="Reset conversation"
+                  aria-label="Reset conversation"
                 >
                   <RefreshCw className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsOpen(false);
+                  }}
+                  className="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
                   aria-label="Close chat"
                 >
                   <X className="h-4 w-4" />
