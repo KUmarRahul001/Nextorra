@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://rahnoxa.pages.dev/sitemap.xml
+Sitemap: https://rahnoxa.rahnoxa-tech.workers.dev/sitemap.xml
