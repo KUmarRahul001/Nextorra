@@ -15,8 +15,29 @@ interface TestCase {
 
 const testCases: TestCase[] = [
   {
-    name: '1. Basic Greeting',
+    name: '1. Basic Greeting (Hello)',
     input: 'Hello',
+    expectedIntent: 'greeting',
+    shouldOpenForm: false,
+    expectedKeywordInReply: 'RahBot',
+  },
+  {
+    name: '1a. Conversational Greeting (hiii)',
+    input: 'hiii',
+    expectedIntent: 'greeting',
+    shouldOpenForm: false,
+    expectedKeywordInReply: 'RahBot',
+  },
+  {
+    name: '1b. Conversational Greeting (heyyy)',
+    input: 'heyyy',
+    expectedIntent: 'greeting',
+    shouldOpenForm: false,
+    expectedKeywordInReply: 'RahBot',
+  },
+  {
+    name: '1c. Conversational Greeting (hellooo)',
+    input: 'hellooo',
     expectedIntent: 'greeting',
     shouldOpenForm: false,
     expectedKeywordInReply: 'RahBot',

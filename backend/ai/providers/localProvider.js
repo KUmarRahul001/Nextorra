@@ -13,14 +13,18 @@ export class RahnoxaLocalProvider {
   async chat({ message, contextKnowledge, systemPrompt }) {
     const lower = message.toLowerCase().trim();
 
-    // 0. Greetings & Identity
+    // 0. Greetings & Identity (supports "hi", "hii", "hiii", "heyyy", "hellooo", etc.)
     if (
-      /^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening)|namaste|howdy|who are you|are you there)\b/i.test(lower) ||
+      /^(hi+|hello+|hey+|greetings|good\s+(morning|afternoon|evening)|namaste|howdy|who are you|are you there)\b/i.test(lower) ||
       lower === 'hi' ||
       lower === 'hello' ||
       lower === 'hey' ||
+      /^h+i+$/i.test(lower) ||
+      /^h+e+y+$/i.test(lower) ||
+      /^h+e+l+o+$/i.test(lower) ||
       lower.includes('hi rahbot') ||
-      lower.includes('hello rahbot')
+      lower.includes('hello rahbot') ||
+      lower.includes('hey rahbot')
     ) {
       return {
         reply:

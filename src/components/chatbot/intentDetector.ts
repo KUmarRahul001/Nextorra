@@ -18,6 +18,16 @@ export function detectIntent(
 ): IntentDetectionResult {
   const lower = message.toLowerCase().trim();
   const clean = lower.replace(/[^\w\s/–-]/g, ' ');
+  // Conversational Normalization (handles elongated tokens like "hiii" -> "hi", "heyyy" -> "hey", "hellooo" -> "hello")
+  const normalized = clean
+    .split(/\s+/)
+    .map((word) => {
+      if (/^h+i+$/i.test(word)) return 'hi';
+      if (/^h+e+y+$/i.test(word)) return 'hey';
+      if (/^h+e+l+o+$/i.test(word)) return 'hello';
+      return word;
+    })
+    .join(' ');
 
   // 1. Explicit Lead Submission / Hiring
   if (
@@ -58,15 +68,24 @@ export function detectIntent(
     };
   }
 
-  // 3. Greeting
+  // 3. Greeting (supports normalized and elongated variations)
   if (
-    /^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening)|howdy)\b/i.test(lower) &&
-    lower.split(/\s+/).length <= 4
+    /^(hi+|hello+|hey+|greetings|good\s+(morning|afternoon|evening)|namaste|howdy|who are you|are you there)\b/i.test(lower) ||
+    /^(hi|hello|hey)\b/i.test(normalized) ||
+    lower === 'hi' ||
+    lower === 'hello' ||
+    lower === 'hey' ||
+    /^h+i+$/i.test(lower) ||
+    /^h+e+y+$/i.test(lower) ||
+    /^h+e+l+o+$/i.test(lower) ||
+    lower.includes('hi rahbot') ||
+    lower.includes('hello rahbot') ||
+    lower.includes('hey rahbot')
   ) {
     return {
       intent: 'greeting',
       confidence: 0.95,
-      reason: 'Standard greeting phrase',
+      reason: 'Standard or conversational greeting phrase',
     };
   }
 
