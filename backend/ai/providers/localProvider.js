@@ -78,15 +78,21 @@ export class RahnoxaLocalProvider {
       lower.includes('supply chain') ||
       lower.includes('billing system')
     ) {
-      const erp = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-erp');
+      const erp = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-erp') || {
+        name: 'Custom ERP & Enterprise Applications',
+        route: '/services/erp-enterprise-applications',
+        features: ['Modular Architecture: Inventory, HRMS, Accounts', 'Role-Based Access: RBAC & Audit Trails'],
+        technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL'],
+        benefits: ['Eliminates spreadsheets', 'Sub-100ms multi-branch sync'],
+      };
       return {
         reply:
           `Yes! **${erp.name}** is one of Rahnoxa's core capabilities.\n\n` +
           `### What We Build for Custom ERPs:\n` +
-          erp.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
-          `\n\n### Tech Stack:\n- ${erp.technologies.join(', ')}\n\n` +
+          (erp.features || []).map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${(erp.technologies || []).join(', ')}\n\n` +
           `### Key Benefits:\n` +
-          erp.benefits.slice(0, 3).map((b) => `- ${b}`).join('\n') +
+          (erp.benefits || []).slice(0, 3).map((b) => `- ${b}`).join('\n') +
           `\n\nExplore our [Custom ERP Services](${erp.route}) or submit your workflow requirements in the enquiry form below. Our engineering team will review your specifications and contact you within **24 to 48 hours**.`,
         intent: 'erp_query',
       };
@@ -102,14 +108,20 @@ export class RahnoxaLocalProvider {
       (lower.includes('react') && !lower.includes('react native')) ||
       lower.includes('node')
     ) {
-      const web = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-web-apps');
+      const web = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-web-apps') || {
+        name: 'Full Stack Web Apps',
+        route: '/services/full-stack-web-apps',
+        features: ['Single-Page Applications: Fast React & Next.js', 'Secure Backend: Node.js & PostgreSQL'],
+        technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL'],
+        pricing: 'Starting at ₹34,999',
+      };
       return {
         reply:
           `Rahnoxa engineers scalable **${web.name}** tailored to your business scale.\n\n` +
           `### Key Web Capabilities:\n` +
-          web.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
-          `\n\n### Tech Stack:\n- ${web.technologies.join(', ')}\n\n` +
-          `### Packages & Pricing:\n- ${web.pricing}\n\n` +
+          (web.features || []).map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${(web.technologies || []).join(', ')}\n\n` +
+          `### Packages & Pricing:\n- ${web.pricing || 'Starting at ₹34,999'}\n\n` +
           `Explore our [Full-Stack Web App Services](${web.route}) or fill out the enquiry form below for an engineering review within **24 to 48 hours**.`,
         intent: 'web_app_query',
       };
@@ -122,13 +134,18 @@ export class RahnoxaLocalProvider {
       lower.includes('software as a service') ||
       lower.includes('subscription')
     ) {
-      const saas = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-saas');
+      const saas = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-saas') || {
+        name: 'Multi-Tenant SaaS Products',
+        route: '/services/saas-products',
+        features: ['Tenant Isolation: Schema-level isolation', 'Subscription Billing: Stripe & Razorpay'],
+        technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL'],
+      };
       return {
         reply:
           `We engineer complete **${saas.name}** built for tenant isolation, recurring billing, and scalable growth.\n\n` +
           `### Our SaaS Engineering Capabilities:\n` +
-          saas.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
-          `\n\n### Tech Stack:\n- ${saas.technologies.join(', ')}\n\n` +
+          (saas.features || []).map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${(saas.technologies || []).join(', ')}\n\n` +
           `Explore our [SaaS Engineering Services](${saas.route}) or submit your project requirements below. Our architects will reply within **24 to 48 hours**.`,
         intent: 'saas_query',
       };
@@ -143,13 +160,18 @@ export class RahnoxaLocalProvider {
       lower.includes('middleware') ||
       lower.includes('payment gateway')
     ) {
-      const api = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-custom-api');
+      const api = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-custom-api') || {
+        name: 'Custom Software & API Integration',
+        route: '/services/custom-software-api-integration',
+        features: ['Custom REST & GraphQL APIs', 'Webhook Processing: Resilient queue workers'],
+        technologies: ['Node.js', 'Go', 'PostgreSQL', 'Redis'],
+      };
       return {
         reply:
           `We build **${api.name}** that connect your internal tools into a single source of truth.\n\n` +
           `### Integration Capabilities:\n` +
-          api.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
-          `\n\n### Tech Stack:\n- ${api.technologies.join(', ')}\n\n` +
+          (api.features || []).map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Tech Stack:\n- ${(api.technologies || []).join(', ')}\n\n` +
           `Explore our [API Integration Services](${api.route}) or tell us which systems you need to connect! Our team reviews all scopes within **24 to 48 hours**.`,
         intent: 'api_query',
       };
@@ -164,15 +186,20 @@ export class RahnoxaLocalProvider {
       lower.includes('react native') ||
       lower.includes('mobile')
     ) {
-      const mobile = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-mobile');
+      const mobile = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-mobile') || {
+        name: 'Mobile App Development',
+        route: '/services/app-development',
+        features: ['Cross-Platform Apps: React Native & Flutter', 'Offline First: SQLite & encrypted storage'],
+        technologies: ['React Native', 'Flutter', 'Node.js', 'PostgreSQL'],
+      };
       return {
         reply:
           `We develop high-performance **${mobile.name}** for iOS and Android using React Native and Flutter.\n\n` +
           `### Mobile Features:\n` +
-          mobile.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          (mobile.features || []).map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
           `\n\n### Key Benefits:\n` +
-          mobile.benefits.slice(0, 3).map((b) => `- ${b}`).join('\n') +
-          `\n\n### Pricing:\n- ${mobile.pricing}\n\n` +
+          (mobile.benefits || []).slice(0, 3).map((b) => `- ${b}`).join('\n') +
+          `\n\n### Pricing:\n- ${mobile.pricing || 'Custom Quote'}\n\n` +
           `Check out our [Mobile Development Services](${mobile.route}) or share your target features in the form below for a review within **24 to 48 hours**.`,
         intent: 'mobile_query',
       };
@@ -187,12 +214,17 @@ export class RahnoxaLocalProvider {
       lower.includes('mac app') ||
       lower.includes('linux app')
     ) {
-      const desktop = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-desktop');
+      const desktop = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-desktop') || {
+        name: 'Desktop Applications',
+        route: '/services/desktop-applications',
+        features: ['Cross-Platform: Windows, macOS, Linux', 'Offline First Architecture'],
+        technologies: ['Electron', 'Tauri', 'React', 'TypeScript'],
+      };
       return {
         reply:
           `Rahnoxa builds cross-platform **${desktop.name}** for Windows, macOS, and Linux using Electron, Tauri, and native toolchains.\n\n` +
           `### Desktop Capabilities:\n` +
-          desktop.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          (desktop.features || []).map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
           `\n\nIdeal for offline data processing, local hardware peripherals, and specialized enterprise tooling. Learn more at [Desktop Applications](${desktop.route}).`,
         intent: 'desktop_query',
       };
@@ -205,13 +237,17 @@ export class RahnoxaLocalProvider {
       lower.includes('web design') ||
       lower.includes('redesign')
     ) {
-      const webDesign = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-web-design');
+      const webDesign = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-web-design') || {
+        name: 'Modern Website Design & Engineering',
+        route: '/services/web-development',
+        features: ['Responsive UI: Tailwind CSS & React', 'High Core Web Vitals (95+ score)'],
+      };
       return {
         reply:
           `We design and code **${webDesign.name}** combining editorial typography, smooth animations, and top-tier SEO.\n\n` +
           `### Key Highlights:\n` +
-          webDesign.benefits.slice(0, 3).map((b) => `- ${b}`).join('\n') +
-          `\n\n### Packages:\n- ${webDesign.pricing}\n\n` +
+          (webDesign.benefits || []).slice(0, 3).map((b) => `- ${b}`).join('\n') +
+          `\n\n### Packages:\n- ${webDesign.pricing || 'Custom Quote'}\n\n` +
           `Explore our [Website Design Services](${webDesign.route}) or submit your project details below!`,
         intent: 'website_query',
       };
@@ -219,13 +255,17 @@ export class RahnoxaLocalProvider {
 
     // 9. Lead Generation
     if (lower.includes('lead gen') || lower.includes('lead generation') || lower.includes('prospect')) {
-      const leadGen = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-lead-gen');
+      const leadGen = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'service-lead-gen') || {
+        name: 'B2B Lead Generation',
+        route: '/services/lead-generation',
+        features: ['Verified Prospect Lists', 'Multichannel Outreach'],
+      };
       return {
         reply:
           `Rahnoxa provides **${leadGen.name}** to fill your pipeline with high-intent decision makers.\n\n` +
           `### Capabilities:\n` +
-          leadGen.features.map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
-          `\n\n### Packages:\n- ${leadGen.pricing}\n\n` +
+          (leadGen.features || []).map((f) => `- **${f.split(':')[0]}**: ${f.split(':')[1] || ''}`).join('\n') +
+          `\n\n### Packages:\n- ${leadGen.pricing || 'Custom Quote'}\n\n` +
           `Learn more at our [Lead Generation Page](${leadGen.route}) or fill out the enquiry form below for a campaign consult within **24 to 48 hours**.`,
         intent: 'lead_gen_query',
       };
@@ -289,7 +329,16 @@ export class RahnoxaLocalProvider {
       lower.includes('apply') ||
       lower.includes('career')
     ) {
-      const intern = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'program-internship');
+      const intern = RAHNOXA_SERVICES_KNOWLEDGE.find((s) => s.id === 'talent-internships') || {
+        name: 'Engineering Internship Tracks',
+        route: '/internship',
+        benefits: [
+          'Direct contribution to production codebases and real business client projects',
+          '1-on-1 weekly code reviews and architectural mentorship directly from the lead software engineer',
+          'Verifiable completion certificate and Letter of Recommendation (LOR) upon milestone completion',
+          'Pre-placement offer (PPO) opportunities for exceptional engineering contributors',
+        ],
+      };
       return {
         reply:
           `Rahnoxa offers hands-on **${intern.name}** across Web Dev, Mobile Apps, AI/Machine Learning, and Data Science.\n\n` +
