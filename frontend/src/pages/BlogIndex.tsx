@@ -8,11 +8,13 @@ import { api } from '../lib/api';
 
 const CATEGORIES = [
   'All',
+  'Cybersecurity & Threats',
+  'Fraud & Scam Prevention',
+  'AI & Machine Learning',
   'Software Architecture',
   'ERP & Enterprise',
   'SaaS & Cloud',
   'Software Engineering',
-  'Database & Cloud',
 ];
 
 const BlogIndex: React.FC = () => {

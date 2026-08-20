@@ -1,73 +1,92 @@
 /**
- * Rahnoxa Live Tech & Science News Aggregator & Topic Intelligence Service
- * Fetches real-time trending news across IT, Tech, AI, Science, and Software Engineering using NewsAPI.
+ * Rahnoxa Live News & High-Ranking SEO Topic Intelligence Engine
+ * Covers: Tech, Technology, Hacking, Cybersecurity, Fraud, Scams, and Enterprise Engineering.
  */
 
 import { config } from '../../config/env.js';
 
-const FALLBACK_NEWS_TOPICS = [
+const HIGH_RANKING_TOPIC_BANK = [
+  // ── Cybersecurity & Hacking ──
+  {
+    title: 'Top Emerging Cybersecurity Threats & How Enterprise Networks Prevent Breaches in 2026',
+    category: 'Cybersecurity & Threats',
+    keyword: 'cybersecurity threats data breach prevention',
+    summary: 'A deep breakdown of zero-day exploits, ransomware vectors, and how multi-layer zero-trust architectures protect critical infrastructure.',
+    tags: ['Cybersecurity', 'Hacking Defense', 'Data Protection', 'Cloud Security'],
+    featured_image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80',
+  },
+  {
+    title: 'Anatomy of a Supply Chain Attack: How Hackers Infiltrate Cloud Dependencies',
+    category: 'Cybersecurity & Threats',
+    keyword: 'software supply chain attack open source security',
+    summary: 'Analyzing recent open-source package compromises, malicious typosquatting, and how automated SBOM checks prevent vulnerability injection.',
+    tags: ['Cybersecurity', 'DevSecOps', 'AppSec', 'Hacking'],
+    featured_image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80',
+  },
+
+  // ── Fraud & Scam Prevention ──
+  {
+    title: 'AI Deepfake Fraud & Modern Social Engineering Scams: Detection & Defense Protocols',
+    category: 'Fraud & Scam Prevention',
+    keyword: 'ai deepfake scam fraud detection prevention',
+    summary: 'How synthetic voice cloning and real-time video deepfakes are used in financial wire fraud, and the biometric verification methods that stop them.',
+    tags: ['Fraud Prevention', 'Scam Alerts', 'AI Security', 'Identity Verification'],
+    featured_image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&auto=format&fit=crop&q=80',
+  },
+  {
+    title: 'Preventing Payment Gateway Fraud & Chargeback Abuse in High-Volume Web Apps',
+    category: 'Fraud & Scam Prevention',
+    keyword: 'payment fraud prevention chargebacks ecommerce',
+    summary: 'Implementing 3D Secure 2.0, device fingerprinting, and ML-based transaction velocity checks to eliminate online payment scams.',
+    tags: ['Fraud Prevention', 'Fintech', 'Ecommerce Security', 'Payment Systems'],
+    featured_image: 'https://images.unsplash.com/photo-1556742049-0a67e5572290?w=1200&auto=format&fit=crop&q=80',
+  },
+
+  // ── Tech & AI Innovations ──
   {
     title: 'The Rise of Autonomous AI Agents in Enterprise Software Engineering',
     category: 'AI & Machine Learning',
     keyword: 'autonomous ai agents enterprise software',
     summary: 'How multi-agent AI frameworks and LLMs are automating workflow execution, code review, and backend optimization.',
-    tags: ['AI', 'Machine Learning', 'Enterprise', 'Automation', 'Software Architecture'],
-    featured_image: '/assets/image.png',
-  },
-  {
-    title: 'PostgreSQL vs Vector Databases: Building Scalable Hybrid RAG Architectures',
-    category: 'Database & Cloud',
-    keyword: 'postgresql pgvector rag architecture',
-    summary: 'Evaluating pgvector and native SQL indexes against specialized vector stores for cost-effective AI retrieval.',
-    tags: ['Database', 'PostgreSQL', 'AI RAG', 'Cloud Infrastructure'],
-    featured_image: '/assets/image.png',
-  },
-  {
-    title: 'Micro-Frontends vs Modular SPAs: Architecture Decisions for 2026',
-    category: 'Software Engineering',
-    keyword: 'micro frontends vs spa enterprise',
-    summary: 'A deep architectural comparison of modular React SPAs vs distributed micro-frontends for scaling engineering teams.',
-    tags: ['React', 'TypeScript', 'Frontend Architecture', 'Web Development'],
-    featured_image: '/assets/image.png',
-  },
-  {
-    title: 'Zero-Trust Security Protocols for Modern Cloud APIs and Microservices',
-    category: 'Cybersecurity & Cloud',
-    keyword: 'zero trust api security microservices',
-    summary: 'Implementing mTLS, JWT token rotation, and fine-grained RBAC in high-throughput cloud environments.',
-    tags: ['Cybersecurity', 'APIs', 'Cloud Security', 'DevOps'],
-    featured_image: '/assets/image.png',
+    tags: ['AI', 'Machine Learning', 'Enterprise', 'Automation'],
+    featured_image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80',
   },
   {
     title: 'Why Custom ERP Systems Beat Off-the-Shelf SaaS for High-Growth Enterprises',
     category: 'ERP & Enterprise',
     keyword: 'custom erp development vs standard saas',
-    summary: 'Examining total cost of ownership, workflow flexibility, and competitive moats in custom ERP development.',
-    tags: ['ERP', 'Enterprise Software', 'SaaS', 'Business Growth'],
-    featured_image: '/assets/image.png',
+    summary: 'Examining total cost of ownership, workflow flexibility, and proprietary moats in custom enterprise software.',
+    tags: ['ERP', 'Enterprise Software', 'SaaS', 'Business Tech'],
+    featured_image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&auto=format&fit=crop&q=80',
   },
   {
-    title: 'Edge Computing and Serverless Architecture: Sub-50ms Global Response Times',
-    category: 'Cloud & Infrastructure',
-    keyword: 'edge computing serverless low latency',
-    summary: 'How modern edge workers and geo-distributed databases eliminate cold starts and geographic latency.',
-    tags: ['Cloud', 'Serverless', 'Edge Computing', 'Performance'],
-    featured_image: '/assets/image.png',
+    title: 'PostgreSQL vs Vector Databases: Building Scalable Hybrid RAG Architectures',
+    category: 'Tech & IT Innovation',
+    keyword: 'postgresql pgvector rag architecture',
+    summary: 'Evaluating pgvector and native SQL indexes against specialized vector stores for cost-effective AI retrieval.',
+    tags: ['PostgreSQL', 'Database', 'Cloud Infrastructure', 'Tech Trends'],
+    featured_image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=1200&auto=format&fit=crop&q=80',
   },
+];
+
+const SEARCH_QUERIES = [
+  'cybersecurity OR "data breach" OR hacking OR malware OR ransomware',
+  'scam OR fraud OR phishing OR "identity theft" OR "deepfake scam"',
+  'artificial intelligence OR "machine learning" OR "cloud computing"',
+  'software engineering OR "web development" OR "zero day"',
 ];
 
 export class NewsService {
   /**
-   * Fetch real-time trending tech/science news from NewsAPI with automatic fallback.
+   * Fetch real-time trending news across Tech, Hacking, Fraud, Scams, and IT.
    */
   static async getTrendingTechNews() {
     const apiKey = config.newsApiKey;
 
     if (apiKey) {
       try {
-        const categories = ['technology', 'science'];
-        const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-        const url = `https://newsapi.org/v2/top-headlines?category=${randomCategory}&language=en&pageSize=15&apiKey=${apiKey}`;
+        const query = SEARCH_QUERIES[Math.floor(Math.random() * SEARCH_QUERIES.length)];
+        const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&sortBy=publishedAt&pageSize=15&apiKey=${apiKey}`;
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -83,32 +102,40 @@ export class NewsService {
 
           if (articles.length > 0) {
             const selected = articles[Math.floor(Math.random() * articles.length)];
-            const cleanTitle = selected.title.replace(/\s*-\s*[^-]+$/, '').trim(); // Remove "- TechCrunch" suffix
-            const categoryName = randomCategory === 'science' ? 'Science & Deep Tech' : 'Tech & IT Innovation';
+            const cleanTitle = selected.title.replace(/\s*-\s*[^-]+$/, '').trim();
+
+            let category = 'Tech & IT Innovation';
+            const lowerTitle = cleanTitle.toLowerCase();
+            if (lowerTitle.includes('hack') || lowerTitle.includes('breach') || lowerTitle.includes('security') || lowerTitle.includes('malware') || lowerTitle.includes('ransomware') || lowerTitle.includes('vulnerability')) {
+              category = 'Cybersecurity & Threats';
+            } else if (lowerTitle.includes('scam') || lowerTitle.includes('fraud') || lowerTitle.includes('phishing') || lowerTitle.includes('fake') || lowerTitle.includes('theft')) {
+              category = 'Fraud & Scam Prevention';
+            } else if (lowerTitle.includes('ai') || lowerTitle.includes('model') || lowerTitle.includes('gpt') || lowerTitle.includes('intelligence')) {
+              category = 'AI & Machine Learning';
+            }
 
             return {
               title: cleanTitle,
-              category: categoryName,
+              category,
               keyword: cleanTitle.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim(),
-              summary: selected.description || `Comprehensive engineering analysis of recent industry breakthroughs in ${cleanTitle}.`,
-              tags: ['Tech News', randomCategory === 'science' ? 'Science' : 'Software Engineering', 'AI', 'Cloud'],
-              featured_image: selected.urlToImage || '/assets/image.png',
-              source: selected.source?.name || 'Global News Feed',
+              summary: selected.description || `Comprehensive investigation and engineering breakdown of ${cleanTitle}.`,
+              tags: [category, 'Cybersecurity', 'Tech News', 'Software Engineering', 'Security & Fraud Prevention'],
+              featured_image: selected.urlToImage || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80',
+              source: selected.source?.name || 'Global News Wire',
               sourceUrl: selected.url,
             };
           }
         }
       } catch (err) {
-        console.warn('[NewsService] NewsAPI live fetch error, falling back to curated intelligence topic bank:', err.message);
+        console.warn('[NewsService] Live fetch error, falling back to curated high-ranking topics:', err.message);
       }
     }
 
-    // Fallback: Return a high-value curated topic
-    const randomIndex = Math.floor(Math.random() * FALLBACK_NEWS_TOPICS.length);
-    return FALLBACK_NEWS_TOPICS[randomIndex];
+    const randomIndex = Math.floor(Math.random() * HIGH_RANKING_TOPIC_BANK.length);
+    return HIGH_RANKING_TOPIC_BANK[randomIndex];
   }
 
   static getAllTopics() {
-    return FALLBACK_NEWS_TOPICS;
+    return HIGH_RANKING_TOPIC_BANK;
   }
 }
