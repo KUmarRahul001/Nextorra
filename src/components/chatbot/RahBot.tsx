@@ -29,7 +29,7 @@ const QUICK_PROMPTS = [
   'Tell me about engineering internships',
 ];
 
-// Helper to render Markdown bold and links safely
+// Helper to render Markdown bold and links safely with automatic fallback
 const FormattedMessage: React.FC<{ text?: string; onNavigate: (path: string) => void }> = ({
   text = '',
   onNavigate,
@@ -37,50 +37,57 @@ const FormattedMessage: React.FC<{ text?: string; onNavigate: (path: string) => 
   if (!text || typeof text !== 'string') {
     return null;
   }
-  const parts = text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
 
-  return (
-    <span className="leading-relaxed">
-      {parts.map((part, idx) => {
-        if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
-          const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
-          if (match) {
-            const [, label, url] = match;
-            const isInternal = url.startsWith('/');
-            return isInternal ? (
-              <button
-                key={idx}
-                onClick={() => onNavigate(url)}
-                className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
-              >
-                <span>{label}</span>
-                <ArrowRight className="h-3 w-3" />
-              </button>
-            ) : (
-              <a
-                key={idx}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
-              >
-                <span>{label}</span>
-                <ExternalLink className="h-3 w-3" />
-              </a>
+  try {
+    const parts = text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
+
+    return (
+      <span className="leading-relaxed">
+        {parts.map((part, idx) => {
+          if (!part) return null;
+          if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
+            const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+            if (match) {
+              const [, label, url] = match;
+              const isInternal = url.startsWith('/');
+              return isInternal ? (
+                <button
+                  key={idx}
+                  onClick={() => onNavigate(url)}
+                  className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
+                >
+                  <span>{label}</span>
+                  <ArrowRight className="h-3 w-3" />
+                </button>
+              ) : (
+                <a
+                  key={idx}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded font-semibold text-xs transition-colors"
+                >
+                  <span>{label}</span>
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              );
+            }
+          }
+          if (part.startsWith('**') && part.endsWith('**')) {
+            return (
+              <strong key={idx} className="font-bold text-slate-900">
+                {part.slice(2, -2)}
+              </strong>
             );
           }
-        }
-        if (part.startsWith('**') && part.endsWith('**')) {
-          return (
-            <strong key={idx} className="font-bold text-slate-900">
-              {part.slice(2, -2)}
-            </strong>
-          );
-        }
-        return <span key={idx}>{part}</span>;
-      })}
-    </span>
-  );
+          return <span key={idx}>{part}</span>;
+        })}
+      </span>
+    );
+  } catch (renderErr) {
+    console.warn('[RahBot] FormattedMessage render error, falling back to plain text:', renderErr);
+    return <span className="leading-relaxed whitespace-pre-wrap">{text}</span>;
+  }
 };
 
 export const RahBot: React.FC = () => {
@@ -124,10 +131,13 @@ export const RahBot: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping, showLeadForm]);
 
-  const handleSend = async (overrideText?: string) => {
-    const textToSend = overrideText || input;
-    if (!textToSend.trim()) return;
+  const isSendingRef = useRef(false);
 
+  const handleSend = async (overrideText?: string) => {
+    const textToSend = (overrideText || input).trim();
+    if (!textToSend || isSendingRef.current) return;
+
+    isSendingRef.current = true;
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
       role: 'user',
@@ -224,6 +234,7 @@ export const RahBot: React.FC = () => {
       ]);
     } finally {
       setIsTyping(false);
+      isSendingRef.current = false;
     }
   };
 
