@@ -288,11 +288,11 @@ const BlogPost: React.FC = () => {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.15] mb-6">
-            {post.title}
+            {post.title ? post.title.replace(/&#8216;/g, "'").replace(/&#8217;/g, "'").replace(/&#8220;/g, '"').replace(/&#8221;/g, '"').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'") : ''}
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed border-l-2 border-blue-600 pl-4 italic">
-            {post.excerpt}
+            {post.excerpt ? post.excerpt.replace(/&#8216;/g, "'").replace(/&#8217;/g, "'").replace(/&#8220;/g, '"').replace(/&#8221;/g, '"').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'") : ''}
           </p>
 
           <div className="flex items-center justify-between pt-6 mt-6 border-t border-slate-200 text-xs text-slate-500">

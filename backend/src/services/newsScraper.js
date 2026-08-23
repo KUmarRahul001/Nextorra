@@ -1,18 +1,48 @@
 /**
  * RAHNOXA Live Web Scraping & High-Ranking SEO Topic Extractor
- * Scrapes real-time trending tech headlines & security feeds directly without API keys.
+ * Scrapes real-time trending tech, Indian tech, regional (Jamshedpur/Jharkhand/Kolkata), ISRO, and Gov innovation feeds.
  */
 
-const TECH_FEEDS = [
-  { url: 'https://thehackernews.com/', name: 'The Hacker News', category: 'Cybersecurity & Threats' },
-  { url: 'https://news.ycombinator.com/', name: 'Hacker News', category: 'Tech & IT Innovation' },
-  { url: 'https://techcrunch.com/', name: 'TechCrunch', category: 'AI & Machine Learning' }
+const NEWS_FEEDS = [
+  // ── Regional & Indian Tech / Innovation / ISRO / Gov ──
+  { url: 'https://timesofindia.indiatimes.com/city/ranchi', name: 'Times of India (Jharkhand & Jamshedpur)', category: 'Local Commercial Content', location: 'Jharkhand' },
+  { url: 'https://timesofindia.indiatimes.com/city/kolkata', name: 'Times of India (Kolkata & Bengal)', category: 'Local Commercial Content', location: 'Kolkata' },
+  { url: 'https://economictimes.indiatimes.com/tech', name: 'Economic Times Tech (India)', category: 'Business Technology', location: 'India' },
+  { url: 'https://www.isro.gov.in/Press.html', name: 'ISRO Press Updates (India)', category: 'Tech & IT Innovation', location: 'India' },
+  { url: 'https://pib.gov.in/indexd.aspx', name: 'PIB Tech & Science Releases (Gov)', category: 'Tech & IT Innovation', location: 'India' },
+  
+  // ── Global Tech & Cybersecurity ──
+  { url: 'https://thehackernews.com/', name: 'The Hacker News', category: 'Cybersecurity & Threats', location: 'Global' },
+  { url: 'https://news.ycombinator.com/', name: 'Hacker News', category: 'Tech & IT Innovation', location: 'Global' },
+  { url: 'https://techcrunch.com/', name: 'TechCrunch', category: 'AI & Machine Learning', location: 'Global' }
 ];
+
+/**
+ * Decode HTML entities like &#8216;, &#8217;, &amp;, &quot;, &#39;
+ */
+export function decodeHtmlEntities(str) {
+  if (!str || typeof str !== 'string') return '';
+  return str
+    .replace(/&#8216;/g, "'")
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/&#8211;/g, '-')
+    .replace(/&#8212;/g, '—')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .trim();
+}
 
 export async function scrapeLiveTrendingTechHeadlines() {
   const scrapedCandidates = [];
 
-  for (const feed of TECH_FEEDS) {
+  for (const feed of NEWS_FEEDS) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
@@ -29,19 +59,28 @@ export async function scrapeLiveTrendingTechHeadlines() {
       if (res.ok) {
         const html = await res.text();
         
-        // Extract headlines using regular expression on <h2>, <h3>, or <a> title tags
-        const titleMatches = html.match(/<(h2|h3)[^>]*>(.*?)<\/(h2|h3)>/gi) || [];
+        // Extract headlines using regular expressions on <h2>, <h3>, <h4>, or <a> title tags
+        const titleMatches = html.match(/<(h2|h3|h4)[^>]*>(.*?)<\/(h2|h3|h4)>/gi) || [];
 
-        for (const rawTag of titleMatches.slice(0, 15)) {
+        for (const rawTag of titleMatches.slice(0, 12)) {
           // Strip HTML tags and clean whitespace
-          const cleanTitle = rawTag.replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ');
+          const rawText = rawTag.replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ');
+          const cleanTitle = decodeHtmlEntities(rawText);
           
-          if (cleanTitle.length > 25 && cleanTitle.length < 120 && !cleanTitle.toLowerCase().includes('cookie') && !cleanTitle.toLowerCase().includes('subscribe')) {
+          if (
+            cleanTitle.length > 25 && 
+            cleanTitle.length < 130 && 
+            !cleanTitle.toLowerCase().includes('cookie') && 
+            !cleanTitle.toLowerCase().includes('subscribe') &&
+            !cleanTitle.toLowerCase().includes('sign in') &&
+            !cleanTitle.toLowerCase().includes('privacy policy')
+          ) {
             scrapedCandidates.push({
               title: cleanTitle,
               category: feed.category,
               source: feed.name,
               sourceUrl: feed.url,
+              location: feed.location || 'India',
               scrapedAt: new Date().toISOString()
             });
           }
@@ -56,22 +95,24 @@ export async function scrapeLiveTrendingTechHeadlines() {
 }
 
 /**
- * SEO Title Optimizer: Transforms a raw scraped headline into a high-CTR, high-ranking SEO title
+ * SEO Title Optimizer: Transforms a raw scraped headline into a clean, human-readable SEO title
  */
 export function finalizeSeoTitle(rawTitle, category) {
-  let title = rawTitle.replace(/\s*-\s*[^-]+$/, '').trim();
+  let title = decodeHtmlEntities(rawTitle.replace(/\s*-\s*[^-]+$/, '').trim());
 
   // Keyword enrichment based on category
-  if (category === 'Cybersecurity & Threats' && !title.toLowerCase().includes('guide') && !title.toLowerCase().includes('how')) {
-    title = `${title}: Threat Breakdown & Security Protocols in 2026`;
-  } else if (category === 'AI & Machine Learning' && !title.toLowerCase().includes('future') && !title.toLowerCase().includes('2026')) {
+  if (category === 'Cybersecurity & Threats' && !title.toLowerCase().includes('guide') && !title.toLowerCase().includes('security')) {
+    title = `${title}: Security Protocols & Architecture Analysis`;
+  } else if (category === 'AI & Machine Learning' && !title.toLowerCase().includes('insights') && !title.toLowerCase().includes('engineering')) {
     title = `${title}: Architecture & Engineering Insights`;
+  } else if (category === 'Local Commercial Content' && !title.toLowerCase().includes('transformation')) {
+    title = `${title}: Technology & Digital Solutions Overview`;
   }
 
-  // Cap length between 50 and 80 characters for optimal Google SERP display
+  // Clean trailing punctuation or ellipses
   if (title.length > 90) {
-    title = title.slice(0, 87) + '...';
+    title = title.slice(0, 87).trim() + '...';
   }
 
-  return title;
+  return decodeHtmlEntities(title);
 }
