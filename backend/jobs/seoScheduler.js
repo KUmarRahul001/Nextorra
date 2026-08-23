@@ -3,6 +3,7 @@ import { db } from '../database/supabase.js';
 import { aiGateway } from '../ai/core/gateway.js';
 import { config } from '../config/env.js';
 import { NewsService } from '../src/services/news.service.js';
+import { generateCommercialCTA } from '../src/services/blogLeadEngine.js';
 
 export async function executeDailySEOAutomation() {
   const startTime = new Date().toISOString();
@@ -13,18 +14,53 @@ export async function executeDailySEOAutomation() {
     const job = jobs[0] || { auto_publish: config.autoPublishBlogs ? 1 : 0 };
     const autoPublish = Boolean(job.auto_publish);
 
-    // 1. Fetch real-time trending news across Tech, IT, AI, Science
-    const newsTopic = await NewsService.getTrendingTechNews();
+    // 1. Fetch real-time trending news across Tech, IT, AI, Science (Locked Topic Object)
+    const selectedTopic = await NewsService.getTrendingTechNews();
 
-    // 2. Generate Article via Custom AI Gateway
+    // 2. Generate Article strictly grounded on the selectedTopic
     const generated = await aiGateway.generateBlogArticle({
-      topic: newsTopic.title,
-      keyword: newsTopic.keyword || newsTopic.title,
-      category: newsTopic.category || 'Tech & IT Innovation',
-      summary: newsTopic.summary,
+      topic: selectedTopic.title,
+      keyword: selectedTopic.keyword || selectedTopic.title,
+      category: selectedTopic.category || 'Tech & IT Innovation',
+      summary: selectedTopic.summary,
     });
 
-    const status = autoPublish ? 'PUBLISHED' : 'DRAFT';
+    // 3. Grounding & Entity Consistency Validation Gate
+    const { validateContentGrounding, generateEventFingerprint } = await import('../src/services/groundingValidator.js');
+    const groundingResult = validateContentGrounding({
+      selectedTopic,
+      generatedArticle: {
+        ...generated,
+        sourceName: selectedTopic.source,
+        sourceUrl: selectedTopic.sourceUrl,
+      }
+    });
+
+    const eventFingerprint = generateEventFingerprint(selectedTopic.source, selectedTopic.title, selectedTopic.sourceUrl);
+
+    // 4. Contextual Commercial CTA Injection
+    const cta = generateCommercialCTA({
+      category: generated.category || selectedTopic.category,
+      title: generated.title,
+      targetLocation: 'Jamshedpur'
+    });
+
+    // Append Source Reference block to article content
+    const sourceBlock = selectedTopic.sourceUrl ? `\n\n---\n\n**Source Reference**: *[${selectedTopic.source || 'Original News Source'}](${selectedTopic.sourceUrl})*` : '';
+    const fullContent = `${generated.content}\n\n${cta.htmlCTA}${sourceBlock}`;
+
+    // Grounding Gate: Publish ONLY if grounding is valid and autoPublish is true
+    let status = 'DRAFT';
+    let publishBlockReason = null;
+
+    if (!groundingResult.isValid) {
+      status = 'DRAFT';
+      publishBlockReason = groundingResult.reason;
+      console.warn(`⚠️ [Automation] Auto-publish blocked: ${groundingResult.reason} (Score: ${groundingResult.groundingScore}/100)`);
+    } else if (autoPublish) {
+      status = 'PUBLISHED';
+    }
+
     const now = new Date().toISOString();
     const slug = `${generated.slug}-${Date.now().toString(36).slice(-4)}`;
     const siteUrl = config.siteUrl.replace(/\/+$/, '');
@@ -33,34 +69,34 @@ export async function executeDailySEOAutomation() {
       title: generated.title,
       slug,
       excerpt: generated.excerpt,
-      content: generated.content,
-      featured_image: newsTopic.featured_image || '/assets/image.png',
+      content: fullContent,
+      featured_image: selectedTopic.featured_image || '/assets/image.png',
       category: generated.category,
       tags: generated.tags,
       author: 'Rahnoxa AI Intelligence',
       reading_time: generated.reading_time || '6 min read',
       status,
       is_ai_generated: 1,
-      ai_topic: newsTopic.title,
-      ai_keyword: newsTopic.keyword,
-      ai_seo_score: generated.ai_seo_score || 95,
+      ai_topic: selectedTopic.title,
+      ai_keyword: selectedTopic.keyword,
+      ai_seo_score: groundingResult.groundingScore,
       seo_title: `${generated.title} | ${config.siteName || 'Rahnoxa'}`,
       seo_description: generated.excerpt,
       canonical_url: `${siteUrl}/blog/${slug}`,
       published_at: status === 'PUBLISHED' ? now : null,
     });
 
-    // Record Execution Audit Log
+    // Record Execution Audit Log with Grounding Metrics
     const run = await db.recordAutomationRun({
       job_id: 'job-daily-seo',
       started_at: startTime,
       completed_at: new Date().toISOString(),
-      status: 'SUCCESS',
-      topic: newsTopic.title,
-      keyword: newsTopic.keyword,
+      status: status === 'PUBLISHED' ? 'SUCCESS' : 'DRAFT_HEURISTIC',
+      topic: selectedTopic.title,
+      keyword: selectedTopic.keyword,
       output_title: post.title,
       output_post_id: post.id,
-      error: null,
+      error: publishBlockReason,
     });
 
     console.log(`[Automation] Successfully generated article '${post.title}' (Status: ${status})`);

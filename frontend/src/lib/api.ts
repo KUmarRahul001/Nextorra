@@ -10,11 +10,11 @@ const getBaseUrl = (): string => {
     return trimmed.endsWith('/v1') ? trimmed : `${trimmed}/v1`;
   }
   
-  // Strict remote-only requirement: Never silently default to localhost in production
+  // Production default connects to remote Render API gateway
   if (import.meta.env.PROD) {
-    console.error('❌ [FATAL] VITE_API_URL is missing in production. Configure VITE_API_URL in Cloudflare Pages.');
+    return 'https://nextorra.onrender.com/v1';
   }
-  return '/v1';
+  return 'http://localhost:10000/v1';
 };
 
 const getAuthToken = (): string | null => {
