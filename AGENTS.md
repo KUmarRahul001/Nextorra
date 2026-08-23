@@ -18,6 +18,7 @@ Bug fix = root cause, not symptom: a report names a symptom. Grep every caller o
 
 Rules:
 
+- Single Database Authority: Supabase PostgreSQL is the permanent, locked database for all environments (local, dev, production). Always apply, migrate, and maintain all tables directly in Supabase. Never use SQLite, mock files, or disconnected secondary DBs.
 - No abstractions that weren't explicitly requested.
 - No new dependency if it can be avoided.
 - No boilerplate nobody asked for.
