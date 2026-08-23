@@ -87,3 +87,11 @@ temp/
 .cache/
 .eslintcache
 .parcel-cache
+
+# ── Local Agent & Development Notes (Kept locally, ignored by Git) ──
+.agents/
+AGENTS.md
+Brain/
+brain/
+steps.md
+
