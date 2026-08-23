@@ -10,6 +10,20 @@ const cronAuth = (req, res, next) => {
   if (incoming && incoming === cronSecret) {
     return next();
   }
+
+  // Support HTTP Basic Authentication (Username & Password from cron-job.org)
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Basic ')) {
+    const credentials = Buffer.from(authHeader.split(' ')[1], 'base64').toString('ascii');
+    const [user, pass] = credentials.split(':');
+    const expectedUser = process.env.INITIAL_ADMIN_EMAIL || 'contact.rahnoxa@protonmail.com';
+    const expectedPass = process.env.INITIAL_ADMIN_PASSWORD || 'admin123';
+    
+    if ((user === expectedUser || user === 'admin') && pass === expectedPass) {
+      return next();
+    }
+  }
+
   return authenticate(req, res, () => authorize('superadmin', 'admin')(req, res, next));
 };
 
