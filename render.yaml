@@ -19,7 +19,7 @@ services:
       - key: SITE_URL
         value: https://rahnoxa.com
       - key: CORS_ORIGINS
-        value: https://rahnoxa.com,https://www.rahnoxa.com,https://rahnoxa.pages.dev
+        value: https://rahnoxa.com,https://www.rahnoxa.com,https://rahnoxa.pages.dev,https://rahnoxa.rahnoxa-tech.workers.dev
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
@@ -33,7 +33,7 @@ services:
       - key: AI_PROVIDER
         value: rahnoxa_local
       - key: AUTO_PUBLISH_BLOGS
-        value: "false"
+        value: "true"
 
   # ── Rahnoxa Daily 18:00 IST SEO Cron Worker (Render Cron Job: 12:30 UTC = 18:00 IST) ──
   - type: cron
@@ -44,7 +44,7 @@ services:
     rootDir: backend
     schedule: "30 12 * * *"
     buildCommand: npm install
-    startCommand: node -e "import('./jobs/seoScheduler.js').then(m => m.executeDailySEOAutomation().then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); }))"
+    startCommand: node jobs/run-seo-automation.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -55,4 +55,4 @@ services:
       - key: AI_PROVIDER
         value: rahnoxa_local
       - key: AUTO_PUBLISH_BLOGS
-        value: "false"
+        value: "true"
