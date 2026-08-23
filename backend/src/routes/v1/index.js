@@ -10,6 +10,7 @@ import automationRoutes from './automation.routes.js';
 import settingsRoutes from './settings.routes.js';
 import uploadRoutes from './upload.routes.js';
 import voiceRoutes from './voice.routes.js';
+import discoveryRoutes from './discovery.routes.js';
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use('/automation', automationRoutes);
 router.use('/settings', settingsRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/voice', voiceRoutes);
+router.use('/discovery', discoveryRoutes);
 
 export default router;

@@ -340,5 +340,32 @@ export const api = {
       body: JSON.stringify(data),
     });
   },
+
+  // ── Location Business Discovery ──
+  async getDiscoveryLocations() {
+    return apiFetch('/discovery/locations');
+  },
+
+  async startDiscoveryJob(payload: { location: string; category: string; limit?: number }) {
+    return apiFetch('/discovery/jobs', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async discoverFromUrl(payload: { url: string; businessName?: string; location?: string; category?: string }) {
+    return apiFetch('/discovery/url', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async convertDiscoveredLead(business: any) {
+    return apiFetch('/discovery/convert', {
+      method: 'POST',
+      body: JSON.stringify({ business }),
+    });
+  },
 };
+
 

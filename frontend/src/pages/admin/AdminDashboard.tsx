@@ -15,6 +15,7 @@ import {
 } from 'react-icons/fi';
 import { HiOutlineSparkles, HiOutlineCpuChip } from 'react-icons/hi2';
 import { api } from '../../lib/api';
+import DiscoveryDesk from '../../components/admin/DiscoveryDesk';
 
 const AdminDashboard: React.FC = () => {
   const [data, setData] = useState<any>(null);
@@ -146,6 +147,9 @@ const AdminDashboard: React.FC = () => {
           </Link>
         ))}
       </div>
+
+      {/* ── Location Discovery Engine (Jamshedpur / Adityapur / Kolkata) ── */}
+      <DiscoveryDesk />
 
       {/* ── Operations & Recent Activity ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

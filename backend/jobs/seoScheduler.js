@@ -84,17 +84,19 @@ export async function executeDailySEOAutomation() {
 
 /**
  * Initialize node-cron schedule:
- * Runs automated live news blogging pipeline every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+ * Runs automated live news blogging pipeline daily at 6:00 PM IST (12:30 UTC)
+ * and auto-publishes SEO-optimized articles directly to Supabase & Live Website.
  */
 export function initSeoScheduler() {
-  cron.schedule('0 */6 * * *', async () => {
-    console.log('[Scheduler] Triggering 6-hour live news blog generator and auto-publisher...');
+  // 30 12 * * * is 12:30 UTC = 18:00 (6:00 PM) IST
+  cron.schedule('30 12 * * *', async () => {
+    console.log('[Scheduler] ⏰ Triggering Daily 6:00 PM IST News Topic & SEO Blog Auto-Publisher...');
     try {
       await executeDailySEOAutomation();
     } catch (err) {
-      console.error('[Scheduler] Scheduled execution error:', err.message);
+      console.error('[Scheduler] 6:00 PM Scheduled execution error:', err.message);
     }
   });
 
-  console.log('⏰ Continuous Automated SEO Blog Generator registered (Every 6 hours auto-publish)');
+  console.log('⏰ Daily 6:00 PM IST Live News & SEO Blog Auto-Publisher registered (30 12 * * *)');
 }

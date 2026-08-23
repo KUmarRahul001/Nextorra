@@ -4,6 +4,7 @@
  */
 
 import { config } from '../../config/env.js';
+import { scrapeLiveTrendingTechHeadlines, finalizeSeoTitle } from './newsScraper.js';
 
 const HIGH_RANKING_TOPIC_BANK = [
   // ── Cybersecurity & Hacking ──
@@ -129,6 +130,28 @@ export class NewsService {
       } catch (err) {
         console.warn('[NewsService] Live fetch error, falling back to curated high-ranking topics:', err.message);
       }
+    }
+
+    // 2. Direct Live Web Scraping (No API Key Required)
+    try {
+      const liveHeadlines = await scrapeLiveTrendingTechHeadlines();
+      if (liveHeadlines && liveHeadlines.length > 0) {
+        const picked = liveHeadlines[Math.floor(Math.random() * liveHeadlines.length)];
+        const optimizedTitle = finalizeSeoTitle(picked.title, picked.category);
+
+        return {
+          title: optimizedTitle,
+          category: picked.category,
+          keyword: picked.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim(),
+          summary: `Real-time engineering analysis and strategic breakdown of ${picked.title}.`,
+          tags: [picked.category, 'Tech Trends', 'Software Engineering', 'Cloud & AI Innovation'],
+          featured_image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80',
+          source: picked.source,
+          sourceUrl: picked.sourceUrl,
+        };
+      }
+    } catch (err) {
+      console.warn('[NewsService] Web scraper fallback error:', err.message);
     }
 
     const randomIndex = Math.floor(Math.random() * HIGH_RANKING_TOPIC_BANK.length);
