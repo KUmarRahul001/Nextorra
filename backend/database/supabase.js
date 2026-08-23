@@ -392,9 +392,28 @@ export const db = {
 
   async updateAutomationJob(id, data) {
     const client = getClient();
-    const { data: updated, error } = await client.from('automation_jobs').update(data).eq('id', id).select().single();
+    const jobId = id || data.id || 'job-daily-seo';
+    const allowedKeys = ['name', 'schedule', 'enabled', 'auto_publish', 'last_run', 'next_run', 'status'];
+    const payload = {
+      id: jobId,
+      name: data.name || 'Daily SEO Article Generator',
+      schedule: data.schedule || '18:00 IST'
+    };
+    
+    for (const key of allowedKeys) {
+      if (data[key] !== undefined) {
+        payload[key] = data[key];
+      }
+    }
+
+    const { data: updated, error } = await client
+      .from('automation_jobs')
+      .upsert(payload, { onConflict: 'id' })
+      .select()
+      .maybeSingle();
+
     if (error) throw new Error(`Database error updating automation job: ${error.message}`);
-    return updated;
+    return updated || payload;
   },
 
   async getAutomationRuns(limit = 20) {
