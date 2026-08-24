@@ -155,6 +155,85 @@ const AdminLeads: React.FC = () => {
         </div>
       </div>
 
+      {/* Prospect Discovery & Direct URL Search Engine */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              🔍 Live Prospect Research &amp; Client Discovery
+            </h3>
+            <p className="text-[11px] text-slate-500">
+              Discover real businesses in Jamshedpur/Jharkhand or analyze any Google Maps / Website URL.
+            </p>
+          </div>
+        </div>
+
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const targetLoc = (form.elements.namedItem('discovery_loc') as HTMLInputElement)?.value || 'Jamshedpur';
+            const targetCat = (form.elements.namedItem('discovery_cat') as HTMLInputElement)?.value || 'Coaching Institute';
+            
+            try {
+              const token = localStorage.getItem('rahnoxa_admin_token') || sessionStorage.getItem('rahnoxa_admin_token');
+              const res = await fetch('/v1/discovery/jobs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ location: targetLoc, category: targetCat, limit: 10, providerId: 'osm_nominatim' })
+              });
+              const json = await res.json();
+              if (!json.success) throw new Error(json.error || 'Discovery failed');
+              
+              const count = json.data?.discovered_count || 0;
+              alert(`✅ Discovery Complete!\n\nDiscovered ${count} real businesses in ${targetLoc} (${targetCat}). Converting priority leads into pipeline...`);
+              
+              // Automatically convert discovered businesses to leads
+              if (json.data?.businesses) {
+                for (const b of json.data.businesses) {
+                  await fetch('/v1/discovery/convert', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ business: b })
+                  });
+                }
+              }
+              loadLeads();
+            } catch (err: any) {
+              alert(err.message || 'Discovery search failed');
+            }
+          }}
+          className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 text-xs"
+        >
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1">Target Area / City</label>
+            <input
+              name="discovery_loc"
+              defaultValue="Golmuri, Jamshedpur"
+              placeholder="e.g. Sakchi, Bistupur, Golmuri"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1">Industry / Category</label>
+            <input
+              name="discovery_cat"
+              defaultValue="Coaching Centre"
+              placeholder="e.g. Salons, Gyms, Clinics, Restaurants"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div className="sm:col-span-1 md:col-span-2 flex items-end">
+            <button
+              type="submit"
+              className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-sm transition-all text-xs flex items-center justify-center gap-2"
+            >
+              🚀 Search &amp; Import Clients
+            </button>
+          </div>
+        </form>
+      </div>
+
       {/* Leads Table */}
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
