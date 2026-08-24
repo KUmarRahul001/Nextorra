@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rahnoxa.rahnoxa-tech.workers.dev/</loc>
+    <loc>https://rahnoxa.rahnoxa-tech.workers.dev</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -124,13 +124,13 @@
     <loc>https://rahnoxa.rahnoxa-tech.workers.dev/privacy-policy</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://rahnoxa.rahnoxa-tech.workers.dev/terms-and-conditions</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://rahnoxa.rahnoxa-tech.workers.dev/blog/are-you-one-of-3-8-million-affected-a-major-health-data-breach-expands-ordn</loc>
@@ -224,6 +224,12 @@
   </url>
   <url>
     <loc>https://rahnoxa.rahnoxa-tech.workers.dev/blog/ai-deepfake-fraud-modern-social-engineering-scams-detection-defense-protocols-1kt0</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rahnoxa.rahnoxa-tech.workers.dev/blog/android-car-malware-spreads-through-built-security-protocols-architecture-analysis-f797</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
