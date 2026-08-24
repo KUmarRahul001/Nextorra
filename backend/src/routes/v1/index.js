@@ -11,6 +11,7 @@ import settingsRoutes from './settings.routes.js';
 import uploadRoutes from './upload.routes.js';
 import voiceRoutes from './voice.routes.js';
 import discoveryRoutes from './discovery.routes.js';
+import seoRoutes from './seo.routes.js';
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/settings', settingsRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/voice', voiceRoutes);
 router.use('/discovery', discoveryRoutes);
+router.use('/seo', seoRoutes);
 
 export default router;

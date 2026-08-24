@@ -5,10 +5,13 @@ import morgan from 'morgan';
 import { isOriginAllowed } from './config/cors.js';
 import errorHandler from './middleware/error.middleware.js';
 import v1Router from './routes/v1/index.js';
+import seoRoutes from './routes/v1/seo.routes.js';
 import { db } from '../database/supabase.js';
 import { config } from '../config/env.js';
 
 const app = express();
+
+app.use(seoRoutes);
 
 // ─── Security Headers ────────────────────────────────────────────────────────
 app.use(helmet());
