@@ -266,15 +266,21 @@ export const db = {
     const client = getClient();
     const id = data.id || `lead-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
+    
+    // Remote Supabase PostgreSQL has NOT NULL constraint on email in initial schema
+    const emailVal = data.email && data.email.trim() ? sanitize(data.email) : `prospect-${Date.now()}@rahnoxa-lead.local`;
+
     const newLead = {
-      ...data,
       id,
-      name: sanitize(data.name),
-      email: sanitize(data.email),
+      name: sanitize(data.name || data.business_name || 'Discovered Business'),
+      email: emailVal,
       phone: data.phone ? sanitize(data.phone) : null,
-      company: data.company ? sanitize(data.company) : null,
-      project_description: sanitize(data.project_description),
+      company: data.company || data.business_name ? sanitize(data.company || data.business_name) : null,
+      service: data.service || data.recommended_offer || 'Complete Business Website',
+      project_description: sanitize(data.project_description || `Opportunity: ${data.service_opportunity || 'N/A'}`),
+      source: data.source || 'LOCATION_DISCOVERY',
       status: data.status || 'NEW',
+      notes: data.notes || null,
       created_at: now,
       updated_at: now,
     };
