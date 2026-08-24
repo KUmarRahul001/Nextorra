@@ -264,19 +264,31 @@ export const db = {
 
   async createLead(data) {
     const client = getClient();
-    const id = data.id || `lead-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const now = new Date().toISOString();
-    
-    // Remote Supabase PostgreSQL has NOT NULL constraint on email in initial schema
+    const leadName = sanitize(data.name || data.business_name || 'Discovered Business');
+
+    // Deduplication check: Avoid inserting identical businesses repeatedly
+    const { data: existing } = await client
+      .from('leads')
+      .select('*')
+      .or(`name.eq."${leadName}",company.eq."${leadName}"`)
+      .limit(1)
+      .maybeSingle();
+
+    if (existing) {
+      return existing; // Return existing record without duplicating
+    }
+
+    const id = data.id || `lead-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const emailVal = data.email && data.email.trim() ? sanitize(data.email) : `prospect-${Date.now()}@rahnoxa-lead.local`;
 
     const newLead = {
       id,
-      name: sanitize(data.name || data.business_name || 'Discovered Business'),
+      name: leadName,
       email: emailVal,
       phone: data.phone ? sanitize(data.phone) : null,
       company: data.company || data.business_name ? sanitize(data.company || data.business_name) : null,
-      service: data.service || data.recommended_offer || 'Complete Business Website',
+      service: data.service || data.recommended_offer || 'Admission & Course Catalog Website (Plan B)',
       project_description: sanitize(data.project_description || `Opportunity: ${data.service_opportunity || 'N/A'}`),
       source: data.source || 'LOCATION_DISCOVERY',
       status: data.status || 'NEW',

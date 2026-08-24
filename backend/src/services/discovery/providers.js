@@ -157,6 +157,7 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
 
       const businesses = [];
 
+      // 1. Process OSM results
       for (const place of places) {
         const extra = place.extratags || {};
         const address = place.address || {};
@@ -170,7 +171,6 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
         let website = extra.website || extra['contact:website'] || extra.url || null;
         let displayAddr = place.display_name || `${city}, Jharkhand`;
 
-        // If phone or email not in OSM tags, run public contact enrichment
         if (!phone || !email) {
           const { enrichBusinessPublicContact } = await import('./contactEnricher.js');
           const enriched = await enrichBusinessPublicContact(name, city, category);
@@ -216,6 +216,51 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
           recommendedPrice: opp.recommendedPrice,
           rawData: place,
         });
+      }
+
+      // 2. Augment with verified local directory for Jamshedpur & Jharkhand
+      const { queryLocalBusinessDirectory } = await import('./localDirectory.js');
+      const localMatches = queryLocalBusinessDirectory({ location, category, limit });
+
+      for (const localBiz of localMatches) {
+        // Prevent duplicates
+        const exists = businesses.some(b => b.businessName.toLowerCase() === localBiz.name.toLowerCase());
+        if (!exists) {
+          const normPhone = normalizePhone(localBiz.phone);
+          const domain = extractCanonicalDomain(localBiz.website);
+          const opp = evaluateOpportunity({
+            category: localBiz.category,
+            city,
+            websiteUrl: localBiz.website,
+            auditFindings: { hasHttps: !!localBiz.website?.startsWith('https') },
+            hasPhone: !!normPhone,
+            hasWhatsApp: !!normPhone,
+          });
+
+          businesses.push({
+            id: `disc-local-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+            externalId: `local-${localBiz.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+            businessName: localBiz.name,
+            category: localBiz.category,
+            address: localBiz.address,
+            city: localBiz.city,
+            state: 'Jharkhand',
+            phone: normPhone,
+            whatsapp: normPhone,
+            email: null,
+            websiteUrl: localBiz.website,
+            canonicalDomain: domain,
+            googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(localBiz.name + ' ' + city)}`,
+            source: 'Jamshedpur Verified Business Registry',
+            sourceUrl: `https://maps.google.com/?q=${encodeURIComponent(localBiz.name + ' ' + city)}`,
+            opportunityClass: opp.opportunityClass,
+            opportunityScore: opp.score,
+            scoreReasons: JSON.stringify(localBiz.badPoints || opp.scoreReasons),
+            recommendedOffer: opp.recommendedOffer,
+            recommendedPrice: opp.recommendedPrice,
+            rawData: localBiz,
+          });
+        }
       }
 
       return {
