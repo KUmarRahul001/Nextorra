@@ -267,8 +267,10 @@ const AdminLeads: React.FC = () => {
                     <td className="py-4 px-4">
                       <div>
                         <p className="font-semibold text-slate-900">{lead.name}</p>
-                        <p className="text-[11px] text-slate-500">{lead.email}</p>
-                        {lead.phone && <p className="text-[10px] text-slate-500">{lead.phone}</p>}
+                        <p className="text-[11px] text-slate-500">
+                          {lead.email && !lead.email.includes('@rahnoxa-lead.local') ? lead.email : <span className="text-slate-400 italic">No email published</span>}
+                        </p>
+                        {lead.phone && <p className="text-[10px] text-emerald-600 font-semibold">{lead.phone}</p>}
                       </div>
                     </td>
 
@@ -387,9 +389,13 @@ const AdminLeads: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <div>
                   <span className="text-slate-500 font-medium block mb-0.5">Contact Email</span>
-                  <a href={`mailto:${selectedLead.email}`} className="text-blue-600 font-semibold hover:underline break-all">
-                    {selectedLead.email}
-                  </a>
+                  {selectedLead.email && !selectedLead.email.includes('@rahnoxa-lead.local') ? (
+                    <a href={`mailto:${selectedLead.email}`} className="text-blue-600 font-semibold hover:underline break-all">
+                      {selectedLead.email}
+                    </a>
+                  ) : (
+                    <span className="text-slate-400 italic">Not publicly listed</span>
+                  )}
                 </div>
                 <div>
                   <span className="text-slate-500 font-medium block mb-0.5">Phone / WhatsApp</span>
