@@ -10,7 +10,7 @@ const getEnv = (key: string, fallback: string = ''): string => {
 };
 
 export const config = {
-  siteUrl: getEnv('VITE_SITE_URL', 'https://rahnoxa.pages.dev'),
+  siteUrl: getEnv('VITE_SITE_URL', 'https://rahnoxa.antideploy.com'),
   siteName: getEnv('VITE_SITE_NAME', 'Rahnoxa'),
   
   contact: {

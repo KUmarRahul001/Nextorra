@@ -42,16 +42,17 @@ const Home: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{`${config.siteName} – Software Development & Technology Engineering`}</title>
+        <title>Rahnoxa | Software Development Company in Jamshedpur</title>
         <meta
           name="description"
-          content={`${config.siteName} is a software engineering company building custom web applications, mobile apps, enterprise ERP modules, SaaS platforms, and API integrations.`}
+          content="Rahnoxa is a leading software development company in Jamshedpur, Jharkhand building bespoke web applications, enterprise ERP systems, mobile apps, SaaS platforms, and API solutions."
         />
-        <meta
-          name="keywords"
-          content={`${config.siteName}, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration, software company India, IT services Jharkhand`}
-        />
-        <link rel="canonical" href={`${config.siteUrl}/`} />
+        <link rel="canonical" href="https://rahnoxa.antideploy.com/" />
+        <meta property="og:title" content="Rahnoxa | Software Development Company in Jamshedpur" />
+        <meta property="og:description" content="Rahnoxa is a leading software development company in Jamshedpur, Jharkhand building bespoke web applications, enterprise ERP systems, mobile apps, SaaS platforms, and API solutions." />
+        <meta property="og:url" content="https://rahnoxa.antideploy.com/" />
+        <meta property="og:image" content="https://rahnoxa.antideploy.com/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
         
         {/* Google Knowledge Graph & LocalBusiness Schema.org JSON-LD */}
         <script type="application/ld+json">

@@ -147,14 +147,6 @@ const HeroSection: React.FC = () => {
 
   return (
     <>
-      <SEO
-        title="Rahnoxa – Custom Software Engineering & Cloud Solutions"
-        description="Rahnoxa designs, builds, and deploys custom web applications, enterprise ERP platforms, APIs, and scalable mobile systems."
-        keywords="software engineering, custom ERP development, web apps, API architecture, mobile apps, SaaS, Rahnoxa Jharkhand"
-        url="https://rahnoxa.pages.dev/"
-        type="website"
-      />
-
       <section className="relative min-h-[90vh] flex items-center bg-[#FAFCFF] text-slate-900 pt-32 pb-24 overflow-hidden gradient-mesh-light border-b border-slate-200/80">
         {/* Soft Ambient Background Highlights */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[140px] pointer-events-none" />

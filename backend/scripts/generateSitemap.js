@@ -7,9 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export async function generateSitemap() {
-  const baseUrl = process.env.VITE_SITE_URL && !process.env.VITE_SITE_URL.includes('localhost')
+  const baseUrl = process.env.VITE_SITE_URL && !process.env.VITE_SITE_URL.includes('localhost') && !process.env.VITE_SITE_URL.includes('workers.dev') && !process.env.VITE_SITE_URL.includes('pages.dev')
     ? process.env.VITE_SITE_URL
-    : 'https://rahnoxa.rahnoxa-tech.workers.dev';
+    : 'https://rahnoxa.antideploy.com';
 
   const now = new Date().toISOString().split('T')[0];
 
