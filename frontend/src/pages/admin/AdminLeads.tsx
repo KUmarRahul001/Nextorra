@@ -365,61 +365,76 @@ const AdminLeads: React.FC = () => {
 
       {/* Lead Details Modal */}
       {selectedLead && (
-        <div className="fixed inset-0 z-50 bg-[#F8FAFC]/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 text-slate-900 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-5 sm:p-7 text-slate-900 space-y-5 shadow-2xl my-auto max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between pb-3.5 border-b border-slate-200 shrink-0">
               <div>
-                <h3 className="font-bold text-base text-slate-900">{selectedLead.name}</h3>
-                <span className="text-xs text-slate-500">
+                <h3 className="font-bold text-lg text-slate-900 tracking-tight">{selectedLead.name}</h3>
+                <span className="text-xs text-slate-500 font-medium">
                   {selectedLead.company ? `${selectedLead.company} • ` : ''}
-                  {selectedLead.service}
+                  {selectedLead.service || selectedLead.recommended_offer || 'Business Website'}
                 </span>
               </div>
-              <button onClick={() => setSelectedLead(null)} className="text-slate-500 hover:text-slate-900">
+              <button 
+                onClick={() => setSelectedLead(null)} 
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-[#F8FAFC]/60 border border-slate-200">
+            <div className="space-y-4 text-xs overflow-y-auto pr-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <div>
-                  <span className="text-slate-500 block mb-0.5">Email</span>
-                  <a href={`mailto:${selectedLead.email}`} className="text-cyan-400 hover:underline">
+                  <span className="text-slate-500 font-medium block mb-0.5">Contact Email</span>
+                  <a href={`mailto:${selectedLead.email}`} className="text-blue-600 font-semibold hover:underline break-all">
                     {selectedLead.email}
                   </a>
                 </div>
                 <div>
-                  <span className="text-slate-500 block mb-0.5">Phone</span>
-                  <span className="text-slate-800">{selectedLead.phone || 'Not provided'}</span>
+                  <span className="text-slate-500 font-medium block mb-0.5">Phone / WhatsApp</span>
+                  <span className="text-slate-900 font-semibold">{selectedLead.phone || 'Not provided'}</span>
                 </div>
                 <div>
-                  <span className="text-slate-500 block mb-0.5">Budget</span>
-                  <span className="text-slate-800">{selectedLead.budget || 'To be discussed'}</span>
+                  <span className="text-slate-500 font-medium block mb-0.5">Estimated Budget</span>
+                  <span className="text-slate-900 font-semibold">{selectedLead.budget || '₹5,000 (Starter Plan)'}</span>
                 </div>
                 <div>
-                  <span className="text-slate-500 block mb-0.5">Timeline</span>
-                  <span className="text-slate-800">{selectedLead.timeline || 'Flexible'}</span>
+                  <span className="text-slate-500 font-medium block mb-0.5">Delivery Timeline</span>
+                  <span className="text-slate-900 font-semibold">{selectedLead.timeline || '3-5 Business Days'}</span>
                 </div>
               </div>
 
               <div>
-                <span className="text-slate-500 font-semibold block mb-1">Project Requirements</span>
-                <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-slate-200 text-slate-700 whitespace-pre-line leading-relaxed">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-slate-700 font-bold block">Personalized Outreach Draft &amp; Opportunity Details</span>
+                  {selectedLead.phone && (
+                    <a
+                      href={`https://wa.me/${selectedLead.phone.replace(/\D/g, '')}?text=${encodeURIComponent(selectedLead.project_description || '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:text-emerald-700 hover:underline"
+                    >
+                      💬 Open in WhatsApp
+                    </a>
+                  )}
+                </div>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 whitespace-pre-line leading-relaxed font-sans text-xs select-all">
                   {selectedLead.project_description}
                 </div>
               </div>
 
               <div className="pt-2">
-                <span className="text-slate-500 font-semibold block mb-1">Update Status</span>
+                <span className="text-slate-700 font-bold block mb-2">Update Pipeline Status</span>
                 <div className="flex flex-wrap gap-1.5">
                   {STATUS_OPTIONS.map((s) => (
                     <button
                       key={s}
                       onClick={() => handleStatusChange(selectedLead.id, s)}
-                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                         selectedLead.status === s
-                          ? 'bg-blue-600 text-slate-900'
-                          : 'bg-slate-50 text-slate-500 hover:text-slate-900'
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                       }`}
                     >
                       {s}
@@ -429,10 +444,19 @@ const AdminLeads: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-end pt-4 border-t border-slate-200">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200 shrink-0">
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(selectedLead.project_description || '');
+                  alert('📋 Outreach text copied to clipboard!');
+                }}
+                className="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors"
+              >
+                📋 Copy Message
+              </button>
               <button
                 onClick={() => setSelectedLead(null)}
-                className="px-4 py-2 rounded-lg bg-slate-50 hover:bg-slate-700 text-xs font-semibold text-slate-900"
+                className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs font-bold text-white transition-colors"
               >
                 Close
               </button>
