@@ -13,6 +13,8 @@ import PricingSection from '../components/sections/PricingSection';
 import SupportMaintenanceSection from '../components/sections/SupportMaintenanceSection';
 import FinalCtaSection from '../components/sections/FinalCtaSection';
 
+import { getOrganizationSchema, getWebSiteSchema } from '../lib/seo/schema';
+
 const Home: React.FC = () => {
   useEffect(() => {
     const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
@@ -34,6 +36,9 @@ const Home: React.FC = () => {
     };
   }, []);
 
+  const orgSchema = getOrganizationSchema(config.siteUrl);
+  const websiteSchema = getWebSiteSchema(config.siteUrl);
+
   return (
     <>
       <Helmet>
@@ -44,9 +49,17 @@ const Home: React.FC = () => {
         />
         <meta
           name="keywords"
-          content={`${config.siteName}, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration`}
+          content={`${config.siteName}, software development, web applications, mobile apps, custom ERP, SaaS engineering, enterprise software, API integration, software company India, IT services Jharkhand`}
         />
         <link rel="canonical" href={`${config.siteUrl}/`} />
+        
+        {/* Google Knowledge Graph & LocalBusiness Schema.org JSON-LD */}
+        <script type="application/ld+json">
+          {JSON.stringify(orgSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(websiteSchema)}
+        </script>
       </Helmet>
 
       <div>
