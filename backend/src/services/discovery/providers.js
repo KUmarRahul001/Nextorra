@@ -165,9 +165,23 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
         const name = normalizeBusinessName(rawName);
         if (!name) continue;
 
-        const phone = extra.phone || extra['contact:phone'] || extra['contact:mobile'] || null;
+        let phone = extra.phone || extra['contact:phone'] || extra['contact:mobile'] || null;
+        let email = extra.email || extra['contact:email'] || null;
+        let website = extra.website || extra['contact:website'] || extra.url || null;
+        let displayAddr = place.display_name || `${city}, Jharkhand`;
+
+        // If phone or email not in OSM tags, run public contact enrichment
+        if (!phone || !email) {
+          const { enrichBusinessPublicContact } = await import('./contactEnricher.js');
+          const enriched = await enrichBusinessPublicContact(name, city, category);
+          if (!phone && enriched.phone) phone = enriched.phone;
+          if (!email && enriched.email) email = enriched.email;
+          if (!website && enriched.website) website = enriched.website;
+          if (enriched.address) displayAddr = enriched.address;
+        }
+
         const normPhone = normalizePhone(phone);
-        const website = extra.website || extra['contact:website'] || extra.url || null;
+        const normEmail = normalizeEmail(email);
         const domain = extractCanonicalDomain(website);
 
         const opp = evaluateOpportunity({
@@ -176,7 +190,7 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
           websiteUrl: website,
           auditFindings: { hasHttps: !!website?.startsWith('https') },
           hasPhone: !!normPhone,
-          hasWhatsApp: false,
+          hasWhatsApp: !!normPhone,
         });
 
         businesses.push({
@@ -184,16 +198,16 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
           externalId: `osm-${place.osm_id || place.place_id}`,
           businessName: name,
           category,
-          address: place.display_name || `${city}, Jharkhand`,
+          address: displayAddr,
           city,
           state: address.state || 'Jharkhand',
           phone: normPhone,
-          whatsapp: null,
-          email: extra.email || extra['contact:email'] || null,
+          whatsapp: normPhone,
+          email: normEmail,
           websiteUrl: website,
           canonicalDomain: domain,
           googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + city)}`,
-          source: 'OpenStreetMap Registry (Free)',
+          source: 'OpenStreetMap & Public Web Directory',
           sourceUrl: `https://www.openstreetmap.org/${place.osm_type || 'node'}/${place.osm_id}`,
           opportunityClass: opp.opportunityClass,
           opportunityScore: opp.score,
