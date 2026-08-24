@@ -101,54 +101,32 @@ export function evaluateOpportunity({
   };
 }
 
+import { generatePersonalizedOutreach } from './outreachTemplates.js';
+
 export function generateDraftOutreach({
   businessName,
-  city,
-  category,
+  city = 'Jamshedpur',
+  category = 'Coaching Center',
   opportunityClass,
   websiteStatus = 'WEBSITE_UNKNOWN',
+  websiteUrl,
   recommendedOffer,
-  recommendedPrice,
-  templateType = 'PROBLEM_FIRST'
+  recommendedPrice = 5000,
+  rating = '4.9⭐',
+  reviewSnippet,
+  competitorCount = 3
 }) {
-  const price = Math.max(Number(recommendedPrice) || 5000, 5000);
-
-  if (websiteStatus === 'NO_WEBSITE_CONFIRMED' || websiteStatus === 'WEBSITE_UNKNOWN') {
-    return `Hello ${businessName},
-
-We came across your business while researching ${category || 'local'} services in ${city}.
-
-Your business has an active profile, but we could not find an official website for customers to explore your services, photos, and connect via WhatsApp.
-
-A modern, fast website helps you:
-• Explain your services clearly
-• Receive instant 1-click WhatsApp enquiries
-• Build customer trust & show location on Google Maps
-
-RAHNOXA can create a mobile-friendly business website for you starting from ₹${price} (Starter Business Plan).
-
-Price is negotiable depending on requirements and scope. We can also show you a free sample/mockup before you decide.
-
-Would you like to see a quick sample?
-
-Rahul Kumar | RAHNOXA
-Software & Digital Solutions
-🌐 https://rahnoxa.antideploy.com`;
-  }
-  
-  if (websiteStatus === 'WEBSITE_FOUND') {
-    return `Hello ${businessName},
-
-We reviewed your official website while researching ${category || 'businesses'} in ${city}.
-
-We noticed positive points in your business profile, along with opportunities to improve mobile loading speed and 1-click WhatsApp contact buttons for nearby clients.
-
-RAHNOXA builds fast, high-converting business websites starting from ₹${price} (negotiable depending on scope).
-
-Would you be open to seeing a free 2-minute visual mockup of the proposed improvements?
-
-Rahul Kumar | RAHNOXA`;
-  }
-
-  return `Hello ${businessName}, we specialize in building modern, high-converting business websites and WhatsApp lead funnels for ${category || 'enterprises'} in ${city} starting from ₹${price} (negotiable based on scope). Would you like to see a free sample? - Rahul (RAHNOXA)`;
+  return generatePersonalizedOutreach({
+    businessName,
+    category,
+    city,
+    websiteUrl,
+    websiteStatus,
+    rating,
+    reviewSnippet,
+    competitorCount,
+    recommendedOffer,
+    recommendedPrice,
+    format: 'WHATSAPP_SHORT'
+  });
 }

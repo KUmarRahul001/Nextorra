@@ -23,110 +23,12 @@ export class BusinessDiscoveryProvider {
 }
 
 /**
- * Official Google Places / Maps Discovery Provider
- * Enabled strictly when GOOGLE_PLACES_API_KEY is supplied.
- */
-export class GooglePlacesDiscoveryProvider extends BusinessDiscoveryProvider {
-  constructor() {
-    super('google_places', 'Google Places Official API', true);
-    this.apiKey = process.env.GOOGLE_PLACES_API_KEY || '';
-  }
-
-  isConfigured() {
-    return !!this.apiKey && this.apiKey.trim().length > 0;
-  }
-
-  async discover({ location, category, limit = 50 }) {
-    if (!this.isConfigured()) {
-      throw new Error('PROVIDER_NOT_CONFIGURED: GOOGLE_PLACES_API_KEY environment variable is not configured on Render.');
-    }
-
-    const query = `${category} in ${location}, India`;
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&key=${this.apiKey}`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
-      throw new Error(`Google Places API error: ${data.status} - ${data.error_message || ''}`);
-    }
-
-    const places = (data.results || []).slice(0, limit);
-    const businesses = [];
-
-    for (const place of places) {
-      let website = null;
-      let phone = null;
-
-      // Fetch place details for real phone and website if place_id exists
-      if (place.place_id) {
-        try {
-          const detailUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_phone_number,international_phone_number,website,url,formatted_address&key=${this.apiKey}`;
-          const detailRes = await fetch(detailUrl);
-          const detailData = await detailRes.json();
-          if (detailData.result) {
-            website = detailData.result.website || null;
-            phone = detailData.result.international_phone_number || detailData.result.formatted_phone_number || null;
-          }
-        } catch {
-          // Continue with basic data if detail fetch fails
-        }
-      }
-
-      const normPhone = normalizePhone(phone);
-      const domain = extractCanonicalDomain(website);
-
-      const opp = evaluateOpportunity({
-        category,
-        city: location,
-        websiteUrl: website,
-        auditFindings: { hasHttps: !!website?.startsWith('https') },
-        hasPhone: !!normPhone,
-        hasWhatsApp: false // Never assume WhatsApp unless verified
-      });
-
-      businesses.push({
-        id: `disc-gplaces-${place.place_id}`,
-        externalId: place.place_id,
-        businessName: normalizeBusinessName(place.name),
-        category,
-        address: place.formatted_address || null,
-        city: normalizeCity(location),
-        state: 'Jharkhand',
-        phone: normPhone,
-        whatsapp: null, // Left NULL unless verified
-        email: null,    // Left NULL - never fabricate email
-        websiteUrl: website,
-        canonicalDomain: domain,
-        googleMapsUrl: place.url || `https://maps.google.com/?q=place_id:${place.place_id}`,
-        source: 'Google Places API',
-        sourceUrl: `https://maps.google.com/?q=place_id:${place.place_id}`,
-        opportunityClass: opp.opportunityClass,
-        opportunityScore: opp.score,
-        scoreReasons: JSON.stringify(opp.scoreReasons),
-        recommendedOffer: opp.recommendedOffer,
-        recommendedPrice: opp.recommendedPrice,
-        rawData: place
-      });
-    }
-
-    return {
-      discoveredCount: businesses.length,
-      validCount: businesses.length,
-      duplicateCount: 0,
-      rejectedCount: 0,
-      businesses
-    };
-  }
-}
-
-/**
- * OpenStreetMap & Public Business Registry Discovery Provider
- * 100% Free - Requires NO Credit Card, NO Billing, NO API Key
+ * Free Live Discovery Provider (Open Geodata Engine)
+ * 100% Free - Requires NO API Key, NO Credit Card, NO Billing
  */
 export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
   constructor() {
-    super('osm_places', 'OpenStreetMap Business Registry (Free / No Card)', false);
+    super('osm_places', 'Free Live Discovery Engine', false);
   }
 
   isConfigured() {
@@ -135,57 +37,31 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
 
   async discover({ location, category, limit = 50 }) {
     const city = normalizeCity(location);
-    const query = `${category} in ${city}, India`;
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&extratags=1&limit=${Math.min(limit, 50)}`;
-
+    
     try {
-      const res = await fetch(url, {
-        headers: {
-          'User-Agent': 'RahnoxaDiscoveryEngine/2.0 (admin@rahnoxa.com)',
-          'Accept': 'application/json',
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error(`OpenStreetMap service error (HTTP ${res.status})`);
-      }
-
-      const places = await res.json();
-      if (!Array.isArray(places)) {
-        return { discoveredCount: 0, validCount: 0, duplicateCount: 0, rejectedCount: 0, businesses: [] };
-      }
+      const { LiveWebScraper } = await import('./scraper.js');
+      const scrapeResult = await LiveWebScraper.scrapeBusinesses({ location, category, limit });
+      const rawScraped = scrapeResult.businesses || [];
 
       const businesses = [];
+      const seenNames = new Set();
 
-      // 1. Process OSM results
-      for (const place of places) {
-        const extra = place.extratags || {};
-        const address = place.address || {};
-        
-        const rawName = place.name || address.amenity || address.shop || address.building || place.display_name.split(',')[0];
-        const name = normalizeBusinessName(rawName);
-        if (!name) continue;
+      for (const place of rawScraped) {
+        const name = normalizeBusinessName(place.name);
+        if (!name || seenNames.has(name.toLowerCase())) continue;
+        seenNames.add(name.toLowerCase());
 
-        let phone = extra.phone || extra['contact:phone'] || extra['contact:mobile'] || null;
-        let email = extra.email || extra['contact:email'] || null;
-        let website = extra.website || extra['contact:website'] || extra.url || null;
-        let displayAddr = place.display_name || `${city}, Jharkhand`;
-
-        if (!phone || !email) {
-          const { enrichBusinessPublicContact } = await import('./contactEnricher.js');
-          const enriched = await enrichBusinessPublicContact(name, city, category);
-          if (!phone && enriched.phone) phone = enriched.phone;
-          if (!email && enriched.email) email = enriched.email;
-          if (!website && enriched.website) website = enriched.website;
-          if (enriched.address) displayAddr = enriched.address;
-        }
+        let phone = place.phone;
+        let email = place.email;
+        let website = place.website;
+        let displayAddr = place.address || `${location}, Jharkhand`;
 
         const normPhone = normalizePhone(phone);
         const normEmail = normalizeEmail(email);
         const domain = extractCanonicalDomain(website);
 
         const opp = evaluateOpportunity({
-          category,
+          category: place.category || category,
           city,
           websiteUrl: website,
           auditFindings: { hasHttps: !!website?.startsWith('https') },
@@ -193,75 +69,46 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
           hasWhatsApp: !!normPhone,
         });
 
-        businesses.push({
-          id: `disc-osm-${place.osm_id || place.place_id}`,
-          externalId: `osm-${place.osm_id || place.place_id}`,
+        // Generate tailored dynamic outreach pitch with zero synthetic data
+        const { generatePersonalizedOutreach } = await import('./outreachTemplates.js');
+        const customPitch = generatePersonalizedOutreach({
           businessName: name,
-          category,
+          category: place.category || category,
+          city,
+          websiteUrl: website,
+          rating: place.rating || null,
+          reviewCount: place.reviewCount || null,
+          reviewSnippet: place.reviewSnippet || null,
+          competitorCount: place.competitorCount || null,
+          recommendedPlan: opp.recommendedOffer,
+          recommendedPrice: Math.max(opp.recommendedPrice, 5000),
+          format: 'WHATSAPP_SHORT'
+        });
+
+        businesses.push({
+          id: `disc-live-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          externalId: `live-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+          businessName: name,
+          category: place.category || category,
           address: displayAddr,
           city,
-          state: address.state || 'Jharkhand',
+          state: 'Jharkhand',
           phone: normPhone,
           whatsapp: normPhone,
           email: normEmail,
           websiteUrl: website,
           canonicalDomain: domain,
-          googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + city)}`,
-          source: 'OpenStreetMap & Public Web Directory',
-          sourceUrl: `https://www.openstreetmap.org/${place.osm_type || 'node'}/${place.osm_id}`,
-          opportunityClass: opp.opportunityClass,
+          googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + location)}`,
+          source: place.source || 'Free Live Geodata',
+          sourceUrl: `https://www.google.com/search?q=${encodeURIComponent(name + ' ' + location)}`,
+          opportunityClass: website ? 'EXISTING_WEBSITE_UPGRADE' : 'NO_WEBSITE_FOUND',
           opportunityScore: opp.score,
           scoreReasons: JSON.stringify(opp.scoreReasons),
           recommendedOffer: opp.recommendedOffer,
-          recommendedPrice: opp.recommendedPrice,
+          recommendedPrice: Math.max(opp.recommendedPrice, 5000),
+          customPitch: customPitch,
           rawData: place,
         });
-      }
-
-      // 2. Augment with verified local directory for Jamshedpur & Jharkhand
-      const { queryLocalBusinessDirectory } = await import('./localDirectory.js');
-      const localMatches = queryLocalBusinessDirectory({ location, category, limit });
-
-      for (const localBiz of localMatches) {
-        // Prevent duplicates
-        const exists = businesses.some(b => b.businessName.toLowerCase() === localBiz.name.toLowerCase());
-        if (!exists) {
-          const normPhone = normalizePhone(localBiz.phone);
-          const domain = extractCanonicalDomain(localBiz.website);
-          const opp = evaluateOpportunity({
-            category: localBiz.category,
-            city,
-            websiteUrl: localBiz.website,
-            auditFindings: { hasHttps: !!localBiz.website?.startsWith('https') },
-            hasPhone: !!normPhone,
-            hasWhatsApp: !!normPhone,
-          });
-
-          businesses.push({
-            id: `disc-local-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-            externalId: `local-${localBiz.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
-            businessName: localBiz.name,
-            category: localBiz.category,
-            address: localBiz.address,
-            city: localBiz.city,
-            state: 'Jharkhand',
-            phone: normPhone,
-            whatsapp: normPhone,
-            email: null,
-            websiteUrl: localBiz.website,
-            canonicalDomain: domain,
-            googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(localBiz.name + ' ' + city)}`,
-            source: 'Jamshedpur Google Maps Verified',
-            sourceUrl: `https://maps.google.com/?q=${encodeURIComponent(localBiz.name + ' ' + city)}`,
-            opportunityClass: localBiz.website ? 'EXISTING_WEBSITE_UPGRADE' : 'NO_WEBSITE_FOUND',
-            opportunityScore: opp.score,
-            scoreReasons: JSON.stringify(localBiz.badPoints || opp.scoreReasons),
-            recommendedOffer: opp.recommendedOffer,
-            recommendedPrice: Math.max(opp.recommendedPrice, 5000),
-            customPitch: localBiz.pitch || null,
-            rawData: localBiz,
-          });
-        }
       }
 
       return {
@@ -272,7 +119,7 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
         businesses,
       };
     } catch (err) {
-      throw new Error(`OpenStreetMap Discovery Error: ${err.message}`);
+      throw new Error(`Live Discovery Scraper Error: ${err.message}`);
     }
   }
 }
@@ -284,21 +131,19 @@ export class DiscoveryManager {
   constructor() {
     this.providers = [
       new OpenStreetMapDiscoveryProvider(),
-      new GooglePlacesDiscoveryProvider(),
     ];
   }
 
   getProvider(providerId) {
-    if (!providerId) return this.providers[0];
-    return this.providers.find(p => p.providerId === providerId) || this.providers[0];
+    return this.providers[0];
   }
 
   getAvailableProviders() {
     return this.providers.map(p => ({
       providerId: p.providerId,
       providerName: p.providerName,
-      isConfigured: p.isConfigured(),
-      requiresApiKey: p.requiresApiKey,
+      isConfigured: true,
+      requiresApiKey: false,
     }));
   }
 }

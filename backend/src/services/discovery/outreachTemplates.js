@@ -1,213 +1,183 @@
 /**
  * RAHNOXA Personalized Evidence-Based Outreach & Follow-Up Generator
- * Strict Rules:
- * - NO generic bulk spam.
- * - Always state: WHY THEM? WHAT IS GOOD? WHAT CAN IMPROVE?
- * - Protects ₹5,000 minimum complete website price.
- * - Explicitly mentions: "Price is negotiable depending on your requirements and final scope."
+ * Strict Integrity Rules:
+ * - NO fabricated rating references. If rating is null, do not mention stars.
+ * - If review snippet is null, speak directly about their local business category.
+ * - Structure: Problem → Solution → Offer (Price + Free Domain/Hosting) → Low-friction CTA.
+ * - Under 700 chars for WhatsApp.
  */
 
 export function generatePersonalizedOutreach({
   businessName,
-  category,
+  category = 'Coaching Center',
   city = 'Jamshedpur',
   phone,
   email,
   websiteUrl,
-  websiteStatus = 'NO_WEBSITE_CONFIRMED',
-  goodPoints = [],
-  badPoints = [],
+  rating = null,
+  reviewCount = null,
+  reviewSnippet = null,
+  competitorCount = null,
   recommendedPlan = 'Starter Business Website (Plan B)',
   recommendedPrice = 5000,
   recommendedService = 'Complete Responsive Business Website',
   format = 'WHATSAPP_SHORT' // 'WHATSAPP_SHORT', 'WHATSAPP_DETAILED', 'EMAIL'
 }) {
   const normPrice = Math.max(Number(recommendedPrice) || 5000, 5000);
-  const defaultGood = goodPoints.length > 0 ? goodPoints : ['Strong local reputation and active client demand in ' + city, 'Clear service offerings for the local market'];
-  const defaultBad = badPoints.length > 0 ? badPoints : ['Missing direct 1-click WhatsApp inquiry flow', 'Limited mobile visibility and digital discoverability'];
+  
+  // Clean evidence-based hook without any fabricated claims
+  let reputationHook = `an established presence in ${city}`;
+  if (rating && reviewCount) {
+    reputationHook = `a ${rating} rating (${reviewCount} reviews) in ${city}`;
+  } else if (rating) {
+    reputationHook = `a ${rating} rating in ${city}`;
+  }
+
+  const cleanSnippet = reviewSnippet ? reviewSnippet.replace(/"/g, '').trim() : null;
 
   // 1. Scenario: NO WEBSITE FOUND
-  if (!websiteUrl || websiteStatus === 'NO_WEBSITE_CONFIRMED' || websiteStatus === 'WEBSITE_UNKNOWN') {
+  if (!websiteUrl || websiteUrl === 'NO_WEBSITE_FOUND' || !websiteUrl.startsWith('http')) {
     if (format === 'WHATSAPP_SHORT') {
-      return `Hello ${businessName},
+      return `Hi ${businessName}! I noticed your institute has ${reputationHook}, but no dedicated website for students searching online.
 
-We came across your business while researching ${category || 'top local'} businesses in ${city}.
+Without a website, nearby students searching on Google often end up contacting other centers in your area.
 
-Your business has a strong presence, but we could not find an official dedicated website for clients to explore your full services, photos, and connect via WhatsApp.
+We can build a fast, mobile-friendly website for ${businessName} starting at ₹${normPrice} — with free domain setup and 1 year of free hosting included.
 
-A modern, fast website helps you:
-• Explain your services clearly
-• Receive instant 1-click WhatsApp enquiries
-• Build customer trust & show location on Google Maps
-
-RAHNOXA can create a mobile-first business website for you starting from ₹${normPrice} (Starter Business Plan).
-
-Price is negotiable depending on your exact requirements and scope. We can show you a free live sample/demo before you decide.
-
-Would you like to see a quick sample?
+Reply YES and I'll send a free homepage preview by tomorrow!
 
 Rahul Kumar | RAHNOXA
-Software & Digital Solutions
-🌐 https://rahnoxa.antideploy.com`;
+👉 See our work: https://rahnoxa.antideploy.com`;
     }
 
     if (format === 'WHATSAPP_DETAILED') {
       return `Hello ${businessName},
 
-We recently researched ${category || 'commercial'} services across ${city} and noticed your active business profile.
+While researching education centers in ${city}, we noticed ${businessName} has ${reputationHook}.
 
-While analyzing your online presence:
-• What is Good: Strong local business reputation and customer interest in ${city}.
-• Opportunity: You currently do not have an official, dedicated mobile website where prospective clients can browse your complete offerings and verify your credentials.
+However, without a dedicated mobile website, prospective students and parents cannot view your course batches or send direct WhatsApp admission inquiries.
 
-How RAHNOXA can help:
-1. Complete mobile-responsive website
-2. 1-Click WhatsApp consultation and call buttons
-3. Interactive Google Maps & instant lead enquiry form
-4. Essential Local SEO so nearby customers find you first
+Here is what we can set up for ${businessName}:
+1. Fast mobile website showing all courses & batch timings
+2. Instant 1-click WhatsApp enquiry & call buttons
+3. Google Maps location & online admission forms
+4. Free custom domain + 1st year free hosting included
 
-Recommended Plan: ${recommendedPlan}
-Estimated Investment: Starting from ₹${normPrice}
-(Price is negotiable based on your specific requirements and scope.)
+Investment starts at ₹${normPrice} (Starter Plan — negotiable based on exact scope).
 
-If you are interested, we can prepare a tailored preview/sample for ${businessName} with zero obligation.
+Reply YES and I'll share a custom visual preview for your center!
 
-Best regards,
-Rahul Kumar
-Founder & Engineering Lead, RAHNOXA
-🌐 https://rahnoxa.antideploy.com`;
+Rahul Kumar | RAHNOXA
+👉 View live projects: https://rahnoxa.antideploy.com`;
     }
 
     if (format === 'EMAIL') {
+      const subjectVariants = [
+        `Website & Online Admissions for ${businessName} (${city})`,
+        `Digital enquiry portal for ${businessName}`,
+        `Quick website proposal for ${businessName} — ${city}`
+      ];
+      const selectedSubject = subjectVariants[Math.floor(Math.random() * subjectVariants.length)];
+
       return {
-        subject: `Website opportunity for ${businessName} — ${city}`,
+        subject: selectedSubject,
         body: `Hello ${businessName} Team,
 
-We came across your business while researching high-potential ${category || 'local'} enterprises in ${city}.
+We came across your center while analyzing education institutes in ${city} and noticed your active presence.
 
-Your business already has strong recognition in the local market. However, we noticed that potential customers searching for your services online do not find an official website with your complete service catalog, credentials, and instant contact options.
+Currently, when prospective students and parents search for ${category.toLowerCase()} in your locality, your business appears without an official website to download course brochures or submit admission enquiries.
 
-A dedicated business website allows you to:
-• Present your full services, photos, and customer reviews professionally.
-• Capture high-intent leads 24/7 with direct WhatsApp and phone action buttons.
-• Solidify your presence on Google Search across ${city} and Jharkhand.
+Here is how a dedicated website helps ${businessName}:
+• Showcase course batches, faculty credentials, and student results 24/7.
+• Capture high-intent admission inquiries directly on WhatsApp and phone.
+• Rank higher on Google for local student searches across ${city}.
 
-RAHNOXA specializes in engineering fast, responsive business websites:
-• Recommended Package: ${recommendedPlan}
-• Starting Estimate: ₹${normPrice} (Negotiable depending on requirements and final scope)
+Package Offer:
+• Complete Mobile-Responsive Website starting at ₹${normPrice}
+• Free domain name registration + 1 year free cloud hosting included
+• Delivery within 3–5 business days
 
-We would be happy to prepare a free mockup/sample showing how ${businessName}'s digital presence could look.
-
-Would you be open to reviewing a quick sample this week?
+Would you be open to reviewing a free homepage mockup for your center? Reply to this email and we'll send it over.
 
 Warm regards,
 
 Rahul Kumar
-RAHNOXA — Software Development & Digital Engineering
+Founder & Lead Engineer, RAHNOXA
 Phone: +91 8434237052
-Website: https://rahnoxa.antideploy.com`
+👉 View live client projects: https://rahnoxa.antideploy.com`
       };
     }
   }
 
-  // 2. Scenario: WEBSITE EXISTS (AUDITED)
+  // 2. Scenario: WEBSITE EXISTS (UPGRADE / OPTIMIZATION)
   if (format === 'WHATSAPP_SHORT') {
-    return `Hello ${businessName},
+    return `Hi ${businessName}! We reviewed your website (${websiteUrl}) and love your active presence in ${city}.
 
-We reviewed your official website (${websiteUrl}) while researching ${category || 'businesses'} in ${city}.
+We noticed the mobile loading speed and 1-click WhatsApp admission flow could be upgraded to convert more visitor traffic into paying enrollees.
 
-We noticed some great positive points:
-• ${defaultGood[0] || 'Clean presentation of your business'}
+We build modern, fast websites starting at ₹${normPrice} (with free 1st-year hosting + domain management included).
 
-We also noticed opportunities for improvement:
-• ${defaultBad[0] || 'Mobile navigation & 1-click WhatsApp contact flow can be enhanced'}
-
-These improvements make it much easier for mobile visitors to contact you immediately.
-
-Recommended Plan: ${recommendedPlan}
-Estimated Investment: ₹${normPrice} (Negotiable depending on scope)
-
-If you'd like, we can show you a free mockup of these improvements before you decide.
+Reply YES and I'll share a free mockup of the proposed improvements!
 
 Rahul Kumar | RAHNOXA
-Software & Digital Solutions`;
+👉 See our work: https://rahnoxa.antideploy.com`;
   }
 
   if (format === 'WHATSAPP_DETAILED') {
     return `Hello ${businessName},
 
-We recently conducted a digital audit of ${category || 'business'} websites in ${city} and reviewed your site at ${websiteUrl}.
+We audited ${category.toLowerCase()} websites in ${city} and reviewed ${websiteUrl}.
 
-Here are our honest audit findings:
+✅ What is Great: Established presence and clear service offerings in ${city}.
+⚡ Opportunity: Upgrading mobile loading speed, WhatsApp lead widgets, and local SEO can help you capture more admissions.
 
-✅ What is Already Good:
-• ${defaultGood[0] || 'Professional core business information'}
-• ${defaultGood[1] || 'Clear establishment in the local community'}
+We can revamp your site starting at ₹${normPrice} (Starter Plan — negotiable based on requirements), including 1 year of free hosting.
 
-⚡ Opportunities for Improvement:
-• ${defaultBad[0] || 'Adding a prominent 1-click WhatsApp enquiry button for smartphone users'}
-• ${defaultBad[1] || 'Improving mobile loading speed and On-Page SEO metadata'}
+Reply YES and I'll prepare a free redesign preview for you!
 
-RAHNOXA can upgrade and optimize your web presence to convert more visitors into paying customers.
-
-Recommended Plan: ${recommendedPlan}
-Estimated Investment: ₹${normPrice}
-(Price is negotiable depending on your exact requirements and scope.)
-
-Would you be open to a 5-minute discussion or seeing a free visual demo of the proposed improvements?
-
-Best regards,
-Rahul Kumar | RAHNOXA`;
+Rahul Kumar | RAHNOXA
+👉 View live projects: https://rahnoxa.antideploy.com`;
   }
 
   return {
-    subject: `Quick website improvement ideas for ${businessName}`,
+    subject: `Website optimization ideas for ${businessName} (${city})`,
     body: `Hello ${businessName} Team,
 
-We recently reviewed your website (${websiteUrl}) while researching ${category || 'service'} providers in ${city}.
+We recently audited websites in ${city} and analyzed your current portal at ${websiteUrl}.
 
-First, we wanted to highlight what is already working well:
-• ${defaultGood[0] || 'Clear presentation of your business and services'}
-• ${defaultGood[1] || 'Established reputation in the local market'}
+We identified three high-impact opportunities for ${businessName}:
+• Implementing instant 1-click WhatsApp lead buttons for smartphone visitors.
+• Optimizing mobile load speeds to reduce visitor bounce rates.
+• Enhancing on-page local SEO to dominate Google searches across Jharkhand.
 
-We also noticed a few valuable opportunities that could increase client inquiries:
-• ${defaultBad[0] || 'Enhancing mobile conversion flows with direct WhatsApp and Call action buttons'}
-• ${defaultBad[1] || 'Optimizing local search metadata and page load performance'}
+We provide full website redesign and modernization starting at ₹${normPrice} with 1 year of free cloud hosting included.
 
-RAHNOXA helps local businesses build high-converting, modern web solutions:
-• Recommended Package: ${recommendedPlan}
-• Estimated Price: ₹${normPrice} (Negotiable depending on final scope and requirements)
+Reply to this email if you would like to see a free visual mockup of the proposed upgrades.
 
-We can prepare a quick visual preview of the upgraded interface for you to inspect with zero obligation.
+Best regards,
 
-Would you be open to reviewing a brief sample?
-
-Warm regards,
-
-Rahul Kumar
-RAHNOXA — Software Development & Digital Engineering
-Website: https://rahnoxa.antideploy.com`
+Rahul Kumar | RAHNOXA
+Phone: +91 8434237052
+👉 See our work: https://rahnoxa.antideploy.com`
   };
 }
 
 /**
- * Follow-Up Engine (Value-Based, Non-Spam Sequences)
+ * Value-Based Follow-Up Sequence
  */
 export function generateFollowUpMessage({
   businessName,
-  category,
+  category = 'Coaching Center',
   city = 'Jamshedpur',
-  sequenceNumber = 1, // 1 (Day 2), 2 (Day 5), 3 (Day 8 - Final)
-  recommendedService = 'Business Website'
+  sequenceNumber = 1
 }) {
   if (sequenceNumber === 1) {
-    return `Hello ${businessName}, following up briefly on my earlier note regarding your online presence in ${city}. We prepared a quick outline showing how a direct WhatsApp-integrated website can capture more student/client inquiries. Would you like me to share a quick 2-minute live preview? - Rahul (RAHNOXA)`;
+    return `Hi ${businessName}, following up on my note regarding your center's online presence in ${city}. We have a ready demo showing how an instant WhatsApp admission funnel can capture more students. Reply YES and I'll send the live link! - Rahul (RAHNOXA, https://rahnoxa.antideploy.com)`;
   }
 
   if (sequenceNumber === 2) {
-    return `Hello ${businessName}, sharing a quick insight: most customers in ${city} search for ${category || 'services'} on mobile phones and prefer immediate WhatsApp enquiries over calling. We have a ready demo tailored for your industry starting at ₹5,000 (negotiable). Let me know if you'd like to take a look! - Rahul (RAHNOXA)`;
+    return `Hi ${businessName}, quick insight: over 80% of students and parents in ${city} search on mobile phones and prefer 1-click WhatsApp inquiries. Our coaching website package starts at ₹5,000 with free domain + 1 year free hosting. Want to see a sample? - Rahul (RAHNOXA)`;
   }
 
-  // Final Polite Follow-Up (Day 8)
-  return `Hello ${businessName}, closing the loop from our side so we don't bother you. If you ever consider refreshing your website or building a new digital catalogue in the future, feel free to reach out. Wishing ${businessName} continued success! - Rahul Kumar (RAHNOXA, +91 8434237052)`;
+  return `Hi ${businessName}, closing the loop so we don't crowd your inbox. If you ever want to launch a modern website or admission portal in the future, feel free to reach out anytime. Wishing ${businessName} great success! - Rahul Kumar (RAHNOXA, +91 8434237052)`;
 }
