@@ -136,5 +136,23 @@ export const DiscoveryController = {
     } catch (err) {
       return res.status(500).json({ success: false, error: err.message });
     }
+  },
+
+  // 5. Export Complete 7-Sheet Sales Intelligence Database to XLSX
+  async exportXlsx(req, res) {
+    try {
+      const { generateSalesXlsxWorkbook } = await import('../services/discovery/excelExporter.js');
+      const workbook = await generateSalesXlsxWorkbook();
+      const dateStr = new Date().toISOString().split('T')[0];
+      const filename = `RAHNOXA_Jamshedpur_Sales_${dateStr}.xlsx`;
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+      await workbook.xlsx.write(res);
+      res.end();
+    } catch (err) {
+      return res.status(500).json({ success: false, error: err.message });
+    }
   }
 };

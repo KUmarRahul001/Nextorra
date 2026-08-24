@@ -59,21 +59,21 @@ export function evaluateOpportunity({
   if (catLower.includes('coaching') || catLower.includes('institute') || catLower.includes('school')) {
     score += 15;
     reasons.push('+ High-conversion Education / Admission niche');
-    recommendedOffer = 'Admission & Course Catalog Website';
-    recommendedPrice = 2999.00;
+    recommendedOffer = 'Admission & Course Catalog Website (Plan B)';
+    recommendedPrice = 5000.00; // Enforced ₹5,000 floor
   } else if (catLower.includes('manufactur') || catLower.includes('industry') || catLower.includes('fabricat') || catLower.includes('engineering')) {
     score += 15;
     reasons.push('+ B2B Industrial / ASIA supplier sector');
-    recommendedOffer = 'B2B Product Catalogue & RFQ Profile';
-    recommendedPrice = 4999.00;
+    recommendedOffer = 'B2B Product Catalogue & Corporate Website (Plan C)';
+    recommendedPrice = 7500.00;
   } else if (catLower.includes('gym') || catLower.includes('salon') || catLower.includes('clinic') || catLower.includes('restaurant')) {
     score += 10;
     reasons.push('+ Local service business with direct booking need');
-    recommendedOffer = 'Local Business Responsive Website';
-    recommendedPrice = 2999.00;
+    recommendedOffer = 'Local Business Responsive Website (Plan B)';
+    recommendedPrice = 5000.00; // Enforced ₹5,000 floor
   } else {
-    recommendedOffer = 'Custom Business Web Solution';
-    recommendedPrice = 2999.00;
+    recommendedOffer = 'Starter Business Website (Plan B)';
+    recommendedPrice = 5000.00; // Enforced ₹5,000 floor
   }
 
   // 4. Contact Channel Bonus (+10)
@@ -88,7 +88,7 @@ export function evaluateOpportunity({
   // Temperature Classification
   let temperature = 'WARM';
   if (score >= 75) temperature = 'HOT';
-  else if (score < 45) temperature = 'COLD';
+  else if (score < 45) temperature = 'LOW';
 
   return {
     score,
@@ -96,7 +96,7 @@ export function evaluateOpportunity({
     temperature,
     opportunityClass,
     recommendedOffer,
-    recommendedPrice,
+    recommendedPrice: Math.max(recommendedPrice, 5000.00),
     scoreReasons: reasons
   };
 }
@@ -111,14 +111,43 @@ export function generateDraftOutreach({
   recommendedPrice,
   templateType = 'PROBLEM_FIRST'
 }) {
-  if (websiteStatus === 'NO_WEBSITE_CONFIRMED') {
-    return `Namaste! I noticed that ${businessName} is active in ${city}, but customers cannot find a dedicated official website to view your courses/services and direct WhatsApp contact. I build modern, lightweight business websites starting at ₹${recommendedPrice} with direct WhatsApp integration. Would you like me to share a 2-minute live preview tonight? - Rahul (Rahnoxa Engineering)`;
+  const price = Math.max(Number(recommendedPrice) || 5000, 5000);
+
+  if (websiteStatus === 'NO_WEBSITE_CONFIRMED' || websiteStatus === 'WEBSITE_UNKNOWN') {
+    return `Hello ${businessName},
+
+We came across your business while researching ${category || 'local'} services in ${city}.
+
+Your business has an active profile, but we could not find an official website for customers to explore your services, photos, and connect via WhatsApp.
+
+A modern, fast website helps you:
+• Explain your services clearly
+• Receive instant 1-click WhatsApp enquiries
+• Build customer trust & show location on Google Maps
+
+RAHNOXA can create a mobile-friendly business website for you starting from ₹${price} (Starter Business Plan).
+
+Price is negotiable depending on requirements and scope. We can also show you a free sample/mockup before you decide.
+
+Would you like to see a quick sample?
+
+Rahul Kumar | RAHNOXA
+Software & Digital Solutions`;
   }
   
-  if (websiteStatus === 'WEBSITE_FOUND' && opportunityClass === 'WEAK_WEBSITE') {
-    return `Namaste! I came across ${businessName}'s website and noticed a few key mobile and WhatsApp conversion improvements that could help increase customer inquiries in ${city}. I build lightweight responsive web solutions starting at ₹${recommendedPrice}. Would you be open to a quick 2-minute preview? - Rahul (Rahnoxa)`;
+  if (websiteStatus === 'WEBSITE_FOUND') {
+    return `Hello ${businessName},
+
+We reviewed your official website while researching ${category || 'businesses'} in ${city}.
+
+We noticed positive points in your business profile, along with opportunities to improve mobile loading speed and 1-click WhatsApp contact buttons for nearby clients.
+
+RAHNOXA builds fast, high-converting business websites starting from ₹${price} (negotiable depending on scope).
+
+Would you be open to seeing a free 2-minute visual mockup of the proposed improvements?
+
+Rahul Kumar | RAHNOXA`;
   }
 
-  // Fallback for WEBSITE_UNKNOWN / UNVERIFIED: Neutral digital introduction
-  return `Namaste! I specialize in modernizing business websites and building high-conversion digital catalogues for ${category || 'local businesses'} in ${city}. I would love to share a quick preview of how we can enhance online inquiries for ${businessName} starting from ₹${recommendedPrice}. - Rahul (Rahnoxa)`;
+  return `Hello ${businessName}, we specialize in building modern, high-converting business websites and WhatsApp lead funnels for ${category || 'enterprises'} in ${city} starting from ₹${price} (negotiable based on scope). Would you like to see a free sample? - Rahul (RAHNOXA)`;
 }

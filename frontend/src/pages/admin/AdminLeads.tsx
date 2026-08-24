@@ -85,22 +85,32 @@ const AdminLeads: React.FC = () => {
           </p>
         </div>
 
-        {/* Status & Provider Controls */}
+        {/* Status, Export & Provider Controls */}
         <div className="flex flex-wrap items-center gap-3 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500 font-medium">Voice Engine:</span>
-            <select
-              value={selectedProvider}
-              onChange={(e) => setSelectedProvider(e.target.value)}
-              className="bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-900 font-semibold focus:outline-none focus:border-blue-500 shadow-sm"
-            >
-              <option value="auto">⚡ Auto (Best Available)</option>
-              <option value="open_source">🟢 Open-Source LiveKit (₹0)</option>
-              {providers.filter(p => p.type === 'BLAND').map(p => (
-                <option key={p.id} value={p.id}>📞 {p.name}</option>
-              ))}
-            </select>
-          </div>
+          <button
+            onClick={async () => {
+              try {
+                const token = localStorage.getItem('rahnoxa_admin_token') || sessionStorage.getItem('rahnoxa_admin_token');
+                const res = await fetch('/v1/discovery/export-xlsx', {
+                  headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Export failed');
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `RAHNOXA_Jamshedpur_Sales_${new Date().toISOString().split('T')[0]}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+              } catch (err: any) {
+                alert(err.message || 'Failed to export sales database');
+              }
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-sm transition-all"
+          >
+            📊 Export to XLSX
+          </button>
 
           <div className="flex items-center gap-2">
             <span className="text-slate-500">Status:</span>
@@ -116,6 +126,31 @@ const AdminLeads: React.FC = () => {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+      </div>
+
+      {/* 10-Day Sales Campaign Tracker Banner */}
+      <div className="bg-gradient-to-r from-blue-900 to-indigo-900 border border-blue-800/80 rounded-2xl p-4 text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950 uppercase tracking-wide">
+              10-Day Sales Mode
+            </span>
+            <h2 className="text-sm font-bold tracking-tight text-white">Target: ₹5,000 Revenue in 10 Days</h2>
+          </div>
+          <p className="text-xs text-blue-200/80 mt-1">
+            Commercial Floor: Complete Business Websites must NEVER be quoted below ₹5,000. Jamshedpur &rarr; Jharkhand Market.
+          </p>
+        </div>
+        <div className="flex items-center gap-4 text-xs font-mono">
+          <div className="bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-center">
+            <span className="block text-[10px] text-blue-200 uppercase font-sans">Min Website</span>
+            <span className="font-bold text-amber-300">₹5,000</span>
+          </div>
+          <div className="bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-center">
+            <span className="block text-[10px] text-blue-200 uppercase font-sans">Goal</span>
+            <span className="font-bold text-emerald-300">₹5,000</span>
           </div>
         </div>
       </div>
