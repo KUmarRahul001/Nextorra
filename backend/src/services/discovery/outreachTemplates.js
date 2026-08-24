@@ -47,7 +47,8 @@ Price is negotiable depending on your exact requirements and scope. We can show 
 Would you like to see a quick sample?
 
 Rahul Kumar | RAHNOXA
-Software & Digital Solutions`;
+Software & Digital Solutions
+🌐 https://rahnoxa.antideploy.com`;
     }
 
     if (format === 'WHATSAPP_DETAILED') {
@@ -74,7 +75,7 @@ If you are interested, we can prepare a tailored preview/sample for ${businessNa
 Best regards,
 Rahul Kumar
 Founder & Engineering Lead, RAHNOXA
-Web & Software Solutions`;
+🌐 https://rahnoxa.antideploy.com`;
     }
 
     if (format === 'EMAIL') {
