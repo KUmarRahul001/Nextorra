@@ -41,7 +41,10 @@ router.get('/sitemap.xml', async (req, res) => {
     ];
 
     let blogUrls = [];
+    let projectUrls = [];
+
     if (supabase) {
+      // Dynamic blog posts from Supabase
       const { data: posts } = await supabase
         .from('blog_posts')
         .select('slug, updated_at, created_at, status')
@@ -56,9 +59,25 @@ router.get('/sitemap.xml', async (req, res) => {
           priority: '0.8'
         }));
       }
+
+      // Dynamic project showcase detail pages from Supabase
+      const { data: projects } = await supabase
+        .from('projects')
+        .select('slug, updated_at, created_at, status')
+        .eq('status', 'PUBLISHED')
+        .order('created_at', { ascending: false });
+
+      if (projects) {
+        projectUrls = projects.map(proj => ({
+          url: `/projects/${proj.slug}`,
+          lastmod: (proj.updated_at || proj.created_at || now).split('T')[0],
+          changefreq: 'weekly',
+          priority: '0.8'
+        }));
+      }
     }
 
-    const allUrls = [...staticRoutes, ...blogUrls];
+    const allUrls = [...staticRoutes, ...projectUrls, ...blogUrls];
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>

@@ -43,6 +43,7 @@ export async function generateSitemap() {
 
   // Dynamic blog posts from Supabase
   let blogRoutes = [];
+  let projectRoutes = [];
   try {
     if (supabase) {
       const { data: dbPosts } = await supabase
@@ -58,14 +59,29 @@ export async function generateSitemap() {
           priority: '0.8',
         }));
       }
+
+      const { data: dbProjects } = await supabase
+        .from('projects')
+        .select('slug, updated_at, created_at')
+        .eq('status', 'PUBLISHED');
+
+      if (dbProjects && dbProjects.length > 0) {
+        projectRoutes = dbProjects.map((p) => ({
+          url: `${baseUrl}/projects/${p.slug}`,
+          lastmod: (p.updated_at || p.created_at || now).split('T')[0],
+          changefreq: 'weekly',
+          priority: '0.8',
+        }));
+      }
     }
   } catch (err) {
     console.warn('[Sitemap] Supabase fetch error:', err.message);
   }
 
-  const allRoutes = [...staticRoutes, ...blogRoutes];
+  const allRoutes = [...staticRoutes, ...projectRoutes, ...blogRoutes];
 
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allRoutes
   .map(
