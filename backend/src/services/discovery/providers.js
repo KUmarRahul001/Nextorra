@@ -121,31 +121,125 @@ export class GooglePlacesDiscoveryProvider extends BusinessDiscoveryProvider {
 }
 
 /**
- * Public Web Search & Business Registry Discovery Provider
+ * OpenStreetMap & Public Business Registry Discovery Provider
+ * 100% Free - Requires NO Credit Card, NO Billing, NO API Key
  */
-export class PublicSearchDiscoveryProvider extends BusinessDiscoveryProvider {
+export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
   constructor() {
-    super('public_search', 'Public Search & Business Registry Provider', false);
+    super('osm_places', 'OpenStreetMap Business Registry (Free / No Card)', false);
   }
 
   isConfigured() {
-    // Active provider for live web queries
     return true;
   }
 
   async discover({ location, category, limit = 50 }) {
-    // Zero hard-coded fallback. Live query search via NewsAPI / Search Gateway if configured
-    if (!config.newsApiKey && !process.env.SERP_API_KEY && !process.env.GOOGLE_PLACES_API_KEY) {
-      throw new Error('PROVIDER_NOT_CONFIGURED: No active live discovery provider API key (GOOGLE_PLACES_API_KEY or SERP_API_KEY) is configured.');
-    }
+    const city = normalizeCity(location);
     
-    return {
-      discoveredCount: 0,
-      validCount: 0,
-      duplicateCount: 0,
-      rejectedCount: 0,
-      businesses: []
-    };
+    // Map common business categories to OpenStreetMap tags
+    const catLower = (category || '').toLowerCase();
+    let amenityFilter = '["shop"]';
+    if (catLower.includes('hospital') || catLower.includes('clinic') || catLower.includes('doctor')) {
+      amenityFilter = '["amenity"~"hospital|clinic|doctors|pharmacy"]';
+    } else if (catLower.includes('school') || catLower.includes('college') || catLower.includes('education')) {
+      amenityFilter = '["amenity"~"school|college|kindergarten|university"]';
+    } else if (catLower.includes('hotel') || catLower.includes('restaurant') || catLower.includes('cafe')) {
+      amenityFilter = '["amenity"~"restaurant|cafe|fast_food|hotel"]';
+    } else if (catLower.includes('gym') || catLower.includes('fitness')) {
+      amenityFilter = '["leisure"~"fitness_centre|sports_centre"]';
+    } else if (catLower.includes('bank') || catLower.includes('finance')) {
+      amenityFilter = '["amenity"~"bank|atm"]';
+    } else if (catLower.includes('store') || catLower.includes('retail') || catLower.includes('market')) {
+      amenityFilter = '["shop"]';
+    } else {
+      amenityFilter = '["office"]';
+    }
+
+    // Overpass QL query for live businesses within the selected city/area in India
+    const overpassQuery = `
+      [out:json][timeout:25];
+      area["name"="${city}"]->.searchArea;
+      (
+        node${amenityFilter}(area.searchArea);
+        way${amenityFilter}(area.searchArea);
+      );
+      out body ${limit};
+      >;
+      out skel qt;
+    `;
+
+    try {
+      const res = await fetch('https://overpass-api.de/api/interpreter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': 'Rahnoxa-DiscoveryEngine/1.0',
+        },
+        body: `data=${encodeURIComponent(overpassQuery)}`,
+      });
+
+      if (!res.ok) {
+        throw new Error(`Overpass API responded with HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      const elements = data.elements || [];
+      const businesses = [];
+
+      for (const el of elements) {
+        const tags = el.tags || {};
+        const name = tags.name || tags['name:en'];
+        if (!name) continue;
+
+        const phone = tags.phone || tags['contact:phone'] || tags['contact:mobile'] || null;
+        const normPhone = normalizePhone(phone);
+        const website = tags.website || tags['contact:website'] || tags.url || null;
+        const domain = extractCanonicalDomain(website);
+
+        const opp = evaluateOpportunity({
+          category,
+          city,
+          websiteUrl: website,
+          auditFindings: { hasHttps: !!website?.startsWith('https') },
+          hasPhone: !!normPhone,
+          hasWhatsApp: false,
+        });
+
+        businesses.push({
+          id: `disc-osm-${el.id}`,
+          externalId: `osm-${el.id}`,
+          businessName: normalizeBusinessName(name),
+          category,
+          address: tags['addr:full'] || tags['addr:street'] || `${city}, Jharkhand`,
+          city,
+          state: 'Jharkhand',
+          phone: normPhone,
+          whatsapp: null,
+          email: tags.email || tags['contact:email'] || null,
+          websiteUrl: website,
+          canonicalDomain: domain,
+          googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + city)}`,
+          source: 'OpenStreetMap Registry (No-Card)',
+          sourceUrl: `https://www.openstreetmap.org/${el.type || 'node'}/${el.id}`,
+          opportunityClass: opp.opportunityClass,
+          opportunityScore: opp.score,
+          scoreReasons: JSON.stringify(opp.scoreReasons),
+          recommendedOffer: opp.recommendedOffer,
+          recommendedPrice: opp.recommendedPrice,
+          rawData: el,
+        });
+      }
+
+      return {
+        discoveredCount: businesses.length,
+        validCount: businesses.length,
+        duplicateCount: 0,
+        rejectedCount: 0,
+        businesses,
+      };
+    } catch (err) {
+      throw new Error(`Public Discovery Error: ${err.message}`);
+    }
   }
 }
 
@@ -155,8 +249,8 @@ export class PublicSearchDiscoveryProvider extends BusinessDiscoveryProvider {
 export class DiscoveryManager {
   constructor() {
     this.providers = [
+      new OpenStreetMapDiscoveryProvider(),
       new GooglePlacesDiscoveryProvider(),
-      new PublicSearchDiscoveryProvider(),
     ];
   }
 
@@ -176,3 +270,4 @@ export class DiscoveryManager {
 }
 
 export const discoveryManager = new DiscoveryManager();
+
