@@ -10,12 +10,9 @@ const router = Router();
  */
 router.get('/sitemap.xml', async (req, res) => {
   try {
-    const origin = req.headers.host 
-      ? `${req.protocol || 'https'}://${req.headers.host}`
-      : (config.siteUrl || 'https://rahnoxa.rahnoxa-tech.workers.dev');
-    
-    // Canonical production frontend domain
-    const DOMAIN = 'https://rahnoxa.rahnoxa-tech.workers.dev';
+    const host = req.headers['x-forwarded-host'] || req.headers.host;
+    const proto = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+    const DOMAIN = host ? `${proto}://${host}` : (process.env.SITE_URL || 'https://rahnoxa.antideploy.com');
     const now = new Date().toISOString().split('T')[0];
 
     const staticRoutes = [
@@ -85,13 +82,17 @@ ${allUrls.map(item => `  <url>
  * Dynamic robots.txt endpoint
  */
 router.get('/robots.txt', (req, res) => {
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  const proto = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+  const baseUrl = host ? `${proto}://${host}` : (process.env.SITE_URL || 'https://rahnoxa.antideploy.com');
+
   const robots = `User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
 Disallow: /v1/
 
-Sitemap: https://rahnoxa.rahnoxa-tech.workers.dev/sitemap.xml
+Sitemap: ${baseUrl}/sitemap.xml
 `;
   res.setHeader('Content-Type', 'text/plain');
   return res.status(200).send(robots);

@@ -24,9 +24,12 @@ export class AutomationController {
       const result = await AutomationService.triggerRun();
       return res.status(200).json({
         success: true,
-        message: `Generated article '${result.post?.title || 'SEO Article'}' as ${result.post?.status || 'DRAFT'}.`,
-        post: result.post,
-        run: result.run,
+        message: `Generated article '${result.post?.title || 'SEO Article'}' as ${result.post?.status || 'PUBLISHED'}.`,
+        title: result.post?.title || '',
+        slug: result.post?.slug || '',
+        status: result.post?.status || 'PUBLISHED',
+        groundingScore: result.run?.grounding_score || 100,
+        publishedAt: new Date().toISOString(),
       });
     } catch (err) {
       next(err);
