@@ -93,7 +93,7 @@ export const DiscoveryController = {
         return res.status(400).json({ success: false, error: 'Invalid business payload' });
       }
 
-      const draftMessage = generateDraftOutreach({
+      const draftMessage = business.customPitch || generateDraftOutreach({
         businessName: business.businessName,
         city: business.city,
         category: business.category,
@@ -115,12 +115,12 @@ export const DiscoveryController = {
         website_url: business.websiteUrl || null,
         source: business.source || 'LOCATION_DISCOVERY',
         service_opportunity: business.opportunityClass || 'UNVERIFIED',
-        lead_score: business.opportunityScore || 50,
-        temperature: business.opportunityScore >= 75 ? 'HOT' : 'WARM',
+        lead_score: business.opportunityScore || 85,
+        temperature: (business.opportunityScore || 85) >= 75 ? 'HOT' : 'WARM',
         status: 'CONTACT_READY',
-        recommended_offer: business.recommendedOffer,
-        recommended_price: business.recommendedPrice,
-        project_description: `Opportunity: ${business.opportunityClass}. Recommended: ${business.recommendedOffer} (₹${business.recommendedPrice}). Draft: ${draftMessage}`,
+        recommended_offer: business.recommendedOffer || 'Admission & Course Catalog Website (Plan B)',
+        recommended_price: business.recommendedPrice || 5000,
+        project_description: draftMessage,
       };
 
       const created = await db.createLead(leadData);

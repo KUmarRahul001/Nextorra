@@ -251,13 +251,14 @@ export class OpenStreetMapDiscoveryProvider extends BusinessDiscoveryProvider {
             websiteUrl: localBiz.website,
             canonicalDomain: domain,
             googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(localBiz.name + ' ' + city)}`,
-            source: 'Jamshedpur Verified Business Registry',
+            source: 'Jamshedpur Google Maps Verified',
             sourceUrl: `https://maps.google.com/?q=${encodeURIComponent(localBiz.name + ' ' + city)}`,
-            opportunityClass: opp.opportunityClass,
+            opportunityClass: localBiz.website ? 'EXISTING_WEBSITE_UPGRADE' : 'NO_WEBSITE_FOUND',
             opportunityScore: opp.score,
             scoreReasons: JSON.stringify(localBiz.badPoints || opp.scoreReasons),
             recommendedOffer: opp.recommendedOffer,
-            recommendedPrice: opp.recommendedPrice,
+            recommendedPrice: Math.max(opp.recommendedPrice, 5000),
+            customPitch: localBiz.pitch || null,
             rawData: localBiz,
           });
         }
