@@ -12,47 +12,6 @@ export default defineConfig({
   plugins: [
     react(),
 
-    // ✅ Sitemap Generator
-    sitemap({
-      hostname: SITE_URL,
-      dynamicRoutes: [
-        '/',
-        '/blog',
-        '/blog/architecting-scalable-custom-erp-systems',
-        '/blog/building-real-time-saas-applications',
-        '/get-started',
-        '/internship',
-        '/services',
-        // ── Tier 1: Software & Engineering (canonical routes) ──
-        '/services/web-development',
-        '/services/full-stack-web-apps',
-        '/services/app-development',
-        '/services/custom-software-api-integration',
-        '/services/erp-enterprise-applications',
-        '/services/saas-products',
-        '/services/desktop-applications',
-        // ── Tier 2: Marketing & Business Support ──
-        '/services/social-media-marketing',
-        '/services/lead-generation',
-        '/services/sms-marketing',
-        '/services/email-marketing',
-        '/services/missed-call-service',
-        '/services/graphic-design',
-        '/services/voice-call-services',
-        '/privacy-policy',
-        '/terms-and-conditions',
-      ],
-    }),
-
-    // ✅ Robots.txt Generator
-    robots({
-      policies: [
-        { userAgent: '*', allow: ['/'] },
-        { userAgent: '*', disallow: ['/admin', '/api', '/private'] },
-      ],
-      sitemaps: [`${SITE_URL}/sitemap.xml`],
-    }),
-
     // ✅ Auto Inject Meta Tags
     createHtmlPlugin({
       minify: true,
