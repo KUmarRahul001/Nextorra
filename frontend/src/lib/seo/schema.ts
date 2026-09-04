@@ -21,9 +21,9 @@ export const RAHNOXA_ENTITY = {
       'https://github.com/KUmarRahul001',
     ],
   },
-  url: 'https://rahnoxa.antideploy.com',
-  logo: 'https://rahnoxa.antideploy.com/brand/logo-symbol-transparent.png',
-  image: 'https://rahnoxa.antideploy.com/og-image.png',
+  url: 'https://rahnoxa.rahnoxa-tech.workers.dev',
+  logo: 'https://rahnoxa.rahnoxa-tech.workers.dev/brand/logo-symbol-transparent.png',
+  image: 'https://rahnoxa.rahnoxa-tech.workers.dev/og-image.png',
   description:
     'Rahnoxa is a premier software engineering, enterprise ERP architecture, custom web application, mobile app development, and AI technology solutions company.',
   email: 'contact.rahnoxa@protonmail.com',

@@ -12,7 +12,9 @@ router.get('/sitemap.xml', async (req, res) => {
   try {
     const host = req.headers['x-forwarded-host'] || req.headers.host;
     const proto = req.headers['x-forwarded-proto'] || req.protocol || 'https';
-    const DOMAIN = host ? `${proto}://${host}` : (process.env.SITE_URL || 'https://rahnoxa.antideploy.com');
+    const DOMAIN = host && !host.includes('localhost') && !host.includes('127.0.0.1')
+      ? `${proto}://${host}`
+      : (process.env.SITE_URL || 'https://rahnoxa.rahnoxa-tech.workers.dev');
     const now = new Date().toISOString().split('T')[0];
 
     const staticRoutes = [
@@ -104,7 +106,9 @@ ${allUrls.map(item => `  <url>
 router.get('/robots.txt', (req, res) => {
   const host = req.headers['x-forwarded-host'] || req.headers.host;
   const proto = req.headers['x-forwarded-proto'] || req.protocol || 'https';
-  const baseUrl = host ? `${proto}://${host}` : (process.env.SITE_URL || 'https://rahnoxa.antideploy.com');
+  const baseUrl = host && !host.includes('localhost') && !host.includes('127.0.0.1')
+    ? `${proto}://${host}`
+    : (process.env.SITE_URL || 'https://rahnoxa.rahnoxa-tech.workers.dev');
 
   const robots = `User-agent: *
 Allow: /

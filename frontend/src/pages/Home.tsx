@@ -48,11 +48,11 @@ const Home: React.FC = () => {
           name="description"
           content="Rahnoxa is a leading software development company in Jamshedpur, Jharkhand building bespoke web applications, enterprise ERP systems, mobile apps, SaaS platforms, and API solutions."
         />
-        <link rel="canonical" href="https://rahnoxa.antideploy.com/" />
+        <link rel="canonical" href="https://rahnoxa.rahnoxa-tech.workers.dev/" />
         <meta property="og:title" content="Rahnoxa | Software Development Company in Jamshedpur" />
         <meta property="og:description" content="Rahnoxa is a leading software development company in Jamshedpur, Jharkhand building bespoke web applications, enterprise ERP systems, mobile apps, SaaS platforms, and API solutions." />
-        <meta property="og:url" content="https://rahnoxa.antideploy.com/" />
-        <meta property="og:image" content="https://rahnoxa.antideploy.com/og-image.png" />
+        <meta property="og:url" content="https://rahnoxa.rahnoxa-tech.workers.dev/" />
+        <meta property="og:image" content="https://rahnoxa.rahnoxa-tech.workers.dev/og-image.png" />
         <meta name="twitter:card" content="summary_large_image" />
         
         {/* Google Knowledge Graph & LocalBusiness Schema.org JSON-LD */}

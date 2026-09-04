@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /api/
 Disallow: /v1/
 
-Sitemap: https://rahnoxa.antideploy.com/sitemap.xml
+Sitemap: https://rahnoxa.rahnoxa-tech.workers.dev/sitemap.xml
