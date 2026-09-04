@@ -104,14 +104,21 @@ Disallow: /v1/
 Sitemap: ${baseUrl}/sitemap.xml
 `;
 
-  // Write to public & dist
-  const root = path.resolve(__dirname, '../../frontend');
-  fs.writeFileSync(path.join(root, 'public/sitemap.xml'), sitemapXml);
-  fs.writeFileSync(path.join(root, 'public/robots.txt'), robotsTxt);
+  // Write to public & dist across both frontend and backend
+  const frontendRoot = path.resolve(__dirname, '../../frontend');
+  const backendPublic = path.resolve(__dirname, '../public');
 
-  if (fs.existsSync(path.join(root, 'dist'))) {
-    fs.writeFileSync(path.join(root, 'dist/sitemap.xml'), sitemapXml);
-    fs.writeFileSync(path.join(root, 'dist/robots.txt'), robotsTxt);
+  fs.writeFileSync(path.join(frontendRoot, 'public/sitemap.xml'), sitemapXml);
+  fs.writeFileSync(path.join(frontendRoot, 'public/robots.txt'), robotsTxt);
+
+  if (fs.existsSync(path.join(frontendRoot, 'dist'))) {
+    fs.writeFileSync(path.join(frontendRoot, 'dist/sitemap.xml'), sitemapXml);
+    fs.writeFileSync(path.join(frontendRoot, 'dist/robots.txt'), robotsTxt);
+  }
+
+  if (fs.existsSync(backendPublic)) {
+    fs.writeFileSync(path.join(backendPublic, 'sitemap.xml'), sitemapXml);
+    fs.writeFileSync(path.join(backendPublic, 'robots.txt'), robotsTxt);
   }
 
   console.log(`✅ [Sitemap] Generated ${allRoutes.length} canonical URLs for ${baseUrl}`);
