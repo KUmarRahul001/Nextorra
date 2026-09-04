@@ -10,11 +10,8 @@ const getBaseUrl = (): string => {
     return trimmed.endsWith('/v1') ? trimmed : `${trimmed}/v1`;
   }
   
-  // Production default connects to remote Render API gateway
-  if (import.meta.env.PROD) {
-    return 'https://nextorra.onrender.com/v1';
-  }
-  return 'http://localhost:10000/v1';
+  // Connect directly to live Render API gateway (both in local dev and production)
+  return 'https://nextorra.onrender.com/v1';
 };
 
 const getAuthToken = (): string | null => {

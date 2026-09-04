@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import config from '../config';
 import HeroSection from '../components/sections/HeroSection';
+import HeroMarquee from '../components/sections/HeroMarquee';
 import BusinessSolutions from '../components/sections/BusinessSolutions';
 import ServicesSection from '../components/sections/ServicesSection';
 import PortfolioSection from '../components/sections/PortfolioSection';
@@ -66,6 +67,9 @@ const Home: React.FC = () => {
       <div>
         {/* 1. Hero */}
         <HeroSection />
+
+        {/* 1.5 Infinite Moving Brand Stream below Hero */}
+        <HeroMarquee />
 
         {/* 2. Business Solutions / Problems */}
         <BusinessSolutions />

@@ -102,3 +102,13 @@ h1, h2, h3, h4, h5, h6 {
 .animate-pulse-subtle {
   animation: pulse-subtle 4s ease-in-out infinite;
 }
+/* Infinite Marquee Animation with Pause on Hover & Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none !important;
+  }
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

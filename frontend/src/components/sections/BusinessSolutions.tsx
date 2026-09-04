@@ -8,7 +8,10 @@ import {
   HiOutlineCloudArrowUp, 
   HiOutlineComputerDesktop, 
   HiOutlineDevicePhoneMobile,
-  HiOutlineCheckCircle
+  HiOutlineCheckCircle,
+  HiOutlineBanknotes,
+  HiOutlineWrenchScrewdriver,
+  HiOutlineSparkles,
 } from 'react-icons/hi2';
 import { TbSparkles } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
@@ -37,8 +40,8 @@ const challenges = [
     badgeBg: "bg-cyan-50 border-cyan-100",
     title: 'Outgrowing Spreadsheets for Operations?',
     solution:
-      'We develop custom ERP modules and operational systems with role-based access, inventory/finance workflows, and comprehensive audit logs.',
-    tag: 'Enterprise Systems',
+      'We develop custom ERP modules and operational systems with role-based access, inventory/finance workflows, and audit logs.',
+    tag: 'Enterprise ERP',
     route: '/services/erp-enterprise-applications',
   },
   {
@@ -46,27 +49,54 @@ const challenges = [
     badgeBg: "bg-emerald-50 border-emerald-100",
     title: 'Launching a Multi-Tenant Product?',
     solution:
-      'We architect scalable SaaS foundations from day one with isolated tenant data, subscription hooks, secure authentication, and administrative controls.',
+      'We architect scalable SaaS foundations with isolated tenant data schemas, subscription integration hooks, and administrative controls.',
     tag: 'SaaS Platforms',
     route: '/services/saas-products',
   },
   {
-    icon: <HiOutlineComputerDesktop className="h-6 w-6 text-violet-600" />,
+    icon: <HiOutlineBanknotes className="h-6 w-6 text-amber-600" />,
+    badgeBg: "bg-amber-50 border-amber-100",
+    title: 'Retail POS, Invoicing & Inventory Bottlenecks?',
+    solution:
+      'Turnkey and custom billing engines with GST compliance, real-time stock sync, thermal printing support, and multi-branch management.',
+    tag: 'POS & Billing',
+    route: '/services/desktop-applications',
+  },
+  {
+    icon: <HiOutlineDevicePhoneMobile className="h-6 w-6 text-violet-600" />,
     badgeBg: "bg-violet-50 border-violet-100",
+    title: 'Extending Services to Mobile Users?',
+    solution:
+      'We build cross-platform and native mobile applications for iOS and Android with responsive interfaces, push notifications, and offline caching.',
+    tag: 'Mobile Apps',
+    route: '/services/app-development',
+  },
+  {
+    icon: <HiOutlineSparkles className="h-6 w-6 text-blue-600" />,
+    badgeBg: "bg-blue-50 border-blue-100",
+    title: 'Modern High-Converting Brand & Web Presence?',
+    solution:
+      'Fast-loading business websites with structured technical SEO, direct WhatsApp lead capture, and no recurring theme licensing fees.',
+    tag: 'Website Engineering',
+    route: '/services/web-development',
+  },
+  {
+    icon: <HiOutlineComputerDesktop className="h-6 w-6 text-indigo-600" />,
+    badgeBg: "bg-indigo-50 border-indigo-100",
     title: 'Offline or Hardware-Connected Tooling Needed?',
     solution:
-      'We build native desktop software for Windows, Linux, and macOS that runs locally, interfaces with hardware devices, and processes data securely offline.',
+      'Desktop software for Windows, Linux, and macOS that runs locally without an active connection, interfaces with hardware peripherals, and stores data securely.',
     tag: 'Desktop Software',
     route: '/services/desktop-applications',
   },
   {
-    icon: <HiOutlineDevicePhoneMobile className="h-6 w-6 text-amber-600" />,
-    badgeBg: "bg-amber-50 border-amber-100",
-    title: 'Extending Services to Mobile Users?',
+    icon: <HiOutlineWrenchScrewdriver className="h-6 w-6 text-emerald-600" />,
+    badgeBg: "bg-emerald-50 border-emerald-100",
+    title: 'Legacy System Maintenance & Refactoring?',
     solution:
-      'We build cross-platform and native mobile applications for iOS and Android with responsive interfaces, push notifications, and reliable offline caching.',
-    tag: 'Mobile Apps',
-    route: '/services/app-development',
+      'Refactoring brittle codebases, upgrading deprecated dependencies, patching security issues, and stabilizing active production systems.',
+    tag: 'Rescue & Care',
+    route: '/services',
   },
 ];
 
@@ -91,7 +121,7 @@ const BusinessSolutions: React.FC = () => {
             Solving Real Business Challenges With Software
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
-            Technology is only valuable when it eliminates bottlenecks, connects teams, and supports your bottom line.
+            Technology is only valuable when it eliminates operational bottlenecks, connects teams, and supports your bottom line.
           </p>
         </motion.div>
 
@@ -102,7 +132,7 @@ const BusinessSolutions: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
+              transition={{ duration: 0.5, delay: index * 0.06 }}
               className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-blue-300 hover:shadow-lg transition-all duration-300 shadow-xs group"
             >
               <div>

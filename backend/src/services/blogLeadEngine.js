@@ -56,7 +56,19 @@ export function generateCommercialCTA({ category, title = '', targetLocation = '
     mapping = COMMERCIAL_SERVICE_MAP.EDUCATION;
   } else if (textLower.includes('manufactur') || textLower.includes('industry') || textLower.includes('adityapur') || textLower.includes('supplier')) {
     mapping = COMMERCIAL_SERVICE_MAP.MANUFACTURING;
-  } else if (textLower.includes('security') || textLower.includes('ai') || textLower.includes('erp') || textLower.includes('software') || textLower.includes('cloud')) {
+  } else if (
+    textLower.includes('security') ||
+    textLower.includes('ai') ||
+    textLower.includes('erp') ||
+    textLower.includes('software') ||
+    textLower.includes('cloud') ||
+    textLower.includes('isro') ||
+    textLower.includes('space') ||
+    textLower.includes('science') ||
+    textLower.includes('quantum') ||
+    textLower.includes('startup') ||
+    textLower.includes('deeptech')
+  ) {
     mapping = COMMERCIAL_SERVICE_MAP.SECURITY_AI;
   }
 

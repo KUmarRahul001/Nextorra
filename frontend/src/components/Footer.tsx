@@ -84,6 +84,24 @@ const Footer: React.FC = () => {
                 <span>{config.contact.location} (Remote Delivery Worldwide)</span>
               </div>
             </div>
+
+            {/* MSME Udyam Registration & Brochure Badges */}
+            <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-200 text-blue-800 text-xs font-mono font-semibold">
+                <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+                <span>MSME Reg: <strong>UDYAM-JH-06-0063496</strong></span>
+              </div>
+              <a
+                href="/Rahnoxa_Corporate_Brochure.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="Rahnoxa_Corporate_Brochure.pdf"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors mt-1"
+              >
+                <span>Download Official Corporate Brochure (PDF)</span>
+                <FiArrowRight className="h-3 w-3" />
+              </a>
+            </div>
           </div>
 
           {/* Navigation Links */}

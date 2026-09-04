@@ -4,7 +4,7 @@ import sitemap from 'vite-plugin-sitemap';
 import robots from 'vite-plugin-robots-txt';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { resolve } from 'path';
-import { copyFileSync } from 'fs';
+import { copyFileSync, existsSync, createReadStream } from 'fs';
 
 const SITE_URL = process.env.VITE_SITE_URL || 'https://rahnoxa.rahnoxa-tech.workers.dev';
 
@@ -33,16 +33,28 @@ export default defineConfig({
       },
     }),
 
-    // ✅ Cloudflare Pages SPA fallback — copy index.html → 404.html
+    // ✅ Serve static PDF directly in Vite dev server without SPA fallback
     {
-      name: 'cloudflare-spa-fallback',
-      closeBundle() {
-        const distDir = resolve(__dirname, 'dist');
-        copyFileSync(
-          resolve(distDir, 'index.html'),
-          resolve(distDir, '404.html')
-        );
-        console.log('✅ Copied index.html → 404.html (Cloudflare SPA fallback)');
+      name: 'serve-pdf-directly',
+      configureServer(server) {
+        server.middlewares.stack.unshift({
+          route: '',
+          handle: (req, res, next) => {
+            const url = req.url || '';
+            if (url === '/Rahnoxa_Corporate_Brochure.pdf' || url.startsWith('/Rahnoxa_Corporate_Brochure.pdf?')) {
+              const pdfPath = resolve(__dirname, 'public/Rahnoxa_Corporate_Brochure.pdf');
+              if (existsSync(pdfPath)) {
+                res.writeHead(200, {
+                  'Content-Type': 'application/pdf',
+                  'Content-Disposition': 'inline; filename="Rahnoxa_Corporate_Brochure.pdf"',
+                });
+                createReadStream(pdfPath).pipe(res);
+                return;
+              }
+            }
+            next();
+          }
+        });
       },
     },
   ],

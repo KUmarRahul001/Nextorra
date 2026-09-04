@@ -37,6 +37,7 @@ export default {
         'glow': 'glow 2s ease-in-out infinite',
         'bounce-slow': 'bounce 3s ease-in-out infinite',
         'spin-slow': 'spin 4s linear infinite',
+        'marquee': 'marquee 75s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -58,6 +59,10 @@ export default {
         glow: {
           '0%, 100%': { filter: 'brightness(100%)' },
           '50%': { filter: 'brightness(120%)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       boxShadow: {

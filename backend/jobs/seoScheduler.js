@@ -57,8 +57,8 @@ export async function executeDailySEOAutomation(options = {}) {
     const job = jobs[0] || { auto_publish: config.autoPublishBlogs ? 1 : 0 };
     const autoPublish = Boolean(job.auto_publish);
 
-    // 2. Fetch Live Real-Time Trending News (Locked Topic Object)
-    const selectedTopic = await NewsService.getTrendingTechNews();
+    // 2. Fetch Live Real-Time Trending News (Locked Topic Object with Scope Preference)
+    const selectedTopic = await NewsService.getTrendingTechNews({ scope: options.scope });
 
     // 3. Duplicate Event Fingerprint Check
     const eventFingerprint = generateEventFingerprint(selectedTopic.source, selectedTopic.title, selectedTopic.sourceUrl);
@@ -115,7 +115,7 @@ export async function executeDailySEOAutomation(options = {}) {
     const cta = generateCommercialCTA({
       category: generated.category || selectedTopic.category,
       title: generated.title,
-      targetLocation: selectedTopic.location || 'Jamshedpur'
+      targetLocation: selectedTopic.location || (selectedTopic.scope === 'National' ? 'Jamshedpur' : 'India')
     });
 
     // Append Source Reference block
@@ -148,7 +148,9 @@ export async function executeDailySEOAutomation(options = {}) {
         groundingScore: groundingResult.groundingScore,
         factSupportScore: factCheckResult.factSupportScore,
         topic: selectedTopic.title,
-        source: selectedTopic.source
+        source: selectedTopic.source,
+        scope: selectedTopic.scope,
+        location: selectedTopic.location
       };
     }
 
@@ -164,7 +166,7 @@ export async function executeDailySEOAutomation(options = {}) {
       content: fullContent,
       featured_image: selectedTopic.featured_image || '/assets/image.png',
       category: generated.category,
-      tags: generated.tags,
+      tags: Array.from(new Set([...(selectedTopic.tags || []), ...(generated.tags || [])])),
       author: 'Rahnoxa AI Intelligence',
       reading_time: generated.reading_time || '6 min read',
       status,
