@@ -82,7 +82,6 @@ router.get('/sitemap.xml', async (req, res) => {
     const allUrls = [...staticRoutes, ...projectUrls, ...blogUrls];
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls.map(item => `  <url>
     <loc>${DOMAIN}${item.url}</loc>
