@@ -144,6 +144,19 @@ const BlogPost: React.FC = () => {
     const blocks = content.split('\n\n');
     return blocks.map((block, i) => {
       const trimmed = block.trim();
+      if (!trimmed) return null;
+
+      // Handle raw HTML blocks like the Rahnoxa Commercial CTA card or embedded divs
+      if (trimmed.startsWith('<div') || trimmed.includes('rahnoxa-commercial-cta') || trimmed.startsWith('<table') || trimmed.startsWith('<section')) {
+        return (
+          <div
+            key={i}
+            className="my-6"
+            dangerouslySetInnerHTML={{ __html: trimmed }}
+          />
+        );
+      }
+
       if (trimmed === '---') {
         return <hr key={i} className="my-8 border-slate-200" />;
       }
