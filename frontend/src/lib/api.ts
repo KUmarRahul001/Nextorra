@@ -136,6 +136,13 @@ export const api = {
     });
   },
 
+  async autofillProjectFromUrl(url: string) {
+    return apiFetch('/projects/autofill-url', {
+      method: 'POST',
+      body: JSON.stringify({ url }),
+    });
+  },
+
   async deleteProject(id: string) {
     return apiFetch(`/projects/${id}`, {
       method: 'DELETE',

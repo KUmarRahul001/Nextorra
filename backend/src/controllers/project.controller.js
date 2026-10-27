@@ -43,6 +43,19 @@ export class ProjectController {
     }
   }
 
+  static async autofillFromUrl(req, res, next) {
+    try {
+      const { url } = req.body;
+      if (!url) {
+        return res.status(400).json({ success: false, error: 'Target URL is required' });
+      }
+      const data = await ProjectService.autofillFromUrl(url);
+      return res.status(200).json({ success: true, data });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async delete(req, res, next) {
     try {
       await ProjectService.delete(req.params.id);

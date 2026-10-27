@@ -67,6 +67,24 @@ export async function analyzePublicBusinessUrl(targetUrl, fallbackName = '', loc
     websiteUrl = targetUrl;
     
     try {
+      const parsed = new URL(targetUrl);
+      const host = parsed.hostname.toLowerCase();
+      if (
+        host === 'localhost' ||
+        host === '127.0.0.1' ||
+        host === '::1' ||
+        host === '0.0.0.0' ||
+        host.endsWith('.local') ||
+        host.endsWith('.internal') ||
+        /^127\./.test(host) ||
+        /^10\./.test(host) ||
+        /^192\.168\./.test(host) ||
+        /^169\.254\./.test(host) ||
+        /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(host)
+      ) {
+        throw new Error('SSRF blocked: local or private networks are prohibited.');
+      }
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
 

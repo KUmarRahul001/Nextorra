@@ -18,6 +18,9 @@ const publicDistPath = path.resolve(__dirname, '../public');
 
 const app = express();
 
+// Trust reverse proxy (Render, Cloudflare) for accurate client IP identification
+app.set('trust proxy', 1);
+
 app.use(seoRoutes);
 
 // ─── Static Frontend Serving ─────────────────────────────────────────────────
@@ -25,8 +28,7 @@ if (fs.existsSync(publicDistPath)) {
   app.use(express.static(publicDistPath, {
     maxAge: '1d',
     setHeaders: (res, filePath) => {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+      res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
     }
   }));
 }
@@ -35,8 +37,7 @@ if (fs.existsSync(publicDistPath)) {
 app.use(
   helmet({
     contentSecurityPolicy: false,
-    crossOriginResourcePolicy: false,
-    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'same-origin' },
   })
 );
 
@@ -47,7 +48,7 @@ app.use(
       if (isOriginAllowed(origin)) {
         callback(null, true);
       } else {
-        callback(null, true); // Allow browser client on antideploy
+        callback(new Error('Blocked by CORS policy: Origin unauthorized'));
       }
     },
     credentials: true,

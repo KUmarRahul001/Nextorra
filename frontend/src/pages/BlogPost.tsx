@@ -17,6 +17,7 @@ import SEO from '../components/SEO';
 import config from '../config';
 import { api } from '../lib/api';
 import { SEED_BLOG_POSTS } from '../data/seedBlogPosts';
+import DOMPurify from 'dompurify';
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -148,11 +149,15 @@ const BlogPost: React.FC = () => {
 
       // Handle raw HTML blocks like the Rahnoxa Commercial CTA card or embedded divs
       if (trimmed.startsWith('<div') || trimmed.includes('rahnoxa-commercial-cta') || trimmed.startsWith('<table') || trimmed.startsWith('<section')) {
+        const sanitizedHtml = DOMPurify.sanitize(trimmed, {
+          ALLOWED_TAGS: ['div', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'ul', 'ol', 'li', 'strong', 'em', 'b', 'i', 'code', 'pre', 'hr', 'section'],
+          ALLOWED_ATTR: ['class', 'href', 'target', 'rel', 'id', 'title'],
+        });
         return (
           <div
             key={i}
             className="my-6"
-            dangerouslySetInnerHTML={{ __html: trimmed }}
+            dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
           />
         );
       }

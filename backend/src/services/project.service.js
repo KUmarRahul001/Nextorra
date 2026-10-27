@@ -1,5 +1,6 @@
 import { db } from '../../database/supabase.js';
 import { NotFoundError, BadRequestError } from '../utils/errors.js';
+import { ProjectUrlEnricher } from './projectUrlEnricher.js';
 
 export class ProjectService {
   static async list(filters = {}) {
@@ -10,6 +11,10 @@ export class ProjectService {
     const project = await db.getProjectBySlug(slug);
     if (!project) throw new NotFoundError('Project not found');
     return project;
+  }
+
+  static async autofillFromUrl(url) {
+    return ProjectUrlEnricher.extractFromUrl(url);
   }
 
   static async create(data) {

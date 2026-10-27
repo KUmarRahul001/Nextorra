@@ -1,16 +1,28 @@
 const ipStore = new Map();
+const MAX_TRACKED_ENTRIES = 5000;
+let lastCleanTime = 0;
 
 function cleanStore() {
   const now = Date.now();
+  if (now - lastCleanTime < 10000 && ipStore.size < MAX_TRACKED_ENTRIES) return; // Run at most every 10 seconds
+  lastCleanTime = now;
+
   for (const [key, val] of ipStore.entries()) {
     if (now > val.resetAt) ipStore.delete(key);
+  }
+
+  // Cap size to prevent memory exhaustion DoS
+  if (ipStore.size > MAX_TRACKED_ENTRIES) {
+    const overflowKeys = Array.from(ipStore.keys()).slice(0, ipStore.size - MAX_TRACKED_ENTRIES);
+    overflowKeys.forEach((k) => ipStore.delete(k));
   }
 }
 
 export const rateLimit = ({ maxRequests = 30, windowSeconds = 60, message = 'Rate limit exceeded' }) => {
   return (req, res, next) => {
     cleanStore();
-    const clientIP = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || '127.0.0.1';
+    // Use Express req.ip (which respects app.set('trust proxy', 1)) rather than raw spoofable header
+    const clientIP = req.ip || req.socket?.remoteAddress || '127.0.0.1';
     const key = `${req.baseUrl || req.path}:${clientIP}`;
     const now = Date.now();
 

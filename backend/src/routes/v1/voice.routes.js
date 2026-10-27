@@ -3,9 +3,16 @@ import { CallManager } from '../../voice-agent/call-manager/callManager.js';
 import { VoiceOrchestrator } from '../../voice-agent/orchestrator/voiceOrchestrator.js';
 import { BrowserVoiceSessionProvider } from '../../voice-agent/session/browserVoiceSession.js';
 import { db } from '../../../database/supabase.js';
+import { authenticate, authorize } from '../../middleware/auth.middleware.js';
+import { apiLimiter } from '../../middleware/rateLimit.middleware.js';
 
 const router = Router();
 const sessionProvider = new BrowserVoiceSessionProvider();
+
+// All telephony and voice operations require admin authentication and rate limiting
+router.use(apiLimiter);
+router.use(authenticate);
+router.use(authorize('superadmin', 'admin'));
 
 // ── Real-Time Cloud Voice Sessions (Browser / WebRTC) ──
 

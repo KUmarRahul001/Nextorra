@@ -1,7 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../../config/env.js';
 
-export const accessTokenSecret = config.jwtSecret || 'rahnoxa_secure_jwt_secret_token_2026';
+if (!config.jwtSecret || config.jwtSecret.length < 16) {
+  if (config.nodeEnv === 'production') {
+    throw new Error('FATAL: JWT_SECRET environment variable is missing or shorter than 16 characters in production.');
+  }
+}
+
+export const accessTokenSecret = config.jwtSecret || 'dev_secret_only_never_use_in_production_32chars';
 export const accessTokenExpiry = '7d';
 
 export const generateAccessToken = (payload) => {

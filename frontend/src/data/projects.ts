@@ -1,19 +1,17 @@
 /**
- * Portfolio / Projects data — Rahnoxa
- *
- * These are demonstration items used to showcase capabilities while real
- * client projects are being built. They are intentionally marked as demo
- * work and must NOT be presented as completed client deliverables.
- *
- * Replace with real project data as it becomes available.
+ * Portfolio / Engineering Projects — Rahul Kumar
+ * Single source of truth for portfolio showcases built by Rahul Kumar.
  */
 
 export type ProjectCategory =
+  | 'AI Telephony & Automation'
+  | 'ERP & Accounting'
+  | 'Enterprise Engineering'
+  | 'EdTech & ERP'
+  | 'FinTech & Monorepo'
+  | 'Cloud Infrastructure'
   | 'Web App'
-  | 'Mobile App'
-  | 'Website'
-  | 'Design'
-  | 'Marketing';
+  | 'Mobile App';
 
 export interface Project {
   id: string;
@@ -21,7 +19,6 @@ export interface Project {
   category: ProjectCategory;
   tags: string[];
   description: string;
-  /** If true, this is a demonstration/capability showcase, not a real client project. */
   isDemo: boolean;
   images: string[];
   liveUrl?: string;
@@ -30,85 +27,96 @@ export interface Project {
   featured: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Demo showcase items
-// These are illustrative capability demonstrations, not client projects.
-// ---------------------------------------------------------------------------
-
 export const projects: Project[] = [
   {
-    id: 'ecommerce-ui-demo',
-    title: 'E-commerce Platform UI',
-    category: 'Web App',
-    tags: ['UI/UX', 'React', 'Node.js'],
-    description: 'A demonstration of a responsive e-commerce interface with product listing and checkout flows.',
-    isDemo: true,
-    images: ['https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80'],
+    id: 'eazzio-remind-telecaller',
+    title: 'Eazzio Remind & Telecaller — AI Automated Voice Follow-Up Suite',
+    category: 'AI Telephony & Automation',
+    tags: ['Node.js', 'Python', 'SIP Trunking', 'WebRTC', 'PostgreSQL', 'LiveKit', 'Asterisk'],
+    description: 'Automated outbound telecalling dialer and omni-channel reminder engine for overdue accounts, student fee collections, and customer renewal callbacks with real-time call disposition logging.',
+    isDemo: false,
+    images: ['/portfolio/stitch-fieldsense.png'],
+    liveUrl: 'https://github.com/KUmarRahul001/social-automation',
+    githubUrl: 'https://github.com/KUmarRahul001/social-automation',
+    year: 2026,
     featured: true,
   },
   {
-    id: 'fashion-campaign-demo',
-    title: 'Fashion Brand Campaign',
-    category: 'Marketing',
-    tags: ['Social Media', 'Content Strategy', 'Analytics'],
-    description: 'Sample social media campaign creative and strategy for a fashion retail brand.',
-    isDemo: true,
-    images: ['https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80'],
-    featured: false,
-  },
-  {
-    id: 'startup-branding-demo',
-    title: 'Tech Startup Branding',
-    category: 'Design',
-    tags: ['Branding', 'Logo Design', 'Style Guide'],
-    description: 'Demonstration of a complete brand identity package for a technology startup.',
-    isDemo: true,
-    images: ['https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80'],
+    id: 'eazzio-books',
+    title: 'Eazzio-Books — Accounting & Business Finance ERP',
+    category: 'ERP & Accounting',
+    tags: ['React', 'Node.js', 'PostgreSQL', 'Flutter', 'TypeScript', 'Tailwind CSS'],
+    description: 'Full-stack enterprise accounting software covering customer/vendor workflows, double-entry ledgers, quotations, tax invoices, banking feeds, and audit trails.',
+    isDemo: false,
+    images: ['/portfolio/stitch-accounting.png', '/portfolio/eazzio-books.jpeg'],
+    liveUrl: 'https://github.com/KUmarRahul001/Eazzio-Books',
+    githubUrl: 'https://github.com/KUmarRahul001/Eazzio-Books',
+    year: 2026,
     featured: true,
   },
   {
-    id: 'fitness-app-demo',
-    title: 'Fitness Tracking App',
-    category: 'Mobile App',
-    tags: ['React Native', 'Firebase', 'UX Design'],
-    description: 'A mobile app UI demonstration for activity and fitness tracking across Android and iOS.',
-    isDemo: true,
-    images: ['https://images.unsplash.com/photo-1510519138161-58444cbfdb7d?auto=format&fit=crop&w=1200&q=80'],
+    id: 'eazzio-payroll-ffms',
+    title: 'Eazzio Payroll & FFMS — Field Force Telemetry & Employee Management',
+    category: 'Enterprise Engineering',
+    tags: ['Next.js', 'Node.js', 'Flutter', 'PostgreSQL', 'Google Maps API', 'Docker'],
+    description: 'Real-time GPS tracking for field personnel, dynamic polygonal geofencing with breach alerts, selfie biometric shift check-in, and automated payroll calculations.',
+    isDemo: false,
+    images: ['/portfolio/eazzio-payroll.png', '/portfolio/stitch-fieldsense.png'],
+    liveUrl: 'https://github.com/KUmarRahul001/Eazzio-Payroll',
+    githubUrl: 'https://github.com/KUmarRahul001/Eazzio-Payroll',
+    year: 2026,
     featured: true,
   },
   {
-    id: 'restaurant-website-demo',
-    title: 'Restaurant Website',
-    category: 'Website',
-    tags: ['Next.js', 'Tailwind CSS', 'Responsive Design'],
-    description: 'Responsive website concept for a restaurant, including menu and reservation flow.',
-    isDemo: true,
-    images: ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'],
-    featured: false,
+    id: 'eazzio-school-erp',
+    title: 'Eazzio-School — AI-Assisted Educational ERP Platform',
+    category: 'EdTech & ERP',
+    tags: ['React', 'TypeScript', 'Vite', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
+    description: 'Glassmorphism educational management ERP featuring 4 distinct role workspaces (Principal, Teacher, Student, Accountant), live roll call sheets, fee ledgers, and attendance shortage alerts.',
+    isDemo: false,
+    images: ['/portfolio/stitch-eazzio-school.png', '/portfolio/eazzio-school.png'],
+    liveUrl: 'https://github.com/KUmarRahul001/Eazzio-School',
+    githubUrl: 'https://github.com/KUmarRahul001/Eazzio-School',
+    year: 2026,
+    featured: true,
   },
   {
-    id: 'catalog-design-demo',
-    title: 'Product Catalogue Design',
-    category: 'Design',
-    tags: ['Print Design', 'Digital', 'Brand Identity'],
-    description: 'Demonstration of print and digital product catalogue design and layout.',
-    isDemo: true,
-    images: ['https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80'],
-    featured: false,
+    id: 'kc-invest-monorepo',
+    title: 'KC Invest — Multiuser Client & Investment Management Platform',
+    category: 'FinTech & Monorepo',
+    tags: ['TypeScript', 'Fastify', 'Turborepo', 'React', 'Drizzle ORM', 'PostgreSQL', 'Playwright'],
+    description: 'High-throughput monorepo architecture with Fastify REST APIs, Drizzle ORM schemas, and 5 separate portals for client onboarding, sales pipelines, admin controls, and partner deliverables.',
+    isDemo: false,
+    images: ['/portfolio/stitch-a2z-solifix.png', '/portfolio/kc-invest.png'],
+    liveUrl: 'https://github.com/KUmarRahul001',
+    githubUrl: 'https://github.com/KUmarRahul001',
+    year: 2026,
+    featured: true,
+  },
+  {
+    id: 'eazzio-mail-suite',
+    title: 'Eazzio Mail — High-Volume Transactional & Inbound Mail Suite',
+    category: 'Cloud Infrastructure',
+    tags: ['Node.js', 'TypeScript', 'Prisma ORM', 'WebSockets', 'Fastify', 'Docker'],
+    description: 'Carrier-grade email processing engine with headless SMTP integration, real-time OTP verification, batch EML ingestion, IMAP polling, and WebSocket-driven live inbox notifications.',
+    isDemo: false,
+    images: ['/portfolio/stitch-eazzio-mail.png', '/portfolio/eazzio-mail.png'],
+    liveUrl: 'https://github.com/KUmarRahul001',
+    githubUrl: 'https://github.com/KUmarRahul001',
+    year: 2026,
+    featured: true,
   },
 ];
 
 /** Projects suitable for the homepage featured section. */
 export const featuredProjects = projects.filter((p) => p.featured);
 
-/**
- * Categories available for filtering in the portfolio section.
- * 'All' is always prepended at runtime in the component.
- */
+/** Categories available for filtering in the portfolio section. */
 export const projectCategories: ProjectCategory[] = [
-  'Web App',
-  'Mobile App',
-  'Website',
-  'Design',
-  'Marketing',
+  'AI Telephony & Automation',
+  'ERP & Accounting',
+  'Enterprise Engineering',
+  'EdTech & ERP',
+  'FinTech & Monorepo',
+  'Cloud Infrastructure',
 ];

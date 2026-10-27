@@ -26,17 +26,15 @@ export class AuthService {
       }
     }
 
-    if (!admin) {
+    if (!admin || !admin.password_hash) {
       throw new UnauthorizedError('Invalid username or password');
     }
 
-    if (admin.password_hash) {
-      const isMatch = verifyPassword(password, admin.password_hash);
-      if (!isMatch) {
-        throw new UnauthorizedError('Invalid username or password');
-      }
-      await db.updateAdminLogin(admin.id);
+    const isMatch = verifyPassword(password, admin.password_hash);
+    if (!isMatch) {
+      throw new UnauthorizedError('Invalid username or password');
     }
+    await db.updateAdminLogin(admin.id);
 
     const token = generateAccessToken({
       id: admin.id,

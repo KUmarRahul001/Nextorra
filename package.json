@@ -14,5 +14,8 @@
     "test:backend": "npm --prefix backend test",
     "lint": "npm --prefix frontend run lint",
     "preview": "npm --prefix frontend run preview"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
   }
 }

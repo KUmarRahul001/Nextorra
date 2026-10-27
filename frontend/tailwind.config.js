@@ -3,74 +3,63 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
-      'xs': '340px',   // Mobile phone breakpoint (340px)
-      'sm': '480px',   // Large phone breakpoint
-      'md': '800px',   // Tablet breakpoint (800px)
-      'lg': '1024px',  // Small laptop
-      'xl': '1200px',  // Desktop breakpoint (1200px)
-      '2xl': '1440px', // Large monitor
+      'xs': '375px',
+      'sm': '480px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1440px',
     },
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#1E40AF',
-          light: '#3B82F6',
-          dark: '#1E3A8A',
+        bg: {
+          base: '#090D16',
+          subtle: '#0C111C',
+          card: '#0F1626',
+          elevated: '#161F33',
         },
-        secondary: '#64748B',
-        accent: '#0EA5E9',
-        dark: '#1E293B',
+        border: {
+          subtle: '#1C263B',
+          card: '#23304B',
+          highlight: '#3B4B70',
+        },
+        text: {
+          primary: '#F8FAFC',
+          secondary: '#CBD5E1',
+          muted: '#8292AB',
+          tertiary: '#4F5E79',
+        },
+        accent: {
+          amber: '#D97706',
+          'amber-hover': '#B45309',
+          cyan: '#06B6D4',
+          emerald: '#10B981',
+          destructive: '#EF4444',
+        },
+        primary: {
+          DEFAULT: '#D97706',
+          light: '#F59E0B',
+          dark: '#B45309',
+        },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(circle at center, var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'gradient-mesh': 'linear-gradient(60deg, rgba(30, 64, 175, 0.1) 25%, transparent 25.5%, transparent 75%, rgba(30, 64, 175, 0.1) 75.5%, rgba(30, 64, 175, 0.1)), linear-gradient(120deg, rgba(30, 64, 175, 0.1) 25%, transparent 25.5%, transparent 75%, rgba(30, 64, 175, 0.1) 75.5%, rgba(30, 64, 175, 0.1))',
-      },
-      animation: {
-        'fade-in': 'fadeIn 1s ease-in-out',
-        'slide-up': 'slideUp 0.6s ease-out',
-        'scale-in': 'scaleIn 0.6s ease-out',
-        'float': 'float 3s ease-in-out infinite',
-        'glow': 'glow 2s ease-in-out infinite',
-        'bounce-slow': 'bounce 3s ease-in-out infinite',
-        'spin-slow': 'spin 4s linear infinite',
-        'marquee': 'marquee 75s linear infinite',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        scaleIn: {
-          '0%': { transform: 'scale(0.9)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
-        glow: {
-          '0%, 100%': { filter: 'brightness(100%)' },
-          '50%': { filter: 'brightness(120%)' },
-        },
-        marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
+        display: ['"Space Grotesk"', 'sans-serif'],
+        space: ['"Space Grotesk"', 'sans-serif'],
+        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(59, 130, 246, 0.5)',
-        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+        'card': '0 4px 20px -2px rgba(4, 7, 13, 0.7), 0 0 0 1px #23304B',
+        'card-hover': '0 12px 32px -4px rgba(4, 7, 13, 0.85), 0 0 0 1px #3B4B70',
+        'amber-glow': '0 0 24px -4px rgba(217, 119, 6, 0.35)',
+        'cyan-glow': '0 0 24px -4px rgba(6, 182, 212, 0.25)',
       },
-      backdropBlur: {
-        'glass': '8px',
+      borderRadius: {
+        'sm': '6px',
+        'md': '10px',
+        'lg': '16px',
+        'xl': '24px',
       },
     },
   },

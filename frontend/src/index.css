@@ -1,114 +1,151 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --primary: #2563EB;
-  --primary-light: #3B82F6;
-  --primary-dark: #1D4ED8;
-  --secondary: #64748B;
-  --accent: #2563EB;
-  --white: #FFFFFF;
-  --dark: #0F172A;
-  --gray-light: #F8FAFC;
-  --gray: #64748B;
+  --color-bg-base: #090D16;
+  --color-surface-subtle: #0C111C;
+  --color-surface-card: #0F1626;
+  --color-surface-elevated: #161F33;
+  --color-border-subtle: #1C263B;
+  --color-border-card: #23304B;
+  --color-border-highlight: #3B4B70;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #8292AB;
+  --color-text-tertiary: #4F5E79;
+  --color-accent-amber: #D97706;
+  --color-accent-amber-hover: #B45309;
+  --color-accent-cyan: #06B6D4;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  @apply text-slate-900 bg-[#FAFCFF] antialiased overflow-x-hidden;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-secondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  selection-background-color: rgba(217, 119, 6, 0.25);
+  selection-color: #F8FAFC;
+}
+
+::selection {
+  background-color: rgba(217, 119, 6, 0.3);
+  color: #F8FAFC;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
-  @apply tracking-tight font-bold text-slate-900;
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  color: var(--color-text-primary);
+  letter-spacing: -0.025em;
 }
 
 .font-mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
-.section {
-  @apply py-20 md:py-28 overflow-hidden;
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .container {
   @apply px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl;
 }
 
-/* Modern Gradient Glow & Ambient Light */
-.gradient-mesh-light {
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(14, 165, 233, 0.05) 0px, transparent 50%);
+/* Bento Card Style */
+.bento-card {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border-card);
+  border-radius: 16px;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px -2px rgba(4, 7, 13, 0.7);
 }
 
-.glass-card-light {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+.bento-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-border-highlight);
+  background-color: var(--color-surface-elevated);
+  box-shadow: 0 12px 32px -4px rgba(4, 7, 13, 0.85);
 }
 
-.glass-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.glass-card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.12);
-  border-color: rgba(147, 197, 253, 0.8);
-}
-
-/* Button semantics */
+/* Button semantics from design.md */
 .btn {
-  @apply px-6 py-3 font-semibold rounded-xl transition-all duration-300 inline-flex items-center justify-center gap-2 text-sm;
+  @apply px-5 py-2.5 font-medium rounded-xl transition-all duration-200 inline-flex items-center justify-center gap-2 text-sm cursor-pointer font-display;
 }
 
 .btn-primary {
-  @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-500/20 active:scale-[0.98];
+  background-color: var(--color-accent-amber);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 24px -4px rgba(217, 119, 6, 0.35);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-amber-hover);
+  transform: scale(1.01);
 }
 
 .btn-outline {
-  @apply border border-slate-200 bg-white/80 backdrop-blur-sm text-slate-800 hover:bg-slate-50 hover:border-slate-300 shadow-sm active:scale-[0.98];
+  background-color: var(--color-surface-subtle);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-card);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-highlight);
 }
 
 .nav-link {
-  @apply font-medium text-slate-600 hover:text-blue-600 transition-colors text-sm;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 150ms ease;
 }
 
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(1deg); }
+.nav-link:hover {
+  color: var(--color-text-primary);
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.03); }
+/* Accessible focus ring */
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 2px solid var(--color-accent-amber);
+  outline-offset: 2px;
 }
 
-.animate-float-slow {
-  animation: float-slow 6s ease-in-out infinite;
-}
-
-.animate-pulse-subtle {
-  animation: pulse-subtle 4s ease-in-out infinite;
-}
 /* Infinite Marquee Animation with Pause on Hover & Reduced Motion Support */
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none !important;
-  }
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 75s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee {
+    animation: none !important;
+  }
+}
+

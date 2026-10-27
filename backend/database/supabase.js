@@ -29,18 +29,37 @@ function getClient() {
 }
 
 /**
- * Hash password with SHA-256 + cryptographic salt
+ * Hash password with secure scrypt key-derivation function and unique random salt
  */
-export function hashPassword(password, salt = 'rahnoxa_salt_2026_backend') {
-  return crypto.createHash('sha256').update(password + ':' + salt).digest('hex');
+export function hashPassword(password, customSalt) {
+  if (!password || typeof password !== 'string') throw new Error('Password must be a non-empty string');
+  const salt = customSalt || crypto.randomBytes(16).toString('hex');
+  const derivedKey = crypto.scryptSync(password, salt, 64);
+  return `scrypt:${salt}:${derivedKey.toString('hex')}`;
 }
 
 /**
- * Verify password against stored hash
+ * Constant-time password verification supporting scrypt with legacy SHA-256 fallback
  */
-export function verifyPassword(password, hash, salt = 'rahnoxa_salt_2026_backend') {
-  if (!password || !hash) return false;
-  return hashPassword(password, salt) === hash;
+export function verifyPassword(password, storedHash) {
+  if (!password || !storedHash || typeof password !== 'string' || typeof storedHash !== 'string') return false;
+
+  // Modern scrypt verification
+  if (storedHash.startsWith('scrypt:')) {
+    const parts = storedHash.split(':');
+    if (parts.length !== 3) return false;
+    const [, salt, keyHex] = parts;
+    const derivedKey = crypto.scryptSync(password, salt, 64);
+    const keyBuf = Buffer.from(keyHex, 'hex');
+    return derivedKey.length === keyBuf.length && crypto.timingSafeEqual(derivedKey, keyBuf);
+  }
+
+  // Backward compatibility with legacy SHA-256 hash using constant-time comparison
+  const legacySalt = 'rahnoxa_salt_2026_backend';
+  const legacyHash = crypto.createHash('sha256').update(password + ':' + legacySalt).digest('hex');
+  const legacyBuf = Buffer.from(legacyHash);
+  const storedBuf = Buffer.from(storedHash);
+  return storedBuf.length === legacyBuf.length && crypto.timingSafeEqual(storedBuf, legacyBuf);
 }
 
 /**
@@ -73,17 +92,27 @@ export const db = {
   // ── Admins ──
   async findAdminByUsername(username) {
     const client = getClient();
-    const { data, error } = await client
+    const cleanUser = typeof username === 'string' ? username.replace(/["(),]/g, '').trim() : '';
+    if (!cleanUser) return null;
+
+    // Check username first, then email (clean parameterized equality without raw .or string injection)
+    const { data: byUsername, error: errUser } = await client
       .from('admins')
       .select('*')
-      .or(`username.eq.${username},email.eq.${username}`)
+      .eq('username', cleanUser)
       .maybeSingle();
 
-    if (error) {
-      console.error('[Database Error] findAdminByUsername:', error.message);
-      throw new Error(`Database error: ${error.message}`);
-    }
-    return data;
+    if (errUser) throw new Error(`Database error: ${errUser.message}`);
+    if (byUsername) return byUsername;
+
+    const { data: byEmail, error: errEmail } = await client
+      .from('admins')
+      .select('*')
+      .eq('email', cleanUser)
+      .maybeSingle();
+
+    if (errEmail) throw new Error(`Database error: ${errEmail.message}`);
+    return byEmail;
   },
 
   async updateAdminLogin(id) {
@@ -127,13 +156,26 @@ export const db = {
 
   async getProjectBySlug(slugOrId) {
     const client = getClient();
-    const { data, error } = await client
+    const cleanId = typeof slugOrId === 'string' ? slugOrId.replace(/["(),]/g, '').trim() : '';
+    if (!cleanId) return null;
+
+    const { data: bySlug, error: errSlug } = await client
       .from('projects')
       .select('*')
-      .or(`slug.eq.${slugOrId},id.eq.${slugOrId}`)
+      .eq('slug', cleanId)
       .maybeSingle();
-    if (error) throw new Error(`Database error fetching project: ${error.message}`);
-    return data;
+
+    if (errSlug) throw new Error(`Database error fetching project: ${errSlug.message}`);
+    if (bySlug) return bySlug;
+
+    const { data: byId, error: errId } = await client
+      .from('projects')
+      .select('*')
+      .eq('id', cleanId)
+      .maybeSingle();
+
+    if (errId) throw new Error(`Database error fetching project: ${errId.message}`);
+    return byId;
   },
 
   async createProject(data) {
@@ -220,27 +262,35 @@ export const db = {
 
   async updateBlogPost(slugOrId, data) {
     const client = getClient();
+    const cleanId = typeof slugOrId === 'string' ? slugOrId.replace(/["(),]/g, '').trim() : '';
+    if (!cleanId) throw new Error('Valid article identifier is required');
+
     const now = new Date().toISOString();
     const updateData = { ...data, updated_at: now };
     if (data.status === 'PUBLISHED' && !updateData.published_at) {
       updateData.published_at = now;
     }
 
-    const { data: updated, error } = await client
-      .from('blog_posts')
-      .update(updateData)
-      .or(`id.eq.${slugOrId},slug.eq.${slugOrId}`)
-      .select()
-      .single();
+    // Try update by id first, then slug
+    let res = await client.from('blog_posts').update(updateData).eq('id', cleanId).select().maybeSingle();
+    if (!res.data && !res.error) {
+      res = await client.from('blog_posts').update(updateData).eq('slug', cleanId).select().maybeSingle();
+    }
 
-    if (error) throw new Error(`Database error updating article: ${error.message}`);
-    return updated;
+    if (res.error) throw new Error(`Database error updating article: ${res.error.message}`);
+    return res.data;
   },
 
   async deleteBlogPost(slugOrId) {
     const client = getClient();
-    const { error } = await client.from('blog_posts').delete().or(`id.eq.${slugOrId},slug.eq.${slugOrId}`);
-    if (error) throw new Error(`Database error deleting article: ${error.message}`);
+    const cleanId = typeof slugOrId === 'string' ? slugOrId.replace(/["(),]/g, '').trim() : '';
+    if (!cleanId) throw new Error('Valid article identifier is required');
+
+    let res = await client.from('blog_posts').delete().eq('id', cleanId);
+    if (res.error) {
+      res = await client.from('blog_posts').delete().eq('slug', cleanId);
+    }
+    if (res.error) throw new Error(`Database error deleting article: ${res.error.message}`);
     return true;
   },
 
@@ -268,16 +318,23 @@ export const db = {
     const leadName = sanitize(data.name || data.business_name || 'Discovered Business');
 
     // Deduplication check: Avoid inserting identical businesses repeatedly
-    const { data: existing } = await client
+    const { data: existingByName } = await client
       .from('leads')
       .select('*')
-      .or(`name.eq."${leadName}",company.eq."${leadName}"`)
+      .eq('name', leadName)
       .limit(1)
       .maybeSingle();
 
-    if (existing) {
-      return existing; // Return existing record without duplicating
-    }
+    if (existingByName) return existingByName;
+
+    const { data: existingByCompany } = await client
+      .from('leads')
+      .select('*')
+      .eq('company', leadName)
+      .limit(1)
+      .maybeSingle();
+
+    if (existingByCompany) return existingByCompany;
 
     const id = data.id || `lead-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const emailVal = data.email && data.email.trim() ? sanitize(data.email) : `prospect-${Date.now()}@rahnoxa-lead.local`;

@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/', ProjectController.list);
 router.get('/:slug', ProjectController.getBySlug);
+router.post('/autofill-url', authenticate, authorize('superadmin', 'admin'), ProjectController.autofillFromUrl);
 router.post('/', authenticate, authorize('superadmin', 'admin'), ProjectController.create);
 router.put('/:id', authenticate, authorize('superadmin', 'admin'), ProjectController.update);
 router.delete('/:id', authenticate, authorize('superadmin', 'admin'), ProjectController.delete);

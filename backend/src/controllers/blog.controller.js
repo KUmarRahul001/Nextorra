@@ -1,10 +1,22 @@
 import { BlogService } from '../services/blog.service.js';
+import { verifyAccessToken } from '../config/jwt.js';
+
+function checkTokenValidity(authHeader) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) return false;
+  try {
+    const token = authHeader.split(' ')[1];
+    const decoded = verifyAccessToken(token);
+    return Boolean(decoded && decoded.id);
+  } catch {
+    return false;
+  }
+}
 
 export class BlogController {
   static async list(req, res, next) {
     try {
       const { category, all } = req.query;
-      const isAuth = Boolean(req.headers.authorization);
+      const isAuth = checkTokenValidity(req.headers.authorization);
       const posts = await BlogService.list({ category, all, isAuth });
       return res.status(200).json({ success: true, posts });
     } catch (err) {
@@ -14,7 +26,7 @@ export class BlogController {
 
   static async getBySlug(req, res, next) {
     try {
-      const isAuth = Boolean(req.headers.authorization);
+      const isAuth = checkTokenValidity(req.headers.authorization);
       const post = await BlogService.getBySlug(req.params.slug, isAuth);
       return res.status(200).json({ success: true, post });
     } catch (err) {

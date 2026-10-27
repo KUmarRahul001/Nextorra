@@ -193,3 +193,32 @@ test('National & International Tech & Science News: NewsService produces validat
   const factValidation = validateClaimSupport({ sourceFacts, generatedArticle: article });
   assert.equal(factValidation.claimValidationPass, true);
 });
+
+test('Project Url Enricher: correctly parses webpage metadata and category fallback', async () => {
+  const { ProjectUrlEnricher } = await import('../src/services/projectUrlEnricher.js');
+  
+  // Test category detection logic
+  assert.equal(ProjectUrlEnricher.detectCategory('Fleet Management ERP', 'Inventory tracking', ['PostgreSQL']), 'ERP');
+  assert.equal(ProjectUrlEnricher.detectCategory('Fitness Mobile App', 'Track workouts on iOS', ['React Native']), 'Mobile App');
+  assert.equal(ProjectUrlEnricher.detectCategory('AI Document Summarizer', 'LLM assistant', ['Python', 'OpenAI']), 'AI / ML');
+  assert.equal(ProjectUrlEnricher.detectCategory('SaaS Analytics Dashboard', 'B2B subscription platform', ['Next.js']), 'SaaS');
+
+  // Test URL extraction gracefully handles offline / domain fallback
+  const result = await ProjectUrlEnricher.extractFromUrl('https://example-test-portfolio.com');
+  assert.ok(result);
+  assert.ok(result.title);
+  assert.ok(result.slug);
+  assert.ok(result.category);
+  assert.ok(Array.isArray(result.technologies));
+  assert.ok(result.short_description);
+  assert.ok(result.demo_url);
+
+  // Test error handling for invalid / non-string URLs
+  await assert.rejects(async () => {
+    await ProjectUrlEnricher.extractFromUrl('');
+  }, /Valid URL is required/);
+
+  await assert.rejects(async () => {
+    await ProjectUrlEnricher.extractFromUrl('http://');
+  }, /Invalid URL format/);
+});
